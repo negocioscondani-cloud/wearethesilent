@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "accessCode": {
+      "title": "Access Code",
+      "description": "A document representing a valid access code for protected content.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The access code itself."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of what this code grants access to."
+        }
+      },
+      "required": ["code"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/access_codes/{codeId}": {
+      "schema": {
+        "$ref": "#/entities/accessCode"
+      },
+      "description": "Stores valid access codes for The Silent Studio Guide."
+    }
+  }
+}

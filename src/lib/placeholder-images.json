@@ -1,0 +1,340 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "A wide shot of a modern, minimalist interior with clean lines and neutral tones.",
+      "imageUrl": "https://cdn.midjourney.com/3dbd124a-f1e0-42b7-830b-3347fbbc0408/0_1.png",
+      "imageHint": "modern interior"
+    },
+    {
+      "id": "philosophy",
+      "description": "A close-up of a minimalist piece of furniture, highlighting its texture and form.",
+      "imageUrl": "https://cdn.midjourney.com/8f948609-4aad-4a4a-9399-7124133a52a7/0_0.png",
+      "imageHint": "minimalist furniture"
+    },
+    {
+      "id": "product-1",
+      "description": "An organized and creative fashion studio workspace.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/ugc-society.avif",
+      "imageHint": "fashion studio"
+    },
+    {
+      "id": "product-1-new",
+      "description": "Men working in a modern office.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/UGC-men.avif",
+      "imageHint": "modern office"
+    },
+    {
+      "id": "product-2",
+      "description": "A detailed shot of luxurious, textured fabric with soft lighting.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/prompt-studio-woman-1.avif",
+      "imageHint": "fabric texture"
+    },
+    {
+      "id": "product-3",
+      "description": "A close-up view of intricate sewing details on a high-fashion garment.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/oracle.avif",
+      "imageHint": "sewing detail"
+    },
+    {
+      "id": "bsg-hero",
+      "description": "A luxury editorial photo of a minimalist fashion studio.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif",
+      "imageHint": "fashion studio"
+    },
+    {
+      "id": "bsg-what-we-do",
+      "description": "A charismatic culinary mentor in a professional kitchen setting.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86377.avif",
+      "imageHint": "professional mentor"
+    },
+    {
+      "id": "bsg-what-we-do-2",
+      "description": "A vertical medium shot of a person with a slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86379.avif",
+      "imageHint": "portrait angle"
+    },
+    {
+      "id": "bsg-benefits",
+      "description": "A vertical medium shot of a person in a sophisticated setting.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86378.avif",
+      "imageHint": "sophisticated portrait"
+    },
+    {
+      "id": "bsg-advantage",
+      "description": "A man thoughtfully looking away in a well-lit environment.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Charismatic_culinary_mentor_medium_shot_at_eye_leve_e57961db-4a13-44f8-bc02-a69256f67403_1.avif",
+      "imageHint": "thoughtful man"
+    },
+    {
+      "id": "bsg-how-it-works",
+      "description": "Editorial cinematic shot of a young woman sitting, holding something.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_1.avif",
+      "imageHint": "cinematic woman"
+    },
+    {
+      "id": "bsg-promise",
+      "description": "A vertical medium shot of a person with a slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86379.avif",
+      "imageHint": "portrait angle"
+    },
+    {
+      "id": "bsg-promise-2",
+      "description": "Editorial cinematic shot of a young woman sitting, holding something.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_0.avif",
+      "imageHint": "cinematic pose"
+    },
+    {
+      "id": "gallery-placeholder",
+      "description": "A minimalist gallery space with soft, diffused lighting and abstract art.",
+      "imageUrl": "https://images.unsplash.com/photo-1564399580075-5dfe19c205f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YXJ0JTIwZ2FsbGVyeXxlbnwwfHx8fDE3NTg5MTA1MDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "art gallery"
+    },
+    {
+      "id": "tutorials-placeholder",
+      "description": "A clean, organized desk setup with a laptop showing a video editing timeline.",
+      "imageUrl": "https://images.unsplash.com/photo-1669490893500-97456444f578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkZXNrJTIwc2V0dXB8ZW58MHx8fHwxNzU4ODEzNjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "desk setup"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Black and white editorial photo of folded Financial Times newspaper.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Black_and_white_editorial_photo_folded_Financial_Ti_0498f205-d242-4f1e-9476-3bfa5d3de073_0.avif",
+      "imageHint": "editorial newspaper"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Luxury editorial close-up of structured black leather.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_close-up_structured_black_leather__ccf2610e-62b7-4670-8b9c-521bfb7178bf_1.avif",
+      "imageHint": "leather texture"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Vertical medium shot of a person with a slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86379.avif",
+      "imageHint": "portrait angle"
+    },
+    {
+      "id": "gallery-4",
+      "description": "Vertical medium shot of a person with a slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86378.avif",
+      "imageHint": "stylish portrait"
+    },
+    {
+      "id": "gallery-5",
+      "description": "Vertical medium shot of a person with a slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86377.avif",
+      "imageHint": "fashion pose"
+    },
+    {
+      "id": "gallery-6",
+      "description": "Luxury editorial photo of a solitary woman in a tailored black suit.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_solitary_woman_in_tailored_b_1c6d1278-90f0-4b5e-a356-d765648fa876_3.avif",
+      "imageHint": "woman suit"
+    },
+    {
+      "id": "gallery-7",
+      "description": "Editorial cinematic shot of a young woman sitting, holding something.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_1.avif",
+      "imageHint": "cinematic woman"
+    },
+    {
+      "id": "gallery-8",
+      "description": "Charismatic mentor in a professional kitchen.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Charismatic_culinary_mentor_medium_shot_at_eye_leve_e57961db-4a13-44f8-bc02-a69256f67403_0-1.avif",
+      "imageHint": "professional mentor"
+    },
+    {
+      "id": "gallery-9",
+      "description": "Thoughtful man in a well-lit environment.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Charismatic_culinary_mentor_medium_shot_at_eye_leve_e57961db-4a13-44f8-bc02-a69256f67403_1.avif",
+      "imageHint": "thoughtful man"
+    },
+    {
+      "id": "gallery-10",
+      "description": "Luxury editorial of a solitary figure in a tailored suit.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_solitary_figure_in_tailored__7e698e13-d44a-4496-a8a4-7707d8d77714_0-1.avif",
+      "imageHint": "tailored suit"
+    },
+    {
+      "id": "gallery-11",
+      "description": "Elegant cinematic portrait of a sophisticated man.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Elegant_cinematic_portrait_of_a_sophisticated_man_i_d50efa04-ac8b-465e-b336-6e4e52fc8e8e_1.avif",
+      "imageHint": "cinematic portrait"
+    },
+    {
+      "id": "gallery-12",
+      "description": "Editorial cinematic shot of a subject.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Editorial_cinematic_shot2.avif",
+      "imageHint": "cinematic shot"
+    },
+    {
+      "id": "gallery-13",
+      "description": "Luxury editorial photo minimalist fashion studio.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif",
+      "imageHint": "minimalist fashion"
+    },
+    {
+      "id": "gallery-14",
+      "description": "Luxury editorial architecture modern villa of marble.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_architecture_modern_villa_of_marbl_3dbd124a-f1e0-42b7-830b-3347fbbc0408_2-1.avif",
+      "imageHint": "modern architecture"
+    },
+    {
+      "id": "gallery-15",
+      "description": "Editorial cinematic shot of a young woman sitting.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_0.avif",
+      "imageHint": "cinematic portrait"
+    },
+    {
+      "id": "gallery-16",
+      "description": "Close-up cinematic view of a mixed-race male hybrid.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_close-up_cinematic_view_of_a_mixed-race_male_hybrid_86d4dac6-6a34-49b9-9d68-0ab996ff2502_2-1.avif",
+      "imageHint": "cinematic portrait"
+    },
+    {
+      "id": "gallery-17",
+      "description": "Editorial cinematic shot.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Editorial_cinematic_shot.avif",
+      "imageHint": "cinematic shot"
+    },
+    {
+      "id": "gallery-18",
+      "description": "Editorial cinematic shot 3.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Editorial_cinematic_shot3.avif",
+      "imageHint": "cinematic shot"
+    },
+    {
+      "id": "gallery-19",
+      "description": "Mid-shot vertical portrait of a Latino male.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_mid-shot_vertical_portrait_of_a_Latino_male_financi_8fcb2163-3f31-437f-863f-d1b36f5b88dd_1.avif",
+      "imageHint": "latino portrait"
+    },
+    {
+      "id": "gallery-20",
+      "description": "Raw selfie of a billionaire businessman.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Selfie_crudo_empresario_multimillonario_chaqueta_de_2fad4be2-6780-48b8-843a-3c5798f0cc1b_0.avif",
+      "imageHint": "businessman selfie"
+    },
+    {
+      "id": "gallery-21",
+      "description": "Raw selfie of a billionaire businessman in a jacket.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_Selfie_crudo_empresario_multimillonario_chaqueta_de_2fad4be2-6780-48b8-843a-3c5798f0cc1b_3.avif",
+      "imageHint": "businessman portrait"
+    },
+    {
+      "id": "gallery-22",
+      "description": "Vertical medium shot with slight upward angle.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/freepik__tomaplano-medio-vertical-leve-escorzo-cmara-fija-e__86380-scaled.avif",
+      "imageHint": "portrait angle"
+    },
+    {
+      "id": "gallery-23",
+      "description": "Collective euphoria vs intention.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/calde11th_INTENCIN_euforia_colectiva_vs.avif",
+      "imageHint": "abstract concept"
+    },
+    {
+      "id": "gallery-24",
+      "description": "A stylish gallery wall with various framed art pieces.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif",
+      "imageHint": "gallery wall"
+    },
+    {
+      "id": "gallery-25",
+      "description": "Ethereal hyperrealism luxury product shot",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-ethereal-hyperrealism-hasselbla__45392.avif",
+      "imageHint": "luxury product"
+    },
+    {
+      "id": "gallery-26",
+      "description": "Surgical hyperfidelity luxury product shot",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-img1-surgical-hyperfidelity-pha__45391.avif",
+      "imageHint": "luxury cosmetic"
+    },
+    {
+      "id": "gallery-27",
+      "description": "Ethereal hyperrealism product shot on display",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-ethereal-hyperrealism-hasselbla__45393.avif",
+      "imageHint": "product display"
+    },
+    {
+      "id": "gallery-28",
+      "description": "Masterpiece fidelity luxury product shot",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-masterpiece-fidelity-phase-one-__45394.avif",
+      "imageHint": "luxury watch"
+    },
+    {
+      "id": "gallery-29",
+      "description": "Surgical hyperfidelity arri ale luxury product shot.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-surgical-hyperfidelity-arri-ale__29273-scaled.avif",
+      "imageHint": "luxury product"
+    },
+    {
+      "id": "gallery-30",
+      "description": "Surgical hyperfidelity arri ale luxury product shot 2.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-surgical-hyperfidelity-arri-ale__29271-scaled.avif",
+      "imageHint": "luxury cosmetic"
+    },
+    {
+      "id": "gallery-31",
+      "description": "High velocity commercial cgi photo of a product.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif",
+      "imageHint": "cgi product"
+    },
+    {
+      "id": "gallery-32",
+      "description": "Surgical hyperfidelity phase one luxury product shot.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-surgical-hyperfidelity-phase-on__69031-scaled.avif",
+      "imageHint": "luxury bottle"
+    },
+    {
+      "id": "nano-banana-hero",
+      "description": "Luxury editorial architecture modern villa of marble.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/01/calde11th_Luxury_editorial_architecture_modern_villa_of_marbl_3dbd124a-f1e0-42b7-830b-3347fbbc0408_2-1.avif",
+      "imageHint": "modern architecture"
+    },
+    {
+      "id": "blog-1-kling-ai",
+      "description": "Abstract representation of Kling AI video generation.",
+      "imageUrl": "https://images.unsplash.com/photo-1764664281938-3d7b48d267fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxBSSUyMHZpZGVvfGVufDB8fHx8MTc2OTU2MTkwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "AI video"
+    },
+    {
+      "id": "blog-2-veo-google",
+      "description": "Google's Veo AI model for video generation.",
+      "imageUrl": "https://images.unsplash.com/photo-1727434032773-af3cd98375ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxBSSUyMHRlY2hub2xvZ3l8ZW58MHx8fHwxNzY5NTYxOTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "AI technology"
+    },
+    {
+      "id": "blog-3-higgsfield",
+      "description": "Creative process using Higgsfield AI platform.",
+      "imageUrl": "https://images.unsplash.com/photo-1758876202468-5ffe0ee61f07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjcmVhdGl2ZSUyMHdvcmtmbG93fGVufDB8fHx8MTc2OTU2MTkwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "creative workflow"
+    },
+    {
+      "id": "blog-4-nano-banana",
+      "description": "Showcase of Freepik's Nano Banana capabilities.",
+      "imageUrl": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9kdWN0JTIwcGhvdG9ncmFwaHl8ZW58MHx8fHwxNzY5NTYxOTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "product photography"
+    },
+    {
+      "id": "blog-5-creative-future",
+      "description": "Futuristic concept of AI in creative agencies.",
+      "imageUrl": "https://images.unsplash.com/photo-1634214466384-89c4d6452581?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmdXR1cmlzdGljJTIwYWdlbmN5fGVufDB8fHx8MTc2OTU2MTkwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic agency"
+    },
+    {
+      "id": "blog-6-faceless-avatars",
+      "description": "High-end AI digital spokesperson for faceless branding.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/02/freepik__-meta-imagestyle-highend-editorial-vanity-fair-gro__58444-scaled.avif",
+      "imageHint": "AI avatar"
+    },
+    {
+      "id": "blog-7-avatar-selection",
+      "description": "Comparison between realistic and animated AI avatars.",
+      "imageUrl": "http://studioboom.online/wp-content/uploads/2026/02/freepik__cinematic-portrait-of-a-25yearold-male-creative-di__78889-scaled.avif",
+      "imageHint": "AI choice"
+    }
+  ]
+}

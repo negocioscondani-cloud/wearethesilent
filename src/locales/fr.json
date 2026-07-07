@@ -1,0 +1,472 @@
+
+{
+  "header": {
+    "brand": "WE ARE THE SILENT",
+    "studio": "The Silent Studio",
+    "resources": "Ressources Éditoriales",
+    "contact": "Contact",
+    "access": "Acquérir l'Accès",
+    "advancedAiSuite": "Suite IA Avancée",
+    "createAgency": "Créez votre agence",
+    "blog": "Blog",
+    "elevateBrand": "Élevez Votre Marque",
+    "supportFilm": "Soutenez notre film"
+  },
+  "home": {
+    "hero": {
+      "title": "The Silent Studio",
+      "subtitle": "Six intelligences. Un objectif : faire de vous un Directeur de Création.",
+      "cta": "ENTRER DANS LE SILENCE"
+    },
+    "trailer": {
+      "voteCta": "ENTRER SUR LA PAGE OFFICIELLE",
+      "voteDescription": "Nous participons en représentant le Costa Rica. Rien qu'en entrant sur le lien, en regardant la vidéo, en aimant ou en commentant, vous nous aiderez beaucoup. Merci pour votre soutien !"
+    },
+    "manifesto": {
+      "title": "Le Manifeste Silencieux",
+      "line1": "Le marché ne récompense pas l'effort, il récompense la clarté. Alors que d'autres sont perdus dans l'économie des 'créateurs', nous opérons selon un principe différent : nous sommes des Directeurs de Création. Nous ne suivons pas les tendances, nous construisons des empires visuels. Nous ne créons pas de contenu, nous concevons des actifs de grande valeur.",
+      "line2": "Pour cela, il existe deux voies : les outils ou le système.",
+      "line3": "Choisissez The Silent Studio et obtenez l'arsenal de six intelligences pour exécuter votre vision en toute autonomie.",
+      "line4": "Ou choisissez le Mentorat et recevez le système complet, un modèle d'affaires 'clé en main' pour construire votre propre agence.",
+      "line5": "Un chemin vous donne le pouvoir. L'autre vous donne la carte.",
+      "line6": "Les deux mènent à la souveraineté. We are The Silent."
+    },
+    "studio": {
+      "title": "EXPLOREZ THE SILENT STUDIO",
+      "subtitle": "Un écosystème complet d'intelligences génératives conçu pour maîtriser le processus audiovisuel, de la conception stratégique à l'exécution cinématographique.",
+      "cta": "Explorez Le Système"
+    },
+    "pillars": {
+      "influence": {
+        "title": "THE UGC SOCIETY",
+        "subtitle": "Monétisez votre goût, pas votre temps.",
+        "body": "L'ère du 'créateur de contenu' est révolue. L'ère du Directeur de Création a commencé. Nous démantelons la roue de hamster des tendances virales. À la place, nous construisons un héritage structuré et opérationnel. Apprenez à traiter votre marque personnelle non pas comme un flux chaotique, mais comme une classe d'actifs de grande valeur."
+      },
+      "atelier": {
+        "title": "LUXE PROMPT STUDIO",
+        "subtitle": "Ne vous contentez pas de générer des images. Dirigez des campagnes.",
+        "body": "Tout le monde peut utiliser l'IA. Seuls quelques-uns possèdent la vision pour la maîtriser. Accédez aux codes visuels exclusifs de The Silent Studio. Il ne s'agit pas de 'prompts' ; il s'agit de transférer le goût éditorial dans la machine. Passez de 'prompter' à Directeur Artistique."
+      },
+      "authority": {
+        "title": "THE ORACLE LUXE AGENCY",
+        "subtitle": "Contrôlez la perception sans crier.",
+        "body": "Le vrai pouvoir est silencieux. Il attire les gens. Maîtrisez les cadres stratégiques utilisés par les maisons de patrimoine pour créer le désir, la loyauté et le mystère. Nous installons le système d'exploitation de la perception de haute valeur directement dans l'ADN de votre marque."
+      }
+    },
+    "offer": {
+      "title": "ACQUÉRIR LE STUDIO",
+      "body": "Un seul laissez-passer. Six intelligences. Une souveraineté à vie. Rejoignez les rangs de The Silent.",
+      "accessType": "Accès à vie",
+      "cta": "SÉCURISEZ VOTRE PLACE",
+      "microcopy": "*Admission limitée pour cette saison. Toutes les acquisitions sont finales.*"
+    },
+     "premiumOffer": {
+      "title": "Ou Le Système Complet",
+      "body": "Un tableau de bord unique pour gérer de manière transparente les six intelligences et automatiser l'ensemble du processus de création.",
+      "cta": "ACQUÉRIR L'ACCÈS"
+    },
+    "gallery": {
+      "title": "Résultats Forgés dans le Silence",
+      "subtitle": "Voici ce que les 6 intelligences de The Silent Studio peuvent créer pour vous."
+    },
+    "mentorshipOffer": {
+      "title": "Ou le Mentorat",
+      "body": "Recevez le système complet, un modèle d'affaires 'clé en main' pour construire votre propre agence et transformer votre vision créative en une entreprise rentable.",
+      "cta": "VOIR LE MENTORAT"
+    }
+  },
+  "footer": {
+    "brand": "WE ARE THE SILENT",
+    "copyright": "© {year} We Are The Silent. Tous droits réservés.",
+    "links": {
+      "resources": "Ressources Éditoriales",
+      "studio": "The Silent Studio",
+      "contact": "Contact",
+      "blog": "Blog"
+    }
+  },
+  "studio": {
+    "title": "The Silent Studio",
+    "subtitle": "Un écosystème complet d'intelligences génératives conçu pour maîtriser le processus audiovisuel, de la conception stratégique à l'exécution cinématographique.",
+    "originalTrinityTitle": "La Trinité Originelle",
+    "advancedSuiteTitle": "La Suite IA Avancée",
+    "tools": {
+      "ugc-society": {
+        "number": "I",
+        "title": "The UGC Society",
+        "description": "Votre mentor silencieux pour créer du contenu UGC de luxe. Générez des stratégies, des scripts et des idées avec une précision éditoriale."
+      },
+      "luxe-prompt-studio": {
+        "number": "II",
+        "title": "Luxe Prompt Studio",
+        "description": "Votre directeur artistique invisible. Transformez des idées abstraites en images de luxe éditoriales avec des prompts cinématographiques."
+      },
+      "oracle-luxe-agency": {
+        "number": "III",
+        "title": "The Oracle Luxe Agency",
+        "description": "Votre cerveau stratégique pour les campagnes. Générez des scripts, des cadres narratifs et des lancements de marque cohérents."
+      },
+      "neuro-scoring": {
+        "number": "IV",
+        "title": "Neuro Scoring",
+        "description": "Votre analyste maître en neuromarketing. Notez et améliorez n'importe quel texte, script ou image avec une précision scientifique."
+      },
+      "alpha-content": {
+        "number": "V",
+        "title": "Alpha Content Architect",
+        "description": "Votre stratège d'info-produits d'élite. Transformez n'importe quelle offre en un lead magnet irrésistible prêt à être conçu."
+      },
+      "cine-ai-director": {
+        "number": "VI",
+        "title": "CineAI Visual Director",
+        "description": "Votre directeur de la photographie IA. Transformez les scripts en tables de production techniques pour des récits visuels cohérents."
+      }
+    },
+    "discover": "Découvrir"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Nous sommes disponibles pour toute demande que vous pourriez avoir.",
+    "company": "Entreprise",
+    "name": "Nom",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "origin": "Origine",
+    "companyName": "WE ARE THE SILENT",
+    "personName": "Daniel Calderon",
+    "emailAddress": "daniel@studioboom.online",
+    "whatsappNumber": "+506 6419 4111",
+    "whatsappLink": "https://wa.me/50664194111?text=Hola%21%20Me%20interesa%20ser%20parte%20de%20la%20Generaci%C3%B3n%20Beta%20y%20quiero%20mi%20Agencia%20de%20Contenido%20Premium%20con%20IA.",
+    "country": "Costa Rica"
+  },
+  "supportFilm": {
+    "title": "Soutenez le premier film IA !",
+    "subtitle": "The Silent Studio participe au défi mondial Higgsfield AI. Votre interaction définit 30% de notre score. Soutenez-nous en seulement 1 minute.",
+    "step1": "Étape 1 : Cliquez sur Play et laissez un Like.",
+    "step2": "Étape 2 : Votez dans la Galerie Officielle.",
+    "cta": "REGARDER ET VOTER SUR HIGGSFIELD ICI",
+    "closing": {
+      "title": "À propos du projet :",
+      "body": "Je suis Daniel Calderon, spécialiste Motion Graphics et fondateur de The Silent Studio. J'ai créé cette scène d'action en combinant montage traditionnel et intelligence artificielle générative. Soutenez le talent de l'IA générative en partageant cette page. #HiggsfieldAction"
+    }
+  },
+  "privacyPolicy": {
+    "title": "Politique de Confidentialité",
+    "lastUpdated": "Dernière mise à jour",
+    "updateDate": "20 Novembre, 2025",
+    "sections": [
+      {
+        "title": "Introduction",
+        "content": [
+          "Bienvenue chez WE ARE THE SILENT. Nous nous engageons à protéger votre vie privée. Cette Politique de Confidentialité explique comment nous collectons, utilisons, divulguons et protégeons vos informations lorsque vous visitez notre site web."
+        ]
+      },
+      {
+        "title": "Collecte de Données",
+        "content": [
+          "Nous pouvons collecter des informations vous concernant de diverses manières. Les informations que nous pouvons collecter sur le Site incluent les données personnelles que vous nous fournissez volontairement, telles que votre nom et votre adresse e-mail, lors de votre demande d'accès ou de contact."
+        ]
+      },
+      {
+        "title": "Utilisation de Vos Informations",
+        "content": [
+          "Avoir des informations exactes sur vous nous permet de vous offrir une expérience fluide, efficace et personnalisée. Plus précisément, nous pouvons utiliser les informations collectées sur vous via le Site pour créer et gérer votre compte, vous envoyer des e-mails concernant votre compte ou votre commande, et répondre aux demandes de service client."
+        ]
+      },
+      {
+        "title": "Sécurité des Données",
+        "content": [
+          "Nous utilisons des mesures de sécurité administratives, techniques et physiques pour aider à protéger vos informations personnelles. Bien que nous ayons pris des mesures raisonnables pour sécuriser les informations personnelles que vous nous fournissez, sachez que malgré nos efforts, aucune mesure de sécurité n'est parfaite ou impénétrable."
+        ]
+      },
+      {
+        "title": "Vos Droits",
+        "content": [
+          "Selon votre emplacement, vous pouvez avoir certains droits concernant vos informations personnelles, tels que le droit d'accéder, de corriger ou de supprimer vos données. Cela inclut les droits accordés par des réglementations telles que le RGPD en Europe et le CCPA en Californie."
+        ]
+      }
+    ]
+  },
+  "termsOfService": {
+    "title": "Conditions d'Utilisation",
+    "lastUpdated": "Dernière mise à jour",
+    "updateDate": "20 Novembre, 2025",
+    "sections": [
+      {
+        "title": "Acceptation des Conditions",
+        "content": [
+          "En utilisant le Site, vous acceptez d'être lié par ces Conditions d'Utilisation. Si vous n'acceptez pas ces Conditions d'Utilisation, vous n'êtes pas autorisé à utiliser le Site."
+        ]
+      },
+      {
+        "title": "Propriété Intellectuelle",
+        "content": [
+          "Sauf indication contraire, le Site est notre propriété exclusive et tout le code source, les bases de données, les fonctionnalités, les logiciels, les conceptions de sites web, l'audio, la vidéo, le texte, les photographies et les graphiques sur le Site (collectivement, le « Contenu ») ainsi que les marques de commerce, les marques de service et les logos qu'ils contiennent (les « Marques ») sont détenus ou contrôlés par nous ou nous sont concédés sous licence."
+        ]
+      },
+      {
+        "title": "Politique d'Accès",
+        "content": [
+          "Toutes les acquisitions d'accès sont finales. En raison de la nature numérique de nos produits et de l'accès immédiat à la propriété intellectuelle, aucun remboursement ne sera accordé. En acquérant un accès depuis notre site, vous reconnaissez et acceptez cette politique."
+        ]
+      },
+      {
+        "title": "Loi Applicable",
+        "content": [
+          "Ces Conditions seront régies et interprétées conformément aux lois du Costa Rica. WE ARE THE SILENT et Daniel Calderon sont les parties responsables de ce site web et de son contenu."
+        ]
+      }
+    ]
+  },
+  "brandStrategyGuide": {
+    "hero": {
+      "title": "La Méthode The Silent Studio",
+      "subtitle": "La nouvelle ère de la direction créative et de la production audiovisuelle par l'IA."
+    },
+    "contentSections": [
+      {
+        "title": "Qu'est-ce que la Méthode The Silent Studio ?",
+        "description": "La Méthode The Silent Studio est un écosystème intégré pour les créateurs modernes, les entrepreneurs et les marques personnelles qui souhaitent construire une présence audiovisuelle de grande valeur. Nous ne suivons pas les tendances ; nous mettons en œuvre des systèmes créatifs intemporels alimentés par une suite de six intelligences artificielles interconnectées. Ici, chaque créateur apprend à combiner stratégie, esthétique, persuasion et automatisation pour créer un contenu qui semble authentique, cinématographique et rentable. Vous n'apprenez pas seulement la théorie, vous construisez votre empire audiovisuel étape par étape, avec des outils d'IA qui travaillent ensemble comme votre équipe créative privée.",
+        "imageId": "bsg-what-we-do"
+      },
+      {
+        "title": "La Vision : Du Créateur au Directeur",
+        "description": "La Méthode The Silent Studio ne concerne pas les moments viraux. Il s'agit de clarté, de cohérence et d'autorité créative. Nous vous guidons pour concevoir une marque qui reflète votre essence, se connecte émotionnellement avec votre public et génère des revenus grâce à des systèmes automatisés, le tout sans avoir besoin d'être un expert en technologie ou en marketing. L'objectif est de vous élever d'un créateur de contenu, qui exécute des tâches, à un Directeur de Création, qui dirige une vision.",
+        "imageId": "bsg-vision"
+      }
+    ],
+    "painPointsTitle": "Problèmes Courants que Nous Résolvons",
+    "painPoints": [
+      {
+        "title": "Surcharge Créative",
+        "description": "Vous voulez développer votre marque, mais vous ne savez pas par où commencer ni quoi publier.",
+        "solution": "Nous vous donnons un système structuré en 6 étapes."
+      },
+      {
+        "title": "Résultats Incohérents",
+        "description": "Votre contenu a l'air différent chaque semaine et ne reflète pas la valeur de votre marque.",
+        "solution": "Nous vous apprenons à créer votre propre identité esthétique — cohérente et reconnaissable."
+      },
+      {
+        "title": "Pas de Temps pour les Outils Complexes",
+        "description": "Vous avez entendu parler de l'IA, mais ne savez pas comment l'utiliser efficacement.",
+        "solution": "Nous intégrons tout par des actions guidées et conversationnelles — simples, élégantes et pratiques."
+      },
+      {
+        "title": "Manque de Stratégie de Monétisation",
+        "description": "Vous créez gratuitement et ne voyez pas de résultats financiers.",
+        "solution": "Nous transformons votre créativité en actifs numériques, services ou GPT Premium que vous pouvez vendre."
+      }
+    ],
+    "systemWorksTitle": "Comment Fonctionne le Système : Les 6 Intelligences",
+    "systemWorks": [
+      {
+        "title": "1. The UGC Society",
+        "description": "Votre fondation stratégique. Ce mentor vous aide à définir votre identité de marque, votre public et votre modèle de monétisation, garantissant que chaque élément de contenu a un objectif clair."
+      },
+      {
+        "title": "2. Luxe Prompt Studio",
+        "description": "Votre moteur esthétique. Il traduit votre stratégie de marque en un langage visuel concret, générant des prompts pour Midjourney afin d'assurer une sensation éditoriale cohérente et haut de gamme."
+      },
+      {
+        "title": "3. The Oracle Luxe Agency",
+        "description": "Votre directeur narratif. Il fournit la voix et l'âme de votre marque, créant des scripts et des messages convaincants avec une intelligence émotionnelle et une précision de narration."
+      },
+      {
+        "title": "4. Neuro Scoring",
+        "description": "Votre moteur de contrôle qualité. Il valide scientifiquement l'efficacité persuasive de vos scripts et visuels, fournissant des optimisations concrètes pour maximiser l'impact."
+      },
+      {
+        "title": "5. Alpha Content Architect",
+        "description": "Votre développeur de produits. Il emballe vos connaissances dans des actifs de grande valeur comme des ebooks ou des guides, transformant votre expertise en un produit tangible qui génère des prospects."
+      },
+      {
+        "title": "6. CineAI Visual Director",
+        "description": "Votre exécuteur technique. Il assure une cohérence visuelle absolue et une synchronisation narrative, transformant les scripts en tables de production détaillées pour les plateformes de vidéo générative."
+      }
+    ],
+    "achievementsTitle": "Ce que Vous Accomplirez avec la Méthode The Silent Studio",
+    "achievements": [
+      "Un système de marque de grande valeur qui semble naturel, esthétique et émotionnellement intelligent.",
+      "Un portefeuille de contenu audiovisuel assisté par l'IA (images, Reels, vidéos) aligné sur votre vision.",
+      "Un flux de travail créatif automatisé qui vous permet de produire plus en moins de temps.",
+      "Un parcours de monétisation clair qui transforme votre expertise en produits ou services évolutifs."
+    ],
+    "promise": {
+      "title": "La Promesa",
+      "description": "The Silent Studio n'est pas un cours — c'est un système d'exploitation créatif. Vous vous sentirez guidé, vu et inspiré à chaque étape. Chacune des six intelligences joue un rôle distinct, travaillant en harmonie pour vous aider à :",
+      "description2": "Créer plus intelligemment, vous exprimer plus profondément et construire quelque chose qui dure.",
+      "finalMessage": "Vous n'avez plus à choisir entre créativité et clarté. Avec The Silent Studio, les deux coexistent. Construisez votre marque comme un designer, pensez comme un stratège et créez comme un artiste — avec l'IA comme votre département créatif intégré. C'est l'avenir de la création élégante. Bienvenue à The Silent Studio."
+    }
+  },
+  "editorialResources": {
+    "title": "Ressources Éditoriales",
+    "subtitle": "Guides et outils spécialisés pour affiner la narration et l'identité visuelle de votre marque.",
+    "guide": {
+      "title": "La Méthode The Silent Studio",
+      "subtitle": "Vue d'Ensemble Éditoriale",
+      "description": "Une vue d'ensemble éditoriale sur la construction d'une présence de marque silencieuse mais puissante avec notre méthode en 6 étapes.",
+      "cta": "Lire le Guide"
+    },
+    "gallery": {
+      "title": "Galerie Visuelle",
+      "subtitle": "Esthétiques Sélectionnées",
+      "description": "Une collection d'ambiances visuelles et d'esthétiques éditoriales pour inspirer la direction de votre marque.",
+      "cta": "Explorer la Galerie"
+    },
+    "tutorials": {
+      "title": "Tutoriels Cinématographiques",
+      "subtitle": "Maîtriser l'Art",
+      "description": "Des guides étape par étape sur la création de contenu cinématographique, du scénario à l'exécution finale.",
+      "cta": "Voir les Tutoriels"
+    },
+    "nanoBanana": {
+      "title": "Le Manifeste Nano Banana",
+      "subtitle": "Dominez le Marché Visuel",
+      "description": "La méthode 'Génération Caméra' pour dominer le marché visuel en 2026 et créer une agence de contenu premium avec l'IA.",
+      "cta": "Lire le Manifeste"
+    }
+  },
+  "suiteOffer": {
+    "title": "La Suite Complète",
+    "subtitle": "Accédez à l'arsenal complet d'intelligences silencieuses.",
+    "bundle": {
+      "title": "Ce qui est inclus",
+      "description": "Obtenez un accès à vie à l'ensemble de l'écosystème de The Silent Studio. Une acquisition unique pour une souveraineté créative continue.",
+      "offerTitle": "The Silent Studio Suite",
+      "features": [
+        "The UGC Society (Mentorat)",
+        "Luxe Prompt Studio (Directeur Visuel)",
+        "The Oracle Luxe Agency (Conteur Stratégique)",
+        "Neuro Scoring GPT (Analiste de Persuasion)",
+        "Alpha Content Architect (Stratège d'Info-Produits)",
+        "CineAI Visual Director (Directeur de la Photographie)"
+      ],
+      "button": "Obtenir un Accès Immédiat",
+      "note": "En raison de la nature numérique de ce produit, toutes les ventes sont finales. Aucun remboursement ne sera accordé."
+    }
+  },
+  "mentorship": {
+    "title": "Agence de Contenu IA Premium",
+    "mentorName": "Daniel Calderon",
+    "bio": {
+      "p1": "Bonjour, je suis Daniel Calderon, basé au Costa Rica. J'ai étudié l'animation numérique et depuis 2007, j'ai travaillé pour Orbelink, j'ai été partenaire fondateur de Cucumelo Films en 2012, et en 2020, nous avons créé Studio Boom, un studio axé sur le design, l'animation et le développement de jeux vidéo.",
+      "p2": "Actuellement, je travaille sur le projet The Silent Studio, qui traite de tout ce qui concerne l'IA. Comme il n'y a pas de carrière garantie dans ce domaine, j'implémente et je travaille avec l'IA depuis le lancement de ChatGPT, et à partir de là, tous les outils puissants actuellement disponibles comme Midjourney, Freepik et Higgsfield, en utilisant des outils tels que Nano Banana et Seedream.",
+      "p3": "Pour la vidéo, je travaille avec Kling AI et Google VEO 3.1. Ci-dessous, je vous montre quelques-uns des projets sur lesquels j'ai travaillé pour les réseaux sociaux, des courts métrages YouTube."
+    },
+    "cta": "Rejoindre le Mentorat",
+    "portfolioTitle": "Projets Récents",
+    "portfolioSubtitle": "Un aperçu du travail et du style que vous pouvez apprendre à créer."
+  },
+  "blog": {
+    "locale": "fr-FR",
+    "title": "Le Blog de The Silent Studio",
+    "subtitle": "Actualités, analyses et tutoriels sur l'avenir de la création de contenu avec l'intelligence artificielle.",
+    "readMore": "Lire la Suite"
+  },
+  "brandAccelerator": {
+    "heroTitle": "Créez du Contenu Premium avec l'IA",
+    "heroSubtitle": "Le guide complet pour que votre marque maîtrise la création d'images, de vidéos et de scripts avec l'intelligence artificielle, sans expertise requise.",
+    "problemTitle": "Votre Marque est Incroyable, mais Votre Contenu ne le Montre Pas",
+    "problemSubtitle": "Des photos qui ne rendent pas justice à votre produit, des vidéos qui ne connectent pas, et la frustration de ne pas savoir comment utiliser l'IA pour être compétitif.",
+    "oldWayTitle": "La Voie Difficile (Ce que vous faites actuellement)",
+    "oldWayItems": [
+      "Photos de produits qui ont l'air amateur.",
+      "Dépenser de l'argent dans des agences ou des photographes sans résultats clairs.",
+      "Se sentir dépassé par les outils d'IA."
+    ],
+    "newWayTitle": "Le Système The Silent Studio",
+    "newWayItems": [
+      "L'IA comme votre équipe créative personnelle.",
+      "Contenu de luxe qui élève la valeur de votre marque.",
+      "Un système étape par étape, facile à suivre."
+    ],
+    "phasesTitle": "Ce que Vous Apprendrez à Créer : Les 9 Modules",
+    "modules": [
+      {
+        "title": "Module 1 : Transformez Vos Photos",
+        "description": "Apprenez à transformer vos photos actuelles en images de haute qualité."
+      },
+      {
+        "title": "Module 2 : Créez des Images Pro",
+        "description": "Créez des images de produits professionnelles à partir de zéro."
+      },
+      {
+        "title": "Module 3 : Produisez des Vidéos Cinématographiques",
+        "description": "Produisez des vidéos courtes et des publicités cinématographiques."
+      },
+      {
+        "title": "Module 4 : Rédigez des Textes qui Vendent",
+        "description": "Rédigez des textes et des scripts qui vendent réellement."
+      },
+      {
+        "title": "Module 5 : Concevez Votre Avatar Numérique",
+        "description": "Concevez un 'ambassadeur numérique' pour votre marque."
+      },
+      {
+        "title": "Module 6 : Montez Votre Propre Agence",
+        "description": "Structurez votre propre service de contenu IA."
+      },
+      {
+        "title": "Module 7 : Montez comme un Pro",
+        "description": "Montez vos vidéos comme un pro (rythme, son, sous-titres)."
+      },
+      {
+        "title": "Module 8 : Publiez pour Grandir",
+        "description": "Publiez votre contenu pour obtenir les meilleurs résultats."
+      },
+      {
+        "title": "Module 9 : Plan d'Action de 14 Jours",
+        "description": "Un plan de 14 jours pour appliquer tout ce que vous avez appris."
+      }
+    ],
+    "offerTitle": "Accédez au 'Guide The Silent Studio' Aujourd'hui",
+    "offerSubtitle": "Votre système complet pour arrêter de simplement créer du contenu et commencer à construire un empire visuel avec l'IA.",
+    "offerPrice": "49 $",
+    "offerItems": [
+      {
+        "icon": "fa-book-open",
+        "title": "Les 9 modules axés sur la création de contenu pour les scripts, images, vidéos et avatars d'IA.",
+        "description": "Un guide étape par étape pour maîtriser tout ce dont vous avez besoin pour créer du contenu."
+      },
+      {
+        "icon": "fa-gem",
+        "title": "4 'Gemmes' d'IA Pré-entraînés",
+        "description": "Nos IA expertes pour la stratégie, les scripts et l'analyse marketing."
+      },
+      {
+        "icon": "fa-building",
+        "title": "Le Blueprint d'Agence",
+        "description": "Apprenez à structurer vos propres services de contenu IA."
+      },
+      {
+        "icon": "fa-star",
+        "title": "20 Niches Rentables",
+        "description": "Découvrez où appliquer vos nouvelles compétences pour en tirer profit."
+      },
+      {
+        "icon": "fa-file-lines",
+        "title": "Scripts de Vente Éprouvés",
+        "description": "Modèles pour contacter et conclure des clients."
+      },
+      {
+        "icon": "fa-pen-ruler",
+        "title": "Mentalité de Directeur de Création",
+        "description": "Apprenez à penser stratégiquement à votre contenu."
+      },
+      {
+        "icon": "fa-sync-alt",
+        "title": "Accès Illimité et Mises à Jour",
+        "description": "Obtenez un accès à vie au guide et à toutes les futures mises à jour sans frais supplémentaires."
+      }
+    ],
+    "cta": "OBTENIR LE GUIDE COMPLET",
+    "whoBehindThisTitle": "Qui est derrière tout ça ?",
+    "whoBehindThisSubtitle": "Créateurs du système d'IA",
+    "whoBehindThisQuote": "\"J'ai passé des années à voir des marques incroyables échouer à cause d'une mauvaise image. Quand j'ai découvert l'effet de levier de l'IA, je suis devenu obsédé par la création d'un système permettant à n'importe quel entrepreneur de rivaliser visuellement avec les géants. Maintenant, je vous le transmets.\"",
+    "stats": {
+      "brandsTransformed": "Marques transformées",
+      "lessCost": "Moins cher que la photographie traditionnelle"
+    }
+  }
+}
