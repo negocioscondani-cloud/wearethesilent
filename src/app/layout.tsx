@@ -10,7 +10,7 @@ import { FirebaseClientProvider } from '@/context/firebase-client-context';
 import Script from 'next/script';
 import { ThemeProvider } from '@/context/theme-provider';
 
-const BASE_URL = 'https://thesilent.studioboom.online';
+const BASE_URL = 'https://wearethesilent.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

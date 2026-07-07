@@ -29,7 +29,7 @@ export default function PostPage() {
       '@type': 'Article',
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': `https://thesilent.studioboom.online/blog/${post.slug}`,
+        '@id': `https://wearethesilent.com/blog/${post.slug}`,
       },
       headline: post.title,
       description: post.description,

@@ -68,7 +68,7 @@ const Module3Page = () => {
                                 <span className="text-gold font-bold text-[10px] uppercase tracking-widest block">Servicio High Value</span>
                                 <h3 className="text-4xl serif italic">Storyboard Cinematográfico</h3>
                                 <div className="space-y-4 text-sm text-gray-400">
-                                    <p><strong>1. La Narrativa:</strong> Usa el modo "Storyboard" en Freepik Pikaso > Variations.</p>
+                                    <p><strong>1. La Narrativa:</strong> Usa el modo "Storyboard" en Freepik Pikaso &gt; Variations.</p>
                                     <p><strong>2. El Guion:</strong> Escribe la secuencia. Ejemplo: 1. Mujer cansada &rarr; 2. Bebe Pura Coco &rarr; 3. Energía.</p>
                                     <p><strong>3. Consistencia Visual:</strong> La IA generará las imágenes clave manteniendo el ADN de la marca y del sujeto.</p>
                                 </div>

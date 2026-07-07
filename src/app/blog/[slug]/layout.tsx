@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { posts } from '@/lib/blog';
 
-const BASE_URL = 'https://thesilent.studioboom.online';
+const BASE_URL = 'https://wearethesilent.com';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { slug } = params;

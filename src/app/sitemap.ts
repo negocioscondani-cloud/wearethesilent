@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { posts } from '@/lib/blog';
 
-const BASE_URL = 'https://thesilent.studioboom.online';
+const BASE_URL = 'https://wearethesilent.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
