@@ -2,27 +2,19 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Globe, Menu, ChevronDown } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Menu } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
 } from '@/components/ui/sheet';
-import { useLanguage } from '@/context/language-context';
 import { useTranslation } from '@/hooks/use-translation';
 import { ThemeToggle } from './theme-toggle';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
-  const { setLanguage } = useLanguage();
   const { t } = useTranslation();
 
   if (pathname.startsWith('/the-silent-studio-guide') || pathname.startsWith('/manual')) {
@@ -35,12 +27,7 @@ export default function Header() {
     { href: '/contact', label: t('header.contact') },
   ];
 
-  const studioSubLinks = [
-    { href: '/the-silent-studio', label: t('header.studio') },
-    { href: '/brand-accelerator', label: t('header.elevateBrand') },
-  ]
-
-  const mobileNavLinks = [...studioSubLinks, ...mainNavLinks];
+  const mobileNavLinks = [...mainNavLinks];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/40">
@@ -50,21 +37,6 @@ export default function Header() {
         </Link>
         <div className="flex items-center gap-1 md:gap-4">
           <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-1 p-0 transition hover:text-foreground focus-visible:ring-0">
-                  {t('header.studio')}
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {studioSubLinks.map(link => (
-                  <DropdownMenuItem key={link.href} asChild>
-                    <Link href={link.href}>{link.label}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
             {mainNavLinks.map((link) => (
               <Link
                 href={link.href}
@@ -77,31 +49,6 @@ export default function Header() {
           </nav>
 
           <ThemeToggle />
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Change language">
-                <Globe className="h-[1.2rem] w-[1.2rem]" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setLanguage('en')}>
-                English
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('es')}>
-                Español
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('fr')}>
-                Français
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('de')}>
-                Deutsch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('pt')}>
-                Português
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
 
           <div className="md:hidden">
             <Sheet>

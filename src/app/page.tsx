@@ -1,11 +1,23 @@
 'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/hooks/use-translation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { useEffect, useState } from 'react';
-import { Check, X, Sparkles, ChevronRight } from 'lucide-react';
+import { 
+  Sparkles, 
+  ArrowRight, 
+  CheckCircle, 
+  ChevronRight, 
+  Image as ImageIcon,
+  MessageCircle,
+  Dribbble,
+  Play,
+  Zap,
+  Eye,
+  Scissors
+} from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -22,14 +34,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-
 
 // Fisher-Yates shuffle algorithm
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -60,73 +65,12 @@ const allGalleryImages = galleryImageIds
   .map((id) => PlaceHolderImages.find((img) => img.id === id))
   .filter(Boolean) as (typeof PlaceHolderImages)[0][];
 
+const WHATSAPP_LINK = "https://wa.me/50664194111?text=Hola!%20Me%20interesa%20acceder%20a%20la%20comunidad%20e%20iniciar%20el%20m%C3%A9todo%20de%20We%20Are%20The%20Silent.";
 
 export default function Home() {
-  const { t } = useTranslation();
   const [galleryImages, setGalleryImages] = useState<(typeof PlaceHolderImages)[0][]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [selectedImage, setSelectedImage] = useState<(typeof PlaceHolderImages)[0] | null>(null);
-
-  const bundleFeatures = t('suiteOffer.bundle.features') as string[];
-  const paypalHtml = `<div><style>.pp-JZR4QNRMLSQ3N{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style> <form action="https://www.paypal.com/ncp/payment/JZR4QNRMLSQ3N" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;"> <input class="pp-JZR4QNRMLSQ3N" type="submit" value="Comprar ahora" /> <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" /> <section style="font-size: 0.75rem;"> Con la tecnología de <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section> </form> </div>`
-
-  const tools = [
-    {
-      key: 'ugc-society',
-      href: '/the-ugc-society',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2026/01/Captura-de-pantalla-2026-01-16-110917.avif',
-        alt: 'The UGC Society',
-        hint: 'modern office',
-      },
-    },
-    {
-      key: 'luxe-prompt-studio',
-      href: '/luxe-prompt-studio',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2026/01/Captura-de-pantalla-2026-01-16-110858.avif',
-        alt: 'Luxe Prompt Studio',
-        hint: 'fabric texture',
-      },
-    },
-    {
-      key: 'oracle-luxe-agency',
-      href: '/the-oracle-luxe-agency',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2026/01/Captura-de-pantalla-2026-01-16-110858.avif',
-        alt: 'The Oracle Luxe Agency',
-        hint: 'luxury studio',
-      },
-    },
-    {
-      key: 'neuro-scoring',
-      href: '/neuro-scoring',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2026/01/Captura-de-pantalla-2026-01-16-110928.avif',
-        alt: 'Neuro Scoring GPT',
-        hint: 'neuroscience brain',
-      },
-    },
-    {
-      key: 'alpha-content',
-      href: '/alpha-content',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2025/12/calde11th_A_calm_grounded_man_in_natural_surroundings_soft_da_8f00816a-b5cb-443b-a6d8-cf0a808652bf_2.avif',
-        alt: 'Alpha Content GPT',
-        hint: 'calm man nature',
-      },
-    },
-    {
-      key: 'cine-ai-director',
-      href: '/cine-ai-visual-director',
-      image: {
-        src: 'http://studioboom.online/wp-content/uploads/2026/01/Captura-de-pantalla-2026-01-16-110842.avif',
-        alt: 'CineAI Visual Director GPT',
-        hint: 'cinema director',
-      },
-    },
-  ];
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -137,288 +81,284 @@ export default function Home() {
       setGalleryImages(shuffleArray([...allGalleryImages]));
     }
   }, [isMounted]);
-  
+
+  const methodSteps = [
+    {
+      num: '01',
+      title: 'Fotografía de Producto & Publicidad Premium',
+      desc: 'Pase de una imagen ordinaria a una pieza comercial de alta fidelidad. Aprenda a extraer conceptos estéticos de Pinterest, combinarlos mediante asistentes de lenguaje y procesar prompts avanzados utilizando modelos de alto rendimiento para posicionar marcas y productos en el mercado digital.',
+      image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif',
+      icon: <ImageIcon className="h-5 w-5 text-gold" />
+    },
+    {
+      num: '02',
+      title: 'Consistencia de Personajes (El Protocolo JSON)',
+      desc: 'Resuelva el mayor problema de la industria: el cambio de rostros entre escenas. Aprenda a estructurar Character Sheets técnicas (vistas frontales, laterales y expresiones) y a clonar su propia identidad o avatares a través de código estructurado para mantener un control absoluto del actor digital.',
+      image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__cinematic-portrait-of-a-25yearold-male-creative-di__78889-scaled.avif',
+      icon: <Zap className="h-5 w-5 text-gold" />
+    },
+    {
+      num: '03',
+      title: 'Escenarios, Props y Planos de Cámara',
+      desc: 'Domine la iluminación cinemática (natural, estudio o neón) y la coherencia del entorno. Defina la narrativa visual mediante la selección rigurosa de encuadres: desde primeros planos y puntos de vista (POV) hasta tomas aéreas y grandes angulares, asegurando que cada elemento esté en el mismo universo de tiempo y espacio.',
+      image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__hyperrealistic-cinematic-portrait-of-a-rugged-stou__41956.avif',
+      icon: <Eye className="h-5 w-5 text-gold" />
+    },
+    {
+      num: '04',
+      title: 'Ingeniería de Guiones & Storyboarding',
+      desc: 'Utilice extensiones avanzadas para analizar contenidos de alto impacto en su nicho y estructurar guiones magnéticos (Hook, Intro, Desarrollo, CTA) o narrativas clásicas de cortometraje. Aprenda a fragmentar secuencias complejas en guiones gráficos coherentes para animar sin cometer errores técnicos.',
+      image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__-meta-imagestyle-highend-editorial-vanity-fair-gro__58442-scaled.avif',
+      icon: <Play className="h-5 w-5 text-gold" />
+    },
+    {
+      num: '05',
+      title: 'Dirección de Animación, Audio y Edición Final',
+      desc: 'Domine las instrucciones de movimiento de un punto A a un punto B, controle los estados emocionales del personaje en pantalla y estructure subtítulos animados de nivel profesional. Finalmente, descargue el material y ensamble el rompecabezas en su software de edición eliminando deformaciones y aplicando bandas sonoras con criterio cinematográfico.',
+      image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__un-comercial-en-donde-una-mojer-hermosa-latina-com__65122.avif',
+      icon: <Scissors className="h-5 w-5 text-gold" />
+    }
+  ];
+
   return (
-    <main className="min-h-screen bg-background text-foreground">
-
-      {/* Section 1: Hero */}
-      <section
-        aria-label="Hero"
-        className="relative flex h-[80vh] items-center justify-center bg-background text-center md:h-[90vh]"
-      >
-        <div className="relative z-10 mx-auto w-full max-w-4xl px-5">
-          <h1 className="font-headline text-4xl leading-tight md:text-6xl animate-in fade-in-0 duration-1000">
-            {t('home.hero.title')}
+    <div className="silent-guide-body min-h-screen bg-[#0a0a0a] text-[#f9f7f2] font-body antialiased">
+      
+      {/* BLOQUE 1: HERO SECTION */}
+      <section className="relative min-h-[90vh] flex items-center justify-center text-center px-5 hero-bg">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#0a0a0a]/90 to-[#0a0a0a] z-0" />
+        
+        <div className="relative z-10 mx-auto w-full max-w-4xl space-y-6 pt-16">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.4em] mb-4 block animate-pulse">
+            Ecosistema de Creatividad Audiovisual
+          </span>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight italic text-white">
+            Domina el arte de <br />
+            <span className="not-italic font-bold text-gold">crear contenido visual con IA.</span>
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground md:text-xl animate-in fade-in-0 duration-1000 delay-200">
-            {t('home.hero.subtitle')}
+          <p className="mt-6 text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed serif italic">
+            Transforma esa destreza en piezas publicitarias, videos para redes o producciones de cine, y empieza a monetizar tu visión creativa. Aprende el método universal para coordinar asistentes de inteligencia artificial, maquetar secuencias consistentes y editar material premium con el criterio de un director y la estructura de una agencia.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in-0 duration-1000 delay-300">
+          
+          <div className="pt-8">
             <Button
               asChild
               size="lg"
-              className="bg-primary text-primary-foreground uppercase tracking-wider transition-all duration-300 hover:bg-primary/90"
+              className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
-              <Link href="/#studio">{t('home.hero.cta')}</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-gold/50 text-gold uppercase tracking-wider transition-all duration-300 hover:bg-gold/10 hover:text-gold"
-            >
-              <Link href="/#guide-exclusive-offer">The Guide ($8)</Link>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" /> Acceder a la Comunidad e Iniciar el Método
+              </a>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Section 2: The Manifesto */}
-      <section
-        id="manifesto"
-        className="border-t border-border py-24 md:py-36"
-      >
-        <div className="mx-auto w-full max-w-3xl px-5 text-center">
-          <h2 className="font-headline text-3xl md:text-4xl">
-            {t('home.manifesto.title')}
-          </h2>
-          <div className="mt-6 space-y-4 max-w-2xl mx-auto leading-relaxed text-muted-foreground">
-            <p>{t('home.manifesto.line1')}</p>
-            <p>{t('home.manifesto.line2')}</p>
-            <p className="font-semibold text-foreground">{t('home.manifesto.line3')}</p>
-            <p className="font-semibold text-foreground">{t('home.manifesto.line4')}</p>
-            <p>{t('home.manifesto.line5')}</p>
-            <p className="font-semibold text-foreground">{t('home.manifesto.line6')}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 2.5: The Guide Offer */}
-      <section id="guide-exclusive-offer" className="bg-zinc-900 border-y border-gold/10 py-24">
-        <div className="container mx-auto max-w-4xl px-5 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/20 text-gold text-[10px] font-bold tracking-widest uppercase mb-8">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <Sparkles size={14} /> Oferta de Lanzamiento
-            </div>
-            <h2 className="text-4xl md:text-6xl font-headline italic text-white mb-6">The Silent Studio Guide</h2>
-            <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-                Accede al protocolo de 9 módulos para dominar la IA generativa y elevar tu marca a un estándar de lujo editorial.
+      {/* BLOQUE 2: EL MANIFIESTO CONCEPTUAL */}
+      <section id="manifiesto" className="border-y border-white/5 bg-zinc-950 py-24 md:py-32">
+        <div className="mx-auto w-full max-w-4xl px-5 text-center">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] mb-4 block">El Manifiesto</span>
+          <div className="max-w-3xl mx-auto relative px-8">
+            <span className="absolute top-0 left-0 text-7xl text-gold/10 font-serif leading-none">“</span>
+            <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-200 serif italic">
+              La Inteligencia Artificial es ejecución masiva, pero carece de intención. El mercado está inundado de imágenes aleatorias y videos sin alma porque la mayoría de las personas usan las herramientas como ejecutores sueltos. Este programa no enseña a usar software; entrena a <strong>Directores de Arte Digital</strong>. Aquí, la IA es el equipo de producción, pero usted es el control de calidad.
             </p>
+            <span className="absolute bottom-0 right-0 text-7xl text-gold/10 font-serif leading-none align-bottom">”</span>
+          </div>
+        </div>
+      </section>
+
+      {/* BLOQUE 3: EL MÉTODO UNIVERSAL */}
+      <section id="metodo" className="py-24 md:py-32 px-5 max-w-6xl mx-auto">
+        <div className="text-center mb-20">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">El Núcleo Técnico</span>
+          <h2 className="text-4xl md:text-6xl serif italic text-white font-light">El Método Universal</h2>
+          <p className="mt-4 text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm md:text-base">
+            El sistema está diseñado para ser agnóstico. No importa si usas Flow, DeepSeek, ChatGPT, Gemini, Claude, Magnific o Freepik; la lógica de dirección es exactamente la misma.
+          </p>
+        </div>
+
+        <div className="space-y-28">
+          {methodSteps.map((step) => (
+            <div 
+              key={step.num} 
+              className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center border-t border-white/5 pt-16"
+            >
+              {/* Image side */}
+              <div className="relative aspect-[3/4] w-full max-w-md mx-auto border border-white/10 overflow-hidden shadow-2xl group">
+                <Image 
+                  src={step.image} 
+                  alt={step.title} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale-[15%] group-hover:grayscale-0"
+                />
+                <div className="absolute top-4 left-4 bg-black/85 border border-gold/30 text-gold text-[10px] font-bold tracking-widest px-3 py-1.5 uppercase">
+                  Módulo {step.num}
+                </div>
+              </div>
+
+              {/* Text side */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5">
+                    {step.icon}
+                  </div>
+                  <span className="text-gold text-xs font-bold uppercase tracking-widest">Paso {step.num}</span>
+                </div>
+                <h3 className="text-3xl md:text-4xl serif italic text-white font-normal leading-tight">
+                  {step.title}
+                </h3>
+                <p className="text-gray-300 text-sm md:text-base font-light leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* BLOQUE 4: GIMNASIO CREATIVO (El Músculo Humano) */}
+      <section id="gimnasio" className="bg-zinc-950 border-y border-white/5 py-24 md:py-32 px-5">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Entrenamiento Continuo</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">Gimnasio Creativo</h2>
+            <p className="mt-4 text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm md:text-base">
+              Para que las herramientas ejecuten con maestría, el criterio del director debe estar entrenado. El programa incluye un set de dinámicas diarias para potenciar la agilidad mental y la narrativa:
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 01</span>
+                <h4 className="text-lg font-serif italic text-white mb-3">Bitácora de narrativa cotidiana</h4>
+                <p className="text-xs text-gray-400 leading-relaxed font-light">
+                  Grabaciones de estructura rápida para soltar el lenguaje. Utiliza tu cotidianidad para construir arcos de retención sin necesidad de grandes recursos.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 02</span>
+                <h4 className="text-lg font-serif italic text-white mb-3">Diseño conceptual trinitario</h4>
+                <p className="text-xs text-gray-400 leading-relaxed font-light">
+                  Ejercicios de tres palabras al azar (ej: castillo, princesa, dragón) traducidas a fotografía publicitaria o editorial épica a través de la IA.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 03</span>
+                <h4 className="text-lg font-serif italic text-white mb-3">Filtros de embudo técnico</h4>
+                <p className="text-xs text-gray-400 leading-relaxed font-light">
+                  Generación masiva de imágenes (10 variaciones iniciales) descartando de manera selectiva (reduciendo a 5, luego a 3) hasta quedarte únicamente con la pieza ganadora.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INTERACTIVE GALLERY */}
+      <section id="gallery" className="py-24 md:py-32 px-5">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Portfolio Visual</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">Resultados Forjados en el Silencio</h2>
+            <p className="mt-4 text-gray-400 max-w-xl mx-auto leading-relaxed text-sm">
+              Una muestra del nivel de consistencia, textura y estética editorial que la IA puede lograr bajo nuestra dirección de arte.
+            </p>
+          </div>
+          
+          <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
+            <Carousel
+              opts={{
+                align: 'start',
+                loop: true,
+              }}
+              className="w-full max-w-6xl mx-auto"
+            >
+              <CarouselContent>
+                {(isMounted && galleryImages.length > 0 ? galleryImages : []).map((image) => (
+                  <CarouselItem key={image.id} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                    <DialogTrigger asChild>
+                      <button className="w-full h-full text-left" onClick={() => setSelectedImage(image)}>
+                        <figure className="relative aspect-[3/4] overflow-hidden rounded-sm border border-white/5 hover:border-gold/30 transition-all duration-300">
+                          <Image
+                            src={image.imageUrl}
+                            alt={image.description}
+                            fill
+                            className="object-cover transition-transform duration-500 hover:scale-105"
+                            data-ai-hint={image.imageHint}
+                          />
+                        </figure>
+                      </button>
+                    </DialogTrigger>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
             
-            <div className="bg-black/40 border border-gold/20 p-8 md:p-12 rounded-3xl max-w-2xl mx-auto shadow-2xl text-left">
-                <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-8">
-                    <div>
-                        <p className="text-gold text-xs font-bold uppercase tracking-widest mb-1">Acceso Completo</p>
-                        <h3 className="text-2xl text-white font-bold">Protocolo + Bonos</h3>
-                    </div>
-                    <div className="text-right">
-                        <span className="text-gray-500 line-through text-sm block">$97</span>
-                        <span className="text-5xl font-black text-gold">$8</span>
-                    </div>
-                </div>
-                
-                <Accordion type="single" collapsible className="w-full mb-10 space-y-2">
-                  <AccordionItem value="modules" className="border-white/10">
-                    <AccordionTrigger className="text-white hover:text-gold hover:no-underline font-bold text-sm uppercase tracking-widest">
-                      Los 9 Módulos de Ejecución
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-400 space-y-2 pt-2">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M1: Prospección Quirúrgica</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M2: Generación de Imágenes</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M3: Generación de Video</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M4: Neuro-Scripting</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M5: Embajador Digital (Avatar)</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M6: La Agencia IA</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M7: Edición Premium</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M8: Publicación y Métricas</div>
-                        <div className="flex items-center gap-2"><Check className="h-3 w-3 text-gold" /> M9: Plan Sprint 14 Días</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem value="bonuses" className="border-white/10">
-                    <AccordionTrigger className="text-white hover:text-gold hover:no-underline font-bold text-sm uppercase tracking-widest">
-                      Bonos Exclusivos Incluidos
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-400 space-y-3 pt-4">
-                      <ul className="space-y-3 text-xs">
-                        <li className="flex items-start gap-3">
-                          <Sparkles className="h-4 w-4 text-gold shrink-0" />
-                          <div><strong>4 Gemas de IA Especializadas:</strong> Tus departamentos de estrategia, visual, guiones y marketing.</div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Sparkles className="h-4 w-4 text-gold shrink-0" />
-                          <div><strong>Biblioteca de Estilos:</strong> Códigos visuales listos para aplicar a cualquier nicho.</div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Sparkles className="h-4 w-4 text-gold shrink-0" />
-                          <div><strong>Guía de Movimientos:</strong> Domina el lenguaje del cine en tus videos IA.</div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Sparkles className="h-4 w-4 text-gold shrink-0" />
-                          <div><strong>100 Ganchos y 10 Estructuras:</strong> Fórmulas probadas para viralidad y ventas.</div>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <Sparkles className="h-4 w-4 text-gold shrink-0" />
-                          <div><strong>20 Nichos Rentables:</strong> Dónde aplicar tus nuevas habilidades para maximizar el ROI.</div>
-                        </li>
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-
-                <Button asChild size="lg" className="w-full bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-all py-7 text-lg">
-                    <a href="https://shop.beacons.ai/danicalderon.tv/4579cb4d-51a5-4bc6-bb79-ffa3348f6afc" target="_blank" rel="noopener noreferrer">
-                        ADQUIRIR LA GUÍA AHORA
-                    </a>
-                </Button>
-                <div className="mt-6 flex items-center justify-between text-[10px] text-gray-500 italic">
-                  <p>Acceso Ilimitado y Actualizaciones</p>
-                  <p>Oferta por tiempo limitado</p>
-                </div>
-            </div>
+            <DialogContent className="p-0 border-0 max-w-4xl bg-transparent">
+              <DialogHeader>
+                <VisuallyHidden>
+                  <DialogTitle>Imagen Ampliada</DialogTitle>
+                  <DialogDescription>
+                    {selectedImage?.description || 'Vista ampliada de la galería.'}
+                  </DialogDescription>
+                </VisuallyHidden>
+              </DialogHeader>
+              {selectedImage && (
+                <Image
+                  src={selectedImage.imageUrl}
+                  alt={selectedImage.description}
+                  width={1200}
+                  height={1600}
+                  className="rounded-sm object-contain w-auto h-auto max-w-[90vw] max-h-[90vh] mx-auto"
+                />
+              )}
+              <DialogClose className="absolute top-2 right-2 rounded-full bg-background/50 p-1 text-foreground transition-opacity hover:opacity-100">
+                <span className="text-xl">&times;</span>
+              </DialogClose>
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
 
-      {/* Section 3: The Silent Studio */}
-       <section id="studio" className="border-t border-border py-24 md:py-36">
-        <div className="container mx-auto max-w-6xl px-5 md:px-8">
-            <header className="text-center mb-16">
-            <h2 className="text-4xl font-headline md:text-5xl mb-4">
-                {t('studio.title')}
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                {t('studio.subtitle')}
-            </p>
-            </header>
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
-            {tools.map((tool) => (
-                <div
-                key={tool.key}
-                className="flex flex-col text-center"
-                >
-                <figure className="relative aspect-[3/4] w-full overflow-hidden border">
-                    <Image
-                    src={tool.image.src}
-                    alt={tool.image.alt}
-                    fill
-                    className="object-cover"
-                    data-ai-hint={tool.image.hint}
-                    />
-                </figure>
-                <div className="border-t border-border pt-6 mt-6 flex-grow flex flex-col">
-                    <span className="font-headline text-2xl text-muted-foreground">
-                    {t(`studio.tools.${tool.key}.number`)}
-                    </span>
-                    <h3 className="mt-4 font-headline text-2xl md:text-3xl">
-                    {t(`studio.tools.${tool.key}.title`)}
-                    </h3>
-                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground flex-grow">
-                    {t(`studio.tools.${tool.key}.description`)}
-                    </p>
-                    <div className="mt-6">
-                    <Button asChild variant="outline" className="w-full">
-                        <Link href={tool.href}>
-                        {t('studio.discover')}
-                        </Link>
-                    </Button>
-                    </div>
-                </div>
-                </div>
-            ))}
-            </div>
-        </div>
-      </section>
-
-      {/* Section 4: Visual Gallery */}
-      <section id="gallery" className="border-t border-border py-24 md:py-36">
-        <div className="container mx-auto max-w-6xl px-5 md:px-8">
-            <div className="text-center mb-12 md:mb-16">
-              <h2 className="font-headline text-4xl md:text-5xl">
-                {t('home.gallery.title')}
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t('home.gallery.subtitle')}
-              </p>
-            </div>
-            <Dialog open={!!selectedImage} onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}>
-              <Carousel
-                opts={{
-                  align: 'start',
-                  loop: true,
-                }}
-                className="w-full max-w-6xl mx-auto"
-              >
-                <CarouselContent>
-                  {(isMounted && galleryImages.length > 0 ? galleryImages : []).map((image, index) => (
-                    <CarouselItem key={image.id} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                       <DialogTrigger asChild>
-                         <button className="w-full h-full" onClick={() => setSelectedImage(image)}>
-                            <figure
-                                className="relative aspect-[3/4] overflow-hidden rounded-lg border"
-                            >
-                                <Image
-                                src={image.imageUrl}
-                                alt={image.description}
-                                fill
-                                className="object-cover transition-transform duration-500 hover:scale-105"
-                                data-ai-hint={image.imageHint}
-                                />
-                            </figure>
-                          </button>
-                      </DialogTrigger>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-              <DialogContent className="p-0 border-0 max-w-4xl bg-transparent">
-                <DialogHeader>
-                  <VisuallyHidden>
-                    <DialogTitle>Imagen Ampliada</DialogTitle>
-                    <DialogDescription>
-                      {selectedImage?.description || 'Vista ampliada de la imagen de la galería.'}
-                    </DialogDescription>
-                  </VisuallyHidden>
-                </DialogHeader>
-                {selectedImage && (
-                  <Image
-                    src={selectedImage.imageUrl}
-                    alt={selectedImage.description}
-                    width={1200}
-                    height={1600}
-                    className="rounded-lg object-contain w-auto h-auto max-w-[90vw] max-h-[90vh]"
-                  />
-                )}
-                <DialogClose className="absolute top-2 right-2 rounded-full bg-background/50 p-1 text-foreground transition-opacity hover:opacity-100">
-                  <X className="h-6 w-6" />
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-        </div>
-      </section>
-
-      {/* Section 5: Acquisition */}
-      <section id="acquire-suite" className="border-t border-border w-full py-24 md:py-32">
-        <div className="mx-auto w-full max-w-xl px-5 md:px-8">
-          <div className="border border-gold/30 rounded-3xl p-8 md:p-12 text-center bg-zinc-950 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-5 text-9xl text-gold font-black rotate-12 pointer-events-none">Suite</div>
-            <h3 className="font-headline text-3xl md:text-4xl text-white mb-4">{t('suiteOffer.bundle.offerTitle')}</h3>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              {t('suiteOffer.bundle.description')}
-            </p>
-            <div className="my-10 flex items-center justify-center gap-4">
-              <p className="text-6xl font-black text-gold">$197</p>
-            </div>
-            <div className="flex justify-center" dangerouslySetInnerHTML={{ __html: paypalHtml }} />
-            <p className="text-[10px] text-muted-foreground mt-6 uppercase tracking-widest">
-              *{t('suiteOffer.bundle.note')}*
-            </p>
+      {/* BLOQUE 5: EL CIERRE (Llamado a la Acción Elegante) */}
+      <section id="cierre" className="bg-[#0e0e0e] border-t border-white/5 py-24 md:py-32 px-5 text-center">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <Sparkles className="mx-auto text-gold h-10 w-10 animate-pulse" />
+          <h2 className="text-4xl md:text-6xl serif italic text-white font-light">
+            El futuro audiovisual pertenece <br />
+            <span className="not-italic font-bold text-gold">a quienes saben dirigir.</span>
+          </h2>
+          <p className="text-gray-300 max-w-2xl mx-auto text-base font-light leading-relaxed serif italic">
+            Acceda a la comunidad, comparta su nicho de mercado y empiece a maquetar proyectos que no solo destaquen visualmente, sino que generen un retorno real con su marca o servicio.
+          </p>
+          <div className="pt-6">
+            <Button 
+              asChild 
+              size="lg" 
+              className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
+            >
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" /> Unirse a We Are The Silent
+              </a>
+            </Button>
           </div>
         </div>
       </section>
-    </main>
+
+      {/* Footer */}
+      <footer className="py-20 bg-[#050505] px-8 border-t border-white/5 text-center text-[10px] uppercase tracking-[0.3em] text-gray-600">
+        &copy; 2026 WE ARE THE SILENT | TODOS LOS DERECHOS RESERVADOS
+      </footer>
+
+    </div>
   );
 }
