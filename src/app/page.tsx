@@ -2,21 +2,21 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { 
   Sparkles, 
-  ArrowRight, 
   CheckCircle, 
-  ChevronRight, 
-  Image as ImageIcon,
   MessageCircle,
-  Dribbble,
-  Play,
   Zap,
   Eye,
-  Scissors
+  Play,
+  Scissors,
+  Check,
+  X,
+  Lock,
+  TrendingUp,
+  AlertCircle
 } from 'lucide-react';
 import {
   Carousel,
@@ -65,7 +65,7 @@ const allGalleryImages = galleryImageIds
   .map((id) => PlaceHolderImages.find((img) => img.id === id))
   .filter(Boolean) as (typeof PlaceHolderImages)[0][];
 
-const WHATSAPP_LINK = "https://wa.me/50664194111?text=Hola!%20Me%20interesa%20acceder%20a%20la%20comunidad%20e%20iniciar%20el%20m%C3%A9todo%20de%20We%20Are%20The%20Silent.";
+const WHATSAPP_LINK = "https://wa.me/50664194111?text=Hola!%20Me%20interesa%20unirme%20a%20la%20comunidad%20por%20$9/mes%20con%20el%20precio%20fundador.";
 
 export default function Home() {
   const [galleryImages, setGalleryImages] = useState<(typeof PlaceHolderImages)[0][]>([]);
@@ -85,39 +85,53 @@ export default function Home() {
   const methodSteps = [
     {
       num: '01',
-      title: 'Fotografía de Producto & Publicidad Premium',
-      desc: 'Pase de una imagen ordinaria a una pieza comercial de alta fidelidad. Aprenda a extraer conceptos estéticos de Pinterest, combinarlos mediante asistentes de lenguaje y procesar prompts avanzados utilizando modelos de alto rendimiento para posicionar marcas y productos en el mercado digital.',
+      title: 'Imágenes y Vídeos Publicitarios con IA',
+      desc: 'Pase de una idea ordinaria a una pieza comercial de alta fidelidad. Aprende prompting con intención para crear anuncios y contenido impactante para marcas y productos en el mercado digital.',
       image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif',
-      icon: <ImageIcon className="h-5 w-5 text-gold" />
+      icon: <Sparkles className="h-5 w-5 text-gold" />
     },
     {
       num: '02',
-      title: 'Consistencia de Personajes (El Protocolo JSON)',
-      desc: 'Resuelva el mayor problema de la industria: el cambio de rostros entre escenas. Aprenda a estructurar Character Sheets técnicas (vistas frontales, laterales y expresiones) y a clonar su propia identidad o avatares a través de código estructurado para mantener un control absoluto del actor digital.',
+      title: 'Consistencia Absoluta de Personajes',
+      desc: 'Domina personajes consistentes y resuelve el mayor problema de la industria visual: el cambio de rostros entre escenas. Aprende a clonar tu propia identidad o avatares a través de código estructurado y hojas de personaje técnicas.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__cinematic-portrait-of-a-25yearold-male-creative-di__78889-scaled.avif',
       icon: <Zap className="h-5 w-5 text-gold" />
     },
     {
       num: '03',
-      title: 'Escenarios, Props y Planos de Cámara',
-      desc: 'Domine la iluminación cinemática (natural, estudio o neón) y la coherencia del entorno. Defina la narrativa visual mediante la selección rigurosa de encuadres: desde primeros planos y puntos de vista (POV) hasta tomas aéreas y grandes angulares, asegurando que cada elemento esté en el mismo universo de tiempo y espacio.',
+      title: 'Guión, Cámara, Luz y Edición Cinematográfica',
+      desc: 'Desarrolla tu criterio audiovisual controlando la iluminación cinemática y la coherencia del entorno. Domina la selección rigurosa de encuadres (planos de cámara) y la edición final para lograr que cada elemento pertenezca al mismo universo.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__hyperrealistic-cinematic-portrait-of-a-rugged-stou__41956.avif',
       icon: <Eye className="h-5 w-5 text-gold" />
     },
     {
       num: '04',
-      title: 'Ingeniería de Guiones & Storyboarding',
-      desc: 'Utilice extensiones avanzadas para analizar contenidos de alto impacto en su nicho y estructurar guiones magnéticos (Hook, Intro, Desarrollo, CTA) o narrativas clásicas de cortometraje. Aprenda a fragmentar secuencias complejas en guiones gráficos coherentes para animar sin cometer errores técnicos.',
+      title: 'Ruta Clara desde Cero para tu Portafolio',
+      desc: 'Construye proyectos reales y sólidos desde el primer día. Te guiamos paso a paso, sin importar tu nivel técnico anterior, para que aprendas a convertir esta habilidad en un servicio comercial altamente demandado.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__-meta-imagestyle-highend-editorial-vanity-fair-gro__58442-scaled.avif',
       icon: <Play className="h-5 w-5 text-gold" />
     },
     {
       num: '05',
-      title: 'Dirección de Animación, Audio y Edición Final',
-      desc: 'Domine las instrucciones de movimiento de un punto A a un punto B, controle los estados emocionales del personaje en pantalla y estructure subtítulos animados de nivel profesional. Finalmente, descargue el material y ensamble el rompecabezas en su software de edición eliminando deformaciones y aplicando bandas sonoras con criterio cinematográfico.',
+      title: 'Retos Creativos y Producciones de Cine',
+      desc: 'Produce piezas cinematográficas completas y participa en retos creativos comunitarios. Accede a constantes actualizaciones de contenido y nuevas metodologías para mantenerte a la vanguardia del sector.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__un-comercial-en-donde-una-mojer-hermosa-latina-com__65122.avif',
       icon: <Scissors className="h-5 w-5 text-gold" />
     }
+  ];
+
+  const whatsInsideList = [
+    "Crea imágenes y vídeos con IA",
+    "Domina personajes consistentes",
+    "Aprende guión, cámara, luz y edición",
+    "Sigue una ruta clara desde cero",
+    "Crea anuncios y contenido para marcas",
+    "Produce piezas cinematográficas",
+    "Construye proyectos para tu portafolio",
+    "Aprende prompting con intención",
+    "Desarrolla tu criterio audiovisual",
+    "Entrena tu creatividad con métodos manuales",
+    "Aprende a convertir esta habilidad en un servicio"
   ];
 
   return (
@@ -125,28 +139,35 @@ export default function Home() {
       
       {/* BLOQUE 1: HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center text-center px-5 hero-bg">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#0a0a0a]/90 to-[#0a0a0a] z-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-[#0a0a0a]/90 to-[#0a0a0a] z-0" />
         
         <div className="relative z-10 mx-auto w-full max-w-4xl space-y-6 pt-16">
-          <span className="text-gold font-bold text-xs uppercase tracking-[0.4em] mb-4 block animate-pulse">
-            Ecosistema de Creatividad Audiovisual
-          </span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mb-4 animate-pulse">
+            <AlertCircle className="h-3 w-3" /> Precio fundador: solo para las primeras 100 personas
+          </div>
+          
           <h1 className="text-4xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight italic text-white">
-            Domina el arte de <br />
-            <span className="not-italic font-bold text-gold">crear contenido visual con IA.</span>
+            🎬 De una idea a un anuncio, <br />
+            <span className="not-italic font-bold text-gold">un vídeo o una película con IA.</span>
           </h1>
+          
           <p className="mt-6 text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed serif italic">
-            Transforma esa destreza en piezas publicitarias, videos para redes o producciones de cine, y empieza a monetizar tu visión creativa. Aprende el método universal para coordinar asistentes de inteligencia artificial, maquetar secuencias consistentes y editar material premium con el criterio de un director y la estructura de una agencia.
+            🧠 Aprende la técnica. Desarrolla el criterio. Entrena tu creatividad. <br />
+            🚀 Crea proyectos que puedas convertir en portafolio y servicios.
           </p>
           
-          <div className="pt-8">
+          <div className="bg-black/40 border border-gold/20 p-4 rounded-sm max-w-md mx-auto text-xs text-gray-400">
+            ‼️ Después de las 100 primeras plazas, el precio sube para nuevos miembros.
+          </div>
+          
+          <div className="pt-6">
             <Button
               asChild
               size="lg"
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" /> Acceder a la Comunidad e Iniciar el Método
+                <MessageCircle className="h-4 w-4" /> Entra hoy por $9/mes (Precio Fundador)
               </a>
             </Button>
           </div>
@@ -167,17 +188,85 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BLOQUE 3: EL MÉTODO UNIVERSAL */}
-      <section id="metodo" className="py-24 md:py-32 px-5 max-w-6xl mx-auto">
-        <div className="text-center mb-20">
-          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">El Núcleo Técnico</span>
-          <h2 className="text-4xl md:text-6xl serif italic text-white font-light">El Método Universal</h2>
+      {/* PROBLEMAS NARRATIVOS: Si estás cansado de... */}
+      <section className="py-24 md:py-32 px-5 max-w-4xl mx-auto border-b border-white/5">
+        <div className="bg-[#0e0e0e] border border-white/5 p-8 md:p-16 rounded-sm shadow-xl">
+          <h3 className="text-3xl md:text-4xl serif italic text-white mb-8 border-b border-white/10 pb-4 text-center">
+            Si estás cansado de:
+          </h3>
+          <ul className="space-y-6 text-sm md:text-base text-gray-300">
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Ver tutoriales sin avanzar un solo paso real</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Crear imágenes genéricas que parecen falsas o plásticas</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Tener personajes inconsistentes que cambian de rostro entre escenas</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Probar docenas de herramientas sin llegar a terminar ningún proyecto</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Depender ciegamente de prompts copiados sin tener criterio propio</span>
+            </li>
+          </ul>
+          <div className="mt-12 text-center">
+            <p className="text-gold font-bold text-lg uppercase tracking-wider animate-pulse">
+              Esta comunidad es para ti.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ¿QUÉ HAY DENTRO? */}
+      <section className="py-24 md:py-32 px-5 max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">El Ecosistema</span>
+          <h2 className="text-4xl md:text-6xl serif italic text-white font-light">¿Qué hay dentro? 🚀</h2>
           <p className="mt-4 text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm md:text-base">
-            El sistema está diseñado para ser agnóstico. No importa si usas Flow, DeepSeek, ChatGPT, Gemini, Claude, Magnific o Freepik; la lógica de dirección es exactamente la misma.
+            Perfecto si empiezas desde cero o ya eres creador. No necesitas experiencia técnica previa.
           </p>
         </div>
 
-        <div className="space-y-28">
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
+          {whatsInsideList.map((item, idx) => (
+            <div key={idx} className="bg-[#0e0e0e] border border-white/5 p-6 rounded-sm flex items-start gap-4 hover:border-gold/30 transition-all duration-300">
+              <CheckCircle className="h-5 w-5 text-gold shrink-0 mt-0.5" />
+              <span className="text-gray-200 text-sm font-light leading-relaxed">{item}</span>
+            </div>
+          ))}
+          
+          {/* Bonuses */}
+          <div className="bg-[#0e0e0e] border border-gold/20 p-6 rounded-sm flex items-start gap-4 hover:border-gold/50 transition-all duration-300 md:col-span-2 lg:col-span-1">
+            <span className="text-xl shrink-0">🎁</span>
+            <div>
+              <span className="text-gold font-bold text-xs uppercase tracking-widest block mb-1">Bono 01</span>
+              <span className="text-gray-200 text-sm font-semibold">Retos creativos constantes</span>
+            </div>
+          </div>
+          
+          <div className="bg-[#0e0e0e] border border-gold/20 p-6 rounded-sm flex items-start gap-4 hover:border-gold/50 transition-all duration-300 md:col-span-2 lg:col-span-1">
+            <span className="text-xl shrink-0">🔥</span>
+            <div>
+              <span className="text-gold font-bold text-xs uppercase tracking-widest block mb-1">Bono 02</span>
+              <span className="text-gray-200 text-sm font-semibold">Nuevos contenidos y actualizaciones</span>
+            </div>
+          </div>
+        </div>
+
+        {/* The visual layout showing the images (as requested by user) */}
+        <div className="space-y-28 border-t border-white/5 pt-20">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl serif italic text-white">Línea de Aprendizaje y Dirección Visual</h3>
+          </div>
+          
           {methodSteps.map((step) => (
             <div 
               key={step.num} 
@@ -216,53 +305,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BLOQUE 4: GIMNASIO CREATIVO (El Músculo Humano) */}
-      <section id="gimnasio" className="bg-zinc-950 border-y border-white/5 py-24 md:py-32 px-5">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Entrenamiento Continuo</span>
-            <h2 className="text-4xl md:text-5xl serif italic text-white">Gimnasio Creativo</h2>
-            <p className="mt-4 text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm md:text-base">
-              Para que las herramientas ejecuten con maestría, el criterio del director debe estar entrenado. El programa incluye un set de dinámicas diarias para potenciar la agilidad mental y la narrativa:
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 01</span>
-                <h4 className="text-lg font-serif italic text-white mb-3">Bitácora de narrativa cotidiana</h4>
-                <p className="text-xs text-gray-400 leading-relaxed font-light">
-                  Grabaciones de estructura rápida para soltar el lenguaje. Utiliza tu cotidianidad para construir arcos de retención sin necesidad de grandes recursos.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 02</span>
-                <h4 className="text-lg font-serif italic text-white mb-3">Diseño conceptual trinitario</h4>
-                <p className="text-xs text-gray-400 leading-relaxed font-light">
-                  Ejercicios de tres palabras al azar (ej: castillo, princesa, dragón) traducidas a fotografía publicitaria o editorial épica a través de la IA.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="text-gold text-[10px] font-bold uppercase tracking-widest block mb-4">Dinámica 03</span>
-                <h4 className="text-lg font-serif italic text-white mb-3">Filtros de embudo técnico</h4>
-                <p className="text-xs text-gray-400 leading-relaxed font-light">
-                  Generación masiva de imágenes (10 variaciones iniciales) descartando de manera selectiva (reduciendo a 5, luego a 3) hasta quedarte únicamente con la pieza ganadora.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* INTERACTIVE GALLERY */}
-      <section id="gallery" className="py-24 md:py-32 px-5">
+      {/* PORTFOLIO GALLERY */}
+      <section id="gallery" className="py-24 md:py-32 px-5 border-t border-white/5">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Portfolio Visual</span>
@@ -329,17 +373,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BLOQUE 5: EL CIERRE (Llamado a la Acción Elegante) */}
+      {/* BLOQUE 5: EL CIERRE (Llamado a la Acción Elegante + Precio) */}
       <section id="cierre" className="bg-[#0e0e0e] border-t border-white/5 py-24 md:py-32 px-5 text-center">
         <div className="max-w-3xl mx-auto space-y-8">
-          <Sparkles className="mx-auto text-gold h-10 w-10 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mx-auto">
+            <Lock className="h-3 w-3" /> Garantía de Precio Fundador de por vida
+          </div>
+          
           <h2 className="text-4xl md:text-6xl serif italic text-white font-light">
-            El futuro audiovisual pertenece <br />
-            <span className="not-italic font-bold text-gold">a quienes saben dirigir.</span>
+            ⚡ Entra hoy por <span className="not-italic font-bold text-gold">$9/mes</span>
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto text-base font-light leading-relaxed serif italic">
-            Acceda a la comunidad, comparta su nicho de mercado y empiece a maquetar proyectos que no solo destaquen visualmente, sino que generen un retorno real con su marca o servicio.
+          
+          <div className="space-y-4 max-w-xl mx-auto text-sm text-gray-300 font-light">
+            <p className="flex items-center justify-center gap-2">
+              <Check className="h-4 w-4 text-gold" />
+              <span>Las primeras 100 personas mantienen el precio fundador mientras sigan dentro</span>
+            </p>
+            <p className="flex items-center justify-center gap-2">
+              <TrendingUp className="h-4 w-4 text-gold" />
+              <span>Después de las 100 primeras plazas, el precio sube para nuevos miembros</span>
+            </p>
+            <p className="flex items-center justify-center gap-2">
+              <Check className="h-4 w-4 text-gold" />
+              <span>Cancela cuando quieras, sin contratos ni permanencias</span>
+            </p>
+          </div>
+
+          <p className="text-gray-300 max-w-xl mx-auto text-sm md:text-base font-light leading-relaxed serif italic pt-4">
+            El futuro audiovisual pertenece a quienes saben dirigir. Accede hoy y empieza a maquetar proyectos que no solo destaquen visualmente, sino que generen un retorno real con tu marca o servicio.
           </p>
+          
           <div className="pt-6">
             <Button 
               asChild 
@@ -347,7 +410,7 @@ export default function Home() {
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" /> Unirse a We Are The Silent
+                <MessageCircle className="h-4 w-4" /> Unirse a We Are The Silent por $9/mes
               </a>
             </Button>
           </div>
