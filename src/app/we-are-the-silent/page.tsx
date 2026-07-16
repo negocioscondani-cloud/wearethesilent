@@ -314,9 +314,9 @@ export default function WeAreTheSilentPage() {
           </p>
           <div className="pt-4">
             <Button asChild size="lg" className="bg-gold text-black font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black py-6 px-10 transition-all text-xs">
-              <Link href="/contact">
+              <a href="https://www.skool.com/we-are-the-silent-ia-8224/about" target="_blank" rel="noopener noreferrer">
                 Entrar a la Comunidad
-              </Link>
+              </a>
             </Button>
           </div>
         </section>

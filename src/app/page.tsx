@@ -65,7 +65,7 @@ const allGalleryImages = galleryImageIds
   .map((id) => PlaceHolderImages.find((img) => img.id === id))
   .filter(Boolean) as (typeof PlaceHolderImages)[0][];
 
-const WHATSAPP_LINK = "https://wa.me/50664194111?text=Hola!%20Me%20interesa%20unirme%20a%20la%20comunidad%20por%20$9/mes%20con%20el%20precio%20fundador.";
+const COMMUNITY_LINK = "https://www.skool.com/we-are-the-silent-ia-8224/about";
 
 export default function Home() {
   const [galleryImages, setGalleryImages] = useState<(typeof PlaceHolderImages)[0][]>([]);
@@ -166,7 +166,7 @@ export default function Home() {
               size="lg"
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <a href={COMMUNITY_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4" /> Entra hoy por $9/mes (Precio Fundador)
               </a>
             </Button>
@@ -409,7 +409,7 @@ export default function Home() {
               size="lg" 
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <a href={COMMUNITY_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4" /> Unirse a We Are The Silent por $9/mes
               </a>
             </Button>

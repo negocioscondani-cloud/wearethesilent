@@ -10,6 +10,19 @@ export interface Post {
   body: string;
 }
 
+const SKOOL_CTA = `
+<div class="my-12 p-8 bg-zinc-900 border border-gold/30 rounded-sm text-center">
+  <span class="text-gold font-bold text-xs uppercase tracking-[0.2em] mb-2 block">Comunidad Exclusiva</span>
+  <h3 class="text-white font-serif italic text-2xl mb-4">¿Quieres Dominar la IA y Monetizar tu Visión Creativa?</h3>
+  <p class="text-gray-300 text-sm max-w-xl mx-auto mb-6 leading-relaxed">
+    Únete a <strong>We Are The Silent</strong> en Skool. Obtén acceso inmediato a plantillas de prompt, hojas de consistencia de personajes (JSON) y soporte en vivo de directores creativos de IA.
+  </p>
+  <a href="https://www.skool.com/we-are-the-silent-ia-8224/about" target="_blank" rel="noopener noreferrer" class="inline-block bg-gold text-black font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-sm hover:bg-white transition-colors">
+    Acceder a la Comunidad
+  </a>
+</div>
+`;
+
 export const posts: Post[] = [
   {
     slug: 'avatar-realista-vs-animado-guia-seleccion-2026',
@@ -35,7 +48,7 @@ export const posts: Post[] = [
       <p>El mayor enemigo del avatar realista es la falta de calidad. Si el movimiento de los labios no coincide perfectamente con las sílabas, o si los ojos carecen de "chispa vital", el cerebro del espectador entra en estado de alerta. En 2026, usar una IA realista barata es peor que no usar nada; comunica que tu marca es un <em>commodity</em> de bajo costo. La clave es la inversión en herramientas como Kling 2.6 o HeyGen en sus versiones de máxima fidelidad.</p>
 
       <h2>2. El Dominio de lo Arquetípico (El Avatar Animado)</h2>
-      <p>A diferencia del realista, el avatar animado no intenta engañar al ojo. Se presenta como una representación simbólica de una idea. Es el "lenguaje de los conceptos".</p>
+      <p>A diferencia del realista, el avatar animado no intenta engañar al ojo. Se presenta como una representation simbólica de una idea. Es el "lenguaje de los conceptos".</p>
 
       <h3>Ventajas Estratégicas del Estilo Estilizado</h3>
       <ul>
@@ -65,6 +78,7 @@ export const posts: Post[] = [
             <li><a href="/blog/higgsfield-ai-the-virtual-film-studio-for-content-creators" class="text-primary hover:underline"><strong>Estudio Virtual:</strong> La plataforma definitiva para producir escenas complejas con tus avatares elegidos.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -98,7 +112,7 @@ export const posts: Post[] = [
       <p>Utilizamos generadores de imágenes de última generación (como Midjourney o Nano Banana) para crear el rostro. La regla de oro en 2026 es la <strong>"Luz Realista"</strong>. Evita los prompts que generen caras demasiado simétricas o perfectas; añade pequeñas "imperfecciones" (textura de piel real, sombras asimétricas) para evitar el rechazo subconsciente del espectador.</p>
 
       <h3>Paso 3: El Aliento de Vida (Animación y Voz)</h3>
-      <p>Aquí es donde herramientas como <strong>HeyGen, Kling o Higgfield</strong> entran en juego. Sincronizamos la imagen con un guion optimizado mediante Neuro-Scripting. La voz debe ser clonada (idealmente la tuya o una voz con matices emocionales profundos de ElevenLabs) para asegurar que la entonación no suene robótica. Recuerda: el oído detecta la IA antes que el ojo.</p>
+      <p>Aquí es donde herramientas como <strong>HeyGen, Kling o Higgsfield</strong> entran en juego. Sincronizamos la imagen con un guion optimizado mediante Neuro-Scripting. La voz debe ser clonada (idealmente la tuya o una voz con matices emocionales profundos de ElevenLabs) para asegurar que la entonación no suene robótica. Recuerda: el oído detecta la IA antes que el ojo.</p>
 
       <h2>⚠️ La Advertencia Dorada: El Fin de la IA "Barata"</h2>
       <p>Para 2026, el público ha desarrollado un radar contra la IA genérica. Las marcas que usan herramientas gratuitas o flujos de trabajo rápidos están sufriendo un rechazo masivo por sentirse "sin alma".</p>
@@ -120,6 +134,7 @@ export const posts: Post[] = [
             <li><a href="/blog/higgsfield-ai-the-virtual-film-studio-for-content-creators" class="text-primary hover:underline"><strong>Producción Avanzada:</strong> Usa Higgsfield para situar a tu personaje en escenas cinematográficas complejas.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -152,6 +167,7 @@ export const posts: Post[] = [
             <li><a href="/blog/higgsfield-ai-the-virtual-film-studio-for-content-creators" class="text-primary hover:underline"><strong>Integración de Sistemas:</strong> Cómo Kling potencia el estudio virtual de Higgsfield.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -182,6 +198,7 @@ export const posts: Post[] = [
             <li><a href="/blog/la-revolucion-del-faceless-con-personaje-guia-avatares-ia-2026" class="text-primary hover:underline"><strong>Humanización Digital:</strong> El papel de Veo en la creación de avatares para YouTube.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -212,6 +229,7 @@ export const posts: Post[] = [
             <li><a href="/blog/the-art-director-3-0-how-ai-is-transforming-creative-agencies" class="text-primary hover:underline"><strong>Liderazgo Creativo:</strong> Por qué dominar Higgsfield te posiciona como un director de nueva generación.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -242,6 +260,7 @@ export const posts: Post[] = [
             <li><a href="/blog/avatar-realista-vs-animado-guia-seleccion-2026" class="text-primary hover:underline"><strong>Presentación:</strong> Elige el portavoz ideal para presentar tus nuevos activos visuales premium.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
   {
@@ -272,6 +291,234 @@ export const posts: Post[] = [
             <li><a href="/blog/google-introduces-veo-its-answer-to-the-generative-video-revolution" class="text-primary hover:underline"><strong>Mando Técnico:</strong> Cómo las herramientas de Google están diseñadas para el control del director.</a></li>
         </ul>
       </div>
+      ${SKOOL_CTA}
     `,
   },
+  // ==================== 8 NUEVOS ARTÍCULOS ESTRUCTURA SILO ====================
+  {
+    slug: 'como-hacer-publicidad-con-inteligencia-artificial-gratis',
+    title: 'Cómo Hacer Publicidad con Inteligencia Artificial Gratis en 2026',
+    description: 'La guía definitiva para conceptualizar, diseñar y lanzar campañas de publicidad premium a coste cero utilizando flujos de trabajo avanzados de IA.',
+    date: '2026-07-15',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-31')!,
+    body: `
+      <p>El panorama publicitario en 2026 ha sufrido una transformación radical. Ya no es necesario contar con un presupuesto millonario para lanzar campañas estéticas que conviertan. Hoy en día, aprender a <strong>hacer publicidad con inteligencia artificial gratis</strong> es la habilidad más valiosa para cualquier emprendedor o agencia boutique. Sin embargo, no se trata simplemente de pulsar botones o copiar prompts aleatorios; requiere una metodología quirúrgica que combine la visión del director y el análisis de mercado.</p>
+
+      <h2>1. El Enfoque del Director Creativo frente a la IA</h2>
+      <p>Muchos fracasan porque confían ciegamente en la aleatoriedad de las herramientas. Un Director de Arte de IA sabe que la inteligencia artificial es solo su equipo de producción. Tu rol es inyectar intención y control de calidad. Para estructurar una campaña exitosa de forma gratuita, debes seguir este flujo:</p>
+      <ul>
+        <li><strong>Definición del Concepto:</strong> Extrae conceptos estéticos de referencias reales en Pinterest para estructurar tus ideas.</li>
+        <li><strong>Redacción de Guión Persuasivo:</strong> Utiliza asistentes como ChatGPT o DeepSeek para armar guiones publicitarios estructurados con ganchos de alta retención.</li>
+        <li><strong>Generación Visual Consistente:</strong> Traduce la idea en assets visuales empleando motores de generación de imagen con modelos optimizados de uso gratuito.</li>
+      </ul>
+
+      <h2>2. Conectando con la Estructura Silo de Aprendizaje</h2>
+      <p>Para profundizar en cada una de las ramificaciones técnicas que requiere este proceso, te recomiendo seguir nuestros hilos especializados de producción:</p>
+      <ul>
+        <li>Para dominar el aspecto audiovisual del embudo de marketing, revisa nuestra guía sobre la <a href="/blog/ia-para-crear-videos-publicitarios-gratis" class="text-primary hover:underline"><strong>IA para crear videos publicitarios gratis</strong></a>.</li>
+        <li>Si necesitas generar anuncios estáticos o de producto, explora cómo <a href="/blog/crear-anuncios-publicitarios-gratis-ia" class="text-primary hover:underline"><strong>crear anuncios publicitarios gratis con IA</strong></a> de alta fidelidad.</li>
+        <li>Para conocer las bases estratégicas del ecosistema digital, lee nuestro post detallado sobre cómo <a href="/blog/el-arte-de-crear-publicidad-con-inteligencia-artificial" class="text-primary hover:underline"><strong>crear publicidad con inteligencia artificial</strong></a> con criterio de agencia.</li>
+      </ul>
+
+      <p>Recuerda que las herramientas son temporales y cambian mes a mes, pero la lógica de dirección y el gusto estético que entrenas en nuestra comunidad permanecen de por vida.</p>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'crear-anuncios-publicitarios-gratis-ia',
+    title: 'Cómo Crear Anuncios Publicitarios Gratis con IA de Alta Conversión',
+    description: 'Aprende el protocolo estricto para diseñar banners, creatividades de producto y anuncios premium para redes sociales sin coste alguno.',
+    date: '2026-07-14',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-28')!,
+    body: `
+      <p>El diseño gráfico tradicional para publicidad solía devorar semanas de presupuesto en sesiones fotográficas y retocadores. En la actualidad, aprender a <strong>crear anuncios publicitarios gratis</strong> utilizando inteligencia artificial te permite lanzar iteraciones de creatividades en minutos. La clave reside en dotar a tus anuncios de un estilo de alta gama (luxe) que capte de inmediato la atención del espectador en plataformas móviles.</p>
+
+      <h2>1. El Flujo de Trabajo en Lujo y Consumo Masivo</h2>
+      <p>Para producir un anuncio estático de impacto editorial de forma gratuita, estructuramos la producción en tres fases clave:</p>
+      <ol>
+        <li><strong>Análisis Estético:</strong> Sube tu producto a un asistente de lenguaje y pídele que analice las texturas, formas y colores para extraer ideas de iluminación de estudio de alta fidelidad.</li>
+        <li><strong>Ingeniería de Prompting de Producto:</strong> Genera fondos y composiciones realistas usando herramientas con tiers gratuitos como Freepik, aplicando estilos macro y reflejos cáusticos para transmitir lujo percibido.</li>
+        <li><strong>Fusión de Marca:</strong> Superpón tu producto y logo de forma limpia con CapCut u otra herramienta en la nube, asegurando que la tipografía y el mensaje sigan un orden visual lógico.</li>
+      </ol>
+
+      <h2>2. Enlazando los Silos del Éxito Visual</h2>
+      <p>Para construir una campaña multicanal, necesitas complementar tus anuncios de imagen con video dinámico:</p>
+      <ul>
+        <li>Aprende las reglas metodológicas de base en nuestro artículo central sobre <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+        <li>Si quieres dar el salto de imagen estática a movimiento, no te pierdas el tutorial para <a href="/blog/crear-videos-con-ia-a-partir-de-fotos-productos" class="text-primary hover:underline"><strong>crear videos con IA a partir de fotos</strong></a>.</li>
+        <li>Descubre el impacto de la voz y el guión técnico en nuestra guía de <a href="/blog/crear-videos-con-ia-a-partir-de-texto-gratis" class="text-primary hover:underline"><strong>crear videos con IA a partir de texto gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'el-arte-de-crear-publicidad-con-inteligencia-artificial',
+    title: 'El Arte de Crear Publicidad con Inteligencia Artificial: La Guía del Director de Arte',
+    description: 'Cómo aplicar principios de diseño, teoría del color e ingeniería de percepción para crear campañas publicitarias con IA que conecten y vendan.',
+    date: '2026-07-13',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-26')!,
+    body: `
+      <p>El mercado digital moderno está saturado de imágenes artificiales genéricas, plásticas y sin intención. <strong>Crear publicidad con inteligencia artificial</strong> de nivel profesional requiere desmarcarse de la masa técnica y posicionarse como un Director de Arte 3.0. Tu valor no radica en saber escribir prompts, sino en tu capacidad para domar la herramienta y transferir el buen gusto a los algoritmos.</p>
+
+      <h2>1. El Protocolo de Dirección de Arte</h2>
+      <p>Para que una pieza publicitaria sea aprobada y convierta, debe respetar tres directrices fundamentales:</p>
+      <ul>
+        <li><strong>La Psicología de la Iluminación:</strong> Define si tu escena requiere luz natural suave, focos de estudio de tres puntos o el contraste misterioso de los neones nocturnos.</li>
+        <li><strong>Coherencia de la Composición:</strong> Aplica leyes clásicas como la regla de los tercios, líneas de fuga y encuadres macro que dirijan la mirada del consumidor directo al producto.</li>
+        <li><strong>Consistencia del Universo Visual:</strong> Asegúrate de que todos los props y personajes pertenezcan al mismo espacio temporal y sigan la misma paleta cromática de la marca.</li>
+      </ul>
+
+      <h2>2. Integración de la Estructura Silo SEO</h2>
+      <p>Domina todo el flujo estratégico explorando el resto de guías de nuestro ecosistema creativo:</p>
+      <ul>
+        <li>Vuelve al pilar central de tráfico en <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+        <li>Descubre las mejores plataformas gratuitas en <a href="/blog/crear-videos-con-inteligencia-artificial-gratis-online" class="text-primary hover:underline"><strong>crear videos con inteligencia artificial gratis online</strong></a>.</li>
+        <li>Aprende a animar personajes consistentes leyendo sobre <a href="/blog/como-hacer-videos-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer videos con inteligencia artificial gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'ia-para-crear-videos-publicitarios-gratis',
+    title: 'La Guía Definitiva de IA para Crear Videos Publicitarios Gratis',
+    description: 'Analizamos las mejores metodologías y motores de video generativo para crear comerciales dinámicos que aumentan la conversión sin coste.',
+    date: '2026-07-12',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-30')!,
+    body: `
+      <p>El video es el rey indiscutible de las redes sociales. Las marcas que no producen contenido dinámico pierden visibilidad diariamente. Afortunadamente, contar con una <strong>IA para crear videos publicitarios gratis</strong> te permite estructurar un flujo de contenidos constante sin necesidad de contratar productoras externas. En esta guía analizaremos cómo explotar los motores de video generativos para crear anuncios y comerciales cinematográficos de alto impacto.</p>
+
+      <h2>1. El Proceso Creativo en Generación de Video</h2>
+      <p>Para construir comerciales de alta conversión sin coste, dividimos el flujo en pasos estructurados:</p>
+      <ol>
+        <li><strong>Guión de Alta Retención:</strong> Utiliza IA para generar guiones estructurados (Gancho, Intro, Desarrollo, CTA) optimizados para videos de 30 segundos.</li>
+        <li><strong>Dirección de Escena:</strong> Redacta instrucciones de movimiento técnico que la IA de video pueda interpretar correctamente (ej. "dolly zoom", "paneo lento").</li>
+        <li><strong>Montaje y Control de Calidad:</strong> Exporta los clips generados a CapCut para eliminar deformaciones, sincronizar audios de alta calidad y añadir subtítulos interactivos.</li>
+      </ol>
+
+      <h2>2. Navegación Silo de Contenidos Relacionados</h2>
+      <p>Para conectar tu estrategia de video con el resto de componentes del canal, consulta los siguientes recursos:</p>
+      <ul>
+        <li>Aprende a maquetar tu marca global en <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+        <li>Explora herramientas en la nube en <a href="/blog/crear-videos-con-inteligencia-artificial-gratis-online" class="text-primary hover:underline"><strong>crear videos con inteligencia artificial gratis online</strong></a>.</li>
+        <li>Aprende flujos de producción optimizados en nuestra guía de <a href="/blog/como-hacer-videos-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer videos con inteligencia artificial gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'como-hacer-videos-con-inteligencia-artificial-gratis',
+    title: 'Cómo Hacer Videos con Inteligencia Artificial Gratis: Flujos de Trabajo',
+    description: 'Estructura un pipeline de producción de video premium sin presupuesto. Trucos de consistencia y postproducción explicados por profesionales.',
+    date: '2026-07-11',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-25')!,
+    body: `
+      <p>La creación de contenido dinámico a menudo se detiene debido a los altos costos técnicos y de software. Aprender a <strong>hacer videos con inteligencia artificial gratis</strong> te otorga la soberanía para lanzar anuncios y contenido viral de manera consistente. Para lograr resultados premium sin coste, debemos exprimir los créditos de uso de las herramientas líderes en el sector audiovisual.</p>
+
+      <h2>1. El Pipeline "Cero Presupuesto"</h2>
+      <p>El flujo ideal para crear videos estables y profesionales consta de tres pasos:</p>
+      <ul>
+        <li><strong>Generación del Master Estático:</strong> Genera imágenes fijas ultrarrealistas con el encuadre exacto utilizando generadores de imagen gratuitos. Esto asegura que la base visual sea perfecta.</li>
+        <li><strong>Animación Controlada (Image-to-Video):</strong> Sube tu imagen maestra a motores de video como Kling AI o Luma y utiliza prompts de control de movimiento muy leves para dar vida a la escena sin deformar los objetos.</li>
+        <li><strong>Corrección y Postproducción:</strong> Ensamble, corte y sonido cinemático en tu editor local, eliminando cualquier fragmento que revele un origen artificial evidente.</li>
+      </ul>
+
+      <h2>2. Enlaces Internos del Silo de Video</h2>
+      <p>Sigue ampliando tu formación visual mediante las siguientes guías paso a paso de nuestra red corporativa:</p>
+      <ul>
+        <li>Revisa el análisis de plataformas web en <a href="/blog/crear-videos-con-inteligencia-artificial-gratis-online" class="text-primary hover:underline"><strong>crear videos con inteligencia artificial gratis online</strong></a>.</li>
+        <li>Aprende a estructurar tus prompts partiendo de descripciones escritas en <a href="/blog/crear-videos-con-ia-a-partir-de-texto-gratis" class="text-primary hover:underline"><strong>crear videos con IA a partir de texto gratis</strong></a>.</li>
+        <li>Descubre el poder del video publicitario en <a href="/blog/ia-para-crear-videos-publicitarios-gratis" class="text-primary hover:underline"><strong>IA para crear videos publicitarios gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'crear-videos-con-inteligencia-artificial-gratis-online',
+    title: 'Mejores Herramientas para Crear Videos con Inteligencia Artificial Gratis Online',
+    description: 'Analizamos las plataformas web líderes del mercado para renderizar videos generativos en la nube sin necesidad de ordenadores potentes.',
+    date: '2026-07-10',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-27')!,
+    body: `
+      <p>Renderizar video localmente requería tarjetas gráficas de miles de euros. Hoy en día, puedes <strong>crear videos con inteligencia artificial gratis online</strong> directamente desde tu navegador web, procesando todo en servidores remotos. En este análisis cubriremos las plataformas que ofrecen los mejores créditos gratuitos diarios para tus campañas.</p>
+
+      <h2>1. Las 3 Plataformas Líderes Online en 2026</h2>
+      <p>Nuestra selección de herramientas online se basa en la consistencia y la fidelidad física:</p>
+      <ol>
+        <li><strong>Kling AI (Online Cloud):</strong> Ofrece créditos gratuitos diarios que permiten generar tomas de 5 a 10 segundos con una física de fluidos asombrosa.</li>
+        <li><strong>Luma Dream Machine:</strong> Destaca por su velocidad de render y su capacidad para interpretar movimientos de cámara drásticos sin perder la coherencia.</li>
+        <li><strong>Higgsfield AI:</strong> Excelente para la animación de avatares y consistencia multi-escena desde interfaces móviles y web.</li>
+      </ol>
+
+      <h2>2. Enrutamiento Silo SEO de la Web</h2>
+      <p>Interconecta tus conocimientos de video y marca siguiendo estas lecturas esenciales:</p>
+      <ul>
+        <li>Descubre cómo animar fotos estáticas en nuestra guía para <a href="/blog/crear-videos-con-ia-a-partir-de-fotos-productos" class="text-primary hover:underline"><strong>crear videos con IA a partir de fotos</strong></a>.</li>
+        <li>Aprende los conceptos fundamentales de la dirección de comerciales en <a href="/blog/ia-para-crear-videos-publicitarios-gratis" class="text-primary hover:underline"><strong>IA para crear videos publicitarios gratis</strong></a>.</li>
+        <li>Aprende el flujo publicitario macro en <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'crear-videos-con-ia-a-partir-de-texto-gratis',
+    title: 'Cómo Crear Videos con IA a partir de Texto Gratis: Guión y Dirección',
+    description: 'La técnica profesional para escribir prompts técnicos de video que traducen descripciones escritas en escenas de cine estables.',
+    date: '2026-07-09',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-12')!,
+    body: `
+      <p>Escribir prompts de texto para video no es como escribir una novela. Los motores de inteligencia artificial interpretan el lenguaje de forma espacial e interpretativa. Para <strong>crear videos con IA a partir de texto gratis</strong> de manera efectiva, debes aprender a pensar y estructurar tus indicaciones como un Director de Fotografía tradicional.</p>
+
+      <h2>1. La Estructura del Prompt Técnico Cinematográfico</h2>
+      <p>Tu prompt escrito debe estructurarse siempre de la siguiente manera para evitar deformaciones:</p>
+      <ul>
+        <li><strong>Sujeto y Acción:</strong> Define el personaje u objeto principal y la acción física exacta que realiza (ej. "Un astronauta abre la compuerta").</li>
+        <li><strong>Movimiento de Cámara:</strong> Indica a la IA cómo debe moverse la lente (ej. "paneo lento de izquierda a derecha a nivel de ojos").</li>
+        <li><strong>Iluminación y Entorno:</strong> Especifica el contexto lumínico y espacial (ej. "luz cinematográfica cenital, atmósfera llena de polvo flotante").</li>
+      </ul>
+
+      <h2>2. Navegación de Enlaces de Silo de Video</h2>
+      <p>Sigue profundizando en los flujos de creación visual de la comunidad:</p>
+      <ul>
+        <li>Consulta nuestro manual de animación de fotos en <a href="/blog/crear-videos-con-ia-a-partir-de-fotos-productos" class="text-primary hover:underline"><strong>crear videos con IA a partir de fotos</strong></a>.</li>
+        <li>Conoce el pipeline cero presupuesto en <a href="/blog/como-hacer-videos-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer videos con inteligencia artificial gratis</strong></a>.</li>
+        <li>Aprende a monetizar estas creaciones como servicio en <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  },
+  {
+    slug: 'crear-videos-con-ia-a-partir-de-fotos-productos',
+    title: 'Guía para Crear Videos con IA a partir de Fotos y Productos Reales',
+    description: 'Descubre el método Image-to-Video. Transforma fotos fijas de tus productos en anuncios dinámicos de alto nivel sin perder consistencia visual.',
+    date: '2026-07-08',
+    author: 'Daniel Calderon',
+    image: PlaceHolderImages.find((img) => img.id === 'gallery-29')!,
+    body: `
+      <p>El mayor problema de la generación de video publicitario partiendo de texto es la pérdida de identidad del producto. La IA suele deformar las etiquetas y los logos. Aprender a <strong>crear videos con IA a partir de fotos</strong> fijas (Image-to-Video) es el único método real y aprobado que soluciona este cuello de botella publicitario.</p>
+
+      <h2>1. El Proceso de Consistencia Tridimensional</h2>
+      <p>Para animar una foto de producto real conservando sus características estéticas, aplicamos este flujo:</p>
+      <ol>
+        <li><strong>La Fotografía Base:</strong> Toma una foto de alta resolución del producto real con buena iluminación y encuadre limpio.</li>
+        <li><strong>Procesamiento en Flow / Nano Banana:</strong> Sube la imagen y añade prompts que describan un entorno publicitario premium (reflejos, mármol, luz cenital) para que la IA integre el producto en un escenario fotorrealista.</li>
+        <li><strong>Generación Audiovisual:</strong> Sube la escena procesada a Kling o Luma y aplica un prompt de movimiento de cámara sutil para dinamizar la composición sin alterar el logo o forma del producto.</li>
+      </ol>
+
+      <h2>2. Enlaces Cruzados del Silo de Contenido</h2>
+      <p>Completa tu aprendizaje interactuando con los siguientes artículos del silo:</p>
+      <ul>
+        <li>Descubre cómo estructurar guiones de video en <a href="/blog/crear-videos-con-ia-a-partir-de-texto-gratis" class="text-primary hover:underline"><strong>crear videos con IA a partir de texto gratis</strong></a>.</li>
+        <li>Aprende las claves de la publicidad premium en <a href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis" class="text-primary hover:underline"><strong>cómo hacer publicidad con inteligencia artificial gratis</strong></a>.</li>
+        <li>Revisa el ranking de motores online en <a href="/blog/crear-videos-con-inteligencia-artificial-gratis-online" class="text-primary hover:underline"><strong>crear videos con inteligencia artificial gratis online</strong></a>.</li>
+      </ul>
+      ${SKOOL_CTA}
+    `,
+  }
 ];
