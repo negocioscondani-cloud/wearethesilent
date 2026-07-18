@@ -1,26 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { 
   Sparkles, 
-  ArrowRight, 
-  BookOpen, 
-  Video, 
-  Film, 
-  Image as ImageIcon, 
-  Compass, 
-  FileText, 
-  Layers,
-  ChevronDown,
-  CheckCircle,
-  HelpCircle,
+  CheckCircle, 
+  MessageCircle,
+  Zap,
+  Eye,
   Play,
-  Monitor,
-  Users
+  Scissors,
+  Check,
+  X,
+  Lock,
+  TrendingUp,
+  HelpCircle
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
@@ -28,304 +24,317 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
+const SKOOL_LINK = "https://www.skool.com/we-are-the-silent-ia-8224/about";
+
 export default function WeAreTheSilentPage() {
-  const [activeTab, setActiveTab] = useState('workflow');
-
-  const scrollToId = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const workflowModules = [
+  const methodModules = [
     {
-      number: '01',
-      title: 'Transformación de Producto',
-      label: 'De foto normal a publicidad premium',
-      description: 'Para transformar una foto de producto normal en una pieza publicitaria premium, el truco está en cómo combinamos herramientas clave como Flow, asistentes de IA (DeepSeek, ChatGPT, Gemini, Claude) y Pinterest para extraer ideas. Si la base es buena, la IA hará magia.',
+      num: '01',
+      title: 'Imágenes y Vídeos Publicitarios con IA',
+      desc: 'Pase de una idea ordinaria a una pieza comercial de alta fidelidad. Aprende prompting con intención para crear anuncios y contenido impactante para marcas y productos en el mercado digital.',
       image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif',
-      steps: [
-        '<strong>Base de calidad:</strong> Asegúrate de que la foto de tu producto sea de alta calidad, el logo se vea claro y el texto se entienda perfectamente.',
-        '<strong>Los 3 Caminos de Prompting:</strong> 1) <em>Específico:</em> Sube referencias de Pinterest y pídele a la IA replicar el estilo. 2) <em>Autónomo:</em> Pide a la IA que analice tu producto y genere 15 prompts publicitarios de una vez. 3) <em>Inspiración masiva:</em> Sube varias referencias de Pinterest para combinar ideas.',
-        '<strong>Fase de Ejecución en Flow:</strong> Pasa el prompt ganador a Flow, sube tu producto y el logo, y selecciona el modelo <em>nano banana 2</em> o <em>pro</em>. Repite, ajusta y aplica tu control de calidad final.'
-      ]
+      icon: <Sparkles className="h-5 w-5 text-gold" />
     },
     {
-      number: '02',
-      title: 'Personajes y Avatares',
-      label: 'Creación de consistencia y clones de rostros',
-      description: 'Dale vida a tus narraciones creando personajes consistentes o avatares con tu propio rostro desde cero.',
+      num: '02',
+      title: 'Consistencia Absoluta de Personajes',
+      desc: 'Domina personajes consistentes y resuelve el mayor problema de la industria visual: el cambio de rostros entre escenas. Aprende a clonar tu propia identidad o avatares a través de código estructurado y hojas de personaje técnicas.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__cinematic-portrait-of-a-25yearold-male-creative-di__78889-scaled.avif',
-      steps: [
-        '<strong>Estructura en JSON:</strong> Pídele a DeepSeek o tu asistente IA favorito que genere un prompt en formato JSON con los detalles de etnia, ropa, rasgos, deformaciones y estilo (UGC, cinematográfico, 3D, 2D o Stop Motion).',
-        '<strong>Generación inicial:</strong> Pega el prompt en Flow y escoge tu personaje favorito.',
-        '<strong>Hoja de Personaje (Character Sheet):</strong> Sube tu personaje a DeepSeek y pídele una hoja con vistas (frontal, lateral, trasera y expresiones). Luego ejecuta este prompt en Flow con la imagen de referencia.',
-        '<strong>Tu propio Avatar:</strong> Si es para ti, sube 4 fotos tuyas (frente, perfil, cuerpo completo) a DeepSeek y solicita tu hoja de personaje.'
-      ]
+      icon: <Zap className="h-5 w-5 text-gold" />
     },
     {
-      number: '03',
-      title: 'Escenarios y Props',
-      label: 'Construcción de consistencia espacial y objetos',
-      description: 'Define los escenarios ideales donde situarás a tus personajes, asegurando consistencia en la iluminación y la ambientación.',
+      num: '03',
+      title: 'Guión, Cámara, Luz y Edición Cinematográfica',
+      desc: 'Desarrolla tu criterio audiovisual controlando la iluminación cinemática y la coherencia del entorno. Domina la selección rigurosa de encuadres (planos de cámara) y la edición final para lograr que cada elemento pertenezca al mismo universo.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__hyperrealistic-cinematic-portrait-of-a-rugged-stou__41956.avif',
-      steps: [
-        '<strong>Definición del entorno:</strong> En DeepSeek, define con precisión el escenario (ej. <em>"Exterior, día, soleado, 1803, arquitectura rústica del viejo oeste"</em>) y sé muy específico con la luz (natural, estudio o neón).',
-        '<strong>Variación de Planos:</strong> Genera encuadres diversos en Flow (plano medio, detalle, gran angular, POV, primer plano, plano general, toma aérea) para dar dinamismo a la narrativa.',
-        '<strong>Accesorios y Vestimenta (Props):</strong> Lista lo que tu personaje necesita según su rol (ej. <em>"bandido vaquero"</em>). Genera una hoja de personaje para producción con fondo blanco y luego intégralo en acción en el escenario.'
-      ]
+      icon: <Eye className="h-5 w-5 text-gold" />
     },
     {
-      number: '04',
-      title: 'Guiones y Estructuras',
-      label: 'Escribir para enganchar y retener',
-      description: 'Escribe guiones magnéticos garantizando que tus videos tengan retención y cumplan una estructura publicitaria o cinematográfica.',
+      num: '04',
+      title: 'Ruta Clara desde Cero para tu Portafolio',
+      desc: 'Construye proyectos reales y sólidos desde el primer día. Te guiamos paso a paso, sin importar tu nivel técnico anterior, para que aprendas a convertir esta habilidad en un servicio comercial altamente demandado.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__-meta-imagestyle-highend-editorial-vanity-fair-gro__58442-scaled.avif',
-      steps: [
-        '<strong>Investigación Inteligente:</strong> Instala la extensión "YouTube to NotebookLM", busca un referente exitoso de tu nicho en YouTube, y carga sus subtítulos como fuente de conocimiento en tu cuaderno.',
-        '<strong>Redacción de Series Cortas:</strong> Pídele guiones de 30 a 45 segundos siguiendo el arco de: <em>Hook, intro, re-hook, desarrollo, moraleja y llamado a la acción</em>.',
-        '<strong>Narrativa de Ficción:</strong> Si creas cortometrajes, implementa estructuras de guion clásicas como la estructura aristotélica o el viaje del héroe.'
-      ]
+      icon: <Play className="h-5 w-5 text-gold" />
     },
     {
-      number: '05',
-      title: 'Videos y Animación',
-      label: 'Dar movimiento y dirección a las tomas',
-      description: 'El momento clave: animar tus secuencias controlando cada variable visual y sonora a través de la inteligencia artificial.',
+      num: '05',
+      title: 'Retos Creativos y Producciones de Cine',
+      desc: 'Produce piezas cinematográficas completas y participa en retos creativos comunitarios. Accede a constantes actualizaciones de contenido y nuevas metodologías para mantenerte a la vanguardia del sector.',
       image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__un-comercial-en-donde-una-mojer-hermosa-latina-com__65122.avif',
-      steps: [
-        '<strong>Elección de Motor:</strong> Sube tu hoja de personaje y escenarios a la herramienta. Selecciona el modelo (Gemini Omni o Veo 3.1) según los puntos de tu plan.',
-        '<strong>Estructura de la Instrucción:</strong> Define la acción de inicio a fin (ej. <em>"El rey camina del comedor a la sala de trono"</em>), la emoción (tenso, asustado), vestimenta, entorno e iluminación.',
-        '<strong>Diálogos y Voz:</strong> Escribe diálogos breves (máximo una línea y media) entre comillas. Configura el idioma, acento y decide si integrarás música.',
-        '<strong>Movimiento y Texto:</strong> Indica los movimientos de cámara y define la tipografía y animación de los subtítulos.'
-      ]
-    },
-    {
-      number: '06',
-      title: 'Edición y Storyboard',
-      label: 'El montaje final y control de calidad',
-      description: 'Ordena tus tomas en el editor, realiza los cortes necesarios y crea tu mapa visual previo para asegurar coherencia.',
-      image: 'http://studioboom.online/wp-content/uploads/2026/02/Captura-de-pantalla-2026-02-06-093856.avif',
-      steps: [
-        '<strong>El Storyboard de Apoyo:</strong> Genera una cuadrícula de storyboard (ej. 3x4) en Flow basándote en tu guion frase por frase. Sube la imagen a DeepSeek para obtener los prompts individuales en formato JSON.',
-        '<strong>Limpieza de Clips:</strong> En tu editor de video (CapCut, Premiere), corta y selecciona las mejores tomas. Elimina deformaciones y transiciones no deseadas.',
-        '<strong>Sonido y B-Roll:</strong> Añade tomas de apoyo y selecciona música que actúe como un elemento integrado en la puesta en escena, manteniendo el estándar de cine.'
-      ]
+      icon: <Scissors className="h-5 w-5 text-gold" />
     }
   ];
 
-  const exercises = [
+  const benefits = [
+    "Crea imágenes y vídeos con IA sin parecer artificiales",
+    "Domina personajes consistentes en múltiples tomas",
+    "Aprende dirección de cámara, iluminación y guión",
+    "Sigue una ruta clara de aprendizaje paso a paso",
+    "Diseña anuncios comerciales de alta fidelidad para marcas",
+    "Produce cortometrajes y piezas cinematográficas",
+    "Construye un portafolio sólido para vender servicios",
+    "Desarrolla tu criterio artístico y dirección de arte",
+    "Entrena tu ojo mediante dinámicas manuales de creatividad",
+    "Recibe actualizaciones constantes de nuevas herramientas"
+  ];
+
+  const testimonials = [
     {
-      title: "1. Diario de Narrativa Digital",
-      content: "Grábate un video corto diario con tu celular. No tienes que publicarlo, es tu diario personal. Cuenta de forma simple lo que hiciste ayer, como cuando te topas a alguien y le dices: 'Ayer fui a la pulpería, me topé a don Gustavo, me contó que Doña Lela anda enferma y tiene que ir a Cartago por unos medicamentos en el bus de las 9'."
+      name: "Andrés Méndez",
+      role: "Creador de Contenido Faceless",
+      quote: "Estaba cansado de ver tutoriales genéricos. En la comunidad aprendí a estructurar las hojas de personajes en formato JSON. Logré crear un avatar consistente para mi canal de YouTube y los tiempos de edición se redujeron a la mitad. El fotorrealismo es brutal."
     },
     {
-      title: "2. Bocetos Rápidos de Personajes",
-      content: "Dedica 10 minutos al día a hacer bocetos de personajes. Escoge tres palabras al azar (ej. 'castillo', 'princesa', 'dragón'), cierra los ojos, dibuja lo primero que imagines y luego pídele a la IA que cree una fotografía épica basándose en ello."
+      name: "Sofía Duarte",
+      role: "Diseñadora y Directora de Arte",
+      quote: "El mayor valor es el entrenamiento del criterio. La IA genera mil opciones, pero aquí te enseñan a filtrar y dirigir. He implementado las técnicas de fotografía de producto y mis clientes no creen que los renders son 100% creados digitalmente con IA."
     },
     {
-      title: "3. Gimnasia del Humor",
-      content: "Busca y lee tres chistes al día. El humor es un lubricante excelente para aflojar la rigidez del cerebro y disparar la creatividad."
+      name: "Marcos Villanueva",
+      role: "Fundador de Agencia de Marketing",
+      quote: "Vender contenido hecho con IA requiere un estándar editorial alto. El método universal que se enseña aquí me permitió montar un servicio de comerciales dinámicos para marcas locales de alimentación. Un retorno de inversión instantáneo."
+    }
+  ];
+
+  const faqs = [
+    {
+      q: "¿Necesito tener experiencia técnica o conocimientos de programación?",
+      a: "No, en absoluto. La comunidad está estructurada para guiarte desde cero. El método se enfoca en el criterio visual y en cómo dar instrucciones claras a los asistentes de inteligencia artificial, sin importar tu experiencia previa."
     },
     {
-      title: "4. Sinopsis de Un Solo Golpe",
-      content: "Intenta escribir sinopsis de distintos géneros (ciencia ficción, documentales, etc.) resumiendo una película completa en una sola frase."
+      q: "¿Qué herramientas de IA aprenderemos a utilizar?",
+      a: "El método es agnóstico a la tecnología. Aprenderás las bases conceptuales aplicables a cualquier modelo. Trabajamos principalmente con Flow, DeepSeek, ChatGPT, Claude, Magnific, Freepik (Nano Banana) e Higgsfield, aprovechando al máximo sus versiones de acceso gratuito o bajo costo."
     },
     {
-      title: "5. Vendedor Improvisado",
-      content: "Toma cualquier objeto que veas a tu alrededor e invéntate un anuncio publicitario para venderlo en ese instante."
+      q: "¿Cómo funciona el precio de membresía fundador?",
+      a: "Las primeras 100 personas que se unan mantendrán la tarifa de $9/mes de forma vitalicia mientras sigan activas dentro de la comunidad de Skool, incluso si el precio sube en el futuro para nuevos miembros."
     },
     {
-      title: "6. Semillero de Libros",
-      content: "Trata de idear tres premisas o ideas de libros de géneros totalmente distintos: uno infantil, uno de acción y uno de autoayuda."
-    },
-    {
-      title: "7. El Reparto del Pasado",
-      content: "Piensa en tres personas reales de tu pasado (amigos, conocidos, profesores) que serían los actores perfectos para interpretar papeles en una película."
-    },
-    {
-      title: "8. El Interrogador Creativo",
-      content: "Elige a dos personas (reales o imaginarias) y escribe las tres mejores preguntas que les harías para conocer a fondo su personalidad."
-    },
-    {
-      title: "9. Modificaciones a Clásicos",
-      content: "Toma tres personajes icónicos de películas que ya conozcas y cámbiales un detalle fundamental (su vestimenta, su compañero, su actitud, su misión o su archienemigo) y analiza cómo cambiaría toda su historia."
-    },
-    {
-      title: "10. El Embudo de Selección",
-      content: "Crea 10 imágenes con IA. Descarta hasta quedarte con 5. Reduce a 3 y al final conserva únicamente la mejor. Esto te entrena para aplicar criterio estricto y no conformarte con lo primero que genera la IA."
+      q: "¿Puedo cancelar mi suscripción en cualquier momento?",
+      a: "Sí, puedes cancelar tu membresía cuando lo desees directamente desde tu panel de usuario de Skool sin compromisos de permanencia ni recargos adicionales."
     }
   ];
 
   return (
-    <div className="silent-guide-body min-h-screen bg-[#0a0a0a] text-[#f9f7f2] font-body selection:bg-gold/30 antialiased">
+    <div className="silent-guide-body min-h-screen bg-[#0a0a0a] text-[#f9f7f2] font-body antialiased">
       
-      {/* Hero Section */}
-      <header className="relative min-h-[90vh] flex flex-col justify-center items-center text-center px-6 hero-bg">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-[#0a0a0a] z-0" />
+      {/* 1. HERO SECTION (ABOVE THE FOLD) */}
+      <section className="relative min-h-[90vh] flex items-center justify-center text-center px-5 hero-bg">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-[#0a0a0a]/90 to-[#0a0a0a] z-0" />
         
-        <div className="relative z-10 max-w-4xl space-y-6">
-          <span className="text-gold uppercase tracking-[0.4em] text-[11px] font-bold block mb-4 animate-pulse">
-            Ecosistema de Comunidad 2026
-          </span>
-          <h1 className="text-6xl md:text-9xl font-light leading-none tracking-tight italic">
-            We Are <br />
-            <span className="not-italic font-bold text-gold">The Silent.</span>
+        <div className="relative z-10 mx-auto w-full max-w-4xl space-y-6 pt-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mb-4 animate-pulse">
+            Academia & Comunidad Visual
+          </div>
+          
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight italic text-white">
+            🎬 De una idea a un anuncio, <br />
+            <span className="not-italic font-bold text-gold">un vídeo o una película con IA.</span>
           </h1>
-          <p className="text-xl md:text-3xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed serif italic">
-            La comunidad de Inteligencia Artificial para Directores Creativos y Creadores Audiovisuales.
-          </p>
-          <p className="text-sm text-gray-400 max-w-lg mx-auto">
-            Aprende a transformar fotos cotidianas en piezas de lujo editorial, crear personajes consistentes, dirigir escenarios y animar comerciales de cine.
+          
+          <p className="mt-6 text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed serif italic">
+            Aprende la técnica. Desarrolla el criterio. Entrena tu creatividad. La comunidad definitiva para construir portafolios y servicios de alto valor comercial.
           </p>
           
-          <div className="pt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => scrollToId('manual-indice')} 
-              className="btn-premium border border-[#f9f7f2] hover:border-gold px-8 py-4 text-xs tracking-[0.2em] font-semibold"
+          <div className="pt-8">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
-              Explorar el Protocolo
-            </button>
-            <button 
-              onClick={() => scrollToId('ejercicios')} 
-              className="btn-premium bg-gold text-black border border-gold hover:bg-white hover:border-white px-8 py-4 text-xs tracking-[0.2em] font-semibold"
-            >
-              Entrenar Creatividad
-            </button>
+              <a href={SKOOL_LINK} target="_blank" rel="noopener noreferrer">
+                Entrar a la Comunidad por $9/mes
+              </a>
+            </Button>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-6 md:px-12 py-24 space-y-36">
-        
-        {/* Intro Manifesto */}
-        <section className="text-center max-w-3xl mx-auto border-y border-white/10 py-16">
-          <h2 className="text-4xl serif italic text-gold mb-6">El Manifiesto de la Comunidad</h2>
-          <p className="text-lg text-gray-300 leading-relaxed font-light">
-            "Este no es un manual de herramientas. Es un protocolo de ejecución. La lógica de trabajo que aprenderás es universal y funciona igual en <strong>Flow</strong>, <strong>Magnific</strong>, <strong>Freepik</strong>, <strong>Higgsfield</strong>, <strong>Kling</strong> o <strong>Seedance</strong>. La IA es solo tu equipo de ejecución; tú eres el Director de Arte que mantiene el control de calidad final."
+      {/* 2. CONTEXT & MANIFESTO */}
+      <section className="border-y border-white/5 bg-zinc-950 py-20">
+        <div className="mx-auto w-full max-w-4xl px-5 text-center">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] mb-4 block">El Enfoque</span>
+          <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-300 serif italic max-w-3xl mx-auto">
+            "La Inteligencia Artificial es ejecución masiva, pero carece de intención. Este programa no enseña a usar software; entrena a Directores de Arte Digital. Aquí, la IA es tu equipo de producción, pero tú mantienes el control estricto de calidad."
           </p>
-        </section>
+        </div>
+      </section>
 
-        {/* Workflow Sections - Imitating The Silent Studio Guide */}
-        <section id="manual-indice" className="space-y-32">
-          <div className="text-center">
-            <span className="text-gold text-xs font-bold uppercase tracking-[0.3em]">El Camino Visual</span>
-            <h2 className="text-5xl md:text-7xl serif italic mt-2 text-white">Protocolo de Operación</h2>
-            <p className="text-gray-400 max-w-xl mx-auto mt-4">Sigue cada paso secuencial para estructurar tus historias y dotar de consistencia a tus producciones de IA.</p>
+      {/* 3. PAIN POINTS / SI ESTÁS CANSADO DE... */}
+      <section className="py-24 px-5 max-w-4xl mx-auto">
+        <div className="bg-[#0e0e0e] border border-white/5 p-8 md:p-16 rounded-sm shadow-2xl">
+          <h3 className="text-3xl md:text-4xl serif italic text-white mb-8 border-b border-white/10 pb-4 text-center">
+            Esta comunidad es para ti si estás cansado de:
+          </h3>
+          <ul className="space-y-6 text-sm md:text-base text-gray-300">
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Ver tutoriales interminables en YouTube sin avanzar un solo paso real</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Crear imágenes plásticas y artificiales que gritan "hecho por IA"</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Lidiar con personajes inconsistentes cuyos rostros cambian en cada toma</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <X className="h-6 w-6 text-red-500 shrink-0 mt-0.5" />
+              <span>Comprar y saltar de herramienta en herramienta sin terminar ningún proyecto</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 4. VALUE PROPOSITION & BENEFITS */}
+      <section className="py-24 bg-zinc-950/50 border-y border-white/5 px-5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Propuesta de Valor</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">¿Qué obtendrás al unirte?</h2>
           </div>
 
-          <div className="space-y-32">
-            {workflowModules.map((mod, index) => (
+          <div className="grid md:grid-cols-2 gap-6 mb-20">
+            {benefits.map((benefit, idx) => (
+              <div key={idx} className="bg-[#0e0e0e] border border-white/5 p-6 rounded-sm flex items-start gap-4 hover:border-gold/30 transition-all duration-300">
+                <CheckCircle className="h-5 w-5 text-gold shrink-0 mt-0.5" />
+                <span className="text-gray-300 text-sm font-light leading-relaxed">{benefit}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Module list with images */}
+          <div className="space-y-24 border-t border-white/5 pt-20">
+            <div className="text-center mb-10">
+              <h3 className="text-3xl serif italic text-white">Módulos de Dirección Audiovisual</h3>
+            </div>
+            
+            {methodModules.map((step) => (
               <div 
-                key={mod.number} 
-                className={`grid lg:grid-cols-2 gap-16 items-center border-t border-white/5 pt-16 ${
-                  index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-                }`}
+                key={step.num} 
+                className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center border-t border-white/5 pt-16"
               >
-                {/* Visual / Image */}
-                <div className={`relative aspect-[3/4] w-full max-w-md mx-auto border border-white/10 overflow-hidden shadow-2xl group ${
-                  index % 2 === 1 ? 'lg:order-last' : ''
-                }`}>
+                <div className="relative aspect-[3/4] w-full max-w-md mx-auto border border-white/10 overflow-hidden shadow-2xl group">
                   <Image 
-                    src={mod.image} 
-                    alt={mod.title} 
+                    src={step.image} 
+                    alt={step.title} 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale-[10%] group-hover:grayscale-0"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale-[15%] group-hover:grayscale-0"
                   />
-                  <div className="absolute top-4 left-4 bg-black/80 border border-gold/40 text-gold text-[10px] font-bold tracking-widest px-3 py-1 uppercase">
-                    Módulo {mod.number}
+                  <div className="absolute top-4 left-4 bg-black/85 border border-gold/30 text-gold text-[10px] font-bold tracking-widest px-3 py-1.5 uppercase">
+                    Módulo {step.num}
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="space-y-6">
-                  <span className="text-gold font-bold text-xs tracking-[0.3em] uppercase block">
-                    {mod.label}
-                  </span>
-                  <h3 className="text-4xl md:text-5xl serif italic text-white">
-                    {mod.title}
-                  </h3>
-                  <p className="text-lg text-gray-300 leading-relaxed font-light">
-                    {mod.description}
-                  </p>
-                  
-                  <div className="space-y-4 pt-4">
-                    {mod.steps.map((step, idx) => (
-                      <div key={idx} className="flex items-start gap-4 text-sm text-gray-400">
-                        <span className="step-number-circle mt-1">{idx + 1}</span>
-                        <p dangerouslySetInnerHTML={{ __html: step }} className="leading-relaxed" />
-                      </div>
-                    ))}
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5">
+                      {step.icon}
+                    </div>
+                    <span className="text-gold text-xs font-bold uppercase tracking-widest">Paso {step.num}</span>
                   </div>
+                  <h3 className="text-3xl md:text-4xl serif italic text-white font-normal leading-tight">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-300 text-sm md:text-base font-light leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Compatibility banner */}
-        <section className="bg-gradient-to-r from-zinc-950 via-[#0d0d0d] to-zinc-950 border border-gold/20 p-8 md:p-16 text-center space-y-6 relative overflow-hidden rounded-sm">
-          <div className="absolute top-0 right-0 p-4 opacity-5 text-9xl text-gold font-black rotate-12 pointer-events-none">Ecosistema</div>
-          <Sparkles className="mx-auto text-gold h-10 w-10 animate-pulse" />
-          <h3 className="text-3xl md:text-4xl serif italic text-white">Compatibilidad con Todo el Ecosistema IA</h3>
-          <p className="text-gray-300 max-w-2xl mx-auto text-sm md:text-base font-light leading-relaxed">
-            ¿Te preguntas si este método es exclusivo de <strong>Flow</strong>? La verdad es que te funciona en todas las herramientas del mercado: <strong>Magnific, Freepik, Higgsfield</strong>, o modelos avanzados de video como <strong>Kling 3.0</strong> o <strong>Seedance 2.0</strong>. La lógica es universal. Puedes usar a tu asistente favorito (ChatGPT, Claude, DeepSeek, Gemini) para adaptar el prompt final al modelo que desees utilizar.
-          </p>
-        </section>
+      {/* 5. SOCIAL PROOF (TESTIMONIALS) */}
+      <section className="py-24 px-5 max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Prueba Social</span>
+          <h2 className="text-4xl md:text-5xl serif italic text-white">Testimonios de Alumnos</h2>
+        </div>
 
-        {/* Creative Workout / Exercises */}
-        <section id="ejercicios" className="space-y-12">
-          <div className="text-center">
-            <span className="text-gold text-xs font-bold uppercase tracking-[0.3em]">El Músculo Creativo</span>
-            <h2 className="text-4xl md:text-6xl serif italic text-white mt-2">10 Ejercicios Diarios</h2>
-            <p className="text-gray-400 max-w-xl mx-auto mt-4">
-              Integra estos ejercicios en tu rutina para entrenar tu ojo y soltar tu mano creativa. No hace falta que los hagas todos de golpe, lo importante es la constancia.
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((t, idx) => (
+            <div key={idx} className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
+              <p className="text-sm text-gray-300 font-light leading-relaxed italic serif mb-6">
+                "{t.quote}"
+              </p>
+              <div>
+                <span className="text-white font-bold text-sm block">{t.name}</span>
+                <span className="text-gold text-xs font-light">{t.role}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. FAQ SECTION */}
+      <section className="py-24 bg-zinc-950/50 border-t border-white/5 px-5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Respuestas</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">Preguntas Frecuentes</h2>
+          </div>
+
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            {faqs.map((faq, idx) => (
+              <AccordionItem 
+                key={idx} 
+                value={`item-${idx}`} 
+                className="border border-white/5 bg-[#0e0e0e] px-6 rounded-sm"
+              >
+                <AccordionTrigger className="text-white hover:text-gold hover:no-underline font-serif text-lg py-5 text-left">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-400 text-sm leading-relaxed pb-6 pt-2">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* 7. CLOSING CTA */}
+      <section className="bg-[#0e0e0e] border-t border-white/5 py-24 px-5 text-center">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mx-auto">
+            <Lock className="h-3 w-3" /> Membresía con Garantía de Precio Fundador
+          </div>
+          
+          <h2 className="text-4xl md:text-6xl serif italic text-white font-light">
+            ⚡ Únete hoy por <span className="not-italic font-bold text-gold">$9/mes</span>
+          </h2>
+          
+          <div className="space-y-4 max-w-xl mx-auto text-sm text-gray-300 font-light">
+            <p className="flex items-center justify-center gap-2">
+              <Check className="h-4 w-4 text-gold" />
+              <span>Las primeras 100 personas mantienen su precio para siempre mientras sigan dentro</span>
+            </p>
+            <p className="flex items-center justify-center gap-2">
+              <TrendingUp className="h-4 w-4 text-gold" />
+              <span>Cancela cuando quieras de forma sencilla con un solo clic</span>
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="w-full space-y-4">
-              {exercises.map((ex, idx) => (
-                <AccordionItem 
-                  key={idx} 
-                  value={`item-${idx}`} 
-                  className="border border-white/5 bg-[#0e0e0e] px-6 rounded-sm"
-                >
-                  <AccordionTrigger className="text-white hover:text-gold hover:no-underline font-serif text-lg py-5 text-left">
-                    {ex.title}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-400 text-sm leading-relaxed pb-6 pt-2">
-                    {ex.content}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </section>
-
-        {/* Community Call to Action */}
-        <section className="text-center py-20 bg-zinc-950 border border-white/10 space-y-8 rounded-sm">
-          <Users className="mx-auto text-gold h-12 w-12" />
-          <h2 className="text-4xl md:text-6xl serif italic text-white">Únete a We Are The Silent</h2>
-          <p className="text-gray-300 max-w-xl mx-auto text-sm md:text-base font-light leading-relaxed">
-            De ahora en adelante seguiremos creando diferentes tipos de videos utilizando exactamente este mismo método. Ve ahora mismo a la comunidad, cuéntanos cuál es tu nicho y comparte tus creaciones para recibir feedback colectivo de la comunidad.
-          </p>
-          <div className="pt-4">
-            <Button asChild size="lg" className="bg-gold text-black font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black py-6 px-10 transition-all text-xs">
-              <a href="https://www.skool.com/we-are-the-silent-ia-8224/about" target="_blank" rel="noopener noreferrer">
-                Entrar a la Comunidad
+          <div className="pt-6">
+            <Button 
+              asChild 
+              size="lg" 
+              className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
+            >
+              <a href={SKOOL_LINK} target="_blank" rel="noopener noreferrer">
+                Acceder a la Comunidad & Comenzar Ahora
               </a>
             </Button>
           </div>
-        </section>
-
-      </main>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="py-24 bg-[#050505] px-8 border-t border-white/5 text-center text-[10px] uppercase tracking-[0.3em] text-gray-600">
-        &copy; 2026 WE ARE THE SILENT | COMUNIDAD GLOBAL DE CREADORES DE IA
+      <footer className="py-20 bg-[#050505] px-8 border-t border-white/5 text-center text-[10px] uppercase tracking-[0.3em] text-gray-600">
+        &copy; 2026 WE ARE THE SILENT | TODOS LOS DERECHOS RESERVADOS
       </footer>
 
     </div>
