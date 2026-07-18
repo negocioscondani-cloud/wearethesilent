@@ -28,7 +28,7 @@ export default function Home() {
             We Are The Silent
           </span>
           <h1 className="text-4xl md:text-7xl font-light leading-tight tracking-tight italic text-white">
-            Domina la imagen y el video con IA. <br />
+            Domina la creación con IA. <br />
             <span className="not-italic font-bold text-gold">Crea anuncios, contenido y películas.</span>
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed serif italic">
