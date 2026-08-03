@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/language-context';
 import { 
   Sparkles, 
   BookOpen, 
@@ -12,7 +13,57 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+const TRANSLATIONS = {
+  es: {
+    hero: {
+      preTitle: "We Are The Silent",
+      titleStart: "Domina la creación con IA.",
+      titleEnd: "Crea anuncios, contenido y películas.",
+      description: "Somos una academia de formación en IA y un estudio de producción audiovisual digital. Aprende nuestro método universal de dirección en la comunidad por solo $9/mes o delega en nosotros la creación de comerciales premium fotorrealistas para tu marca."
+    },
+    card1: {
+      badge: "Academia · $9/mes",
+      step: "Camino 01",
+      title: "Aprender en la Comunidad",
+      desc: "Únete a la academia en Skool para acceder a guías detalladas, prompts con intención, hojas JSON de consistencia de personajes y feedback de directores de arte para construir tu portafolio.",
+      btn: "Quiero Aprender"
+    },
+    card2: {
+      badge: "Estudio · A Medida",
+      step: "Camino 02",
+      title: "Crear un Video para mi Marca",
+      desc: "Delega la producción audiovisual en nuestro estudio. Creamos anuncios publicitarios, videos de producto de alta fidelidad y cortometrajes con acabado cinematográfico real.",
+      btn: "Quiero un Video"
+    }
+  },
+  en: {
+    hero: {
+      preTitle: "We Are The Silent",
+      titleStart: "Master AI creation.",
+      titleEnd: "Create ads, content, and films.",
+      description: "We are an AI training academy and a digital video production studio. Learn our universal direction method in the community for only $9/mo, or delegate the creation of premium photorealistic commercials for your brand to us."
+    },
+    card1: {
+      badge: "Academy · $9/mo",
+      step: "Path 01",
+      title: "Learn in the Community",
+      desc: "Join the academy on Skool to access detailed guides, prompts with intention, character consistency JSON sheets, and feedback from art directors to build your portfolio.",
+      btn: "I Want to Learn"
+    },
+    card2: {
+      badge: "Studio · Custom",
+      step: "Path 02",
+      title: "Create a Video for My Brand",
+      desc: "Delegate the video production to our studio. We create advertising ads, high-fidelity product videos, and short films with real cinematic finishes.",
+      btn: "I Want a Video"
+    }
+  }
+};
+
 export default function Home() {
+  const { language } = useLanguage();
+  const text = language === 'es' ? TRANSLATIONS.es : TRANSLATIONS.en;
+
   return (
     <div className="silent-guide-body min-h-[92vh] bg-[#0a0a0a] text-[#f9f7f2] font-body antialiased flex flex-col justify-center items-center px-5 relative overflow-hidden">
       
@@ -25,14 +76,14 @@ export default function Home() {
         {/* Header Block */}
         <div className="text-center space-y-6 max-w-3xl mb-16">
           <span className="text-gold font-bold text-xs uppercase tracking-[0.4em] mb-2 block animate-pulse">
-            We Are The Silent
+            {text.hero.preTitle}
           </span>
           <h1 className="text-4xl md:text-7xl font-light leading-tight tracking-tight italic text-white">
-            Domina la creación con IA. <br />
-            <span className="not-italic font-bold text-gold">Crea anuncios, contenido y películas.</span>
+            {text.hero.titleStart} <br />
+            <span className="not-italic font-bold text-gold">{text.hero.titleEnd}</span>
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed serif italic">
-            Somos una <strong>academia de formación en IA</strong> y un <strong>estudio de producción audiovisual digital</strong>. Aprende nuestro método universal de dirección en la comunidad por solo $9/mes o delega en nosotros la creación de comerciales premium fotorrealistas para tu marca.
+            {text.hero.description}
           </p>
         </div>
 
@@ -58,15 +109,15 @@ export default function Home() {
                   <BookOpen className="h-5 w-5 text-gold" />
                 </div>
                 <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-sm border border-gold/20">
-                  Academia · $9/mes
+                  {text.card1.badge}
                 </span>
               </div>
-              <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">Camino 01</span>
+              <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">{text.card1.step}</span>
               <h2 className="text-3xl font-serif italic text-white leading-tight">
-                Aprender en la Comunidad
+                {text.card1.title}
               </h2>
               <p className="text-gray-400 text-sm font-light leading-relaxed">
-                Únete a la academia en Skool para acceder a guías detalladas, prompts con intención, hojas JSON de consistencia de personajes y feedback de directores de arte para construir tu portafolio.
+                {text.card1.desc}
               </p>
             </div>
 
@@ -76,7 +127,7 @@ export default function Home() {
                 className="w-full bg-transparent hover:bg-gold border border-white/20 hover:border-gold text-[#f9f7f2] hover:text-black font-bold uppercase tracking-widest text-xs py-6 rounded-none transition-all duration-300 group/btn"
               >
                 <Link href="/we-are-the-silent" className="flex items-center justify-center gap-2">
-                  Quiero Aprender <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                  {text.card1.btn} <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -101,15 +152,15 @@ export default function Home() {
                   <Film className="h-5 w-5 text-gold" />
                 </div>
                 <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-sm border border-gold/20">
-                  Estudio · A Medida
+                  {text.card2.badge}
                 </span>
               </div>
-              <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">Camino 02</span>
+              <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">{text.card2.step}</span>
               <h2 className="text-3xl font-serif italic text-white leading-tight">
-                Crear un Video para mi Marca
+                {text.card2.title}
               </h2>
               <p className="text-gray-400 text-sm font-light leading-relaxed">
-                Delega la producción audiovisual en nuestro estudio. Creamos anuncios publicitarios, videos de producto de alta fidelidad y cortometrajes con acabado cinematográfico real.
+                {text.card2.desc}
               </p>
             </div>
 
@@ -119,7 +170,7 @@ export default function Home() {
                 className="w-full bg-gold hover:bg-white text-black font-bold uppercase tracking-widest text-xs py-6 rounded-none transition-all duration-300 shadow-[0_0_20px_rgba(197,160,89,0.25)] group/btn"
               >
                 <Link href="/crear-video" className="flex items-center justify-center gap-2">
-                  Quiero un Video <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                  {text.card2.btn} <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                 </Link>
               </Button>
             </div>

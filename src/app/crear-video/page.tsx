@@ -3,19 +3,17 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/language-context';
 import { 
   Sparkles, 
-  CheckCircle, 
   MessageCircle,
   Zap,
   Eye,
   CameraOff,
   Clock,
-  Shirt,
-  DollarSign,
+  Lock,
   TrendingUp,
-  Check,
-  Lock
+  Check
 } from 'lucide-react';
 import {
   Accordion,
@@ -26,83 +24,220 @@ import {
 
 const WHATSAPP_LINK = "https://wa.me/50664194111?text=Hola!%20Me%20interesa%20contratar%20el%20servicio%20de%20creaci%C3%B3n%20de%20video%20para%20mi%20marca.";
 
+const TRANSLATIONS = {
+  es: {
+    hero: {
+      tag: "Estudio de Producción & Dirección de Cine Digital",
+      titleStart: "🎬 Transformamos tu producto",
+      titleEnd: "en un comercial de cine con IA.",
+      description: "Producción de video de alto impacto para marcas y agencias. Sin costes de logística física, con consistencia absoluta y acabado editorial de alta gama.",
+      btn: "Solicitar Cotización de Video"
+    },
+    manifesto: {
+      tag: "El Estándar",
+      quote: "\"No creamos imágenes aleatorias que parecen plásticas. Diseñamos comerciales con criterio estético de agencia tradicional, utilizando la inteligencia artificial de última generación como nuestro set de producción ilimitado.\""
+    },
+    benefits: {
+      tag: "Beneficios",
+      title: "¿Por qué producir con nosotros?",
+      items: [
+        {
+          title: "Logística Física Cero",
+          desc: "Olvídate de alquilar estudios fotográficos, contratar modelos, iluminación o fotógrafos. Reducimos la fricción física al 100% mediante entornos digitales de alta fidelidad."
+        },
+        {
+          title: "Estética Editorial Premium",
+          desc: "Tu producto o servicio envuelto bajo los códigos estéticos de marcas de alta costura y de lujo. Controlamos cada poro, reflejo y sombra para lograr un impacto visual inmediato."
+        },
+        {
+          title: "Consistencia de Marca Absoluta",
+          desc: "Nuestros algoritmos integran tu logotipo, etiquetas y formas corporativas de forma fidedigna. Garantizamos que el producto en el video sea reconocible y respete tu identidad."
+        },
+        {
+          title: "Velocidad de Entrega Excepcional",
+          desc: "Mientras que una producción tradicional toma de 3 a 6 semanas, nosotros entregamos comerciales cinematográficos listos en días, permitiendo iterar campañas ágilmente."
+        }
+      ]
+    },
+    portfolio: {
+      tag: "Portafolio",
+      title: "Proyectos Realizados",
+      items: [
+        {
+          title: 'Comercial CGI de Botella Premium',
+          desc: 'Integración fidedigna de producto con fondo y efectos de fluidos avanzados.'
+        },
+        {
+          title: 'Campaña de Cosmética de Hiperfidelidad',
+          desc: 'Textura de producto limpia, sombras suaves e iluminación cenital de estudio de moda.'
+        },
+        {
+          title: 'Producción de Alta Relojería en Arri Alexa',
+          desc: 'Simulación digital de metales, cristales y reflejos macro con calidad cinematográfica.'
+        },
+        {
+          title: 'Comercial Narrativo con Actor Digital',
+          desc: 'Consistencia de marca absoluta utilizando personajes estables en múltiples escenas.'
+        }
+      ]
+    },
+    social: {
+      tag: "Resultados",
+      title: "Casos de Éxito",
+      items: [
+        {
+          name: "Valeria Santillán",
+          role: "Directora de eCommerce - Oura Perfumes",
+          quote: "Estábamos escépticos sobre el uso de IA para un producto físico, pero el resultado nos dejó sin palabras. Integraron nuestra botella a la perfección en un comercial de agua en movimiento. La tasa de conversión de nuestros anuncios subió un 35% y nos costó una fracción de una sesión tradicional."
+        },
+        {
+          name: "Ignacio Vega",
+          role: "Fundador - Nova Chronos",
+          quote: "Para relojes de alta gama, el detalle macro es clave. El equipo logró simular los acabados metálicos y el movimiento de las manecillas con una fidelidad que solo se consigue en producciones de seis cifras. Ya no contratamos sets físicos para nuestros lanzamientos."
+        }
+      ]
+    },
+    faq: {
+      tag: "Respuestas",
+      title: "Preguntas Frecuentes",
+      items: [
+        {
+          q: "¿Cómo garantizan que mi producto real se vea idéntico en el video?",
+          a: "Utilizamos el protocolo 'Visual Heist' que extrae la geometría, colores e identidad de tu producto real a partir de fotos de referencia de alta resolución que nos proporcionas. Luego, la IA integra y proyecta el logo, etiquetas y envase sin distorsionarlos."
+        },
+        {
+          q: "¿Cuáles son los tiempos de entrega de un comercial terminado?",
+          a: "El plazo de entrega habitual oscila entre 5 y 10 días laborables, dependiendo de la complejidad narrativa de la campaña y del número de escenas requeridas."
+        },
+        {
+          q: "¿Qué formatos y resoluciones de video entregan?",
+          a: "Entregamos archivos de video en resolución Full HD (1080p) o superior, adaptados en formato vertical (9:16) ideal para Reels, TikToks y Stories, o formato horizontal (16:9) para campañas web, YouTube y televisión."
+        },
+        {
+          q: "¿Cómo se gestiona el proceso de revisiones y cambios?",
+          a: "Cada proyecto de producción incluye dos rondas de revisión. Evaluamos la narrativa sobre el guión antes de generar las animaciones, y luego ajustamos detalles de color, música y transiciones en la fase final de edición."
+        }
+      ]
+    },
+    closing: {
+      badge: "Agenda de Producción Abierta",
+      title: "¿Listo para llevar tu marca al nivel cinematográfico?",
+      desc: "Haz clic abajo para chatear con nosotros por WhatsApp. Cuéntanos sobre tu producto y te enviaremos una propuesta visual adaptada a tu nicho en menos de 24 horas.",
+      btn: "Hablar por WhatsApp & Cotizar"
+    }
+  },
+  en: {
+    hero: {
+      tag: "Production Studio & Digital Film Direction",
+      titleStart: "🎬 We transform your product",
+      titleEnd: "into a cinema ad with AI.",
+      description: "High-impact video production for brands and agencies. No physical logistics costs, with absolute consistency and a high-end editorial finish.",
+      btn: "Request Video Quote"
+    },
+    manifesto: {
+      tag: "The Standard",
+      quote: "\"We don't create random images that look plastic. We design commercials with traditional agency aesthetic criteria, using state-of-the-art artificial intelligence as our unlimited production set.\""
+    },
+    benefits: {
+      tag: "Benefits",
+      title: "Why produce with us?",
+      items: [
+        {
+          title: "Zero Physical Logistics",
+          desc: "Forget about renting photo studios, hiring models, lighting, or photographers. We reduce physical friction to 100% through high-fidelity digital environments."
+        },
+        {
+          title: "Premium Editorial Aesthetics",
+          desc: "Your product or service wrapped in the aesthetic codes of haute couture and luxury brands. We control every pore, reflection, and shadow for immediate visual impact."
+        },
+        {
+          title: "Absolute Brand Consistency",
+          desc: "Our algorithms integrate your logo, labels, and corporate shapes faithfully. We guarantee that the product in the video is recognizable and respects your identity."
+        },
+        {
+          title: "Exceptional Delivery Speed",
+          desc: "While a traditional production takes 3 to 6 weeks, we deliver ready-to-run cinematic commercials in days, allowing you to iterate campaigns agilely."
+        }
+      ]
+    },
+    portfolio: {
+      tag: "Portfolio",
+      title: "Completed Projects",
+      items: [
+        {
+          title: 'Premium Bottle CGI Commercial',
+          desc: 'Faithful product integration with background and advanced fluid effects.'
+        },
+        {
+          title: 'Hyperfidelity Cosmetics Campaign',
+          desc: 'Clean product texture, soft shadows, and overhead fashion studio lighting.'
+        },
+        {
+          title: 'High Watchmaking Production on Arri Alexa',
+          desc: 'Digital simulation of metals, crystals, and macro reflections with cinematic quality.'
+        },
+        {
+          title: 'Narrative Commercial with Digital Actor',
+          desc: 'Absolute brand consistency using stable characters across multiple scenes.'
+        }
+      ]
+    },
+    social: {
+      tag: "Results",
+      title: "Success Stories",
+      items: [
+        {
+          name: "Valeria Santillán",
+          role: "eCommerce Director - Oura Perfumes",
+          quote: "We were skeptical about using AI for a physical product, but the result left us speechless. They integrated our bottle perfectly into a moving water commercial. Our ad conversion rate went up by 35% and cost us a fraction of a traditional session."
+        },
+        {
+          name: "Ignacio Vega",
+          role: "Founder - Nova Chronos",
+          quote: "For high-end watches, macro detail is key. The team managed to simulate the metallic finishes and the movement of the hands with a fidelity that is only achieved in six-figure productions. We no longer rent physical sets for our launches."
+        }
+      ]
+    },
+    faq: {
+      tag: "Answers",
+      title: "Frequently Asked Questions",
+      items: [
+        {
+          q: "How do you guarantee my real product looks identical in the video?",
+          a: "We use the 'Visual Heist' protocol which extracts the geometry, colors, and identity of your real product from high-resolution reference photos you provide us. Then, the AI integrates and projects the logo, labels, and packaging without distorting them."
+        },
+        {
+          q: "What are the typical delivery times for a completed commercial?",
+          a: "The usual delivery time ranges between 5 and 10 business days, depending on the narrative complexity of the campaign and the number of scenes required."
+        },
+        {
+          q: "What video formats and resolutions do you deliver?",
+          a: "We deliver video files in Full HD (1080p) resolution or higher, adapted in vertical format (9:16) ideal for Reels, TikToks, and Stories, or horizontal format (16:9) for web campaigns, YouTube, and television."
+        },
+        {
+          q: "How is the revision and change process managed?",
+          a: "Each production project includes two rounds of revision. We evaluate the narrative on the script before generating the animations, and then adjust color, music, and transitions details in the final editing phase."
+        }
+      ]
+    },
+    closing: {
+      badge: "Production Calendar Open",
+      title: "Ready to take your brand to the cinematic level?",
+      desc: "Click below to chat with us on WhatsApp. Tell us about your product and we will send you a visual proposal adapted to your niche in less than 24 hours.",
+      btn: "Talk on WhatsApp & Get Quote"
+    }
+  }
+};
+
 export default function CrearVideoPage() {
-  const portfolioShowcase = [
-    {
-      title: 'Comercial CGI de Botella Premium',
-      desc: 'Integración fidedigna de producto con fondo y efectos de fluidos avanzados.',
-      image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif'
-    },
-    {
-      title: 'Campaña de Cosmética de Hiperfidelidad',
-      desc: 'Textura de producto limpia, sombras suaves e iluminación cenital de estudio de moda.',
-      image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-surgical-hyperfidelity-arri-ale__29271-scaled.avif'
-    },
-    {
-      title: 'Producción de Alta Relojería en Arri Alexa',
-      desc: 'Simulación digital de metales, cristales y reflejos macro con calidad cinematográfica.',
-      image: 'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-masterpiece-fidelity-phase-one-__45394.avif'
-    },
-    {
-      title: 'Comercial Narrativo con Actor Digital',
-      desc: 'Consistencia de marca absoluta utilizando personajes estables en múltiples escenas.',
-      image: 'http://studioboom.online/wp-content/uploads/2026/02/freepik__un-comercial-en-donde-una-mojer-hermosa-latina-com__65122.avif'
-    }
-  ];
+  const { language } = useLanguage();
+  const text = language === 'es' ? TRANSLATIONS.es : TRANSLATIONS.en;
 
-  const benefits = [
-    {
-      icon: <CameraOff className="h-6 w-6 text-gold" />,
-      title: "Logística Física Cero",
-      desc: "Olvídate de alquilar estudios fotográficos, contratar modelos, iluminación o fotógrafos. Reducimos la fricción física al 100% mediante entornos digitales de alta fidelidad."
-    },
-    {
-      icon: <Sparkles className="h-6 w-6 text-gold" />,
-      title: "Estética Editorial Premium",
-      desc: "Tu producto o servicio envuelto bajo los códigos estéticos de marcas de alta costura y de lujo. Controlamos cada poro, reflejo y sombra para lograr un impacto visual inmediato."
-    },
-    {
-      icon: <Zap className="h-6 w-6 text-gold" />,
-      title: "Consistencia de Marca Absoluta",
-      desc: "Nuestros algoritmos integran tu logotipo, etiquetas y formas corporativas de forma fidedigna. Garantizamos que el producto en el video sea reconocible y respete tu identidad."
-    },
-    {
-      icon: <Clock className="h-6 w-6 text-gold" />,
-      title: "Velocidad de Entrega Excepcional",
-      desc: "Mientras que una producción tradicional toma de 3 a 6 semanas, nosotros entregamos comerciales cinematográficos listos en días, permitiendo iterar campañas ágilmente."
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Valeria Santillán",
-      role: "Directora de eCommerce - Oura Perfumes",
-      quote: "Estábamos escépticos sobre el uso de IA para un producto físico, pero el resultado nos dejó sin palabras. Integraron nuestra botella a la perfección en un comercial de agua en movimiento. La tasa de conversión de nuestros anuncios subió un 35% y nos costó una fracción de una sesión tradicional."
-    },
-    {
-      name: "Ignacio Vega",
-      role: "Fundador - Nova Chronos",
-      quote: "Para relojes de alta gama, el detalle macro es clave. El equipo logró simular los acabados metálicos y el movimiento de las manecillas con una fidelidad que solo se consigue en producciones de seis cifras. Ya no contratamos sets físicos para nuestros lanzamientos."
-    }
-  ];
-
-  const faqs = [
-    {
-      q: "¿Cómo garantizan que mi producto real se vea idéntico en el video?",
-      a: "Utilizamos el protocolo 'Visual Heist' que extrae la geometría, colores e identidad de tu producto real a partir de fotos de referencia de alta resolución que nos proporcionas. Luego, la IA integra y proyecta el logo, etiquetas y envase sin distorsionarlos."
-    },
-    {
-      q: "¿Cuáles son los tiempos de entrega de un comercial terminado?",
-      a: "El plazo de entrega habitual oscila entre 5 y 10 días laborables, dependiendo de la complejidad narrativa de la campaña y del número de escenas requeridas."
-    },
-    {
-      q: "¿Qué formatos y resoluciones de video entregan?",
-      a: "Entregamos archivos de video en resolución Full HD (1080p) o superior, adaptados en formato vertical (9:16) ideal para Reels, TikToks y Stories, o formato horizontal (16:9) para campañas web, YouTube y televisión."
-    },
-    {
-      q: "¿Cómo se gestiona el proceso de revisiones y cambios?",
-      a: "Cada proyecto de producción incluye dos rondas de revisión. Evaluamos la narrativa sobre el guión antes de generar las animaciones, y luego ajustamos detalles de color, música y transiciones en la fase final de edición."
-    }
+  const benefitsIcons = [
+    <CameraOff key="camera" className="h-6 w-6 text-gold" />,
+    <Sparkles key="sparkles" className="h-6 w-6 text-gold" />,
+    <Zap key="zap" className="h-6 w-6 text-gold" />,
+    <Clock key="clock" className="h-6 w-6 text-gold" />
   ];
 
   return (
@@ -114,16 +249,16 @@ export default function CrearVideoPage() {
         
         <div className="relative z-10 mx-auto w-full max-w-4xl space-y-6 pt-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mb-4 animate-pulse">
-            Estudio de Producción & Dirección de Cine Digital
+            {text.hero.tag}
           </div>
           
           <h1 className="text-4xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight italic text-white">
-            🎬 Transformamos tu producto <br />
-            <span className="not-italic font-bold text-gold">en un comercial de cine con IA.</span>
+            {text.hero.titleStart} <br />
+            <span className="not-italic font-bold text-gold">{text.hero.titleEnd}</span>
           </h1>
           
           <p className="mt-6 text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed serif italic">
-            Producción de video de alto impacto para marcas y agencias. Sin costes de logística física, con consistencia absoluta y acabado editorial de alta gama.
+            {text.hero.description}
           </p>
           
           <div className="pt-8">
@@ -133,7 +268,7 @@ export default function CrearVideoPage() {
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" /> Solicitar Cotización de Video
+                <MessageCircle className="h-4 w-4" /> {text.hero.btn}
               </a>
             </Button>
           </div>
@@ -143,9 +278,9 @@ export default function CrearVideoPage() {
       {/* 2. CONTEXT & MANIFESTO */}
       <section className="border-y border-white/5 bg-zinc-950 py-20">
         <div className="mx-auto w-full max-w-4xl px-5 text-center">
-          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] mb-4 block">El Estándar</span>
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] mb-4 block">{text.manifesto.tag}</span>
           <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-300 serif italic max-w-3xl mx-auto">
-            "No creamos imágenes aleatorias que parecen plásticas. Diseñamos comerciales con criterio estético de agencia tradicional, utilizando la inteligencia artificial de última generación como nuestro set de producción ilimitado."
+            {text.manifesto.quote}
           </p>
         </div>
       </section>
@@ -153,15 +288,15 @@ export default function CrearVideoPage() {
       {/* 3. VALUE PROPOSITION & BENEFITS */}
       <section className="py-24 px-5 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Beneficios</span>
-          <h2 className="text-4xl md:text-5xl serif italic text-white">¿Por qué producir con nosotros?</h2>
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">{text.benefits.tag}</span>
+          <h2 className="text-4xl md:text-5xl serif italic text-white">{text.benefits.title}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10">
-          {benefits.map((b, idx) => (
+          {text.benefits.items.map((b: any, idx: number) => (
             <div key={idx} className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col gap-4">
               <div className="h-12 w-12 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5 shrink-0">
-                {b.icon}
+                {benefitsIcons[idx]}
               </div>
               <h3 className="text-xl font-serif italic text-white">{b.title}</h3>
               <p className="text-gray-400 text-sm font-light leading-relaxed">{b.desc}</p>
@@ -174,16 +309,16 @@ export default function CrearVideoPage() {
       <section className="py-24 bg-zinc-950/50 border-y border-white/5 px-5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Portafolio</span>
-            <h2 className="text-4xl md:text-5xl serif italic text-white">Proyectos Realizados</h2>
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">{text.portfolio.tag}</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">{text.portfolio.title}</h2>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-8">
-            {portfolioShowcase.map((p, idx) => (
+            {text.portfolio.items.map((p: any, idx: number) => (
               <div key={idx} className="group overflow-hidden border border-white/10 rounded-sm bg-zinc-950 flex flex-col">
                 <div className="relative aspect-[3/2] w-full overflow-hidden">
                   <Image 
-                    src={p.image} 
+                    src={portfolioImagesUrls[idx]} 
                     alt={p.title} 
                     fill 
                     className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale-[10%] group-hover:grayscale-0"
@@ -202,12 +337,12 @@ export default function CrearVideoPage() {
       {/* 5. SOCIAL PROOF (TESTIMONIALS) */}
       <section className="py-24 px-5 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Resultados</span>
-          <h2 className="text-4xl md:text-5xl serif italic text-white">Casos de Éxito</h2>
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">{text.social.tag}</span>
+          <h2 className="text-4xl md:text-5xl serif italic text-white">{text.social.title}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {testimonials.map((t, idx) => (
+          {text.social.items.map((t: any, idx: number) => (
             <div key={idx} className="bg-[#0e0e0e] border border-white/5 p-8 rounded-sm hover:border-gold/30 transition-all duration-300 flex flex-col justify-between">
               <p className="text-sm text-gray-300 font-light leading-relaxed italic serif mb-6">
                 "{t.quote}"
@@ -225,12 +360,12 @@ export default function CrearVideoPage() {
       <section className="py-24 bg-zinc-950/50 border-t border-white/5 px-5">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">Respuestas</span>
-            <h2 className="text-4xl md:text-5xl serif italic text-white">Preguntas Frecuentes</h2>
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.3em] block mb-2">{text.faq.tag}</span>
+            <h2 className="text-4xl md:text-5xl serif italic text-white">{text.faq.title}</h2>
           </div>
 
           <Accordion type="single" collapsible className="w-full space-y-4">
-            {faqs.map((faq, idx) => (
+            {text.faq.items.map((faq: any, idx: number) => (
               <AccordionItem 
                 key={idx} 
                 value={`item-${idx}`} 
@@ -252,16 +387,15 @@ export default function CrearVideoPage() {
       <section className="bg-[#0e0e0e] border-t border-white/5 py-24 px-5 text-center">
         <div className="max-w-3xl mx-auto space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] font-bold tracking-widest uppercase mx-auto">
-            <Lock className="h-3 w-3" /> Agenda de Producción Abierta
+            <Lock className="h-3 w-3" /> {text.closing.badge}
           </div>
           
           <h2 className="text-4xl md:text-6xl serif italic text-white font-light">
-            ¿Listo para llevar tu marca <br />
-            <span className="not-italic font-bold text-gold">al nivel cinematográfico?</span>
+            {text.closing.title}
           </h2>
           
           <p className="text-gray-300 max-w-xl mx-auto text-sm md:text-base font-light leading-relaxed serif italic pt-4">
-            Haz clic abajo para chatear con nosotros por WhatsApp. Cuéntanos sobre tu producto y te enviaremos una propuesta visual adaptada a tu nicho en menos de 24 horas.
+            {text.closing.desc}
           </p>
           
           <div className="pt-6">
@@ -271,7 +405,7 @@ export default function CrearVideoPage() {
               className="bg-gold text-black font-bold uppercase tracking-widest hover:bg-white hover:text-black py-7 px-10 rounded-sm text-xs transition-all shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:shadow-white/20"
             >
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" /> Hablar por WhatsApp & Cotizar
+                <MessageCircle className="h-4 w-4" /> {text.closing.btn}
               </a>
             </Button>
           </div>
@@ -280,9 +414,16 @@ export default function CrearVideoPage() {
 
       {/* Footer */}
       <footer className="py-20 bg-[#050505] px-8 border-t border-white/5 text-center text-[10px] uppercase tracking-[0.3em] text-gray-600">
-        &copy; 2026 WE ARE THE SILENT | TODOS LOS DERECHOS RESERVADOS
+        &copy; 2026 WE ARE THE SILENT | {language === 'es' ? 'TODOS LOS DERECHOS RESERVADOS' : 'ALL RIGHTS RESERVED'}
       </footer>
 
     </div>
   );
 }
+
+const portfolioImagesUrls = [
+  'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif',
+  'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-surgical-hyperfidelity-arri-ale__29271-scaled.avif',
+  'http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-masterpiece-fidelity-phase-one-__45394.avif',
+  'http://studioboom.online/wp-content/uploads/2026/02/freepik__un-comercial-en-donde-una-mojer-hermosa-latina-com__65122.avif'
+];
