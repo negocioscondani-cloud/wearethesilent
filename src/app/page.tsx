@@ -32,7 +32,7 @@ export default function Home() {
             <span className="not-italic font-bold text-gold">Crea anuncios, contenido y películas.</span>
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed serif italic">
-            Elige tu camino: aprende el método universal para liderar tu propia producción visual o delega la dirección creativa de tu marca en nuestro estudio de producción premium.
+            Somos una <strong>academia de formación en IA</strong> y un <strong>estudio de producción audiovisual digital</strong>. Aprende nuestro método universal de dirección en la comunidad por solo $9/mes o delega en nosotros la creación de comerciales premium fotorrealistas para tu marca.
           </p>
         </div>
 
@@ -53,15 +53,20 @@ export default function Home() {
             </div>
 
             <div className="relative z-10 space-y-4">
-              <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5 mb-6">
-                <BookOpen className="h-5 w-5 text-gold" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5">
+                  <BookOpen className="h-5 w-5 text-gold" />
+                </div>
+                <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-sm border border-gold/20">
+                  Academia · $9/mes
+                </span>
               </div>
               <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">Camino 01</span>
               <h2 className="text-3xl font-serif italic text-white leading-tight">
                 Aprender en la Comunidad
               </h2>
               <p className="text-gray-400 text-sm font-light leading-relaxed">
-                Entra a nuestra academia y domina la consistencia de personajes, iluminación cinematográfica, prompts con intención y la edición de piezas premium para tu portafolio.
+                Únete a la academia en Skool para acceder a guías detalladas, prompts con intención, hojas JSON de consistencia de personajes y feedback de directores de arte para construir tu portafolio.
               </p>
             </div>
 
@@ -91,15 +96,20 @@ export default function Home() {
             </div>
 
             <div className="relative z-10 space-y-4">
-              <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5 mb-6">
-                <Film className="h-5 w-5 text-gold" />
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-10 w-10 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5">
+                  <Film className="h-5 w-5 text-gold" />
+                </div>
+                <span className="inline-block bg-gold/10 text-gold text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-sm border border-gold/20">
+                  Estudio · A Medida
+                </span>
               </div>
               <span className="text-gold text-[10px] font-bold uppercase tracking-widest block">Camino 02</span>
               <h2 className="text-3xl font-serif italic text-white leading-tight">
                 Crear un Video para mi Marca
               </h2>
               <p className="text-gray-400 text-sm font-light leading-relaxed">
-                Delega el proceso de producción en nuestro estudio. Creamos anuncios comerciales, videos de producto e historias de alto nivel con fidelidad de marca absoluta.
+                Delega la producción audiovisual en nuestro estudio. Creamos anuncios publicitarios, videos de producto de alta fidelidad y cortometrajes con acabado cinematográfico real.
               </p>
             </div>
 
