@@ -1,6 +1,8 @@
 'use client';
 
-import { posts } from '@/lib/blog';
+import { posts as postsEs } from '@/lib/blog';
+import { posts as postsEn } from '@/lib/blog-en';
+import { useLanguage } from '@/context/language-context';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useTranslation } from '@/hooks/use-translation';
@@ -9,6 +11,8 @@ import { useEffect, useState } from 'react';
 export default function PostPage() {
     const { slug } = useParams<{ slug: string }>();
     const { t } = useTranslation();
+    const { language } = useLanguage();
+    const posts = language === 'es' ? postsEs : postsEn;
     const post = posts.find((p) => p.slug === slug);
     const [formattedDate, setFormattedDate] = useState('');
 

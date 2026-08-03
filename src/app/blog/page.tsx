@@ -2,7 +2,9 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { posts } from '@/lib/blog';
+import { posts as postsEs } from '@/lib/blog';
+import { posts as postsEn } from '@/lib/blog-en';
+import { useLanguage } from '@/context/language-context';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
@@ -26,6 +28,8 @@ const PostDate = ({ date, className }: { date: string, className?: string }) => 
 
 export default function BlogPage() {
     const { t } = useTranslation();
+    const { language } = useLanguage();
+    const posts = language === 'es' ? postsEs : postsEn;
 
     return (
         <div className="container max-w-6xl mx-auto py-12 md:py-24 animate-in fade-in duration-500 px-5">
