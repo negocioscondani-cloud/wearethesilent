@@ -2,19 +2,27 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { Menu, Globe } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
 } from '@/components/ui/sheet';
+import { useLanguage } from '@/context/language-context';
 import { useTranslation } from '@/hooks/use-translation';
 import { ThemeToggle } from './theme-toggle';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
+  const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
 
   if (pathname.startsWith('/the-silent-studio-guide') || pathname.startsWith('/manual')) {
@@ -49,6 +57,22 @@ export default function Header() {
           </nav>
 
           <ThemeToggle />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Change language">
+                <Globe className="h-[1.2rem] w-[1.2rem]" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setLanguage('en')} className={language === 'en' ? 'text-gold font-semibold' : ''}>
+                English
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage('es')} className={language === 'es' ? 'text-gold font-semibold' : ''}>
+                Español
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <div className="md:hidden">
             <Sheet>
