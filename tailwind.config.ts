@@ -14,10 +14,21 @@ export default {
         body: ['"Inter"', 'sans-serif'],
         headline: ['"Playfair Display"', 'serif'],
         code: ['monospace'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        studio: {
+          black: '#050505',
+          card: '#0c0c0d',
+          surface: '#121214',
+          border: 'rgba(255, 255, 255, 0.08)',
+          muted: '#737373',
+          light: '#e5e5e5',
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',

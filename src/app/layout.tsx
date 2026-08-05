@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import CinematicEffects from '@/components/layout/cinematic-effects';
 import { cn } from '@/lib/utils';
 import { LanguageProvider } from '@/context/language-context';
 import { FirebaseClientProvider } from '@/context/firebase-client-context';
@@ -78,7 +79,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link 
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Courier+Prime&display=swap" 
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@200;300;400&display=swap" 
           rel="stylesheet" 
         />
         <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -109,6 +110,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <CinematicEffects />
           <FirebaseClientProvider>
             <LanguageProvider>
               <Header />
