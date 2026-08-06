@@ -13,17 +13,39 @@ export default function CinematicEffects() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    // 2. Cursor Hover Classes on Links/Buttons
-    const addHoverClass = () => document.body.classList.add('cursor-hover');
-    const removeHoverClass = () => document.body.classList.remove('cursor-hover');
+    // 2. Cursor Hover Classes and Text Injection on Links/Buttons
+    const handleMouseEnter = (e: Event) => {
+      document.body.classList.add('cursor-hover');
+      const target = e.currentTarget as HTMLElement;
+      const cursorText = target.getAttribute('data-cursor-text');
+      const dot = document.getElementById('cursor-dot');
+      if (dot) {
+        if (cursorText) {
+          dot.textContent = cursorText;
+          dot.style.color = '#000000';
+        } else {
+          dot.textContent = '';
+          dot.style.color = 'transparent';
+        }
+      }
+    };
+
+    const handleMouseLeave = () => {
+      document.body.classList.remove('cursor-hover');
+      const dot = document.getElementById('cursor-dot');
+      if (dot) {
+        dot.textContent = '';
+        dot.style.color = 'transparent';
+      }
+    };
 
     const updateHoverListeners = () => {
       const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer, [role="button"]');
       interactiveElements.forEach((el) => {
-        el.removeEventListener('mouseenter', addHoverClass);
-        el.removeEventListener('mouseleave', removeHoverClass);
-        el.addEventListener('mouseenter', addHoverClass);
-        el.addEventListener('mouseleave', removeHoverClass);
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+        el.addEventListener('mouseenter', handleMouseEnter);
+        el.addEventListener('mouseleave', handleMouseLeave);
       });
     };
 

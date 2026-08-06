@@ -349,7 +349,7 @@ export default function Home() {
       promptSpec: "Diffusion AI — Cinematic chiaroscuro, amber liquid viscosity, dark velvet reflections, gold leaf suspended, editorial lighting.",
       artDir: language === 'es'
         ? "Fotografía de producto macro enfocada en la viscosidad y las transparencias del cristal bajo iluminación cenital de estudio."
-        : "Macro product photography focused on viscosity and glass transparencies under overhead studio lighting."
+        : "Macro product photography focused on viscosity and glass transparencias under overhead studio lighting."
     },
     MONOLITH: {
       title: "MONOLITH — Precision Horology",
@@ -442,12 +442,13 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-[#050505] text-[#e5e5e5] font-sans antialiased selection:bg-white selection:text-black">
+    <div className="bg-[#050505] text-[#e5e5e5] font-sans antialiased selection:bg-white selection:text-black relative">
       
       {/* Sound Toggle controls (Floating upper right overlay) */}
       <div className="fixed top-20 right-6 sm:right-12 z-50">
         <button 
           onClick={toggleAudio} 
+          data-cursor-text={isPlaying ? (language === 'es' ? "MUTEAR" : "MUTE") : (language === 'es' ? "SONIDO" : "SOUND")}
           className="text-xs tracking-widest uppercase text-neutral-300 hover:text-white flex items-center space-x-2 border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md transition-all bg-black/40"
         >
           {isPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
@@ -483,6 +484,7 @@ export default function Home() {
 
           <a 
             href="#philosophy" 
+            data-cursor-text={language === 'es' ? "ENTRAR" : "ENTER"}
             className="group relative inline-flex items-center space-x-3 bg-white text-black px-8 py-4 rounded-full text-xs tracking-widest font-bold uppercase transition-all duration-500 hover:bg-neutral-200 hover:px-10 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
           >
             <span>{text.hero.enterBtn}</span>
@@ -500,8 +502,12 @@ export default function Home() {
       </section>
 
       {/* SECTION 02: EDITORIAL PHILOSOPHY STATEMENT */}
-      <section id="philosophy" className="relative min-h-screen py-32 px-6 sm:px-12 md:px-24 flex items-center bg-[#050505] border-t border-white/5 swiss-grid-bg">
-        <div className="max-w-7xl mx-auto w-full">
+      <section id="philosophy" className="relative min-h-screen py-32 px-6 sm:px-12 md:px-24 flex items-center bg-[#050505] border-t border-white/5 swiss-grid-bg overflow-hidden">
+        
+        {/* Subtle floating glow sphere */}
+        <div className="absolute top-1/4 -right-20 w-[500px] h-[500px] rounded-full bg-white/[0.015] blur-[140px] pointer-events-none animate-orbit-1 z-0" />
+
+        <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="flex items-center space-x-4 mb-16">
             <span className="text-xs font-mono tracking-widest text-neutral-500 uppercase">{text.manifesto.section}</span>
             <div className="w-12 h-px bg-neutral-800"></div>
@@ -510,28 +516,28 @@ export default function Home() {
 
           {/* Massive Editorial Typography */}
           <div className="space-y-6 sm:space-y-12">
-            <h2 className="reveal-text active text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-light leading-[1.15] text-white tracking-tight">
+            <h2 className="reveal-text text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-light leading-[1.15] text-white tracking-tight">
               {text.manifesto.quotePart1}<br/>
               <span className="text-neutral-500 italic font-normal">{text.manifesto.quotePart2}</span>
             </h2>
           </div>
 
           <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-12 pt-16 border-t border-white/10">
-            <div className="reveal-text active">
+            <div className="reveal-text">
               <span className="text-xs font-mono text-neutral-500 mb-2 block">01 / {language === 'es' ? 'DIRECCIÓN DE ARTE' : 'ART DIRECTION'}</span>
               <h3 className="text-base font-medium text-white mb-2">{text.manifesto.col1Title}</h3>
               <p className="text-sm font-extralight text-neutral-400 leading-relaxed">
                 {text.manifesto.col1Desc}
               </p>
             </div>
-            <div className="reveal-text active">
+            <div className="reveal-text">
               <span className="text-xs font-mono text-neutral-500 mb-2 block">02 / {language === 'es' ? 'ARTESANÍA' : 'CRAFTSMANSHIP'}</span>
               <h3 className="text-base font-medium text-white mb-2">{text.manifesto.col2Title}</h3>
               <p className="text-sm font-extralight text-neutral-400 leading-relaxed">
                 {text.manifesto.col2Desc}
               </p>
             </div>
-            <div className="reveal-text active">
+            <div className="reveal-text">
               <span className="text-xs font-mono text-neutral-500 mb-2 block">03 / {language === 'es' ? 'PUBLICIDAD' : 'ADVERTISING'}</span>
               <h3 className="text-base font-medium text-white mb-2">{text.manifesto.col3Title}</h3>
               <p className="text-sm font-extralight text-neutral-400 leading-relaxed">
@@ -543,15 +549,19 @@ export default function Home() {
       </section>
 
       {/* SECTION 03: GATEWAY OPTIONS (TWO PATHS) */}
-      <section id="choose-path" className="py-32 px-6 sm:px-12 md:px-24 bg-[#050505] border-t border-white/5 swiss-grid-bg">
-        <div className="max-w-7xl mx-auto">
+      <section id="choose-path" className="relative py-32 px-6 sm:px-12 md:px-24 bg-[#050505] border-t border-white/5 swiss-grid-bg overflow-hidden">
+        
+        {/* Subtle floating glow sphere */}
+        <div className="absolute -bottom-20 -left-20 w-[600px] h-[600px] rounded-full bg-white/[0.012] blur-[150px] pointer-events-none animate-orbit-2 z-0" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex items-center space-x-4 mb-16">
             <span className="text-xs font-mono tracking-widest text-neutral-500 uppercase">{text.paths.section}</span>
             <div className="w-12 h-px bg-neutral-800"></div>
             <span className="text-xs font-mono tracking-widest text-neutral-400 uppercase">{text.paths.title}</span>
           </div>
 
-          <div className="text-center md:text-left mb-16">
+          <div className="text-center md:text-left mb-16 reveal-text">
             <h2 className="text-3xl sm:text-5xl font-serif font-light text-white tracking-tight uppercase">
               {text.paths.sub}
             </h2>
@@ -559,14 +569,17 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-12 w-full max-w-5xl mx-auto">
             {/* PATH 1: LEARN (COMMUNITY) */}
-            <div className="relative group overflow-hidden border border-white/10 hover:border-white/30 rounded-sm bg-[#0c0c0d] transition-all duration-500 flex flex-col justify-between aspect-[4/5] p-8 sm:p-10 shadow-2xl">
+            <div 
+              data-cursor-text={language === 'es' ? "COMUNIDAD" : "COMMUNITY"}
+              className="relative group overflow-hidden border border-white/10 hover:border-white/30 rounded-sm bg-[#0c0c0d] transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(255,255,255,0.03)] flex flex-col justify-between aspect-[4/5] p-8 sm:p-10 shadow-2xl reveal-text"
+            >
               {/* Background image */}
               <div className="absolute inset-0 z-0 opacity-15 group-hover:opacity-25 transition-opacity duration-700">
                 <Image 
                   src="http://studioboom.online/wp-content/uploads/2026/02/freepik__cinematic-portrait-of-a-25yearold-male-creative-di__78889-scaled.avif" 
                   alt="Aprender IA" 
                   fill 
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
               </div>
@@ -602,14 +615,17 @@ export default function Home() {
             </div>
 
             {/* PATH 2: SERVICES (PRODUCTION) */}
-            <div className="relative group overflow-hidden border border-white/10 hover:border-white/30 rounded-sm bg-[#0c0c0d] transition-all duration-500 flex flex-col justify-between aspect-[4/5] p-8 sm:p-10 shadow-2xl">
+            <div 
+              data-cursor-text={language === 'es' ? "PRODUCCIÓN" : "PRODUCTION"}
+              className="relative group overflow-hidden border border-white/10 hover:border-white/30 rounded-sm bg-[#0c0c0d] transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(255,255,255,0.03)] flex flex-col justify-between aspect-[4/5] p-8 sm:p-10 shadow-2xl reveal-text"
+            >
               {/* Background image */}
               <div className="absolute inset-0 z-0 opacity-15 group-hover:opacity-25 transition-opacity duration-700">
                 <Image 
                   src="http://studioboom.online/wp-content/uploads/2026/01/freepik__-meta-imagequality-highvelocity-commercial-cgi-pho__46366-scaled.avif" 
                   alt="Servicios de Video" 
                   fill 
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105 filter grayscale"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
               </div>
@@ -648,8 +664,12 @@ export default function Home() {
       </section>
 
       {/* SECTION 04: FEATURED CASE FILES */}
-      <section id="case-files" className="py-32 px-6 sm:px-12 md:px-24 bg-[#050505] border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
+      <section id="case-files" className="relative py-32 px-6 sm:px-12 md:px-24 bg-[#050505] border-t border-white/5 overflow-hidden">
+        
+        {/* Subtle floating glow sphere */}
+        <div className="absolute top-1/3 left-1/3 w-[550px] h-[550px] rounded-full bg-white/[0.008] blur-[160px] pointer-events-none animate-orbit-1 z-0" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-20 gap-6">
             <div>
               <span className="text-xs font-mono tracking-widest text-neutral-500 uppercase block mb-2">{text.cases.section}</span>
@@ -667,7 +687,8 @@ export default function Home() {
               return (
                 <div 
                   key={key} 
-                  className="group cursor-pointer reveal-text active"
+                  data-cursor-text={language === 'es' ? "VER CASO" : "VIEW CASE"}
+                  className="group cursor-pointer reveal-text"
                   onClick={() => openCase(key as 'ORO' | 'AETHER' | 'MONOLITH' | 'EMBER')}
                 >
                   <div className="img-zoom-container relative aspect-[4/5] bg-neutral-900 mb-6 rounded-sm overflow-hidden border border-white/5">
@@ -675,7 +696,7 @@ export default function Home() {
                       src={item.heroImg} 
                       alt={item.title} 
                       fill
-                      className="object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                      className="object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
                     />
                     <div className="absolute top-6 left-6 font-mono text-[10px] tracking-widest text-white/70 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full uppercase border border-white/10">
                       {item.category}
@@ -688,7 +709,7 @@ export default function Home() {
                   </div>
                   <div className="flex justify-between items-baseline border-b border-white/10 pb-4">
                     <div>
-                      <h3 className="text-2xl font-serif text-white group-hover:text-neutral-300 transition-colors">{key}</h3>
+                      <h3 className="text-2xl font-serif text-white group-hover:text-neutral-300 transition-colors duration-500">{key}</h3>
                       <p className="text-xs font-mono text-neutral-500 tracking-widest uppercase mt-1">{item.title}</p>
                     </div>
                     <span className="text-xs font-mono text-neutral-400">{item.year}</span>
@@ -701,23 +722,24 @@ export default function Home() {
       </section>
 
       {/* SECTION 05: COMMUNITY WAITLIST / CALL TO ACTION */}
-      <section id="community" className="py-36 px-6 sm:px-12 md:px-24 bg-neutral-950 border-t border-white/5 relative overflow-hidden swiss-grid-bg">
+      <section id="community" className="py-36 px-6 sm:px-12 md:px-24 bg-[#050505] border-t border-white/5 relative overflow-hidden swiss-grid-bg">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center">
           <span className="text-xs font-mono tracking-widest text-neutral-500 uppercase mb-4">{text.community.section}</span>
 
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif font-light text-white tracking-tight mb-8 leading-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif font-light text-white tracking-tight mb-8 leading-tight reveal-text">
             {text.community.title}
           </h2>
 
-          <p className="text-base sm:text-lg font-extralight text-neutral-400 max-w-xl mb-12 leading-relaxed">
+          <p className="text-base sm:text-lg font-extralight text-neutral-400 max-w-xl mb-12 leading-relaxed reveal-text">
             {text.community.desc}
           </p>
 
           <Button 
             asChild
-            className="group relative inline-flex items-center space-x-3 bg-white hover:bg-neutral-200 text-black px-10 py-7 rounded-full text-xs tracking-widest font-bold uppercase transition-all duration-300 hover:shadow-[0_0_35px_rgba(255,255,255,0.25)] h-auto"
+            data-cursor-text={language === 'es' ? "UNIRSE" : "JOIN"}
+            className="group relative inline-flex items-center space-x-3 bg-white hover:bg-neutral-200 text-black px-10 py-7 rounded-full text-xs tracking-widest font-bold uppercase transition-all duration-500 hover:shadow-[0_0_35px_rgba(255,255,255,0.25)] h-auto reveal-text"
           >
             <a href={SKOOL_LINK} target="_blank" rel="noopener noreferrer">
               <span>{text.community.btn}</span>
@@ -770,14 +792,15 @@ export default function Home() {
             {filteredArchive.map((item) => (
               <div 
                 key={item.id} 
-                className="group relative aspect-square bg-neutral-900 overflow-hidden cursor-pointer border border-white/5" 
+                data-cursor-text={language === 'es' ? "EXPANDIR" : "EXPAND"}
+                className="group relative aspect-square bg-neutral-900 overflow-hidden cursor-pointer border border-white/5 reveal-text" 
                 onClick={() => openLightbox(item.img, item.title, item.subtitle)}
               >
                 <Image 
                   src={item.img} 
                   alt={item.title} 
                   fill
-                  className="object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
                   <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-widest">{item.subtitle}</span>
