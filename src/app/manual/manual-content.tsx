@@ -220,6 +220,48 @@ const content = {
         "Ejemplo: \"Slow cinematic zoom in, water ripples moving\".",
         "Generar y Descargar: Obtén un clip listo para redes en segundos."
     ],
+    // Module 4
+    module4Title: "Flujo: Ingeniería de Textos y Guiones",
+    module4Label: "Aplica para: Copywriting, Reels hablados y Páginas de Venta.",
+    module4Method: "El Método Neuro-Scripting",
+    module4Desc: "Aprende a escribir para el cerebro primario usando la gema <strong>The Oracle Luxe Agency</strong> para la ingeniería del guion y <strong>Neuro Scoring</strong> para auditar su impacto con nuestra estructura Pain-Claim-Gain.",
+    module4HookTitle: "El Hook (Gancho): Pide a la IA un gancho de 3 segundos que ataque un dolor.",
+    module4HookPrompt: "Prompt: \"Escribe 3 ganchos cortos sobre el miedo a [Problema del cliente]\".",
+    module4NarrativeTitle: "La Narrativa (Cuerpo): Desarrolla la historia.",
+    module4NarrativePrompt: "Prompt: \"Usando el tono de [Tu Marca], explica cómo nuestro producto elimina ese dolor. Usa palabras sensoriales\".",
+    module4CloseTitle: "El Cierre (Gain): La llamada a la acción.",
+    module4ClosePrompt: "Prompt: \"Cierra con una frase de estatus y urgencia\".",
+    // Module 5
+    module5Title: "Flujo: El Embajador Digital (Avatar)",
+    module5Label: "Aplica para: Humanizar la marca sin grabarte a ti mismo.",
+    module5Method: "Creación del \"Human-AI\" con The UGC Society",
+    module5Desc: "Diseña y clona un rostro y una voz para tu marca. La Gema <strong>The UGC Society</strong> te ayuda a definir el arquetipo de tu 'Fundador Ideal' para que la IA pueda generar un retrato que represente tus valores (confianza, lujo, energía).",
+    module5FaceDesc: "Diseño del Rostro: Usa el flujo del Módulo 02 para generar un retrato de tu \"Fundador Ideal\".",
+    module5FacePrompt: "Prompt: \"Portrait of a friendly expert, studio lighting, looking at camera.\"",
+    module5VoiceDesc: "Clonación de Voz: Sube un audio de 1 minuto con tu voz (o una voz que te guste) a ElevenLabs para crear tu Voz de Marca.",
+    module5SyncTitle: "Sincronización (HeyGen/Hedra):",
+    module5SyncSteps: [
+      "Sube la foto del paso 1.",
+      "Sube el guion generado en el Módulo 04.",
+      "Generar: Obtén un video de un humano hablando tu mensaje perfectamente."
+    ],
+    // Module 6
+    module6Title: "Creación de Campañas",
+    module6Label: "Aplica para: Lanzar ofertas y construir autoridad con activos de valor.",
+    module6Desc: "En lugar de vender directamente, una campaña de alto valor educa y prepara a tu audiencia. Usa la gema <strong>Alpha Content</strong> para transformar tu conocimiento en un activo digital (como un PDF, una guía o una presentación) que puedes ofrecer a cambio de un correo electrónico. Esto no solo genera leads, sino que construye una relación de confianza antes de la venta.",
+    // Module 7
+    module7Title: "El Sistema The Silent Studio",
+    module7Label: "Aplica para: Ejecutar como ‘equipo interno’ sin contratar.",
+    module7Desc: "El sistema The Silent Studio está diseñado para funcionar como una agencia de alto rendimiento, donde cada Gema opera como un departamento especializado. A continuación, se detalla la estructura y las responsabilidades:",
+    module7GemsTitle: "Las 6 GEMS",
+    module7Gems: [
+        "<strong>UGC Society:</strong> Es el estratega. Define la dirección de tu marca, tu arquetipo de cliente ideal y las tendencias de mercado a capitalizar.",
+        "<strong>The Oracle Luxe Agency:</strong> Tu guionista de élite. Escribirá los textos persuasivos (guiones, anuncios, emails) usando la estructura Pain/Claim/Gain.",
+        "<strong>Neuro Scoring:</strong> El auditor de calidad. Analizará tus mensajes y te dará un puntaje de impacto, sugiriendo mejoras basadas en neurociencia para maximizar la persuasión.",
+        "<strong>Luxe Prompt Studio:</strong> Tu director de fotografía. Generará los prompts técnicos para crear imágenes de producto con calidad de revista.",
+        "<strong>CineAI Visual Director:</strong> Tu director de cine. Tomará los guiones y los convertirá en una secuencia de video cinematográfico, especificando movimientos de cámara y escenas.",
+        "<strong>Alpha Content:</strong> Tu arquitecto de activos. Creará la estructura de tus lead magnets (PDFs, guías) para capturar leads y construir autoridad."
+    ],
     finalCta: "Si quieres escalar tu agencia con acompañamiento táctico directo: Mentoría 1 a 1."
   }
 };

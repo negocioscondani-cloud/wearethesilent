@@ -68,13 +68,13 @@ export default function LuxePromptStudioPage() {
                     />
                 </figure>
                 <h1 className="font-headline text-3xl md:text-4xl">
-                  {t(currentPageProductData.titleKey)}
+                  {t(currentPageProductData.titleKey || '')}
                 </h1>
                 <p className="mt-2 text-lg text-muted-foreground">
-                  {t(currentPageProductData.subtitleKey)}
+                  {t(currentPageProductData.subtitleKey || '')}
                 </p>
                 <p className="mt-4 max-w-prose mx-auto leading-relaxed text-muted-foreground">
-                  {t(currentPageProductData.bodyKey)}
+                  {t(currentPageProductData.bodyKey || '')}
                 </p>
                  <div className="mt-8 border-t border-b border-border py-6">
                     <h2 className="text-lg font-semibold tracking-wide uppercase text-muted-foreground">Advantage in the Process</h2>

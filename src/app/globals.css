@@ -619,5 +619,30 @@ body {
     animation: orbit-2 40s infinite ease-in-out;
 }
 
+/* Slate Stripe / Claqueta */
+.slate {
+    height: 14px;
+    width: 100%;
+    background: repeating-linear-gradient(
+      -45deg,
+      #1F2A2E 0px, #1F2A2E 22px,
+      #FBF6EC 22px, #FBF6EC 44px
+    );
+}
+.slate.orange {
+    background: repeating-linear-gradient(
+      -45deg,
+      #FF8C42 0px, #FF8C42 22px,
+      #1F2A2E 22px, #1F2A2E 44px
+    );
+}
+
+/* Custom Glass Effect */
+.glass-card {
+    background: rgba(251, 246, 236, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(31, 42, 46, 0.14);
+}
+
 
     

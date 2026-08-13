@@ -179,11 +179,11 @@ const StylesPage = () => {
                                 <AccordionTrigger className="text-2xl serif italic hover:no-underline">{categoryData.category}</AccordionTrigger>
                                 <AccordionContent>
                                     <div className="space-y-8 pt-4">
-                                    {categoryData.sections.map((section, sIndex) => (
+                                    {categoryData.sections.map((section: any, sIndex) => (
                                         <div key={sIndex}>
                                             {section.title && <h4 className="font-bold text-lg mb-4 text-gold">{section.title}</h4>}
                                             <div className="space-y-6">
-                                            {section.items.map((item, iIndex) => (
+                                            {section.items.map((item: any, iIndex: number) => (
                                                 <div key={iIndex} className="p-4 border-l-2 border-gray-200">
                                                     <h5 className="font-bold">{item.name}</h5>
                                                     {item.moment !== "N/A" && <p className="text-xs text-gray-500"><strong className="text-gray-700">Momento:</strong> {item.moment}</p>}

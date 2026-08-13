@@ -17,10 +17,28 @@ export default {
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
+        fraunces: ['"Fraunces"', 'serif'],
+        work: ['"Work Sans"', 'sans-serif'],
+        space: ['"Space Mono"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        orange: {
+          DEFAULT: '#FF8C42',
+          deep: '#E8672A',
+        },
+        teal: {
+          DEFAULT: '#00B4D8',
+          deep: '#00879F',
+        },
+        cream: '#FBF6EC',
+        ink: {
+          DEFAULT: '#1F2A2E',
+          soft: '#4A5A5E',
+        },
+        gold: '#F2C14E',
+        line: 'rgba(31,42,46,0.14)',
         studio: {
           black: '#050505',
           card: '#0c0c0d',
@@ -60,9 +78,6 @@ export default {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        gold: 'var(--gold)',
-        dark: 'var(--dark)',
-        cream: 'var(--cream)',
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
