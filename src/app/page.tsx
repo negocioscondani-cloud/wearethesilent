@@ -1642,15 +1642,17 @@ export default function Home() {
                   }`}
                 >
                   
-                  {/* Simulated Badge */}
-                  <div className="flex justify-between items-center text-[10px] font-mono text-white/80 z-10">
-                    <span className="bg-[#FF8C42]/90 text-[#1F2A2E] px-2 py-0.5 rounded font-bold uppercase">
-                      {currentStyleData?.badge}
-                    </span>
-                    <span className="bg-black/60 px-2 py-0.5 rounded text-[#00B4D8] font-bold">
-                      {language === 'es' ? "⚡ 48h de entrega" : "⚡ 48h delivery"}
-                    </span>
-                  </div>
+                  {/* Simulated Badge - Only shown when no video is playing */}
+                  {!currentSource.url && (
+                    <div className="flex justify-between items-center text-[10px] font-mono text-white/80 z-10">
+                      <span className="bg-[#FF8C42]/90 text-[#1F2A2E] px-2 py-0.5 rounded font-bold uppercase">
+                        {currentStyleData?.badge}
+                      </span>
+                      <span className="bg-black/60 px-2 py-0.5 rounded text-[#00B4D8] font-bold">
+                        {language === 'es' ? "⚡ 48h de entrega" : "⚡ 48h delivery"}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Simulated Fallback (shown when no video URL) */}
                   {!currentSource.url && (
@@ -1678,24 +1680,6 @@ export default function Home() {
                         muted={videoMuted}
                         autoPlay
                       />
-                      
-                      {/* Floating Sound Toggle */}
-                      <button 
-                        onClick={toggleSound} 
-                        className="absolute top-3 right-3 z-30 bg-black/80 hover:bg-[#FF8C42] text-white hover:text-[#1F2A2E] font-mono text-[10px] font-bold px-2.5 py-1.5 rounded-full border border-white/20 backdrop-blur transition flex items-center gap-1.5 shadow-lg"
-                      >
-                        {videoMuted ? (
-                          <>
-                            <VolumeX className="w-3.5 h-3.5 text-[#FF8C42]" />
-                            <span>{text.modal.soundOn}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Volume2 className="w-3.5 h-3.5 text-white" />
-                            <span>{text.modal.soundOff}</span>
-                          </>
-                        )}
-                      </button>
                     </div>
                   )}
 
