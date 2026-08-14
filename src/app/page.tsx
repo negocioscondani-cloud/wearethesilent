@@ -7,14 +7,14 @@ import { useLanguage } from '@/context/language-context';
 const TRANSLATIONS = {
   es: {
     slogan: "CREATORS OF THE POST-AI ERA",
-    navOffer: "Ver Oferta",
+    navOffer: "Nuestros Servicios",
     navGallery: "Galería de Trabajos",
     navCommunity: "Comunidad Skool",
     footer: "The Silent Studio © Costa Rica. Todos los derechos reservados."
   },
   en: {
     slogan: "CREATORS OF THE POST-AI ERA",
-    navOffer: "View Offer",
+    navOffer: "Our Services",
     navGallery: "Works Gallery",
     navCommunity: "Skool Community",
     footer: "The Silent Studio © Costa Rica. All rights reserved."
