@@ -3,17 +3,20 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
-import { ArrowRight } from 'lucide-react';
 
 const TRANSLATIONS = {
   es: {
     slogan: "CREATORS OF THE POST-AI ERA",
-    cta: "Ver Oferta Especial",
+    navOffer: "Ver Oferta",
+    navGallery: "Galería de Trabajos",
+    navCommunity: "Comunidad Skool",
     footer: "The Silent Studio © Costa Rica. Todos los derechos reservados."
   },
   en: {
     slogan: "CREATORS OF THE POST-AI ERA",
-    cta: "View Special Offer",
+    navOffer: "View Offer",
+    navGallery: "Works Gallery",
+    navCommunity: "Skool Community",
     footer: "The Silent Studio © Costa Rica. All rights reserved."
   }
 };
@@ -54,16 +57,32 @@ export default function Home() {
 
           <div className="h-px w-24 bg-[#1F2A2E]/20 mx-auto my-8"></div>
           
-          {/* Entering Link CTA */}
-          <div className="pt-4">
+          {/* High-Art Minimal Navigation Index */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 pt-6 font-mono text-[11px] sm:text-xs tracking-[0.2em] uppercase">
             <Link 
-              href="/oferta"
-              className="inline-flex items-center gap-3 bg-[#1F2A2E] text-[#FBF6EC] font-mono text-xs uppercase tracking-widest px-8 py-5 border border-[#1F2A2E] hover:bg-transparent hover:text-[#1F2A2E] transition-all duration-300 transform hover:scale-[1.02] shadow-xl hover:shadow-none"
+              href="/oferta" 
+              className="hover:text-[#E8672A] transition duration-300 font-bold border-b border-transparent hover:border-[#E8672A] pb-1"
             >
-              <span>{text.cta}</span>
-              <ArrowRight className="w-4 h-4" />
+              01. {text.navOffer}
             </Link>
+            <span className="hidden sm:inline text-zinc-300">/</span>
+            <Link 
+              href="/galeria" 
+              className="hover:text-[#E8672A] transition duration-300 font-bold border-b border-transparent hover:border-[#E8672A] pb-1"
+            >
+              02. {text.navGallery}
+            </Link>
+            <span className="hidden sm:inline text-zinc-300">/</span>
+            <a 
+              href="https://www.skool.com/we-are-the-silent-ia-8224/about" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-[#E8672A] transition duration-300 font-bold border-b border-transparent hover:border-[#E8672A] pb-1"
+            >
+              03. {text.navCommunity}
+            </a>
           </div>
+
         </div>
       </main>
 
