@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
+import { submitApplication } from './actions';
 import { 
   ArrowRight,
   Play,
@@ -30,8 +31,8 @@ const WHATSAPP_NUM = "50664194111";
 const TRANSLATIONS = {
   es: {
     banner: {
-      promo: "OFERTA DE LANZAMIENTO EN COSTA RICA:",
-      spots: "Quedan {spots} cupos con tarifa especial ($150 / ₡78,000)",
+      promo: "PRODUCCIÓN POR CUPOS LIMITADOS:",
+      spots: "Solo trabajamos con 10 negocios por ciclo (Quedan {spots} disponibles)",
       cta: "Chatear al 6419-4111 →"
     },
     nav: {
@@ -40,18 +41,18 @@ const TRANSLATIONS = {
     },
     hero: {
       badge: "Producción con IA · San José, Costa Rica",
-      title: "Videos publicitarios que sí le traen clientes a tu negocio.",
-      subtitle: "5 videos en formato vertical (9:16) creados con estrategia de marketing para tu PYME en Costa Rica, listos en 48 horas.",
-      ctaWhatsapp: "Solicitar por WhatsApp (6419-4111)",
+      title: "5 ANUNCIOS PARA TU NEGOCIO.",
+      subtitle: "5 conceptos diferentes para vender tu producto.",
+      ctaWhatsapp: "QUIERO MIS 5 ANUNCIOS",
       ctaDemo: "Ver Muestra Vertical (9:16)",
-      trust: ["5 estilos distintos", "48h de entrega", "100% Vertical (9:16)", "Aceptamos SINPE Móvil"]
+      trust: ["5 videos verticales", "Guiones incluidos", "$150 USD", "Aceptamos SINPE Móvil"]
     },
     stamp: {
       was: "$2,500 USD",
       now: "$150",
       promo: "Precio Lanzamiento",
       sinpe: "(o SINPE ₡78,000)",
-      badge: "Listos en 48 Horas"
+      badge: "Cupos Limitados"
     },
     work: {
       badge: "Formato Nativo Vertical (9:16)",
@@ -102,7 +103,7 @@ const TRANSLATIONS = {
         items: [
           "Recibís 5 estilos diferentes (UGC, Podcast, Dual Cast, Animado, Mini Serie).",
           "Pones a competir los 5 videos en tus redes para ver cuál genera más ventas.",
-          "Entrega rápida en 48 horas: Lanzás tus campañas de inmediato.",
+          "Entrega rápida: Lanzás tus campañas de inmediato.",
           "Trato transparente: 50% de adelanto para producir y 50% al entregar."
         ],
         saving: "Encontrá el Video Ganador",
@@ -113,15 +114,15 @@ const TRANSLATIONS = {
     offer: {
       badge: "Oferta Exclusiva de Lanzamiento en Costa Rica",
       colones: "Equivalente a ₡78,000 colones (aceptamos SINPE Móvil)",
-      body: "Recibís 5 videos en formato vertical 9:16 (UGC IA, Podcast Clip, Dual Cast, Animado y Mini Serie) redactados y producidos en 48 horas.",
-      terms: "Esquema de pago transparente: 50% de adelanto ($75 / ₡39,000) para iniciar producción. 50% final ($75 / ₡39,000) contra entrega de los 5 videos terminados.",
+      body: "Recibís 5 videos en formato vertical 9:16 (UGC IA, Podcast Clip, Dual Cast, Animado y Mini Serie) redactados y producidos bajo cupos limitados.",
+      terms: "Esquema de pago transparente: 50% de adelanto ($75 / ₡39,000) para iniciar producción. 50% final ($75 / ₡39,000) contra entrega. Solo trabajamos con 10 negocios por ciclo.",
       btnWhatsapp: "Reservar por WhatsApp (6419-4111)",
       btnForm: "Completar Formulario Web",
-      limit: "Proceso garantizado con entrega en 48 Horas contadas a partir del brief."
+      limit: "Producción por cupos limitados. Solo trabajamos con 10 negocios por ciclo."
     },
     process: {
       badge: "Proceso Agilizado",
-      title: "Tres pasos, 48 horas de entrega.",
+      title: "Tres pasos. Cupos limitados.",
       yourPart: {
         title: "Tu única parte:",
         desc: "Brindarnos información básica de tu PYME en Costa Rica: qué producto/servicio vendés, tu provincia, fotos o enlace de Instagram y la oferta que querés destacar.",
@@ -131,7 +132,7 @@ const TRANSLATIONS = {
         steps: [
           { t: "Estrategia y Guionaje de Ventas", d: "Escribimos 5 guiones con ganchos psicológicos para captar la atención en los primeros 3 segundos." },
           { t: "Confirmación y Pago Inicial (50%)", d: "Aprobados los enfoques, se realiza el adelanto del 50% ($75 / ₡39,000 SINPE) e iniciamos generación." },
-          { t: "Generación e Integración IA en 48h", d: "Avatares, gráficos animados, voces con acento nativo/neutro y subtítulos llamativos en formato vertical (9:16)." },
+          { t: "Generación e Integración IA", d: "Avatares, gráficos animados, voces con acento nativo/neutro y subtítulos llamativos en formato vertical (9:16)." },
           { t: "Entrega Final y Pago del 50% restante", d: "Recibís tus 5 videos listos para subir a Reels, TikTok y Shorts, cancelando el saldo final." }
         ]
       }
@@ -174,7 +175,7 @@ const TRANSLATIONS = {
         styleTitle: "Estilos que se incluirán en tu paquete (Vertical 9:16)",
         stylesList: ["01. UGC con IA", "02. PodCast Clip", "03. Dual Cast", "04. Animados", "05. Mini Series"],
         termsTitle: "CONDICIONES TRANSPARENTES",
-        termsDesc: "Precio de lanzamiento: $150 USD (o ₡78,000 SINPE). Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega de los 5 videos terminados en 48 horas.",
+        termsDesc: "Precio de lanzamiento: $150 USD (o ₡78,000 SINPE). Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega. Producción por cupos limitados (máximo 10 negocios por ciclo).",
         prev: "Anterior",
         submit: "Enviar y Chatear por WhatsApp"
       },
@@ -185,7 +186,7 @@ const TRANSLATIONS = {
         steps: [
           "Se abrirá tu chat con nuestro WhatsApp para coordinar el adelanto del 50%.",
           "Te enviaremos los guiones en unas horas.",
-          "Los 5 videos estarán listos 48 horas después del brief."
+          "Los 5 videos estarán listos al finalizar el ciclo de producción."
         ],
         btnWhatsapp: "Chatear Directo ahora"
       }
@@ -204,7 +205,7 @@ const TRANSLATIONS = {
         },
         {
           q: "¿Cómo funciona el esquema de pago?",
-          a: "El valor total es de $150 USD (o ₡78,000 colones). Se abona un 50% ($75 / ₡39,000) de adelantado por SINPE Móvil o transferencia para iniciar la investigación y producción, y the 50% restante contra la entrega final en 48 horas."
+          a: "El valor total es de $150 USD (o ₡78,000 colones). Se abona un 50% ($75 / ₡39,000) de adelantado por SINPE Móvil o transferencia para iniciar la investigación y producción, y el 50% restante contra la entrega final."
         },
         {
           q: "¿Tengo que grabar algo con mi teléfono o cámara?",
@@ -233,8 +234,8 @@ const TRANSLATIONS = {
   },
   en: {
     banner: {
-      promo: "LAUNCH OFFER IN COSTA RICA:",
-      spots: "Only {spots} spots left with special rate ($150 / ₡78,000)",
+      promo: "LIMITED PRODUCTION SLOTS:",
+      spots: "We only work with 10 businesses per cycle ({spots} left)",
       cta: "Chat at 6419-4111 →"
     },
     nav: {
@@ -243,18 +244,18 @@ const TRANSLATIONS = {
     },
     hero: {
       badge: "AI Video Production · San Jose, Costa Rica",
-      title: "Video ads that actually bring customers to your business.",
-      subtitle: "5 video ads in vertical format (9:16) created with marketing strategy for your SME in Costa Rica, ready in 48 hours.",
-      ctaWhatsapp: "Order via WhatsApp (6419-4111)",
+      title: "5 ADS FOR YOUR BUSINESS.",
+      subtitle: "5 different concepts to sell your product.",
+      ctaWhatsapp: "I WANT MY 5 ADS",
       ctaDemo: "View Vertical Demo (9:16)",
-      trust: ["5 different styles", "48h delivery", "100% Vertical (9:16)", "SINPE Mobile accepted"]
+      trust: ["5 vertical videos", "Scripts included", "$150 USD", "SINPE Mobile accepted"]
     },
     stamp: {
       was: "$2,500 USD",
       now: "$150",
       promo: "Launch Price",
       sinpe: "(or SINPE ₡78,000)",
-      badge: "Ready in 48 Hours"
+      badge: "Limited Slots"
     },
     work: {
       badge: "Native Vertical Format (9:16)",
@@ -305,7 +306,7 @@ const TRANSLATIONS = {
         items: [
           "You receive 5 different styles (UGC, Podcast, Dual Cast, Animated, Mini Series).",
           "Put the 5 videos to compete on your networks to see which generates more sales.",
-          "Fast delivery in 48 hours: Launch your campaigns immediately.",
+          "Fast delivery: Launch your campaigns immediately.",
           "Transparent terms: 50% upfront to produce and 50% upon delivery."
         ],
         saving: "Find the Winning Video",
@@ -316,15 +317,15 @@ const TRANSLATIONS = {
     offer: {
       badge: "Exclusive Launch Offer in Costa Rica",
       colones: "Equivalent to ₡78,000 colones (we accept SINPE Mobile)",
-      body: "You receive 5 video ads in vertical format 9:16 (UGC AI, Podcast Clip, Dual Cast, Animated and Mini Series) written and produced in 48 hours.",
-      terms: "Transparent payment scheme: 50% upfront ($75 / ₡39,000) to start production. 50% final ($75 / ₡39,000) against delivery of the 5 finished videos.",
+      body: "You receive 5 video ads in vertical format 9:16 (UGC AI, Podcast Clip, Dual Cast, Animated and Mini Series) written and produced under limited slots.",
+      terms: "Transparent payment scheme: 50% upfront ($75 / ₡39,000) to start production. 50% final ($75 / ₡39,000) against delivery. We only work with 10 businesses per cycle.",
       btnWhatsapp: "Book via WhatsApp (6419-4111)",
       btnForm: "Complete Web Form",
-      limit: "Guaranteed process with delivery in 48 Hours counted from the brief."
+      limit: "Limited production slots. We only work with 10 businesses per cycle."
     },
     process: {
       badge: "Streamlined Process",
-      title: "Three steps, 48 hours delivery.",
+      title: "Three steps. Limited slots.",
       yourPart: {
         title: "Your only part:",
         desc: "Provide us with basic information about your SME in Costa Rica: what product/service you sell, your province, photos or Instagram link, and the offer you want to highlight.",
@@ -334,7 +335,7 @@ const TRANSLATIONS = {
         steps: [
           { t: "Sales Strategy & Scripting", d: "We write 5 scripts with psychological hooks to grab attention in the first 3 seconds." },
           { t: "Confirmation & Initial Payment (50%)", d: "Once angles are approved, the 50% advance ($75 / ₡39,000 SINPE) is paid and we start generation." },
-          { t: "Generation & AI Integration in 48h", d: "Avatars, animated graphics, native/neutral accent voices and eye-catching subtitles in vertical format (9:16)." },
+          { t: "Generation & AI Integration", d: "Avatars, animated graphics, native/neutral accent voices and eye-catching subtitles in vertical format (9:16)." },
           { t: "Final Delivery & Final 50% Payment", d: "You receive your 5 videos ready to upload to Reels, TikTok and Shorts, paying the remaining balance." }
         ]
       }
@@ -377,7 +378,7 @@ const TRANSLATIONS = {
         styleTitle: "Styles that will be included in your package (Vertical 9:16)",
         stylesList: ["01. UGC with AI", "02. PodCast Clip", "03. Dual Cast", "04. Animated", "05. Mini Series"],
         termsTitle: "TRANSPARENT TERMS",
-        termsDesc: "Launch price: $150 USD (or ₡78,000 SINPE). Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery of the 5 finished videos in 48 hours.",
+        termsDesc: "Launch price: $150 USD (or ₡78,000 SINPE). Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery. Limited production slots (maximum 10 businesses per cycle).",
         prev: "Previous",
         submit: "Submit and Chat on WhatsApp"
       },
@@ -388,7 +389,7 @@ const TRANSLATIONS = {
         steps: [
           "Your chat with our WhatsApp will open to coordinate the 50% advance.",
           "We will send you the scripts in a few hours.",
-          "The 5 videos will be ready 48 hours after the brief."
+          "The 5 videos will be ready when the production cycle completes."
         ],
         btnWhatsapp: "Chat Direct Now"
       }
@@ -407,7 +408,7 @@ const TRANSLATIONS = {
         },
         {
           q: "How does the payment scheme work?",
-          a: "The total value is $150 USD (or ₡78,000 colones). An advance of 50% ($75 / ₡39,000) is paid via SINPE Mobile or transfer to start research and production, and the remaining 50% against final delivery in 48 hours."
+          a: "The total value is $150 USD (or ₡78,000 colones). An advance of 50% ($75 / ₡39,000) is paid via SINPE Mobile or transfer to start research and production, and the remaining 50% against final delivery."
         },
         {
           q: "Do I have to record anything with my phone or camera?",
@@ -746,6 +747,11 @@ export default function Home() {
     setFormSubmitted(true);
     setSpotsLeft(prev => Math.max(1, prev - 1));
 
+    // Call server action to notify owner and client via Resend in the background
+    submitApplication(formData).catch(err => {
+      console.error("Error submitting server email:", err);
+    });
+
     const messageText = language === 'es' 
       ? `¡Hola! Acabo de enviar el formulario para mi negocio *${formData.businessName}* en *${formData.province}*. Quiero reservar el paquete de 5 videos publicitarios con IA por $150 USD. Mi correo es ${formData.email} y celular ${formData.phone}.`
       : `Hi! I just submitted the form for *${formData.businessName}* in *${formData.province}*. I want to book the 5 AI video ads package for $150 USD. My email is ${formData.email} and phone ${formData.phone}.`;
@@ -843,11 +849,7 @@ export default function Home() {
                 {text.hero.badge}
               </div>
               <h1 className="font-fraunces font-bold text-4xl sm:text-5xl lg:text-6xl leading-tight mb-4">
-                {language === 'es' ? (
-                  <>Videos publicitarios que <em>sí</em> le traen <span className="italic font-medium text-[#E8672A]">clientes</span> a tu negocio.</>
-                ) : (
-                  <>Video ads that <em>actually</em> bring <span className="italic font-medium text-[#E8672A]">customers</span> to your business.</>
-                )}
+                {text.hero.title}
               </h1>
               <p className="text-[#4A5A5E] text-base sm:text-lg max-w-xl mb-8 leading-relaxed">
                 {text.hero.subtitle}
