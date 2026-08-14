@@ -55,7 +55,7 @@ const TRANSLATIONS = {
       badge: "Cupos Limitados"
     },
     work: {
-      badge: "Formato Nativo Vertical (9:16)",
+      badge: "SERVICIO 01: CREACIÓN DE ANUNCIOS (5 VIDEOS)",
       title: "5 Estilos de Video diseñados para vender en redes.",
       subtitle: "En lugar de probar una sola idea, te entregamos 5 formatos distintos en alta resolución para Instagram Reels, TikTok y YouTube Shorts.",
       demoCta: "Ver demo 9:16",
@@ -68,18 +68,20 @@ const TRANSLATIONS = {
       ]
     },
     campaignSection: {
-      badge: "Estructura de Conversión",
-      title: "Creación de Campañas Completas con IA",
-      subtitle: "No vendemos videos aislados. Diseñamos sistemas de anuncios integrados (Ad Sets) para testear y escalar tu facturación.",
-      includesTitle: "¿Qué incluye cada Campaña?",
+      badge: "SERVICIO 02: CAMPAÑAS Y UNIVERSO DE MARCA",
+      title: "Campaña Completa & Universo de Contenido",
+      subtitle: "Un servicio premium continuo para estructurar toda tu identidad de marca, estilo visual y generar contenido recurrente. Contratación mínima a 6 meses. El costo es cotizable personalizado y se gestiona vía WhatsApp.",
+      includesTitle: "¿Qué incluye el Servicio de Campaña?",
       includes: [
-        { t: "3 Ángulos de Venta Distintos", d: "Enfoques creativos dirigidos a diferentes motivaciones de compra de tu cliente." },
-        { t: "Hooks Dinámicos e Intercambiables", d: "Variaciones en los primeros 3 segundos para captar y retener la atención del scrolling." },
-        { t: "9 Variaciones de UGC Ads", d: "Material optimizado en paralelo para que el algoritmo de Meta/TikTok encuentre al ganador." },
-        { t: "Estrategia de Embudos (Funnel)", d: "Redirección fluida hacia tu WhatsApp o tienda para concretar la venta." }
+        { t: "Estructura de Marca y Universo Visual", d: "Definición estética del tono de marca, estilo gráfico y consistencia visual." },
+        { t: "Producción de Contenido Constante", d: "Distribución periódica de videos de IA y UGC para mantener tus canales activos." },
+        { t: "9 Variaciones de UGC Ads por Campaña", d: "Variantes de hooks y enfoques creativos para encontrar tus anuncios ganadores." },
+        { t: "Optimización de Embudos de Conversión", d: "Redirección fluida del tráfico hacia tu WhatsApp de ventas o tienda online." }
       ],
       samplesTitle: "Showcase de Campaña: UGC Ads Nueva Colección",
-      samplesSubtitle: "Haz clic en cualquier variante para ver la muestra vertical de la campaña:"
+      samplesSubtitle: "Haz clic en cualquier variante para ver el nivel de calidad de los UGC Ads:",
+      ctaBtn: "COTIZAR CAMPAÑA POR WHATSAPP",
+      prefill: "Hola! Me interesa cotizar el servicio premium de campaña y contenido constante de 6 meses para mi negocio."
     },
     roi: {
       badge: "Estrategia de Marketing Eficiente",
@@ -258,7 +260,7 @@ const TRANSLATIONS = {
       badge: "Limited Slots"
     },
     work: {
-      badge: "Native Vertical Format (9:16)",
+      badge: "SERVICE 01: ADS CREATION (5 VIDEOS)",
       title: "5 Video Styles designed to sell on social networks.",
       subtitle: "Instead of testing just one idea, we deliver 5 different formats in high resolution for Instagram Reels, TikTok and YouTube Shorts.",
       demoCta: "View 9:16 demo",
@@ -271,18 +273,20 @@ const TRANSLATIONS = {
       ]
     },
     campaignSection: {
-      badge: "Conversion Structure",
-      title: "Complete Campaign Creation with AI",
-      subtitle: "We don't sell isolated videos. We design integrated ad sets to test and scale your revenue.",
-      includesTitle: "What does each Campaign include?",
+      badge: "SERVICE 02: CAMPAIGNS & BRAND UNIVERSE",
+      title: "Full Campaign & Content Universe",
+      subtitle: "A premium continuous service to structure your entire brand identity, visual style, and generate recurring content. Minimum 6-month contract duration. Cost is custom quote-based and managed via WhatsApp.",
+      includesTitle: "What does the Campaign Service include?",
       includes: [
-        { t: "3 Different Sales Angles", d: "Creative approaches targeted at different buying motivations of your client." },
-        { t: "Dynamic & Interchangeable Hooks", d: "Variations in the first 3 seconds to capture and retain scrolling attention." },
-        { t: "9 UGC Ad Variations", d: "Material optimized in parallel so the Meta/TikTok algorithm finds the winner." },
-        { t: "Funnel Strategy", d: "Seamless redirection to your WhatsApp or store to close the sale." }
+        { t: "Brand Structure & Visual Universe", d: "Esthetic definition of your brand tone, graphic styles, and visual consistency." },
+        { t: "Constant Content Production", d: "Periodic deployment of AI and UGC video ads to keep your channels highly active." },
+        { t: "9 UGC Ad Variations per Campaign", d: "Variations of hooks and creative angles to find your winning ads." },
+        { t: "Conversion Funnel Optimization", d: "Smooth traffic redirection to your sales WhatsApp or online store." }
       ],
       samplesTitle: "Campaign Showcase: UGC Ads New Collection",
-      samplesSubtitle: "Click on any variant to see the campaign's vertical demo:"
+      samplesSubtitle: "Click on any variant to see the quality level of the UGC Ads:",
+      ctaBtn: "QUOTE CAMPAIGN VIA WHATSAPP",
+      prefill: "Hi! I am interested in quoting the premium 6-month campaign and constant content service for my business."
     },
     roi: {
       badge: "Efficient Marketing Strategy",
@@ -976,7 +980,7 @@ export default function OfertaPage() {
               <span className="w-6 h-px bg-[#F2C14E] inline-block"></span> {text.campaignSection.badge}
             </div>
             <h2 className="font-fraunces font-bold text-3xl sm:text-4xl text-white">{text.campaignSection.title}</h2>
-            <p className="text-gray-300 text-sm mt-2">{text.campaignSection.subtitle}</p>
+            <p className="text-gray-300 text-sm mt-2 leading-relaxed">{text.campaignSection.subtitle}</p>
           </div>
 
           <div className="grid md:grid-cols-12 gap-10 items-stretch">
@@ -1025,6 +1029,19 @@ export default function OfertaPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Premium Custom Quote CTA Button */}
+          <div className="mt-16 text-center border-t border-white/10 pt-10">
+            <a
+              href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent((text.campaignSection as any).prefill)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-[#FF8C42] hover:bg-[#E8672A] text-[#1F2A2E] hover:text-white font-mono text-xs uppercase font-bold tracking-wider px-8 py-5 transition transform hover:-translate-y-0.5 shadow-xl"
+            >
+              <span>{(text.campaignSection as any).ctaBtn}</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
+            </a>
           </div>
         </div>
       </section>

@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 import { ArrowLeft, Play, Image as ImageIcon, Video, ExternalLink } from 'lucide-react';
 
-import productImg1 from './sample-product-1.png';
-import productImg2 from './sample-product-2.png';
-import portraitImg from './sample-portrait.png';
+
 
 const TRANSLATIONS = {
   es: {
@@ -53,7 +51,7 @@ const ITEMS = [
     title: { es: 'Fotografía Creativa de Producto - Lujo', en: 'Creative Product Photography - Luxury' },
     concept: { es: 'Composición de bodegón premium para marca de cosmética fina.', en: 'Premium still life composition for fine cosmetics brand.' },
     engine: 'Midjourney v6 + Photoshop Generative Fill',
-    imgSrc: productImg1.src,
+    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/prompt-studio-woman-1.avif",
     aspect: 'square'
   },
   {
@@ -70,7 +68,7 @@ const ITEMS = [
     title: { es: 'Fotografía de Producto - Botella', en: 'Product Photography - Bottle' },
     concept: { es: 'Iluminación de estudio dramática y reflejos líquidos realistas.', en: 'Dramatic studio lighting and realistic liquid reflections.' },
     engine: 'Midjourney v6 (Raw Mode)',
-    imgSrc: productImg2.src,
+    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/oracle.avif",
     aspect: 'square'
   },
   {
@@ -87,7 +85,7 @@ const ITEMS = [
     title: { es: 'Retrato e Iluminación Cinematográfica', en: 'Cinematic Lighting & Portrait' },
     concept: { es: 'Dirección de personajes y colorización vintage cinematográfica.', en: 'Character direction and cinematic vintage color grading.' },
     engine: 'Midjourney v6 + Lightroom Classic',
-    imgSrc: portraitImg.src,
+    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_1.avif",
     aspect: 'square'
   },
   {
