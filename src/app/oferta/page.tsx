@@ -441,6 +441,7 @@ const STYLE_PREVIEWS = {
   ugc: {
     badge: "UGC CON IA",
     icon: "user",
+    thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
     heading: {
       es: "Formato Creador de Contenido Orgánico",
       en: "Organic Content Creator Format"
@@ -491,6 +492,7 @@ const STYLE_PREVIEWS = {
   podcast: {
     badge: "PODCAST CLIP",
     icon: "podcast",
+    thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
     heading: {
       es: "Formato Extracto de Podcast",
       en: "Podcast Clip Format"
@@ -529,6 +531,7 @@ const STYLE_PREVIEWS = {
   dualcast: {
     badge: "DUAL CAST",
     icon: "users",
+    thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Two_women_talking_in_gym_202608141038.jpeg",
     heading: {
       es: "Formato Diálogo de 2 Personajes",
       en: "2-Character Dialogue Format"
@@ -555,6 +558,7 @@ const STYLE_PREVIEWS = {
   animados: {
     badge: "ANIMADOS",
     icon: "sparkles",
+    thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/magnific_cinematic-highspeed-anima_ohZXVUW829-2.00_00_04_04.Imagen-fija006.jpg",
     heading: {
       es: "Formato Animación y Gráficos Dinámicos",
       en: "Animated & Dynamic Graphics Format"
@@ -581,6 +585,7 @@ const STYLE_PREVIEWS = {
   miniseries: {
     badge: "MINI SERIES",
     icon: "clapperboard",
+    thumbnail: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
     heading: {
       es: "Formato Narrativo por Episodios",
       en: "Episodic Narrative Format"
@@ -926,22 +931,36 @@ export default function OfertaPage() {
               <div 
                 key={style.key} 
                 onClick={() => openStyleModal(style.key as any, 0)} 
-                className="group border border-[rgba(31,42,46,0.14)] bg-[#FBF6EC] p-5 cursor-pointer hover:bg-[#1F2A2E] hover:text-[#FBF6EC] transition-all duration-300 flex flex-col justify-between h-60 relative overflow-hidden"
+                className="group border border-[rgba(31,42,46,0.14)] p-5 cursor-pointer transition-all duration-300 flex flex-col justify-between h-60 relative overflow-hidden bg-cover bg-center"
+                style={{
+                  backgroundImage: `linear-gradient(to bottom, rgba(251, 246, 236, 0.95), rgba(251, 246, 236, 0.98)), url(${STYLE_PREVIEWS[style.key as keyof typeof STYLE_PREVIEWS]?.thumbnail || ''})`,
+                }}
               >
-                <div>
-                  <div className="font-mono text-[11px] text-[#00879F] group-hover:text-[#FF8C42] font-bold">
-                    0{idx+1} / {language === 'es' ? "ESTILO" : "STYLE"}
+                {/* Hover overlays */}
+                <div className="absolute inset-0 bg-[#1F2A2E] opacity-0 group-hover:opacity-90 transition-opacity duration-300 z-0" />
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-0 bg-cover bg-center bg-no-repeat"
+                  style={{
+                    backgroundImage: `url(${STYLE_PREVIEWS[style.key as keyof typeof STYLE_PREVIEWS]?.thumbnail || ''})`,
+                  }}
+                />
+
+                <div className="relative z-10 flex flex-col justify-between h-full w-full">
+                  <div>
+                    <div className="font-mono text-[11px] text-[#00879F] group-hover:text-[#FF8C42] font-bold">
+                      0{idx+1} / {language === 'es' ? "ESTILO" : "STYLE"}
+                    </div>
+                    <h3 className="font-fraunces font-semibold text-xl mt-3 group-hover:text-white">
+                      {style.title}
+                    </h3>
+                    <p className="text-xs text-[#4A5A5E] group-hover:text-[#FBF6EC]/70 mt-2">
+                      {style.desc}
+                    </p>
                   </div>
-                  <h3 className="font-fraunces font-semibold text-xl mt-3 group-hover:text-white">
-                    {style.title}
-                  </h3>
-                  <p className="text-xs text-[#4A5A5E] group-hover:text-[#FBF6EC]/70 mt-2">
-                    {style.desc}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between font-mono text-xs text-[#E8672A] group-hover:text-[#FF8C42] pt-2 border-t border-[rgba(31,42,46,0.14)] group-hover:border-[#FBF6EC]/20">
-                  <span>{text.work.demoCta}</span>
-                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <div className="flex items-center justify-between font-mono text-xs text-[#E8672A] group-hover:text-[#FF8C42] pt-2 border-t border-[rgba(31,42,46,0.14)] group-hover:border-[#FBF6EC]/20 w-full font-bold">
+                    <span>{text.work.demoCta}</span>
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -1644,6 +1663,17 @@ export default function OfertaPage() {
                   }`}
                 >
                   
+                  {/* Background cover image if no video URL is present */}
+                  {!currentSource.url && (currentStyleData as any).thumbnail && (
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center z-0"
+                        style={{ backgroundImage: `url(${(currentStyleData as any).thumbnail})` }}
+                      />
+                      <div className="absolute inset-0 bg-black/60 z-0" />
+                    </>
+                  )}
+
                   {/* Simulated Badge - Only shown when no video is playing */}
                   {!currentSource.url && (
                     <div className="flex justify-between items-center text-[10px] font-mono text-white/80 z-10">
@@ -1651,7 +1681,7 @@ export default function OfertaPage() {
                         {currentStyleData?.badge}
                       </span>
                       <span className="bg-black/60 px-2 py-0.5 rounded text-[#00B4D8] font-bold">
-                        {language === 'es' ? "⚡ 48h de entrega" : "⚡ 48h delivery"}
+                        {language === 'es' ? "⚡ Cupos Limitados" : "⚡ Limited Slots"}
                       </span>
                     </div>
                   )}
@@ -1659,11 +1689,11 @@ export default function OfertaPage() {
                   {/* Simulated Fallback (shown when no video URL) */}
                   {!currentSource.url && (
                     <div className="my-auto text-center z-10 px-2">
-                      <div className="w-20 h-20 rounded-full border-2 border-[#FF8C42] mx-auto overflow-hidden mb-3 bg-zinc-800 flex items-center justify-center relative shadow-lg">
+                      <div className="w-20 h-20 rounded-full border-2 border-[#FF8C42] mx-auto overflow-hidden mb-3 bg-zinc-800/80 flex items-center justify-center relative shadow-lg">
                         {renderIcon(currentStyleData?.icon)}
                         <div className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-zinc-900 animate-ping"></div>
                       </div>
-                      <p className="text-white font-fraunces font-medium text-xs leading-relaxed drop-shadow">
+                      <p className="text-white font-fraunces font-medium text-xs leading-relaxed drop-shadow-md">
                         {currentSource.script[langKey]}
                       </p>
                     </div>
@@ -1675,6 +1705,7 @@ export default function OfertaPage() {
                       <video 
                         ref={videoRef}
                         src={currentSource.url}
+                        poster={(currentStyleData as any).thumbnail}
                         className="w-full h-full object-cover"
                         controls
                         playsInline

@@ -45,6 +45,7 @@ const ITEMS = [
     concept: { es: 'Avatar hiperrealista para recomendación orgánica informal.', en: 'Hyper-realistic avatar for organic informal recommendation.' },
     engine: 'Midjourney v6 + HeyGen + CapCut',
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
     aspect: 'vertical'
   },
   {
@@ -61,6 +62,7 @@ const ITEMS = [
     concept: { es: 'Extracto conversacional automatizado con subtítulos dinámicos de alto impacto.', en: 'Automated conversational extract with high-impact dynamic subtitles.' },
     engine: 'ElevenLabs + Adobe Premiere Pro',
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/PODCAST-The-Silent-Studio.mp4',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
     aspect: 'vertical'
   },
   {
@@ -77,6 +79,7 @@ const ITEMS = [
     concept: { es: 'Caso de éxito en formato de entrevista con narrativa y ganchos psicológicos.', en: 'Success case in interview format with narrative and psychological hooks.' },
     engine: 'Midjourney + Runway Gen-2 + Neutro Voice',
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cafe-naranjo.mp4',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
     aspect: 'vertical'
   },
   {
@@ -93,6 +96,25 @@ const ITEMS = [
     concept: { es: 'Micro-historia o secuencia de marca enfocada en enganchar a la audiencia.', en: 'Micro-story or brand sequence focused on hooking the audience.' },
     engine: 'Luma Dream Machine + ElevenLabs',
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-27-Hueles-Delicioso.mp4',
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
+    aspect: 'vertical'
+  },
+  {
+    type: 'video',
+    title: { es: 'Dual Cast (Simulación Diálogo)', en: 'Dual Cast (Dialogue Simulation)' },
+    concept: { es: 'Dinámica de dos avatares interactivos resolviendo una necesidad.', en: 'Dynamics of two interactive avatars solving a need.' },
+    engine: 'HeyGen + ElevenLabs',
+    url: '',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Two_women_talking_in_gym_202608141038.jpeg",
+    aspect: 'vertical'
+  },
+  {
+    type: 'video',
+    title: { es: 'Animación Explicativa IA', en: 'AI Explainer Animation' },
+    concept: { es: 'Animaciones de alta velocidad para captar atención en segundos.', en: 'High-speed animations to capture attention in seconds.' },
+    engine: 'magnific + Runway Gen-3',
+    url: '',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/magnific_cinematic-highspeed-anima_ohZXVUW829-2.00_00_04_04.Imagen-fija006.jpg",
     aspect: 'vertical'
   },
   {
@@ -100,6 +122,7 @@ const ITEMS = [
     title: { es: 'Anuncio UGC (Variante Colección)', en: 'UGC Ad (Collection Variant)' },
     concept: { es: 'Prueba creativa multi-ángulo para testeo A/B en redes sociales.', en: 'Multi-angle creative test for A/B testing on social networks.' },
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads-nueva-coleccion.mp4',
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
     engine: 'Midjourney + HeyGen + CapCut Pro',
     aspect: 'vertical'
   },
@@ -108,6 +131,7 @@ const ITEMS = [
     title: { es: 'Edición Horizontal (Transparente)', en: 'Horizontal Edit (Transparente)' },
     concept: { es: 'Formato cinematográfico horizontal adaptado para explicativos detallados.', en: 'Horizontal cinematic format adapted for detailed explainers.' },
     url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-21-Transparente_202607172109.mp4',
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
     engine: 'Kling AI + Runway Gen-3',
     aspect: 'horizontal'
   }
@@ -186,13 +210,36 @@ export default function GaleriaPage() {
               <div className="bg-black/95 rounded overflow-hidden flex items-center justify-center relative mb-4">
                 {item.type === 'video' ? (
                   <div className={`w-full relative ${item.aspect === 'horizontal' ? 'aspect-video' : 'aspect-[9/16] h-[340px]'}`}>
-                    <video 
-                      src={item.url} 
-                      className="w-full h-full object-cover" 
-                      controls
-                      playsInline
-                      preload="metadata"
-                    />
+                    {item.url ? (
+                      <video 
+                        src={item.url} 
+                        poster={item.poster}
+                        className="w-full h-full object-cover" 
+                        controls
+                        playsInline
+                        preload="metadata"
+                      />
+                    ) : (
+                      <>
+                        <div 
+                          className="absolute inset-0 bg-cover bg-center z-0"
+                          style={{ backgroundImage: `url(${item.poster})` }}
+                        />
+                        <div className="absolute inset-0 bg-black/60 z-0 flex flex-col justify-between p-4">
+                          <span className="bg-[#FF8C42]/90 text-[#1F2A2E] font-mono text-[9px] px-2 py-0.5 rounded font-bold uppercase w-fit z-10">
+                            MUESTRA IA
+                          </span>
+                          <div className="text-center my-auto px-2 z-10">
+                            <Play className="w-8 h-8 text-[#FF8C42] fill-[#FF8C42] mx-auto opacity-80 mb-2" />
+                            <p className="text-white font-sans text-[11px] leading-relaxed drop-shadow-md">
+                              {language === 'es' 
+                                ? 'Muestra de formato dinámico bajo pedido comercial'
+                                : 'Dynamic format sample available upon commercial request'}
+                            </p>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="absolute top-2 left-2 bg-black/60 text-white font-mono text-[9px] px-2 py-0.5 rounded flex items-center gap-1 z-10">
                       <Video className="w-2.5 h-2.5 text-[#FF8C42]" /> VIDEO
                     </div>
