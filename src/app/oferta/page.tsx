@@ -155,6 +155,8 @@ const TRANSLATIONS = {
       items: [
         {
           key: "ugc",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
           client: "Super Pet (Alimentos Premium)",
           problem: "Alto costo de adquisición de clientes con imágenes estáticas tradicionales en redes.",
           concept: "Avatar de IA simulando una videollamada selfie informal, recomendando la marca de forma orgánica y cercana.",
@@ -163,6 +165,8 @@ const TRANSLATIONS = {
         },
         {
           key: "podcast",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
           client: "Dental Care Costa Rica",
           problem: "Desconfianza en tratamientos dentales de alto costo y baja autoridad en medios.",
           concept: "Fragmento explicativo de doctor de IA con tono clínico y subtítulos dinámicos de alto impacto visual.",
@@ -170,7 +174,9 @@ const TRANSLATIONS = {
           demoName: "Podcast Clip (Studio Talk)"
         },
         {
-          key: "campaign",
+          key: "podcast",
+          sourceIndex: 1,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
           client: "Café Naranjo (Cata de Especialidad)",
           problem: "Anuncios publicitarios agresivos que el usuario salta tras el primer segundo.",
           concept: "Formato documental de entrevista corta explicando el origen del grano y los procesos de selección gourmet.",
@@ -179,6 +185,8 @@ const TRANSLATIONS = {
         },
         {
           key: "miniseries",
+          sourceIndex: 0,
+          thumbnail: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
           client: "Boutique Hueles Delicioso",
           problem: "Mercado saturado y baja retención de clientes en anuncios de fragancias.",
           concept: "Mini serie narrativa con intriga y ganchos olfativos para incentivar al usuario a ver el siguiente episodio.",
@@ -186,7 +194,9 @@ const TRANSLATIONS = {
           demoName: "Cap 27 (Hueles Delicioso)"
         },
         {
-          key: "animados",
+          key: "campaign",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
           client: "Estudio Urbano / Colección Urbana",
           problem: "Fotografías tradicionales que no transmiten la dinámica de la tela en movimiento ni las variantes.",
           concept: "Anuncios dinámicos que mezclan modelaje cinemático e Inteligencia Artificial Generativa rápida.",
@@ -465,6 +475,8 @@ const TRANSLATIONS = {
       items: [
         {
           key: "ugc",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
           client: "Super Pet (Premium Pet Food)",
           problem: "High customer acquisition costs using traditional static social media images.",
           concept: "AI avatar simulating an informal selfie video call, recommending the brand organically and closely.",
@@ -473,6 +485,8 @@ const TRANSLATIONS = {
         },
         {
           key: "podcast",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
           client: "Dental Care Costa Rica",
           problem: "Lack of perceived authority and low trust in high-ticket dental treatments.",
           concept: "AI doctor explanatory clip with clinical tone and high-contrast dynamic subtitles.",
@@ -480,7 +494,9 @@ const TRANSLATIONS = {
           demoName: "Podcast Clip (Studio Talk)"
         },
         {
-          key: "campaign",
+          key: "podcast",
+          sourceIndex: 1,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
           client: "Cafe Naranjo (Specialty Coffee)",
           problem: "Aggressive promotional ads that users skip after the first second.",
           concept: "Short documentary interview format explaining bean origin and gourmet selection processes.",
@@ -489,6 +505,8 @@ const TRANSLATIONS = {
         },
         {
           key: "miniseries",
+          sourceIndex: 0,
+          thumbnail: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
           client: "Hueles Delicioso Boutique",
           problem: "Saturated market and low customer retention in fragrance advertisements.",
           concept: "Narrative mini-series with intrigue and olfactory hooks to encourage users to watch the next episode.",
@@ -496,7 +514,9 @@ const TRANSLATIONS = {
           demoName: "Cap 27 (Hueles Delicioso)"
         },
         {
-          key: "animados",
+          key: "campaign",
+          sourceIndex: 0,
+          thumbnail: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
           client: "Estudio Urbano / Urban Collection",
           problem: "Traditional photos that do not convey fabric motion or clothing variations.",
           concept: "Dynamic ads blending rapid cinematic modeling and fast Generative AI.",
@@ -1362,13 +1382,13 @@ export default function OfertaPage() {
                 {/* Right phone mockup overlay click to play */}
                 <div className="md:col-span-5 flex justify-center">
                   <div 
-                    onClick={() => openStyleModal(c.key as any, 0)}
+                    onClick={() => openStyleModal(c.key as any, (c as any).sourceIndex || 0)}
                     className="relative cursor-pointer group rounded-lg overflow-hidden border border-white/15 bg-black aspect-[9/16] w-48 shadow-2xl transition hover:scale-105"
                   >
                     {/* Background image preview */}
                     <div 
                       className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105 opacity-80"
-                      style={{ backgroundImage: `url(${(STYLE_PREVIEWS[c.key as keyof typeof STYLE_PREVIEWS] as any)?.thumbnail || ''})` }}
+                      style={{ backgroundImage: `url(${(c as any).thumbnail || (STYLE_PREVIEWS[c.key as keyof typeof STYLE_PREVIEWS] as any)?.thumbnail || ''})` }}
                     />
                     {/* Black fade overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60 transition group-hover:via-black/20" />
