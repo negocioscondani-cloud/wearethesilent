@@ -25,7 +25,12 @@ export default function Header() {
   const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
 
-  if (pathname.startsWith('/the-silent-studio-guide') || pathname.startsWith('/manual')) {
+  const hiddenRoutes = ['/', '/oferta', '/galeria', '/we-are-the-silent'];
+  if (
+    pathname.startsWith('/the-silent-studio-guide') || 
+    pathname.startsWith('/manual') ||
+    hiddenRoutes.includes(pathname)
+  ) {
     return null;
   }
 
