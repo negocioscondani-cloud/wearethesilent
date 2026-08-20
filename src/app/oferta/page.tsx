@@ -914,12 +914,7 @@ const CAROUSEL_VIDEOS = [
     url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4",
     poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
   },
-  {
-    title: { es: "Podcast Clip (Studio Talk)", en: "Podcast Clip (Studio Talk)" },
-    desc: { es: "Fragmento conversacional con subtítulos dinámicos.", en: "Conversational excerpt with dynamic subtitles." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/PODCAST-The-Silent-Studio.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg"
-  },
+
   {
     title: { es: "Entrevista (Café Naranjo)", en: "Interview Case (Café Naranjo)" },
     desc: { es: "Caso de éxito automatizado y persuasión de marca.", en: "Automated success case and brand persuasion." },
@@ -1440,11 +1435,10 @@ export default function OfertaPage() {
                 <div className="relative aspect-[9/16] w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5">
                   <video 
                     src={v.url}
-                    poster={v.poster}
                     className="w-full h-full object-cover"
                     controls
                     playsInline
-                    preload="none"
+                    preload="metadata"
                   />
                 </div>
                 
