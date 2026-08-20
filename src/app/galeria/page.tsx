@@ -1,293 +1,154 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
-import { ArrowLeft, Play, Image as ImageIcon, Video, ExternalLink } from 'lucide-react';
-
-
+import { ArrowLeft, Play, Video } from 'lucide-react';
+import videoGalleryData from '@/lib/video-gallery.json';
 
 const TRANSLATIONS = {
   es: {
-    title: "Galería Creativa",
-    subtitle: "Una muestra seleccionada de nuestro criterio visual y producción con Inteligencia Artificial.",
+    title: "Galería de Videos",
+    subtitle: "Nuestra producción audiovisual premium conceptualizada y optimizada para alto impacto.",
     back: "Volver al inicio",
     filterAll: "Todos",
-    filterVideos: "Videos",
-    filterPhotos: "Fotografía de Producto",
-    concept: "Concepto:",
-    engine: "Tecnología:",
     ctaTitle: "¿Listo para crear tus anuncios?",
     ctaSub: "Solo trabajamos con 10 negocios por ciclo de producción.",
     ctaBtn: "Ver Oferta Comercial"
   },
   en: {
-    title: "Creative Gallery",
-    subtitle: "A curated showcase of our visual criteria and production using Artificial Intelligence.",
+    title: "Video Gallery",
+    subtitle: "Our premium audiovisual production conceptualized and optimized for high impact.",
     back: "Back to home",
     filterAll: "All",
-    filterVideos: "Videos",
-    filterPhotos: "Product Photography",
-    concept: "Concept:",
-    engine: "Technology:",
     ctaTitle: "Ready to create your ads?",
     ctaSub: "We only work with 10 businesses per production cycle.",
     ctaBtn: "View Commercial Offer"
   }
 };
 
-const ITEMS = [
-  {
-    type: 'video',
-    title: { es: 'UGC Anuncio (Super Pet)', en: 'UGC Ad (Super Pet)' },
-    concept: { es: 'Avatar hiperrealista para recomendación orgánica informal.', en: 'Hyper-realistic avatar for organic informal recommendation.' },
-    engine: 'Midjourney v6 + HeyGen + CapCut',
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'photo',
-    title: { es: 'Fotografía Creativa de Producto - Lujo', en: 'Creative Product Photography - Luxury' },
-    concept: { es: 'Composición de bodegón premium para marca de cosmética fina.', en: 'Premium still life composition for fine cosmetics brand.' },
-    engine: 'Midjourney v6 + Photoshop Generative Fill',
-    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/prompt-studio-woman-1.avif",
-    aspect: 'square'
-  },
-  {
-    type: 'video',
-    title: { es: 'Podcast Clip (Studio Talk)', en: 'Podcast Clip (Studio Talk)' },
-    concept: { es: 'Extracto conversacional automatizado con subtítulos dinámicos de alto impacto.', en: 'Automated conversational extract with high-impact dynamic subtitles.' },
-    engine: 'ElevenLabs + Adobe Premiere Pro',
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/PODCAST-The-Silent-Studio.mp4',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'photo',
-    title: { es: 'Fotografía de Producto - Botella', en: 'Product Photography - Bottle' },
-    concept: { es: 'Iluminación de estudio dramática y reflejos líquidos realistas.', en: 'Dramatic studio lighting and realistic liquid reflections.' },
-    engine: 'Midjourney v6 (Raw Mode)',
-    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/oracle.avif",
-    aspect: 'square'
-  },
-  {
-    type: 'video',
-    title: { es: 'Entrevista de Éxito (Café Naranjo)', en: 'Success Interview (Cafe Naranjo)' },
-    concept: { es: 'Caso de éxito en formato de entrevista con narrativa y ganchos psicológicos.', en: 'Success case in interview format with narrative and psychological hooks.' },
-    engine: 'Midjourney + Runway Gen-2 + Neutro Voice',
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cafe-naranjo.mp4',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'photo',
-    title: { es: 'Retrato e Iluminación Cinematográfica', en: 'Cinematic Lighting & Portrait' },
-    concept: { es: 'Dirección de personajes y colorización vintage cinematográfica.', en: 'Character direction and cinematic vintage color grading.' },
-    engine: 'Midjourney v6 + Lightroom Classic',
-    imgSrc: "http://studioboom.online/wp-content/uploads/2025/09/calde11th_editorial_cinematic_shot_-_mujer_joven_sentada_sost_123f2d6e-ec6c-4189-a485-3229b9803771_1.avif",
-    aspect: 'square'
-  },
-  {
-    type: 'video',
-    title: { es: 'Mini Serie Narrativa (Hueles Delicioso)', en: 'Narrative Mini Series (Hueles Delicioso)' },
-    concept: { es: 'Micro-historia o secuencia de marca enfocada en enganchar a la audiencia.', en: 'Micro-story or brand sequence focused on hooking the audience.' },
-    engine: 'Luma Dream Machine + ElevenLabs',
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-27-Hueles-Delicioso.mp4',
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'video',
-    title: { es: 'Dual Cast (Simulación Diálogo)', en: 'Dual Cast (Dialogue Simulation)' },
-    concept: { es: 'Dinámica de dos avatares interactivos resolviendo una necesidad.', en: 'Dynamics of two interactive avatars solving a need.' },
-    engine: 'HeyGen + ElevenLabs',
-    url: '',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Two_women_talking_in_gym_202608141038.jpeg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'video',
-    title: { es: 'Animación Explicativa IA', en: 'AI Explainer Animation' },
-    concept: { es: 'Animaciones de alta velocidad para captar atención en segundos.', en: 'High-speed animations to capture attention in seconds.' },
-    engine: 'magnific + Runway Gen-3',
-    url: '',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/magnific_cinematic-highspeed-anima_ohZXVUW829-2.00_00_04_04.Imagen-fija006.jpg",
-    aspect: 'vertical'
-  },
-  {
-    type: 'video',
-    title: { es: 'Anuncio UGC (Variante Colección)', en: 'UGC Ad (Collection Variant)' },
-    concept: { es: 'Prueba creativa multi-ángulo para testeo A/B en redes sociales.', en: 'Multi-angle creative test for A/B testing on social networks.' },
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads-nueva-coleccion.mp4',
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg",
-    engine: 'Midjourney + HeyGen + CapCut Pro',
-    aspect: 'vertical'
-  },
-  {
-    type: 'video',
-    title: { es: 'Edición Horizontal (Transparente)', en: 'Horizontal Edit (Transparente)' },
-    concept: { es: 'Formato cinematográfico horizontal adaptado para explicativos detallados.', en: 'Horizontal cinematic format adapted for detailed explainers.' },
-    url: 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-21-Transparente_202607172109.mp4',
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
-    engine: 'Kling AI + Runway Gen-3',
-    aspect: 'horizontal'
-  }
-];
-
 export default function GaleriaPage() {
   const { language } = useLanguage();
   const text = language === 'es' ? TRANSLATIONS.es : TRANSLATIONS.en;
-  const langKey = language === 'es' ? 'es' : 'en';
 
-  const [filter, setFilter] = useState<'all' | 'video' | 'photo'>('all');
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [aspectRatios, setAspectRatios] = useState<Record<string, 'horizontal' | 'vertical'>>({});
 
-  const filteredItems = ITEMS.filter(item => {
-    if (filter === 'all') return true;
-    return item.type === filter;
+  // Collect all unique categories from the json
+  const categories = ['All', ...Array.from(new Set(videoGalleryData.map(v => v.category)))];
+
+  const handleLoadedMetadata = (url: string, e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    const aspect = video.videoWidth > video.videoHeight ? 'horizontal' : 'vertical';
+    setAspectRatios(prev => ({ ...prev, [url]: aspect }));
+  };
+
+  const filteredVideos = videoGalleryData.filter(v => {
+    if (activeCategory === 'All') return true;
+    return v.category === activeCategory;
   });
 
   return (
-    <div className="bg-[#FBF6EC] text-[#1F2A2E] min-h-screen flex flex-col justify-between selection:bg-[#1F2A2E] selection:text-[#FBF6EC] font-sans antialiased">
+    <div className="bg-[#0A0D0E] text-white min-h-screen flex flex-col justify-between selection:bg-[#C5A059] selection:text-black font-sans antialiased">
       
       {/* Header */}
-      <header className="border-b border-[rgba(31,42,46,0.08)] bg-[#FBF6EC] sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
-          <Link href="/" className="font-mono text-xs uppercase tracking-wider text-[#1F2A2E] hover:text-[#E8672A] transition flex items-center gap-2">
+      <header className="border-b border-white/10 bg-[#0A0D0E]/80 backdrop-blur sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+          <Link href="/" className="font-mono text-xs uppercase tracking-wider text-gray-400 hover:text-[#C5A059] transition flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             <span>{text.back}</span>
           </Link>
-          <div className="font-fraunces font-black text-lg tracking-tight">
-            The Silent<span className="text-[#E8672A]">Studio</span>
+          <div className="font-fraunces font-bold text-lg tracking-tight text-white">
+            The Silent<span className="text-[#C5A059]">Studio</span>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-12 flex-grow w-full">
+      <main className="max-w-7xl mx-auto px-6 py-16 flex-grow w-full">
         {/* Title */}
         <div className="max-w-2xl mb-12">
-          <h1 className="font-fraunces font-bold text-4xl sm:text-5xl text-[#1F2A2E] mb-3">
+          <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
+            <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
+            PORTAFOLIO
+          </div>
+          <h1 className="font-fraunces font-bold text-4xl sm:text-5xl text-white mb-4">
             {text.title}
           </h1>
-          <p className="text-[#4A5A5E] text-base leading-relaxed">
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-light">
             {text.subtitle}
           </p>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="flex gap-2 mb-10 border-b border-[rgba(31,42,46,0.08)] pb-4 overflow-x-auto">
-          <button 
-            onClick={() => setFilter('all')}
-            className={`font-mono text-xs uppercase tracking-wider px-4 py-2 border transition shrink-0 ${filter === 'all' ? 'bg-[#1F2A2E] border-[#1F2A2E] text-[#FBF6EC] font-bold' : 'bg-transparent border-[rgba(31,42,46,0.14)] text-[#1F2A2E] hover:border-[#1F2A2E]'}`}
-          >
-            {text.filterAll}
-          </button>
-          <button 
-            onClick={() => setFilter('video')}
-            className={`font-mono text-xs uppercase tracking-wider px-4 py-2 border transition shrink-0 ${filter === 'video' ? 'bg-[#1F2A2E] border-[#1F2A2E] text-[#FBF6EC] font-bold' : 'bg-transparent border-[rgba(31,42,46,0.14)] text-[#1F2A2E] hover:border-[#1F2A2E]'}`}
-          >
-            {text.filterVideos}
-          </button>
-          <button 
-            onClick={() => setFilter('photo')}
-            className={`font-mono text-xs uppercase tracking-wider px-4 py-2 border transition shrink-0 ${filter === 'photo' ? 'bg-[#1F2A2E] border-[#1F2A2E] text-[#FBF6EC] font-bold' : 'bg-transparent border-[rgba(31,42,46,0.14)] text-[#1F2A2E] hover:border-[#1F2A2E]'}`}
-          >
-            {text.filterPhotos}
-          </button>
+        {/* Category Tabs */}
+        <div className="flex gap-2 mb-10 border-b border-white/10 pb-4 overflow-x-auto scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {categories.map((cat) => {
+            const isSelected = activeCategory === cat;
+            const displayName = cat === 'All' ? text.filterAll : cat;
+            return (
+              <button 
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`font-mono text-xs uppercase tracking-wider px-4 py-2 border transition shrink-0 rounded-sm ${isSelected ? 'bg-[#C5A059] border-[#C5A059] text-black font-bold' : 'bg-transparent border-white/10 text-gray-400 hover:border-white/30 hover:text-white'}`}
+              >
+                {displayName}
+              </button>
+            );
+          })}
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-          {filteredItems.map((item, idx) => (
-            <div 
-              key={idx} 
-              className="bg-white border border-[rgba(31,42,46,0.08)] rounded-sm p-4 shadow-sm flex flex-col justify-between"
-            >
-              {/* Media element */}
-              <div className="bg-black/95 rounded overflow-hidden flex items-center justify-center relative mb-4">
-                {item.type === 'video' ? (
-                  <div className={`w-full relative ${item.aspect === 'horizontal' ? 'aspect-video' : 'aspect-[9/16] h-[340px]'}`}>
-                    {item.url ? (
-                      <video 
-                        src={item.url} 
-                        poster={item.poster}
-                        className="w-full h-full object-cover" 
-                        controls
-                        playsInline
-                        preload="metadata"
-                      />
-                    ) : (
-                      <>
-                        <div 
-                          className="absolute inset-0 bg-cover bg-center z-0"
-                          style={{ backgroundImage: `url(${item.poster})` }}
-                        />
-                        <div className="absolute inset-0 bg-black/60 z-0 flex flex-col justify-between p-4">
-                          <span className="bg-[#FF8C42]/90 text-[#1F2A2E] font-mono text-[9px] px-2 py-0.5 rounded font-bold uppercase w-fit z-10">
-                            MUESTRA IA
-                          </span>
-                          <div className="text-center my-auto px-2 z-10">
-                            <Play className="w-8 h-8 text-[#FF8C42] fill-[#FF8C42] mx-auto opacity-80 mb-2" />
-                            <p className="text-white font-sans text-[11px] leading-relaxed drop-shadow-md">
-                              {language === 'es' 
-                                ? 'Muestra de formato dinámico bajo pedido comercial'
-                                : 'Dynamic format sample available upon commercial request'}
-                            </p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                    <div className="absolute top-2 left-2 bg-black/60 text-white font-mono text-[9px] px-2 py-0.5 rounded flex items-center gap-1 z-10">
-                      <Video className="w-2.5 h-2.5 text-[#FF8C42]" /> VIDEO
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-full aspect-square relative">
-                    <img 
-                      src={item.imgSrc} 
-                      alt={item.title[langKey]} 
-                      className="w-full h-full object-cover" 
-                    />
-                    <div className="absolute top-2 left-2 bg-black/60 text-white font-mono text-[9px] px-2 py-0.5 rounded flex items-center gap-1 z-10">
-                      <ImageIcon className="w-2.5 h-2.5 text-[#00B4D8]" /> FOTO
-                    </div>
-                  </div>
-                )}
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-start">
+          {filteredVideos.map((v, idx) => {
+            const aspect = aspectRatios[v.url] || 'vertical';
+            const isHorizontal = aspect === 'horizontal';
+            return (
+              <div 
+                key={idx} 
+                className={`bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/20 transition duration-300 ${isHorizontal ? 'sm:col-span-2' : 'col-span-1'}`}
+              >
+                {/* Video container */}
+                <div className={`relative ${isHorizontal ? 'aspect-video' : 'aspect-[9/16]'} w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5`}>
+                  <video 
+                    src={v.url} 
+                    className="w-full h-full object-cover" 
+                    controls
+                    playsInline
+                    preload="metadata"
+                    onLoadedMetadata={(e) => handleLoadedMetadata(v.url, e)}
+                  />
+                </div>
 
-              {/* Text Meta info */}
-              <div className="space-y-2">
-                <h3 className="font-fraunces font-bold text-lg text-[#1F2A2E] leading-snug">
-                  {item.title[langKey]}
-                </h3>
-                <div className="text-xs text-[#4A5A5E]">
-                  <span className="font-semibold text-[#1F2A2E]">{text.concept}</span> {item.concept[langKey]}
-                </div>
-                <div className="font-mono text-[10px] text-[#E8672A]">
-                  <span className="font-bold text-[#1F2A2E]">{text.engine}</span> {item.engine}
+                {/* Details */}
+                <div className="space-y-1">
+                  <div className="font-mono text-[9px] text-[#C5A059] uppercase tracking-wider">
+                    {v.category}
+                  </div>
+                  <h3 className="font-fraunces font-bold text-sm text-white leading-tight">
+                    {v.title}
+                  </h3>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Dynamic CTA Banner */}
-        <div className="mt-16 bg-[#1F2A2E] text-[#FBF6EC] p-8 text-center rounded border border-[#FF8C42]/20">
-          <h3 className="font-fraunces font-bold text-2xl mb-2 text-white">{text.ctaTitle}</h3>
-          <p className="text-gray-300 text-xs font-mono mb-6">{text.ctaSub}</p>
+        <div className="mt-20 bg-[#12161A] text-white p-10 text-center rounded-sm border border-white/10 max-w-4xl mx-auto relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[2px] bg-[#C5A059]" />
+          <h3 className="font-fraunces font-bold text-2xl sm:text-3xl mb-2 text-white">{text.ctaTitle}</h3>
+          <p className="text-gray-400 text-xs sm:text-sm font-mono mb-8">{text.ctaSub}</p>
           <Link 
             href="/oferta" 
-            className="inline-flex items-center gap-2 bg-[#FF8C42] hover:bg-[#E8672A] text-[#1F2A2E] hover:text-white font-mono text-xs uppercase font-bold px-6 py-3.5 transition"
+            className="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs uppercase font-bold px-8 py-4 transition transform hover:-translate-y-0.5 shadow-lg"
           >
             <span>{text.ctaBtn}</span>
-            <ExternalLink className="w-3.5 h-3.5" />
           </Link>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 bg-[#1F2A2E] text-[#FBF6EC]/50 font-mono text-[10px] text-center border-t border-[rgba(31,42,46,0.14)] mt-12">
+      <footer className="py-10 bg-[#0A0D0E] text-gray-600 font-mono text-[10px] text-center border-t border-white/5">
         The Silent Studio © Costa Rica. All rights reserved.
       </footer>
 
