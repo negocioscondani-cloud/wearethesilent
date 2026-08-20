@@ -1190,6 +1190,77 @@ export default function OfertaPage() {
         </div>
       </header>
 
+      {/* VIDEOS CAROUSEL SECTION */}
+      <section className="py-24 bg-[#0A0D0E] relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
+                <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
+                {language === 'es' ? "SHOWCASE CREATIVO" : "CREATIVE SHOWCASE"}
+              </div>
+              <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">
+                {language === 'es' ? "Tu próximo cliente está a una buena idea de distancia." : "Your next client is one good idea away."}
+              </h2>
+              <p className="text-gray-400 text-sm mt-3">
+                {language === 'es' ? "Reproduce directamente nuestros casos de estudio y ejemplos de anuncios de alto rendimiento." : "Play our case studies and high-performing ad examples directly here."}
+              </p>
+            </div>
+            
+            {/* Scroll buttons */}
+            <div className="flex gap-2">
+              <button 
+                onClick={scrollLeft}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={scrollRight}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Carousel Track */}
+          <div 
+            ref={carouselRef}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {CAROUSEL_VIDEOS.map((v, idx) => (
+              <div 
+                key={idx} 
+                className={`${(v as any).isHorizontal ? 'w-[360px] sm:w-[420px]' : 'w-[280px]'} shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/25 transition duration-300`}
+              >
+                <div className={`relative ${(v as any).isHorizontal ? 'aspect-video' : 'aspect-[9/16]'} w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5`}>
+                  <video 
+                    src={v.url}
+                    className="w-full h-full object-cover"
+                    controls
+                    playsInline
+                    preload="metadata"
+                  />
+                </div>
+                
+                <div className="space-y-1">
+                  <h3 className="font-fraunces font-bold text-base text-white leading-tight">
+                    {v.title[langKey]}
+                  </h3>
+                  <p className="text-gray-400 text-[11px] leading-relaxed font-light">
+                    {v.desc[langKey]}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SECCIÓN 2 — EL PROBLEMA */}
       <section className="py-24 bg-[#12161A] border-y border-white/5 relative">
         <div className="max-w-4xl mx-auto px-6">
@@ -1390,76 +1461,7 @@ export default function OfertaPage() {
         </div>
       </section>
 
-      {/* VIDEOS CAROUSEL SECTION */}
-      <section className="py-24 bg-[#0A0D0E] relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div>
-              <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
-                <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
-                {language === 'es' ? "SHOWCASE CREATIVO" : "CREATIVE SHOWCASE"}
-              </div>
-              <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">
-                {language === 'es' ? "Tu próximo cliente está a una buena idea de distancia." : "Your next client is one good idea away."}
-              </h2>
-              <p className="text-gray-400 text-sm mt-3">
-                {language === 'es' ? "Reproduce directamente nuestros casos de estudio y ejemplos de anuncios de alto rendimiento." : "Play our case studies and high-performing ad examples directly here."}
-              </p>
-            </div>
-            
-            {/* Scroll buttons */}
-            <div className="flex gap-2">
-              <button 
-                onClick={scrollLeft}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={scrollRight}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Carousel Track */}
-          <div 
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {CAROUSEL_VIDEOS.map((v, idx) => (
-              <div 
-                key={idx} 
-                className={`${(v as any).isHorizontal ? 'w-[360px] sm:w-[420px]' : 'w-[280px]'} shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/25 transition duration-300`}
-              >
-                <div className={`relative ${(v as any).isHorizontal ? 'aspect-video' : 'aspect-[9/16]'} w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5`}>
-                  <video 
-                    src={v.url}
-                    className="w-full h-full object-cover"
-                    controls
-                    playsInline
-                    preload="metadata"
-                  />
-                </div>
-                
-                <div className="space-y-1">
-                  <h3 className="font-fraunces font-bold text-base text-white leading-tight">
-                    {v.title[langKey]}
-                  </h3>
-                  <p className="text-gray-400 text-[11px] leading-relaxed font-light">
-                    {v.desc[langKey]}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* SECCIÓN 9 — DIFERENCIACIÓN */}
       <section className="py-24 bg-[#12161A] border-y border-white/5 text-center">
