@@ -23,7 +23,9 @@ import {
   Sparkles,
   Clapperboard,
   CheckCircle2,
-  Smartphone
+  Smartphone,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const WHATSAPP_NUM = "50664194111";
@@ -905,18 +907,86 @@ const STYLE_PREVIEWS = {
   }
 };
 
+const CAROUSEL_VIDEOS = [
+  {
+    title: { es: "UGC Anuncio (Super Pet)", en: "UGC Ad (Super Pet)" },
+    desc: { es: "Avatar interactivo de recomendación informal para mascotas.", en: "Interactive casual recommendation avatar for pets." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4",
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
+  },
+  {
+    title: { es: "Podcast Clip (Studio Talk)", en: "Podcast Clip (Studio Talk)" },
+    desc: { es: "Fragmento conversacional con subtítulos dinámicos.", en: "Conversational excerpt with dynamic subtitles." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/PODCAST-The-Silent-Studio.mp4",
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg"
+  },
+  {
+    title: { es: "Entrevista (Café Naranjo)", en: "Interview Case (Café Naranjo)" },
+    desc: { es: "Caso de éxito automatizado y persuasión de marca.", en: "Automated success case and brand persuasion." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cafe-naranjo.mp4",
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg"
+  },
+  {
+    title: { es: "Mini Serie (Hueles Delicioso)", en: "Mini Series (Hueles Delicioso)" },
+    desc: { es: "Micro-historia episódica de intriga para marca de lujo.", en: "Intriguing episodic micro-story for a luxury brand." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-27-Hueles-Delicioso.mp4",
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+  },
+  {
+    title: { es: "Mini Serie (Herencia)", en: "Mini Series (Herencia)" },
+    desc: { es: "Episodio conceptual sobre el origen de marca familiar.", en: "Conceptual episode on the origin of a family brand." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/CAP-26-Herencia.mp4",
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+  },
+  {
+    title: { es: "UGC Ad (Variante 1)", en: "UGC Ad (Variant 1)" },
+    desc: { es: "Demo creativo multi-ángulo para testeo de campañas.", en: "Multi-angle creative demo for campaign testing." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads.mp4",
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
+  },
+  {
+    title: { es: "Campaña Colección (UGC)", en: "Collection Campaign (UGC)" },
+    desc: { es: "Variante de anuncio optimizada para redes sociales.", en: "Ad variant optimized for social media." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads-nueva-coleccion.mp4",
+    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
+  },
+  {
+    title: { es: "Horizontal (Transparente)", en: "Horizontal Edit (Transparente)" },
+    desc: { es: "Formato cinematográfico horizontal adaptado.", en: "Adapted horizontal cinematic format." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-21-Transparente_202607172109.mp4",
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
+    isHorizontal: true
+  },
+  {
+    title: { es: "Stop Motion (Travel)", en: "Stop Motion (Travel)" },
+    desc: { es: "Aventura visual stop-motion de gran impacto.", en: "High-impact stop-motion visual adventure." },
+    url: "http://wearethesilent.com/wp-content/uploads/2026/08/Stop_motion_characters_travel_in%E2%80%A6_202608070824.mp4",
+    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+  }
+];
+
 export default function OfertaPage() {
   const { language } = useLanguage();
   const text = language === 'es' ? TRANSLATIONS.es : TRANSLATIONS.en;
   const langKey = language === 'es' ? 'es' : 'en';
 
-  // Clock state
   const [spotsLeft, setSpotsLeft] = useState(7);
+  const [openFaq, setOpenFaq] = useState(null);
 
-  // FAQ Accordion State
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const carouselRef = useRef(null);
 
-  // Form step wizard state
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+  };
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     businessName: '',
@@ -928,7 +998,7 @@ export default function OfertaPage() {
     driveUrl: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [attachedFiles, setAttachedFiles] = useState<string[]>([]);
+  const [attachedFiles, setAttachedFiles] = useState([]);
 
   // Video Demo Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -1320,101 +1390,72 @@ export default function OfertaPage() {
         </div>
       </section>
 
-      {/* CASOS / PORTAFOLIO SECTION */}
-      <section className="py-24 bg-[#0A0D0E]">
+      {/* VIDEOS CAROUSEL SECTION */}
+      <section className="py-24 bg-[#0A0D0E] relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
-              <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
-              {text.cases.badge}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
+                <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
+                {language === 'es' ? "SHOWCASE CREATIVO" : "CREATIVE SHOWCASE"}
+              </div>
+              <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">
+                {language === 'es' ? "Tu próximo cliente está a una buena idea de distancia." : "Your next client is one good idea away."}
+              </h2>
+              <p className="text-gray-400 text-sm mt-3">
+                {language === 'es' ? "Reproduce directamente nuestros casos de estudio y ejemplos de anuncios de alto rendimiento." : "Play our case studies and high-performing ad examples directly here."}
+              </p>
             </div>
-            <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">{text.cases.title}</h2>
-            <p className="text-gray-400 text-sm mt-3">{text.cases.subtitle}</p>
+            
+            {/* Scroll buttons */}
+            <div className="flex gap-2">
+              <button 
+                onClick={scrollLeft}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={scrollRight}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
-          <div className="space-y-12">
-            {text.cases.items.map((c, idx) => (
+          {/* Carousel Track */}
+          <div 
+            ref={carouselRef}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {CAROUSEL_VIDEOS.map((v, idx) => (
               <div 
                 key={idx} 
-                className="bg-[#12161A] border border-white/10 p-6 sm:p-10 rounded-sm grid md:grid-cols-12 gap-8 items-center hover:border-[#C5A059]/25 transition duration-300 relative overflow-hidden"
+                className="w-[280px] shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/25 transition duration-300"
               >
-                {/* Left case specs */}
-                <div className="md:col-span-7 space-y-6">
-                  <div>
-                    <span className="font-mono text-[#C5A059] text-xs font-bold uppercase tracking-wider block mb-1">
-                      {text.cases.labels.client}
-                    </span>
-                    <h3 className="font-fraunces font-bold text-2xl text-white leading-tight">
-                      {c.client}
-                    </h3>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-6 pt-4 border-t border-white/5">
-                    <div>
-                      <span className="font-mono text-gray-500 text-[10px] uppercase font-bold tracking-widest block mb-1">
-                        {text.cases.labels.problem}
-                      </span>
-                      <p className="text-gray-300 text-xs leading-relaxed font-light">
-                        {c.problem}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-mono text-gray-500 text-[10px] uppercase font-bold tracking-widest block mb-1">
-                        {text.cases.labels.concept}
-                      </span>
-                      <p className="text-[#C5A059] text-xs leading-relaxed font-medium">
-                        {c.concept}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/5">
-                    <span className="font-mono text-gray-500 text-[10px] uppercase font-bold tracking-widest block mb-1">
-                      {text.cases.labels.result}
-                    </span>
-                    <p className="text-white text-sm font-semibold flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse shrink-0"></span>
-                      {c.result}
-                    </p>
-                  </div>
+                <div className="relative aspect-[9/16] w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5">
+                  <video 
+                    src={v.url}
+                    poster={v.poster}
+                    className="w-full h-full object-cover"
+                    controls
+                    playsInline
+                    preload="none"
+                  />
                 </div>
-
-                {/* Right phone mockup overlay click to play */}
-                <div className="md:col-span-5 flex justify-center">
-                  <div 
-                    onClick={() => openStyleModal(c.key as any, (c as any).sourceIndex || 0)}
-                    className="relative cursor-pointer group rounded-lg overflow-hidden border border-white/15 bg-black aspect-[9/16] w-48 shadow-2xl transition hover:scale-105"
-                  >
-                    {/* Background image preview */}
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105 opacity-80"
-                      style={{ backgroundImage: `url(${(c as any).thumbnail || (STYLE_PREVIEWS[c.key as keyof typeof STYLE_PREVIEWS] as any)?.thumbnail || ''})` }}
-                    />
-                    {/* Black fade overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60 transition group-hover:via-black/20" />
-                    
-                    {/* Play button overlay */}
-                    <div className="absolute inset-0 flex flex-col justify-between p-4 z-10">
-                      <span className="bg-black/60 text-white font-mono text-[8px] px-2 py-0.5 rounded font-bold uppercase tracking-wider w-fit">
-                        {c.demoName}
-                      </span>
-                      
-                      <div className="my-auto text-center">
-                        <div className="w-12 h-12 rounded-full bg-[#C5A059] text-black flex items-center justify-center mx-auto transition group-hover:scale-110 shadow-lg">
-                          <Play className="w-5 h-5 fill-current ml-0.5" />
-                        </div>
-                        <span className="font-mono text-[9px] text-[#C5A059] uppercase tracking-widest block mt-3 font-bold">
-                          {text.cases.labels.viewDemo}
-                        </span>
-                      </div>
-
-                      <span className="text-white/60 font-mono text-[8px] text-center block">
-                        9:16 vertical format
-                      </span>
-                    </div>
-                  </div>
+                
+                <div className="space-y-1">
+                  <h3 className="font-fraunces font-bold text-base text-white leading-tight">
+                    {v.title[langKey]}
+                  </h3>
+                  <p className="text-gray-400 text-[11px] leading-relaxed font-light">
+                    {v.desc[langKey]}
+                  </p>
                 </div>
-
               </div>
             ))}
           </div>
