@@ -13,7 +13,7 @@ export default function Footer() {
     setCurrentYear(new Date().getFullYear());
   }, []);
 
-  const hiddenRoutes = ['/', '/oferta', '/galeria', '/we-are-the-silent'];
+  const hiddenRoutes = ['/', '/oferta', '/galeria', '/we-are-the-silent', '/menu-digital'];
   if (
     pathname.startsWith('/the-silent-studio-guide') || 
     pathname.startsWith('/manual') ||
