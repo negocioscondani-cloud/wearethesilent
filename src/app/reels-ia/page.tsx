@@ -253,6 +253,27 @@ export default function ReelsIaLanding() {
           gap: 6px;
         }
 
+        .reels-mockup-wrapper {
+          margin-top: 44px;
+          display: flex;
+          justify-content: center;
+        }
+
+        .reels-mockup-img {
+          width: 100%;
+          max-width: 960px;
+          height: auto;
+          border-radius: 18px;
+          box-shadow: 0 25px 60px -20px rgba(15, 23, 42, 0.2);
+          display: block;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reels-mockup-img:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 30px 70px -15px rgba(37, 99, 235, 0.25);
+        }
+
         /* Comparison Section */
         .reels-comparison-section {
           padding: 60px 0;
@@ -548,6 +569,16 @@ export default function ReelsIaLanding() {
             <span>🔒 Pago 100% Seguro por Hotmart</span>
             <span>⚡ Acceso Inmediato</span>
             <span>🛡️ Garantía de 7 Días</span>
+          </div>
+
+          <div className="reels-mockup-wrapper">
+            <a href={HOTMART_URL} target="_blank" rel="noopener noreferrer" title="Acceder al curso">
+              <img 
+                src="/images/reels-mockup.jpg" 
+                alt="Curso Completo Reels con IA en 10 Minutos - Bundle de Recursos y Formación" 
+                className="reels-mockup-img"
+              />
+            </a>
           </div>
         </div>
       </header>
