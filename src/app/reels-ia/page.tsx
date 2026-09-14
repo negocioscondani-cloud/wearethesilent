@@ -2,8 +2,148 @@
 
 import React, { useState, useEffect } from 'react';
 
+interface PricingInfo {
+  countryCode: string;
+  countryName: string;
+  flag: string;
+  currentAmount: string;
+  currencyCode: string;
+  oldPrice: string;
+  ctaText: string;
+}
+
+const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
+  CR: {
+    countryCode: 'CR',
+    countryName: 'Costa Rica',
+    flag: '🇨🇷',
+    currentAmount: '46.035,00',
+    currencyCode: 'CRC',
+    oldPrice: '157.800,00 CRC',
+    ctaText: '46.035,00 CRC'
+  },
+  MX: {
+    countryCode: 'MX',
+    countryName: 'México',
+    flag: '🇲🇽',
+    currentAmount: '$735,00',
+    currencyCode: 'MXN',
+    oldPrice: '$2.520,00 MXN',
+    ctaText: '$735 MXN'
+  },
+  CO: {
+    countryCode: 'CO',
+    countryName: 'Colombia',
+    flag: '🇨🇴',
+    currentAmount: '$158.000',
+    currencyCode: 'COP',
+    oldPrice: '$540.000 COP',
+    ctaText: '$158.000 COP'
+  },
+  ES: {
+    countryCode: 'ES',
+    countryName: 'España / Europa',
+    flag: '🇪🇸',
+    currentAmount: '35,00 €',
+    currencyCode: 'EUR',
+    oldPrice: '119,00 € EUR',
+    ctaText: '35 € EUR'
+  },
+  CL: {
+    countryCode: 'CL',
+    countryName: 'Chile',
+    flag: '🇨🇱',
+    currentAmount: '$36.000',
+    currencyCode: 'CLP',
+    oldPrice: '$124.000 CLP',
+    ctaText: '$36.000 CLP'
+  },
+  PE: {
+    countryCode: 'PE',
+    countryName: 'Perú',
+    flag: '🇵🇪',
+    currentAmount: 'S/ 142,00',
+    currencyCode: 'PEN',
+    oldPrice: 'S/ 485,00 PEN',
+    ctaText: 'S/ 142 PEN'
+  },
+  AR: {
+    countryCode: 'AR',
+    countryName: 'Argentina',
+    flag: '🇦🇷',
+    currentAmount: '$42.500,00',
+    currencyCode: 'ARS',
+    oldPrice: '$145.000,00 ARS',
+    ctaText: '$42.500 ARS'
+  },
+  DEFAULT: {
+    countryCode: 'US',
+    countryName: 'Internacional',
+    flag: '🌎',
+    currentAmount: '$37',
+    currencyCode: 'USD',
+    oldPrice: '$127 USD',
+    ctaText: '$37 USD'
+  }
+};
+
+const detectCountryByTimezone = (): string => {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz.includes('Costa_Rica')) return 'CR';
+    if (tz.includes('Bogota')) return 'CO';
+    if (tz.includes('Mexico') || tz.includes('Cancun') || tz.includes('Merida') || tz.includes('Monterrey') || tz.includes('Tijuana')) return 'MX';
+    if (tz.includes('Santiago')) return 'CL';
+    if (tz.includes('Lima')) return 'PE';
+    if (tz.includes('Madrid') || tz.includes('Canary')) return 'ES';
+    if (tz.includes('Argentina') || tz.includes('Buenos_Aires') || tz.includes('Cordoba')) return 'AR';
+  } catch (e) {
+    // ignore
+  }
+  return 'DEFAULT';
+};
+
 export default function ReelsIaLanding() {
   const [secondsLeft, setSecondsLeft] = useState(14 * 60 + 59);
+  const [pricing, setPricing] = useState<PricingInfo>(PRICING_BY_COUNTRY.DEFAULT);
+
+  useEffect(() => {
+    // 1. Detección inmediata por zona horaria
+    const tzCountry = detectCountryByTimezone();
+    if (PRICING_BY_COUNTRY[tzCountry]) {
+      setPricing(PRICING_BY_COUNTRY[tzCountry]);
+    }
+
+    // 2. Verificación por IP en segundo plano
+    const detectIp = async () => {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        if (res.ok) {
+          const data = await res.json();
+          const code = (data.country_code || '').toUpperCase();
+          if (PRICING_BY_COUNTRY[code]) {
+            setPricing(PRICING_BY_COUNTRY[code]);
+            return;
+          }
+        }
+      } catch (e) {
+        try {
+          const res2 = await fetch('https://api.country.is');
+          if (res2.ok) {
+            const data2 = await res2.json();
+            const code2 = (data2.country || '').toUpperCase();
+            if (PRICING_BY_COUNTRY[code2]) {
+              setPricing(PRICING_BY_COUNTRY[code2]);
+            }
+          }
+        } catch (err) {
+          // Mantener zona horaria
+        }
+      }
+    };
+
+    detectIp();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -835,7 +975,7 @@ export default function ReelsIaLanding() {
             rel="noopener noreferrer" 
             className="reels-cta-btn"
           >
-            ACCEDER AL CURSO POR $37 USD
+            ACCEDER AL CURSO POR {pricing.ctaText}
           </a>
 
           <div className="reels-guarantee-note">
@@ -905,7 +1045,7 @@ export default function ReelsIaLanding() {
               rel="noopener noreferrer" 
               className="reels-cta-btn"
             >
-              QUIERO APRENDER A CREAR ESTOS REELS ($37 USD)
+              QUIERO APRENDER A CREAR ESTOS REELS ({pricing.ctaText})
             </a>
           </div>
         </div>
@@ -957,7 +1097,7 @@ export default function ReelsIaLanding() {
                 className="reels-cta-btn"
                 style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
               >
-                ACCEDER AL CURSO POR $37 USD
+                ACCEDER AL CURSO POR {pricing.ctaText}
               </a>
             </div>
           </div>
@@ -1027,9 +1167,12 @@ export default function ReelsIaLanding() {
             </p>
 
             <div className="reels-pricing">
-              <div className="old-price">Precio habitual: $127 USD</div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                <span>{pricing.flag} Moneda detectada para <strong>{pricing.countryName}</strong></span>
+              </div>
+              <div className="old-price">Precio habitual: {pricing.oldPrice}</div>
               <div className="current-price">
-                $37 <span style={{ fontSize: '20px', fontWeight: 600 }}>USD</span>
+                {pricing.currentAmount} <span style={{ fontSize: '20px', fontWeight: 600 }}>{pricing.currencyCode}</span>
               </div>
             </div>
 
