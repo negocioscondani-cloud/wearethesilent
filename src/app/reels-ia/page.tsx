@@ -549,8 +549,8 @@ export default function ReelsIaLanding() {
         <div className="reels-container">
           <div className="reels-pill-badge">Flujo de Trabajo Automatizado</div>
           <h1>
-            Crea Reels Virales con IA<br />
-            <span>en solo 10 minutos</span>
+            Crear Reels con IA<br />
+            <span>en minutos</span>
           </h1>
           <p className="lead">
             Domina el sistema completo para producir videos cinematográficos verticales sin grabarte, sin equipo costoso y manteniendo consistencia absoluta en tus personajes y marca personal.
