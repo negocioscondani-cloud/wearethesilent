@@ -113,6 +113,34 @@ export default function ReelsIaLanding() {
     }
   ];
 
+  const proofVideos = [
+    {
+      badge: "Formato 9:16",
+      title: "Crea Reel en 10 Minutos con IA",
+      url: "/videos/reels_crea_reel_10_minutos.mp4"
+    },
+    {
+      badge: "Estrategia y Ventas",
+      title: "Inversión y Retorno en Contenido",
+      url: "/videos/reels_inversion.mp4"
+    },
+    {
+      badge: "Campañas Virales",
+      title: "Campañas y Estrategia con IA",
+      url: "/videos/reels_campanas.mp4"
+    },
+    {
+      badge: "Creatividad Infinita",
+      title: "Generación de Ideas con IA",
+      url: "/videos/reels_sin_ideas_contenido.mp4"
+    },
+    {
+      badge: "Validación de Ideas",
+      title: "Validar Ideas para Campañas",
+      url: "/videos/reels_como_saber_idea_campana.mp4"
+    }
+  ];
+
   return (
     <div className="reels-landing-wrapper">
       <style jsx global>{`
@@ -272,6 +300,83 @@ export default function ReelsIaLanding() {
         .reels-mockup-img:hover {
           transform: translateY(-4px);
           box-shadow: 0 30px 70px -15px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Proofs / Video Samples Section */
+        .reels-proofs-section {
+          padding: 70px 0 80px;
+          background: #FFFFFF;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .reels-videos-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+          gap: 20px;
+          max-width: 1080px;
+          margin: 36px auto 0;
+        }
+
+        @media (min-width: 1024px) {
+          .reels-videos-grid {
+            grid-template-columns: repeat(5, 1fr);
+          }
+        }
+
+        .reels-video-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          border-radius: 18px;
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .reels-video-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 36px -10px rgba(37, 99, 235, 0.18);
+          border-color: #93C5FD;
+        }
+
+        .reels-video-frame {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 9 / 16;
+          background: #0F172A;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+
+        .reels-video-frame video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .reels-video-info {
+          padding: 12px 4px 4px;
+        }
+
+        .reels-video-badge {
+          display: inline-block;
+          font-size: 10px;
+          font-weight: 800;
+          color: var(--accent);
+          background: var(--badge-bg);
+          padding: 3px 8px;
+          border-radius: 999px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 6px;
+        }
+
+        .reels-video-title {
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--text-main);
+          line-height: 1.35;
         }
 
         /* Comparison Section */
@@ -582,6 +687,49 @@ export default function ReelsIaLanding() {
           </div>
         </div>
       </header>
+
+      {/* Proofs / Video Samples Section */}
+      <section className="reels-proofs-section">
+        <div className="reels-container">
+          <div className="reels-section-title">
+            <div className="reels-pill-badge">Pruebas Reales del Sistema</div>
+            <h2>Mira lo que puedes crear en menos de 10 minutos</h2>
+            <p>
+              Revisa la calidad visual, fluidez de movimiento, voz clonada y acabado publicitario generado 100% con inteligencia artificial.
+            </p>
+          </div>
+
+          <div className="reels-videos-grid">
+            {proofVideos.map((video, idx) => (
+              <div className="reels-video-card" key={idx}>
+                <div className="reels-video-frame">
+                  <video 
+                    src={video.url} 
+                    controls 
+                    playsInline 
+                    preload="metadata"
+                  />
+                </div>
+                <div className="reels-video-info">
+                  <span className="reels-video-badge">{video.badge}</span>
+                  <div className="reels-video-title">{video.title}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <a 
+              href={HOTMART_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="reels-cta-btn"
+            >
+              QUIERO APRENDER A CREAR ESTOS REELS ($37 USD)
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Comparison Section */}
       <section className="reels-comparison-section">
