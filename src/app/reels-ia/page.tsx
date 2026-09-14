@@ -113,31 +113,50 @@ export default function ReelsIaLanding() {
     }
   ];
 
+  const [activeModalVideo, setActiveModalVideo] = useState<{
+    badge: string;
+    title: string;
+    url: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveModalVideo(null);
+      }
+    };
+    if (activeModalVideo) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [activeModalVideo]);
+
   const proofVideos = [
     {
       badge: "Formato 9:16",
       title: "Crea Reel en 10 Minutos con IA",
-      url: "/videos/reels_crea_reel_10_minutos.mp4"
+      url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Crea-reel-en-10-minutos-con-IA.mp4"
     },
     {
       badge: "Estrategia y Ventas",
       title: "Inversión y Retorno en Contenido",
-      url: "/videos/reels_inversion.mp4"
+      url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Inversion.mp4"
     },
     {
       badge: "Campañas Virales",
       title: "Campañas y Estrategia con IA",
-      url: "/videos/reels_campanas.mp4"
+      url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/campanas.mp4"
     },
     {
       badge: "Creatividad Infinita",
-      title: "Generación de Ideas con IA",
-      url: "/videos/reels_sin_ideas_contenido.mp4"
-    },
-    {
-      badge: "Validación de Ideas",
-      title: "Validar Ideas para Campañas",
-      url: "/videos/reels_como_saber_idea_campana.mp4"
+      title: "Sin Ideas para Crear Contenido con IA",
+      url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Sin-ideas-para-crear-contenido-con-IA.mp4"
     }
   ];
 
@@ -311,15 +330,15 @@ export default function ReelsIaLanding() {
 
         .reels-videos-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 24px;
           max-width: 1080px;
           margin: 36px auto 0;
         }
 
-        @media (min-width: 1024px) {
+        @media (min-width: 900px) {
           .reels-videos-grid {
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
           }
         }
 
@@ -330,13 +349,15 @@ export default function ReelsIaLanding() {
           padding: 12px;
           display: flex;
           flex-direction: column;
+          cursor: pointer;
           transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+          position: relative;
         }
 
         .reels-video-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 16px 36px -10px rgba(37, 99, 235, 0.18);
-          border-color: #93C5FD;
+          box-shadow: 0 18px 40px -10px rgba(37, 99, 235, 0.22);
+          border-color: #2563EB;
         }
 
         .reels-video-frame {
@@ -353,6 +374,41 @@ export default function ReelsIaLanding() {
           height: 100%;
           object-fit: cover;
           display: block;
+          pointer-events: none;
+        }
+
+        .reels-play-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s ease;
+        }
+
+        .reels-video-card:hover .reels-play-overlay {
+          background: rgba(15, 23, 42, 0.15);
+        }
+
+        .reels-play-circle {
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          background: rgba(37, 99, 235, 0.92);
+          color: #FFFFFF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          padding-left: 3px;
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5);
+          transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .reels-video-card:hover .reels-play-circle {
+          transform: scale(1.1);
+          background: #1D4ED8;
         }
 
         .reels-video-info {
@@ -373,10 +429,122 @@ export default function ReelsIaLanding() {
         }
 
         .reels-video-title {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 700;
           color: var(--text-main);
           line-height: 1.35;
+        }
+
+        .reels-click-hint {
+          font-size: 11px;
+          color: var(--accent);
+          font-weight: 700;
+          margin-top: 6px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        /* Modal / Popup Player */
+        .reels-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          background: rgba(15, 23, 42, 0.94);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+          animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        .reels-modal-close {
+          position: fixed;
+          top: 18px;
+          right: 18px;
+          z-index: 100000;
+          width: 48px;
+          height: 48px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          color: #FFFFFF;
+          font-size: 24px;
+          font-weight: bold;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s ease, transform 0.2s ease;
+          backdrop-filter: blur(8px);
+        }
+
+        .reels-modal-close:hover {
+          background: rgba(239, 68, 68, 0.9);
+          transform: scale(1.08);
+        }
+
+        .reels-modal-container {
+          width: 100%;
+          max-width: 420px;
+          max-height: 94vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+        }
+
+        .reels-modal-header {
+          width: 100%;
+          text-align: center;
+          margin-bottom: 12px;
+        }
+
+        .reels-modal-title {
+          font-size: 16px;
+          font-weight: 700;
+          color: #FFFFFF;
+          margin-top: 4px;
+        }
+
+        .reels-modal-video-wrapper {
+          width: 100%;
+          max-height: 72vh;
+          aspect-ratio: 9 / 16;
+          background: #000000;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .reels-modal-video {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+
+        .reels-modal-footer {
+          width: 100%;
+          margin-top: 14px;
+        }
+
+        @media (max-width: 640px) {
+          .reels-modal-container {
+            max-width: 100%;
+            height: 94vh;
+          }
+          .reels-modal-video-wrapper {
+            max-height: 76vh;
+          }
         }
 
         /* Comparison Section */
@@ -701,18 +869,30 @@ export default function ReelsIaLanding() {
 
           <div className="reels-videos-grid">
             {proofVideos.map((video, idx) => (
-              <div className="reels-video-card" key={idx}>
+              <div 
+                className="reels-video-card" 
+                key={idx}
+                onClick={() => setActiveModalVideo(video)}
+                role="button"
+                tabIndex={0}
+              >
                 <div className="reels-video-frame">
                   <video 
                     src={video.url} 
-                    controls 
                     playsInline 
                     preload="metadata"
+                    muted
                   />
+                  <div className="reels-play-overlay">
+                    <div className="reels-play-circle">
+                      ▶
+                    </div>
+                  </div>
                 </div>
                 <div className="reels-video-info">
                   <span className="reels-video-badge">{video.badge}</span>
                   <div className="reels-video-title">{video.title}</div>
+                  <div className="reels-click-hint">Toca para reproducir ↗</div>
                 </div>
               </div>
             ))}
@@ -730,6 +910,59 @@ export default function ReelsIaLanding() {
           </div>
         </div>
       </section>
+
+      {/* Video Popup Modal */}
+      {activeModalVideo && (
+        <div 
+          className="reels-modal-backdrop"
+          onClick={() => setActiveModalVideo(null)}
+        >
+          {/* Close button with 'X' at top right */}
+          <button 
+            className="reels-modal-close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveModalVideo(null);
+            }}
+            aria-label="Cerrar video"
+          >
+            ✕
+          </button>
+
+          {/* Modal Container */}
+          <div 
+            className="reels-modal-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="reels-modal-header">
+              <span className="reels-video-badge">{activeModalVideo.badge}</span>
+              <h3 className="reels-modal-title">{activeModalVideo.title}</h3>
+            </div>
+
+            <div className="reels-modal-video-wrapper">
+              <video 
+                src={activeModalVideo.url} 
+                controls 
+                autoPlay 
+                playsInline 
+                className="reels-modal-video"
+              />
+            </div>
+
+            <div className="reels-modal-footer">
+              <a 
+                href={HOTMART_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="reels-cta-btn"
+                style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
+              >
+                ACCEDER AL CURSO POR $37 USD
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Comparison Section */}
       <section className="reels-comparison-section">
