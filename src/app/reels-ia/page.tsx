@@ -242,6 +242,20 @@ export default function ReelsIaLanding() {
   const HOTMART_DIRECT_URL = "https://pay.hotmart.com/G107582281U?off=84y0l3ga";
   const HOTMART_URL = HOTMART_CHECKOUT_URL;
 
+  const handleCheckoutClick = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      try {
+        (window as any).fbq('track', 'InitiateCheckout', {
+          content_name: 'Crea Reels con IA en 10 Minutos',
+          value: 33.0,
+          currency: 'USD'
+        });
+      } catch (e) {
+        // ignore
+      }
+    }
+  };
+
   // Videos de prueba
   const proofVideos = [
     {
@@ -1125,6 +1139,7 @@ export default function ReelsIaLanding() {
             href={HOTMART_CHECKOUT_URL} 
             target="_blank" 
             rel="noopener noreferrer" 
+            onClick={handleCheckoutClick}
             className="hotmart-fb hotmart__button-checkout reels-cta-btn"
           >
             ACCEDER AL CURSO POR {pricing.ctaText}
@@ -1137,7 +1152,7 @@ export default function ReelsIaLanding() {
           </div>
 
           <div className="reels-mockup-wrapper">
-            <a href={HOTMART_CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="hotmart-fb" title="Acceder al curso">
+            <a href={HOTMART_CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={handleCheckoutClick} className="hotmart-fb" title="Acceder al curso">
               <img 
                 src="/images/reels-mockup.jpg" 
                 alt="Curso Completo Reels con IA en 10 Minutos - Bundle de Recursos y Formación" 
@@ -1261,6 +1276,7 @@ export default function ReelsIaLanding() {
               href={HOTMART_CHECKOUT_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
+              onClick={handleCheckoutClick}
               className="hotmart-fb hotmart__button-checkout reels-cta-btn"
             >
               QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
@@ -1312,6 +1328,7 @@ export default function ReelsIaLanding() {
                 href={HOTMART_CHECKOUT_URL} 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                onClick={handleCheckoutClick}
                 className="hotmart-fb hotmart__button-checkout reels-cta-btn"
                 style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
               >
@@ -1406,6 +1423,7 @@ export default function ReelsIaLanding() {
               href={HOTMART_CHECKOUT_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
+              onClick={handleCheckoutClick}
               className="hotmart-fb hotmart__button-checkout reels-cta-btn" 
               style={{ width: '100%', marginTop: '10px' }}
             >
