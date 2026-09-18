@@ -9,6 +9,7 @@ interface PricingInfo {
   currentAmount: string;
   currencyCode: string;
   oldPrice: string;
+  cleanOldPrice: string;
   ctaText: string;
 }
 
@@ -20,6 +21,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '33,00',
     currencyCode: 'US$',
     oldPrice: '46.035,00 CRC (~110,00 US$)',
+    cleanOldPrice: '110,00 US$',
     ctaText: '33,00 US$'
   },
   MX: {
@@ -29,6 +31,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '$650,00',
     currencyCode: 'MXN',
     oldPrice: '$2.150,00 MXN',
+    cleanOldPrice: '$2.150 MXN',
     ctaText: '$650 MXN'
   },
   CO: {
@@ -38,6 +41,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '$139.000',
     currencyCode: 'COP',
     oldPrice: '$460.000 COP',
+    cleanOldPrice: '$460.000 COP',
     ctaText: '$139.000 COP'
   },
   ES: {
@@ -47,6 +51,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '31,00 €',
     currencyCode: 'EUR',
     oldPrice: '105,00 € EUR',
+    cleanOldPrice: '105,00 € EUR',
     ctaText: '31 € EUR'
   },
   CL: {
@@ -56,6 +61,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '$31.500',
     currencyCode: 'CLP',
     oldPrice: '$105.000 CLP',
+    cleanOldPrice: '$105.000 CLP',
     ctaText: '$31.500 CLP'
   },
   PE: {
@@ -65,6 +71,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: 'S/ 125,00',
     currencyCode: 'PEN',
     oldPrice: 'S/ 420,00 PEN',
+    cleanOldPrice: 'S/ 420 PEN',
     ctaText: 'S/ 125 PEN'
   },
   AR: {
@@ -74,6 +81,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '$37.500,00',
     currencyCode: 'ARS',
     oldPrice: '$125.000,00 ARS',
+    cleanOldPrice: '$125.000 ARS',
     ctaText: '$37.500 ARS'
   },
   DEFAULT: {
@@ -83,6 +91,7 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     currentAmount: '33,00',
     currencyCode: 'US$',
     oldPrice: '110,00 US$',
+    cleanOldPrice: '110,00 US$',
     ctaText: '33,00 US$'
   }
 };
@@ -1175,7 +1184,10 @@ export default function ReelsIaLanding() {
             className="hotmart-fb hotmart__button-checkout reels-cta-btn"
           >
             <span className="reels-cta-title">Comprar ahora ↗</span>
-            <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
+            <span className="reels-cta-sub">
+              <strong style={{ color: '#FEF08A' }}>SOLO HOY {pricing.currentAmount} {pricing.currencyCode}</strong>{' '}
+              <span style={{ textDecoration: 'line-through', opacity: 0.75 }}>({pricing.cleanOldPrice})</span> • Ir al checkout 🔒
+            </span>
           </a>
 
           <div className="reels-guarantee-note">
@@ -1313,7 +1325,10 @@ export default function ReelsIaLanding() {
               className="hotmart-fb hotmart__button-checkout reels-cta-btn"
             >
               <span className="reels-cta-title">Comprar ahora ↗</span>
-              <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
+              <span className="reels-cta-sub">
+                <strong style={{ color: '#FEF08A' }}>SOLO HOY {pricing.currentAmount} {pricing.currencyCode}</strong>{' '}
+                <span style={{ textDecoration: 'line-through', opacity: 0.75 }}>({pricing.cleanOldPrice})</span> • Ir al checkout 🔒
+              </span>
             </a>
           </div>
         </div>
@@ -1367,7 +1382,10 @@ export default function ReelsIaLanding() {
                 style={{ width: '100%', padding: '14px 20px' }}
               >
                 <span className="reels-cta-title" style={{ fontSize: '18px' }}>Comprar ahora ↗</span>
-                <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
+                <span className="reels-cta-sub">
+                  <strong style={{ color: '#FEF08A' }}>SOLO HOY {pricing.currentAmount} {pricing.currencyCode}</strong>{' '}
+                  <span style={{ textDecoration: 'line-through', opacity: 0.75 }}>({pricing.cleanOldPrice})</span> • Ir al checkout 🔒
+                </span>
               </a>
             </div>
           </div>
@@ -1463,7 +1481,10 @@ export default function ReelsIaLanding() {
               style={{ width: '100%', marginTop: '10px' }}
             >
               <span className="reels-cta-title" style={{ fontSize: '22px' }}>Comprar ahora ↗</span>
-              <span className="reels-cta-sub" style={{ fontSize: '14px' }}>Ir al checkout seguro • Acceso completo por {pricing.ctaText}</span>
+              <span className="reels-cta-sub" style={{ fontSize: '14px' }}>
+                <strong style={{ color: '#FEF08A' }}>SOLO HOY {pricing.currentAmount} {pricing.currencyCode}</strong>{' '}
+                <span style={{ textDecoration: 'line-through', opacity: 0.75 }}>({pricing.cleanOldPrice})</span> • Ir al checkout seguro 🔒
+              </span>
             </a>
 
             <div className="reels-guarantee-note" style={{ marginTop: '16px' }}>
