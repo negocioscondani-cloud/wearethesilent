@@ -420,22 +420,22 @@ export default function ReelsIaLanding() {
         a.reels-cta-btn.hotmart__button-checkout,
         .reels-cta-btn {
           display: inline-flex !important;
+          flex-direction: column !important;
           align-items: center !important;
           justify-content: center !important;
           background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
           color: #FFFFFF !important;
           font-family: inherit !important;
-          font-size: 18px !important;
-          font-weight: 700 !important;
-          padding: 18px 36px !important;
-          border-radius: 12px !important;
+          padding: 16px 36px !important;
+          border-radius: 14px !important;
           text-decoration: none !important;
           border: none !important;
           text-shadow: none !important;
-          box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4) !important;
+          box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.45) !important;
           transition: all 0.2s ease !important;
           cursor: pointer !important;
-          line-height: 1.3 !important;
+          line-height: 1.25 !important;
+          text-align: center !important;
         }
 
         a.reels-cta-btn.hotmart-fb:hover,
@@ -443,9 +443,41 @@ export default function ReelsIaLanding() {
         .reels-cta-btn:hover {
           transform: translateY(-2px) !important;
           background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
-          box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.5) !important;
+          box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.55) !important;
           color: #FFFFFF !important;
           border: none !important;
+        }
+
+        .reels-cta-title {
+          font-size: 20px;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          color: #FFFFFF;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .reels-cta-sub {
+          font-size: 13px;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 0.9);
+          margin-top: 3px;
+        }
+
+        @media (max-width: 640px) {
+          a.reels-cta-btn.hotmart-fb,
+          a.reels-cta-btn.hotmart__button-checkout,
+          .reels-cta-btn {
+            width: 100% !important;
+            padding: 14px 20px !important;
+          }
+          .reels-cta-title {
+            font-size: 18px;
+          }
+          .reels-cta-sub {
+            font-size: 12px;
+          }
         }
 
         .reels-guarantee-note {
@@ -1142,7 +1174,8 @@ export default function ReelsIaLanding() {
             onClick={handleCheckoutClick}
             className="hotmart-fb hotmart__button-checkout reels-cta-btn"
           >
-            ACCEDER AL CURSO POR {pricing.ctaText}
+            <span className="reels-cta-title">Comprar ahora ↗</span>
+            <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
           </a>
 
           <div className="reels-guarantee-note">
@@ -1279,7 +1312,8 @@ export default function ReelsIaLanding() {
               onClick={handleCheckoutClick}
               className="hotmart-fb hotmart__button-checkout reels-cta-btn"
             >
-              QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
+              <span className="reels-cta-title">Comprar ahora ↗</span>
+              <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
             </a>
           </div>
         </div>
@@ -1330,9 +1364,10 @@ export default function ReelsIaLanding() {
                 rel="noopener noreferrer" 
                 onClick={handleCheckoutClick}
                 className="hotmart-fb hotmart__button-checkout reels-cta-btn"
-                style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
+                style={{ width: '100%', padding: '14px 20px' }}
               >
-                QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
+                <span className="reels-cta-title" style={{ fontSize: '18px' }}>Comprar ahora ↗</span>
+                <span className="reels-cta-sub">Ir al checkout seguro • {pricing.ctaText}</span>
               </a>
             </div>
           </div>
@@ -1427,7 +1462,8 @@ export default function ReelsIaLanding() {
               className="hotmart-fb hotmart__button-checkout reels-cta-btn" 
               style={{ width: '100%', marginTop: '10px' }}
             >
-              QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
+              <span className="reels-cta-title" style={{ fontSize: '22px' }}>Comprar ahora ↗</span>
+              <span className="reels-cta-sub" style={{ fontSize: '14px' }}>Ir al checkout seguro • Acceso completo por {pricing.ctaText}</span>
             </a>
 
             <div className="reels-guarantee-note" style={{ marginTop: '16px' }}>
