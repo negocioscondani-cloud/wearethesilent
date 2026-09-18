@@ -17,73 +17,73 @@ const PRICING_BY_COUNTRY: Record<string, PricingInfo> = {
     countryCode: 'CR',
     countryName: 'Costa Rica',
     flag: '🇨🇷',
-    currentAmount: '46.035,00',
-    currencyCode: 'CRC',
-    oldPrice: '157.800,00 CRC',
-    ctaText: '46.035,00 CRC'
+    currentAmount: '33,00',
+    currencyCode: 'US$',
+    oldPrice: '46.035,00 CRC (~110,00 US$)',
+    ctaText: '33,00 US$'
   },
   MX: {
     countryCode: 'MX',
     countryName: 'México',
     flag: '🇲🇽',
-    currentAmount: '$735,00',
+    currentAmount: '$650,00',
     currencyCode: 'MXN',
-    oldPrice: '$2.520,00 MXN',
-    ctaText: '$735 MXN'
+    oldPrice: '$2.150,00 MXN',
+    ctaText: '$650 MXN'
   },
   CO: {
     countryCode: 'CO',
     countryName: 'Colombia',
     flag: '🇨🇴',
-    currentAmount: '$158.000',
+    currentAmount: '$139.000',
     currencyCode: 'COP',
-    oldPrice: '$540.000 COP',
-    ctaText: '$158.000 COP'
+    oldPrice: '$460.000 COP',
+    ctaText: '$139.000 COP'
   },
   ES: {
     countryCode: 'ES',
     countryName: 'España / Europa',
     flag: '🇪🇸',
-    currentAmount: '35,00 €',
+    currentAmount: '31,00 €',
     currencyCode: 'EUR',
-    oldPrice: '119,00 € EUR',
-    ctaText: '35 € EUR'
+    oldPrice: '105,00 € EUR',
+    ctaText: '31 € EUR'
   },
   CL: {
     countryCode: 'CL',
     countryName: 'Chile',
     flag: '🇨🇱',
-    currentAmount: '$36.000',
+    currentAmount: '$31.500',
     currencyCode: 'CLP',
-    oldPrice: '$124.000 CLP',
-    ctaText: '$36.000 CLP'
+    oldPrice: '$105.000 CLP',
+    ctaText: '$31.500 CLP'
   },
   PE: {
     countryCode: 'PE',
     countryName: 'Perú',
     flag: '🇵🇪',
-    currentAmount: 'S/ 142,00',
+    currentAmount: 'S/ 125,00',
     currencyCode: 'PEN',
-    oldPrice: 'S/ 485,00 PEN',
-    ctaText: 'S/ 142 PEN'
+    oldPrice: 'S/ 420,00 PEN',
+    ctaText: 'S/ 125 PEN'
   },
   AR: {
     countryCode: 'AR',
     countryName: 'Argentina',
     flag: '🇦🇷',
-    currentAmount: '$42.500,00',
+    currentAmount: '$37.500,00',
     currencyCode: 'ARS',
-    oldPrice: '$145.000,00 ARS',
-    ctaText: '$42.500 ARS'
+    oldPrice: '$125.000,00 ARS',
+    ctaText: '$37.500 ARS'
   },
   DEFAULT: {
     countryCode: 'US',
     countryName: 'Internacional',
     flag: '🌎',
-    currentAmount: '$37',
-    currencyCode: 'USD',
-    oldPrice: '$127 USD',
-    ctaText: '$37 USD'
+    currentAmount: '33,00',
+    currencyCode: 'US$',
+    oldPrice: '110,00 US$',
+    ctaText: '33,00 US$'
   }
 };
 
@@ -170,6 +170,62 @@ export default function ReelsIaLanding() {
   }, [activeModalVideo]);
 
   useEffect(() => {
+    // Carga de Scripts y Estilos del Widget de Checkout de Hotmart
+    function importHotmart() {
+      if (typeof window === 'undefined') return;
+
+      if (!document.getElementById('hotmart-widget-script')) {
+        const imported = document.createElement('script');
+        imported.id = 'hotmart-widget-script';
+        imported.type = 'text/javascript';
+        imported.src = 'https://static.hotmart.com/checkout/widget.min.js';
+        document.head.appendChild(imported);
+      }
+
+      if (!document.getElementById('hotmart-widget-css')) {
+        const link = document.createElement('link');
+        link.id = 'hotmart-widget-css';
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
+        document.head.appendChild(link);
+      }
+    }
+
+    importHotmart();
+
+    // Re-vincular Fancybox a los elementos con .hotmart-fb una vez cargado el script
+    const interval = setInterval(() => {
+      if (typeof (window as any).jQuery !== 'undefined' && typeof (window as any).jQuery.fancybox !== 'undefined') {
+        try {
+          if (typeof (window as any).loadFancyBoxCheckout === 'function') {
+            (window as any).loadFancyBoxCheckout();
+          } else {
+            (window as any).jQuery('.hotmart-fb').fancybox({
+              type: 'iframe',
+              toolbar: false,
+              smallBtn: true,
+              iframe: {
+                css: { width: '600px' },
+                attr: { allowpaymentrequest: 'true' }
+              }
+            });
+          }
+          clearInterval(interval);
+        } catch (e) {
+          // ignore
+        }
+      }
+    }, 400);
+
+    const timeout = setTimeout(() => clearInterval(interval), 8000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
@@ -182,7 +238,9 @@ export default function ReelsIaLanding() {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const HOTMART_URL = "https://pay.hotmart.com/G107582281U";
+  const HOTMART_CHECKOUT_URL = "https://pay.hotmart.com/G107582281U?checkoutMode=2&off=84y0l3ga";
+  const HOTMART_DIRECT_URL = "https://pay.hotmart.com/G107582281U?off=84y0l3ga";
+  const HOTMART_URL = HOTMART_CHECKOUT_URL;
 
   // Videos de prueba
   const proofVideos = [
@@ -344,26 +402,36 @@ export default function ReelsIaLanding() {
           line-height: 1.5;
         }
 
+        a.reels-cta-btn.hotmart-fb,
+        a.reels-cta-btn.hotmart__button-checkout,
         .reels-cta-btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
           color: #FFFFFF !important;
-          font-size: 18px;
-          font-weight: 700;
-          padding: 18px 36px;
-          border-radius: 12px;
-          text-decoration: none;
-          box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
-          transition: all 0.2s ease;
-          cursor: pointer;
+          font-family: inherit !important;
+          font-size: 18px !important;
+          font-weight: 700 !important;
+          padding: 18px 36px !important;
+          border-radius: 12px !important;
+          text-decoration: none !important;
+          border: none !important;
+          text-shadow: none !important;
+          box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4) !important;
+          transition: all 0.2s ease !important;
+          cursor: pointer !important;
+          line-height: 1.3 !important;
         }
 
+        a.reels-cta-btn.hotmart-fb:hover,
+        a.reels-cta-btn.hotmart__button-checkout:hover,
         .reels-cta-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.5);
+          transform: translateY(-2px) !important;
+          background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+          box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.5) !important;
           color: #FFFFFF !important;
+          border: none !important;
         }
 
         .reels-guarantee-note {
@@ -1054,10 +1122,10 @@ export default function ReelsIaLanding() {
           </p>
 
           <a 
-            href={HOTMART_URL} 
+            href={HOTMART_CHECKOUT_URL} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="reels-cta-btn"
+            className="hotmart-fb hotmart__button-checkout reels-cta-btn"
           >
             ACCEDER AL CURSO POR {pricing.ctaText}
           </a>
@@ -1069,7 +1137,7 @@ export default function ReelsIaLanding() {
           </div>
 
           <div className="reels-mockup-wrapper">
-            <a href={HOTMART_URL} target="_blank" rel="noopener noreferrer" title="Acceder al curso">
+            <a href={HOTMART_CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="hotmart-fb" title="Acceder al curso">
               <img 
                 src="/images/reels-mockup.jpg" 
                 alt="Curso Completo Reels con IA en 10 Minutos - Bundle de Recursos y Formación" 
@@ -1190,10 +1258,10 @@ export default function ReelsIaLanding() {
 
           <div style={{ textAlign: 'center', marginTop: '44px' }}>
             <a 
-              href={HOTMART_URL} 
+              href={HOTMART_CHECKOUT_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="reels-cta-btn"
+              className="hotmart-fb hotmart__button-checkout reels-cta-btn"
             >
               QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
             </a>
@@ -1241,10 +1309,10 @@ export default function ReelsIaLanding() {
 
             <div className="reels-modal-footer">
               <a 
-                href={HOTMART_URL} 
+                href={HOTMART_CHECKOUT_URL} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="reels-cta-btn"
+                className="hotmart-fb hotmart__button-checkout reels-cta-btn"
                 style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
               >
                 QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
@@ -1335,10 +1403,10 @@ export default function ReelsIaLanding() {
             </div>
 
             <a 
-              href={HOTMART_URL} 
+              href={HOTMART_CHECKOUT_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="reels-cta-btn" 
+              className="hotmart-fb hotmart__button-checkout reels-cta-btn" 
               style={{ width: '100%', marginTop: '10px' }}
             >
               QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
