@@ -107,6 +107,12 @@ export default function ReelsIaLanding() {
   const [secondsLeft, setSecondsLeft] = useState(14 * 60 + 59);
   const [pricing, setPricing] = useState<PricingInfo>(PRICING_BY_COUNTRY.DEFAULT);
 
+  const [activeModalVideo, setActiveModalVideo] = useState<{
+    badge: string;
+    title: string;
+    url: string;
+  } | null>(null);
+
   useEffect(() => {
     // 1. Detección inmediata por zona horaria
     const tzCountry = detectCountryByTimezone();
@@ -146,120 +152,6 @@ export default function ReelsIaLanding() {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatCountdown = (totalSec: number) => {
-    const minutes = Math.floor(totalSec / 60);
-    const seconds = totalSec % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const HOTMART_URL = "https://pay.hotmart.com/G107582281U";
-
-  const lessons = [
-    {
-      num: "Lección 01",
-      title: "Introducción a FLOW",
-      desc: "Navega la interfaz y prepara tu espacio de trabajo para optimizar la producción de assets."
-    },
-    {
-      num: "Lección 02",
-      title: "Introducción a Magnific",
-      desc: "Aprende a reescalar imágenes agregando textura, definición y detalle hiperrealista."
-    },
-    {
-      num: "Lección 03",
-      title: "Por qué enfocarnos en FLOW",
-      desc: "La ventaja estratégica para centralizar renders y acelerar tiempos de entrega en lote."
-    },
-    {
-      num: "Lección 04",
-      title: "Crear el Avatar",
-      desc: "Diseño y delimitación de rasgos clave para tu personaje virtual desde la base."
-    },
-    {
-      num: "Lección 05",
-      title: "Crear la Tipografía",
-      desc: "Selección y aplicación de tipografías legibles y de impacto para formatos verticales."
-    },
-    {
-      num: "Lección 06",
-      title: "Música y Efectos de Sonido",
-      desc: "Diseño de audio estratégico para elevar la retención en los primeros segundos."
-    },
-    {
-      num: "Lección 07",
-      title: "Consistencia del Avatar",
-      desc: "Técnicas avanzadas para mantener rostro, cuerpo y vestimenta iguales en cada toma."
-    },
-    {
-      num: "Lección 08",
-      title: "Crear la Locación",
-      desc: "Construcción de escenarios y fondos con iluminación volumétrica y profundidad."
-    },
-    {
-      num: "Lección 09",
-      title: "Clonar la Voz",
-      desc: "Sampleo, modulación y clonación con entonación natural sin pausas artificiales."
-    },
-    {
-      num: "Lección 10",
-      title: "Marca Personal",
-      desc: "Definición de identidad visual, ritmo y pilares temáticos para diferenciarte."
-    },
-    {
-      num: "Lección 11",
-      title: "Investigación y Guion",
-      desc: "Extracción de tendencias y redacción de ganchos virales con NotebookLM."
-    },
-    {
-      num: "Lección 12",
-      title: "Del Guion al Video",
-      desc: "Traducción de cada línea en especificaciones de tomas listas para generar."
-    },
-    {
-      num: "Lección 13",
-      title: "Acciones del Personaje",
-      desc: "Generación de poses, gestualidad y movimientos corporales alineados al guion."
-    },
-    {
-      num: "Lección 14",
-      title: "Formatos y Zonas Seguras",
-      desc: "Ajuste de resoluciones (9:16) y márgenes seguros para Instagram, TikTok y Shorts."
-    },
-    {
-      num: "Lección 15",
-      title: "Animar Videos 1 x 1",
-      desc: "Método de animación clip por clip con control de movimiento y sincronización."
-    },
-    {
-      num: "Lección 16",
-      title: "Animar con Agent",
-      desc: "Delegación a agentes de IA para renderizar secuencias automáticas en minutos."
-    },
-    {
-      num: "Lección 17",
-      title: "Tomas de Apoyo (B-Roll)",
-      desc: "Generación de inserts macro y recursos de soporte para dinamizar el relato."
-    },
-    {
-      num: "Lección 18",
-      title: "Edición y Montaje Final",
-      desc: "Cortes de ritmo, subtitulado automático, mezcla de sonido y exportación optimizada."
-    }
-  ];
-
-  const [activeModalVideo, setActiveModalVideo] = useState<{
-    badge: string;
-    title: string;
-    url: string;
-  } | null>(null);
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setActiveModalVideo(null);
@@ -277,26 +169,74 @@ export default function ReelsIaLanding() {
     };
   }, [activeModalVideo]);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatCountdown = (totalSec: number) => {
+    const minutes = Math.floor(totalSec / 60);
+    const seconds = totalSec % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const HOTMART_URL = "https://pay.hotmart.com/G107582281U";
+
+  // Videos de prueba
   const proofVideos = [
     {
       badge: "Formato 9:16",
-      title: "Crea Reel en 10 Minutos con IA",
+      title: "Crea un Reel publicitario completo en 10 minutos con IA",
       url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Crea-reel-en-10-minutos-con-IA.mp4"
     },
     {
-      badge: "Estrategia y Ventas",
-      title: "Inversión y Retorno en Contenido",
+      badge: "Estrategia & Conversión",
+      title: "Cómo crear contenido que realmente retiene y vende",
       url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Inversion.mp4"
     },
     {
       badge: "Campañas Virales",
-      title: "Campañas y Estrategia con IA",
+      title: "Estructura visual para dominar Instagram, TikTok y Shorts",
       url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/campanas.mp4"
     },
     {
       badge: "Creatividad Infinita",
-      title: "Sin Ideas para Crear Contenido con IA",
+      title: "Nunca más te quedes en blanco para crear contenido",
       url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/09/Sin-ideas-para-crear-contenido-con-IA.mp4"
+    }
+  ];
+
+  // Módulos del currículum
+  const curriculumModules = [
+    {
+      title: "Módulo Base & Herramientas",
+      desc: "Cómo configurar FLOW y Magnific para lograr textura hiperrealista y reescalado de nivel publicitario sin quemar recursos."
+    },
+    {
+      title: "Identidad & Avatar Consistente",
+      desc: "El método exacto para fijar facciones, vestimenta, cuerpo y escenarios con iluminación volumétrica sin deformaciones."
+    },
+    {
+      title: "Clonación de Voz & Diseño de Audio",
+      desc: "Sampleo y modulación sin pausas robóticas + selección de audio estratégico para elevar la retención en los primeros 3 segundos."
+    },
+    {
+      title: "Guionismo Viral con NotebookLM",
+      desc: "Extracción de tendencias y redacción de ganchos que atrapan antes de que el usuario haga scroll."
+    },
+    {
+      title: "Del Guion al Render",
+      desc: "Traducción de cada línea en especificaciones de tomas, gestualidad, poses y acciones del personaje."
+    },
+    {
+      title: "Animación 1x1 y con Agentes de IA",
+      desc: "Automatización de secuencias en lote y clips dinámicos en segundos."
+    },
+    {
+      title: "B-Roll & Montaje Final",
+      desc: "Generación de tomas de apoyo macro, zonas seguras (9:16), subtitulado y exportación lista para monetizar."
     }
   ];
 
@@ -367,7 +307,7 @@ export default function ReelsIaLanding() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          padding: 6px 16px;
+          padding: 8px 18px;
           background: var(--badge-bg);
           color: var(--badge-text);
           border-radius: 999px;
@@ -376,10 +316,12 @@ export default function ReelsIaLanding() {
           text-transform: uppercase;
           letter-spacing: 0.5px;
           margin-bottom: 24px;
+          max-width: 820px;
+          line-height: 1.4;
         }
 
         .reels-hero h1 {
-          font-size: clamp(32px, 5vw, 54px);
+          font-size: clamp(34px, 5.5vw, 56px);
           font-weight: 800;
           line-height: 1.15;
           color: var(--text-main);
@@ -396,9 +338,10 @@ export default function ReelsIaLanding() {
         .reels-hero p.lead {
           font-size: clamp(17px, 2vw, 20px);
           color: var(--text-muted);
-          max-width: 760px;
+          max-width: 780px;
           margin: 0 auto 36px;
           font-weight: 400;
+          line-height: 1.5;
         }
 
         .reels-cta-btn {
@@ -461,11 +404,109 @@ export default function ReelsIaLanding() {
           box-shadow: 0 30px 70px -15px rgba(37, 99, 235, 0.25);
         }
 
+        /* Story Section */
+        .reels-story-section {
+          padding: 70px 0;
+          background: #FFFFFF;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .reels-story-box {
+          max-width: 820px;
+          margin: 0 auto;
+          font-size: 17px;
+          line-height: 1.7;
+          color: var(--text-main);
+        }
+
+        .reels-story-box p {
+          margin-bottom: 20px;
+        }
+
+        .reels-quote-card {
+          background: #0F172A;
+          color: #FFFFFF;
+          border-radius: 18px;
+          padding: 28px 36px;
+          margin: 36px 0;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+          font-style: italic;
+          box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.2);
+        }
+
+        .reels-intro-sub {
+          font-weight: 600;
+          color: var(--text-muted);
+          font-size: 16px;
+          margin-bottom: 28px;
+          text-align: center;
+        }
+
+        .reels-pillars-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 20px;
+          margin-top: 32px;
+        }
+
+        .reels-pillar-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .reels-pillar-bad {
+          color: #EF4444;
+          font-weight: 600;
+          font-size: 15px;
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .reels-pillar-good {
+          color: #0F172A;
+          font-size: 15px;
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          background: #FFFFFF;
+          padding: 14px;
+          border-radius: 12px;
+          border: 1px solid #BBF7D0;
+        }
+
         /* Proofs / Video Samples Section */
         .reels-proofs-section {
           padding: 70px 0 80px;
-          background: #FFFFFF;
+          background: var(--bg-secondary);
           border-top: 1px solid var(--border-color);
+        }
+
+        .reels-section-title {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+
+        .reels-section-title h2 {
+          font-size: 32px;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          margin-bottom: 10px;
+          color: var(--text-main);
+        }
+
+        .reels-section-title p {
+          color: var(--text-muted);
+          font-size: 16px;
+          max-width: 680px;
+          margin: 0 auto;
         }
 
         .reels-videos-grid {
@@ -483,7 +524,7 @@ export default function ReelsIaLanding() {
         }
 
         .reels-video-card {
-          background: var(--bg-secondary);
+          background: #FFFFFF;
           border: 1px solid var(--border-color);
           border-radius: 18px;
           padding: 12px;
@@ -689,28 +730,9 @@ export default function ReelsIaLanding() {
 
         /* Comparison Section */
         .reels-comparison-section {
-          padding: 60px 0;
-          background: var(--bg-secondary);
+          padding: 80px 0;
+          background: #FFFFFF;
           border-top: 1px solid var(--border-color);
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .reels-section-title {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
-        .reels-section-title h2 {
-          font-size: 32px;
-          font-weight: 800;
-          letter-spacing: -0.01em;
-          margin-bottom: 10px;
-          color: var(--text-main);
-        }
-
-        .reels-section-title p {
-          color: var(--text-muted);
-          font-size: 16px;
         }
 
         .reels-compare-grid {
@@ -750,7 +772,7 @@ export default function ReelsIaLanding() {
           list-style: none;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 14px;
           padding: 0;
           margin: 0;
         }
@@ -780,6 +802,8 @@ export default function ReelsIaLanding() {
         /* Modules Curriculum */
         .reels-curriculum {
           padding: 80px 0;
+          background: var(--bg-secondary);
+          border-top: 1px solid var(--border-color);
         }
 
         .reels-modules-grid {
@@ -831,7 +855,7 @@ export default function ReelsIaLanding() {
           border-radius: 24px;
           padding: 48px;
           max-width: 680px;
-          margin: 50px auto 0;
+          margin: 60px auto 0;
           text-align: center;
           box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
         }
@@ -843,48 +867,106 @@ export default function ReelsIaLanding() {
         .reels-pricing .old-price {
           text-decoration: line-through;
           color: var(--text-muted);
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 500;
         }
 
         .reels-pricing .current-price {
-          font-size: 56px;
+          font-size: clamp(38px, 5vw, 54px);
           font-weight: 800;
           color: #0F172A;
-          line-height: 1;
+          line-height: 1.1;
           margin: 8px 0;
         }
 
-        .reels-offer-includes {
+        .reels-urgency-box {
+          background: #FEF2F2;
+          border: 1px solid #FECACA;
+          border-radius: 14px;
+          padding: 18px;
+          margin: 24px 0;
+          color: #991B1B;
+          font-size: 14px;
+          line-height: 1.5;
           text-align: left;
-          max-width: 480px;
-          margin: 28px auto;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          padding: 0;
         }
 
-        .reels-offer-includes li {
-          list-style: none;
+        .reels-urgency-box strong {
+          display: block;
           font-size: 15px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
+          margin-bottom: 6px;
+          color: #DC2626;
+        }
+
+        /* Guarantee Section */
+        .reels-guarantee-section {
+          padding: 70px 0;
+          background: #FFFFFF;
+          border-top: 1px solid var(--border-color);
+        }
+
+        .reels-guarantee-box {
+          max-width: 760px;
+          margin: 0 auto;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 40px;
+          text-align: center;
+        }
+
+        .reels-guarantee-box h3 {
+          font-size: 24px;
+          font-weight: 800;
+          margin-bottom: 14px;
           color: var(--text-main);
         }
 
-        .reels-offer-includes li::before {
-          content: "✓";
-          color: var(--success);
-          font-weight: 700;
-          flex-shrink: 0;
+        .reels-guarantee-box p {
+          color: var(--text-muted);
+          font-size: 15px;
+          line-height: 1.6;
+        }
+
+        /* Instructor Section */
+        .reels-instructor-section {
+          padding: 70px 0;
+          background: var(--bg-secondary);
+          border-top: 1px solid var(--border-color);
+        }
+
+        .reels-instructor-box {
+          max-width: 820px;
+          margin: 0 auto;
+          background: #FFFFFF;
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 40px;
+          box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+        }
+
+        .reels-instructor-box h3 {
+          font-size: 26px;
+          font-weight: 800;
+          margin-bottom: 16px;
+          color: var(--text-main);
+          text-align: center;
+        }
+
+        .reels-instructor-box blockquote {
+          font-size: 16px;
+          line-height: 1.7;
+          color: var(--text-main);
+          font-style: italic;
+          position: relative;
+          padding-left: 20px;
+          border-left: 4px solid var(--accent);
         }
 
         /* FAQ */
         .reels-faq-section {
-          padding: 60px 0 90px;
-          background: var(--bg-secondary);
+          padding: 70px 0 90px;
+          background: #FFFFFF;
           border-top: 1px solid var(--border-color);
         }
 
@@ -897,7 +979,7 @@ export default function ReelsIaLanding() {
         }
 
         .reels-faq-item {
-          background: #FFFFFF;
+          background: var(--bg-secondary);
           border: 1px solid var(--border-color);
           border-radius: 12px;
           padding: 18px 24px;
@@ -945,7 +1027,7 @@ export default function ReelsIaLanding() {
           font-size: 13px;
           color: var(--text-muted);
           border-top: 1px solid var(--border-color);
-          background: #FFFFFF;
+          background: var(--bg-secondary);
         }
       `}</style>
 
@@ -960,13 +1042,15 @@ export default function ReelsIaLanding() {
       {/* Hero Section */}
       <header className="reels-hero">
         <div className="reels-container">
-          <div className="reels-pill-badge">Flujo de Trabajo Automatizado</div>
+          <div className="reels-pill-badge">
+            Escala tu marca y contenido con videos verticales de calidad publicitaria 24/7 (sin depender de tu tiempo ni de tu energía)
+          </div>
           <h1>
-            Crear Reels con IA<br />
-            <span>en minutos</span>
+            Crea Reels con IA<br />
+            <span>en 10 Minutos</span>
           </h1>
           <p className="lead">
-            Domina el sistema completo para producir videos cinematográficos verticales sin grabarte, sin equipo costoso y manteniendo consistencia absoluta en tus personajes y marca personal.
+            Aprende cómo crear Reels cinematográficos con IA que se producen en minutos, sin grabarte en cámara, sin equipo costoso y sin pasar horas editando.
           </p>
 
           <a 
@@ -996,14 +1080,80 @@ export default function ReelsIaLanding() {
         </div>
       </header>
 
+      {/* Storytelling & Transformation Section */}
+      <section className="reels-story-section">
+        <div className="reels-container">
+          <div className="reels-story-box">
+            <p>
+              Pasé de tardar días enteros para sacar un solo video mediocre... a tener un sistema automatizado que produce reels cinematográficos de alto impacto en cuestión de minutos.
+            </p>
+            <p>
+              Mi calendario de contenido siempre estaba vacío: me daba pereza grabarme, la luz nunca quedaba bien, la edición me consumía la vida y al final... el video ni siquiera se veía profesional.
+            </p>
+            <p>
+              <strong>Entonces cambié el juego por completo:</strong><br />
+              Dejé de hacerlo a la antigua y armé un flujo de trabajo optimizado 100% con Inteligencia Artificial.
+            </p>
+            <p>
+              Hoy creo piezas de nivel cinematográfico en menos de 10 minutos, con un avatar idéntico a mí, voz clonada hiperrealista y consistencia total en cada toma.
+            </p>
+
+            <div className="reels-quote-card">
+              &ldquo;Dejé de ser esclavo de la cámara y la línea de tiempo. Ahora el sistema trabaja para mí.&rdquo;
+            </div>
+
+            <p className="reels-intro-sub">
+              He invertido cientos de horas testeando herramientas, flujos y configuraciones para que tú NO tengas que perder tu tiempo en prueba y error...
+            </p>
+
+            <div className="reels-pillars-grid">
+              <div className="reels-pillar-card">
+                <div className="reels-pillar-bad">
+                  <span>❌</span>
+                  <span>Sin grabarte frente a la cámara ni pelear con luces y micrófonos</span>
+                </div>
+                <div className="reels-pillar-good">
+                  <span>✅</span>
+                  <span>Creas un avatar hiperrealista con ropa, rostro y locación consistentes.</span>
+                </div>
+              </div>
+
+              <div className="reels-pillar-card">
+                <div className="reels-pillar-bad">
+                  <span>❌</span>
+                  <span>Sin ser experto en edición ni pasar 4 horas en la computadora</span>
+                </div>
+                <div className="reels-pillar-good">
+                  <span>✅</span>
+                  <span>Flujo paso a paso desde el guion hasta la exportación final en minutos.</span>
+                </div>
+              </div>
+
+              <div className="reels-pillar-card">
+                <div className="reels-pillar-bad">
+                  <span>❌</span>
+                  <span>Sin equipos costosos ni software complejo</span>
+                </div>
+                <div className="reels-pillar-good">
+                  <span>✅</span>
+                  <span>Todo centralizado en herramientas accesibles y flujos de agentes automatizados.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Proofs / Video Samples Section */}
       <section className="reels-proofs-section">
         <div className="reels-container">
           <div className="reels-section-title">
-            <div className="reels-pill-badge">Pruebas Reales del Sistema</div>
+            <div className="reels-pill-badge" style={{ marginBottom: '14px' }}>
+              Pruebas Reales del Sistema
+            </div>
             <h2>Mira lo que puedes crear en menos de 10 minutos</h2>
             <p>
-              Revisa la calidad visual, fluidez de movimiento, voz clonada y acabado publicitario generado 100% con inteligencia artificial.
+              (Pruebas reales de calidad visual, textura, fluidez de movimiento, voz clonada y acabado de agencia generado con IA)
             </p>
           </div>
 
@@ -1038,14 +1188,14 @@ export default function ReelsIaLanding() {
             ))}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <div style={{ textAlign: 'center', marginTop: '44px' }}>
             <a 
               href={HOTMART_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="reels-cta-btn"
             >
-              QUIERO APRENDER A CREAR ESTOS REELS ({pricing.ctaText})
+              QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
             </a>
           </div>
         </div>
@@ -1097,7 +1247,7 @@ export default function ReelsIaLanding() {
                 className="reels-cta-btn"
                 style={{ fontSize: '15px', padding: '14px 28px', width: '100%' }}
               >
-                ACCEDER AL CURSO POR {pricing.ctaText}
+                QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
               </a>
             </div>
           </div>
@@ -1108,30 +1258,30 @@ export default function ReelsIaLanding() {
       <section className="reels-comparison-section">
         <div className="reels-container">
           <div className="reels-section-title">
-            <h2>¿Por qué este método cambia las reglas?</h2>
+            <h2>¿Por qué este método cambia las reglas del juego?</h2>
             <p>Compara el modelo tradicional frente al sistema optimizado de 10 minutos.</p>
           </div>
 
           <div className="reels-compare-grid">
             <article className="reels-compare-card negative">
-              <h3>Método Convencional</h3>
+              <h3>Método Convencional (Agotador)</h3>
               <ul>
-                <li>Horas escribiendo guiones sin gancho claro</li>
-                <li>Inseguridad frente a la cámara e iluminación deficiente</li>
-                <li>Edición manual repetitiva de más de 4 horas por video</li>
-                <li>Inconsistencia visual entre un reel y el siguiente</li>
-                <li>Fatiga y abandono del canal al poco tiempo</li>
+                <li>Horas frente a la hoja en blanco sin ganchos claros.</li>
+                <li>Inseguridad frente al lente, tomas falsas y mala iluminación.</li>
+                <li>Edición manual repetitiva y extenuante de más de 4 horas.</li>
+                <li>Inconsistencia estética total entre un video y otro.</li>
+                <li>Fatiga mental y abandono del canal a las dos semanas.</li>
               </ul>
             </article>
 
             <article className="reels-compare-card positive">
-              <h3>Sistema 10 Minutos con IA</h3>
+              <h3>Sistema 10 Minutos con IA (Escalable)</h3>
               <ul>
-                <li>Estructura de guiones virales con NotebookLM en segundos</li>
-                <li>Avatar consistente con rostro, ropa y locación fijos</li>
-                <li>Voz clonada con entonación natural sin grabar audio</li>
-                <li>Animación en lote y delegación a agentes de IA</li>
-                <li>Montaje rápido listo para publicar en minutos</li>
+                <li>Guiones virales y estructuras de retención en segundos.</li>
+                <li>Avatar consistente con rasgos, estilo y locación fija.</li>
+                <li>Animación en lote y delegación a agentes de IA.</li>
+                <li>Textura hiperrealista, look cinematográfico y marca sólida.</li>
+                <li>Creación rápida, sostenible y publicable a diario.</li>
               </ul>
             </article>
           </div>
@@ -1142,47 +1292,47 @@ export default function ReelsIaLanding() {
       <main className="reels-curriculum">
         <div className="reels-container">
           <div className="reels-section-title">
-            <h2>Plan de Estudio Paso a Paso</h2>
-            <p>18 lecciones prácticas directo al grano diseñadas para implementación inmediata.</p>
+            <h2>¿Qué incluye el sistema? (Plan de Estudio Paso a Paso)</h2>
+            <p>18 lecciones prácticas, directas al grano, diseñadas para implementar el mismo día:</p>
           </div>
 
           <div className="reels-modules-grid">
-            {lessons.map((lesson, idx) => (
+            {curriculumModules.map((mod, idx) => (
               <article className="reels-module-item" key={idx}>
-                <div className="reels-module-num">{lesson.num}</div>
-                <h4>{lesson.title}</h4>
-                <p>{lesson.desc}</p>
+                <div className="reels-module-num">Módulo 0{idx + 1}</div>
+                <h4>{mod.title}</h4>
+                <p>{mod.desc}</p>
               </article>
             ))}
           </div>
 
           {/* Checkout Card */}
           <section className="reels-offer-box" id="checkout">
-            <div className="reels-pill-badge">Oferta Especial de Lanzamiento</div>
-            <h3 style={{ fontSize: '26px', fontWeight: 800, marginTop: '8px', color: '#0F172A' }}>
-              Acceso Vitalicio + Actualizaciones
-            </h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginTop: '6px' }}>
-              Aprende el sistema hoy y crea tus propios videos en minutos.
+            <div className="reels-pill-badge" style={{ background: '#FEF2F2', color: '#DC2626' }}>
+              🔥 OFERTA ESPECIAL DE LANZAMIENTO (70% DE DESCUENTO)
+            </div>
+            
+            <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginTop: '12px', lineHeight: '1.6' }}>
+              Invertí meses depurando y automatizando este flujo de trabajo para que hoy tengas la llave en mano sin sufrir la curva técnica.
             </p>
 
             <div className="reels-pricing">
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px' }}>
                 <span>{pricing.flag} Moneda detectada para <strong>{pricing.countryName}</strong></span>
               </div>
-              <div className="old-price">Precio habitual: {pricing.oldPrice}</div>
+              <div className="old-price">PRECIO REGULAR: {pricing.oldPrice}</div>
               <div className="current-price">
-                {pricing.currentAmount} <span style={{ fontSize: '20px', fontWeight: 600 }}>{pricing.currencyCode}</span>
+                PRECIO HOY: {pricing.currentAmount} <span style={{ fontSize: '20px', fontWeight: 600 }}>{pricing.currencyCode}</span>
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                (O el equivalente en tu moneda local)
               </div>
             </div>
 
-            <ul className="reels-offer-includes">
-              <li>Acceso completo a las 18 lecciones en video HD</li>
-              <li>Flujo de trabajo para avatares consistentes y clonación de voz</li>
-              <li>Plantillas de guionismo viral y automatización con agentes</li>
-              <li>Soporte y acceso inmediato en la plataforma de Hotmart</li>
-              <li>Garantía total de satisfacción por 7 días</li>
-            </ul>
+            <div className="reels-urgency-box">
+              <strong>🚨 SOLO SI ENTRAS HOY 🚨</strong>
+              Obtienes acceso vitalicio inmediato, todas las plantillas de guionismo viral, el flujo de delegación con agentes de IA y las actualizaciones futuras del método.
+            </div>
 
             <a 
               href={HOTMART_URL} 
@@ -1191,15 +1341,42 @@ export default function ReelsIaLanding() {
               className="reels-cta-btn" 
               style={{ width: '100%', marginTop: '10px' }}
             >
-              OBTENER ACCESO INMEDIATO
+              QUIERO EL SISTEMA Y ACCEDER POR {pricing.ctaText} ↗
             </a>
 
-            <p style={{ marginTop: '16px', fontSize: '13px', color: 'var(--text-muted)' }}>
-              Garantía incondicional de 7 días. Si el contenido no cumple tus expectativas, solicitas tu reembolso íntegro con un solo clic.
-            </p>
+            <div className="reels-guarantee-note" style={{ marginTop: '16px' }}>
+              <span>🔒 Pago 100% Seguro por Hotmart</span>
+              <span>⚡ Acceso Inmediato</span>
+              <span>🛡️ Garantía Incondicional de 7 Días</span>
+            </div>
           </section>
         </div>
       </main>
+
+      {/* Guarantee Section */}
+      <section className="reels-guarantee-section">
+        <div className="reels-container">
+          <div className="reels-guarantee-box">
+            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🛡️</div>
+            <h3>Garantía de Satisfacción Total por 7 Días</h3>
+            <p>
+              Prueba el sistema completo. Mira las lecciones, crea tu primer avatar y genera tus primeros clips. Si sientes que este método no te ahorra horas de trabajo o no cumple al 100% tus expectativas, solicitas tu reembolso íntegro con un solo clic dentro de Hotmart. Sin preguntas.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Instructor Section */}
+      <section className="reels-instructor-section">
+        <div className="reels-container">
+          <div className="reels-instructor-box">
+            <h3>Conoce a tu instructor</h3>
+            <blockquote>
+              &ldquo;Mi objetivo siempre ha sido la eficiencia y la calidad de alto impacto. Pasar horas grabando y editando para redes sociales ya no es viable si quieres escalar. Creé este sistema para liberarte de la cámara y del software pesado, permitiéndote producir contenido con calidad de cine en minutos, para que tu marca crezca mientras tú te enfocas en lo que realmente importa.&rdquo;
+            </blockquote>
+          </div>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <section className="reels-faq-section">
@@ -1211,23 +1388,23 @@ export default function ReelsIaLanding() {
 
           <div className="reels-faq-list">
             <details className="reels-faq-item">
-              <summary>¿Necesito conocimientos previos de edición o programación?</summary>
-              <p>No. El método está planteado paso a paso desde cero. Aprenderás a utilizar herramientas intuitivas con flujos directos pensados para cualquier nivel.</p>
+              <summary>¿Necesito conocimientos previos de edición o herramientas complejas?</summary>
+              <p>No. El curso está diseñado desde el absoluto cero. Te guío paso a paso por la interfaz de cada herramienta hasta tener tu video final listo para publicar.</p>
             </details>
 
             <details className="reels-faq-item">
-              <summary>¿Cuánto tiempo tardo en ver resultados?</summary>
-              <p>El curso está estructurado para que puedas implementar cada módulo el mismo día. Al finalizar el recorrido tendrás tu primer Reel completo y el flujo listo para replicar en 10 minutos.</p>
+              <summary>¿Necesito una computadora de gama alta o tarjeta gráfica potente?</summary>
+              <p>No. Al utilizar flujos basados en herramientas de IA en la nube, el trabajo pesado lo hacen los servidores externos, no tu ordenador.</p>
+            </details>
+
+            <details className="reels-faq-item">
+              <summary>¿Qué pasa si no me gusta ponerme frente a una cámara?</summary>
+              <p>Esa es la mayor ventaja de este curso: aprenderás a clonar tu presencia o a crear personajes virtuales desde cero sin tener que grabar un solo segundo de ti mismo.</p>
             </details>
 
             <details className="reels-faq-item">
               <summary>¿Cómo y cuándo recibo el acceso?</summary>
-              <p>El acceso es inmediato tras confirmarse el pago. Hotmart te enviará a tu correo electrónico los datos de acceso para comenzar de inmediato desde cualquier dispositivo.</p>
-            </details>
-
-            <details className="reels-faq-item">
-              <summary>¿Qué ocurre si el curso no es lo que esperaba?</summary>
-              <p>Cuentas con 7 días de garantía total. Puedes evaluar el material y, si decides que no es para ti, pedir el reembolso sin preguntas directo en Hotmart.</p>
+              <p>Inmediatamente después de confirmar tu pago en Hotmart, recibirás un correo con tus credenciales de acceso para empezar hoy mismo.</p>
             </details>
           </div>
         </div>
