@@ -48,40 +48,6 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/bingo',
-        destination: '/bingo/index.html',
-      },
-      {
-        source: '/bingo-control-7788',
-        destination: '/bingo/organizador-7788.html',
-      },
-    ];
-  },
-  async headers() {
-    return [
-      {
-        source: '/bingo-control-7788',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow, noarchive, nosnippet',
-          },
-        ],
-      },
-      {
-        source: '/bingo/organizador-7788.html',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow, noarchive, nosnippet',
-          },
-        ],
-      },
-    ];
-  },
 };
 
 export default nextConfig;
