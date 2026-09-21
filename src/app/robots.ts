@@ -12,7 +12,9 @@ export default function robots(): MetadataRoute.Robots {
         '/dashboard/', 
         '/the-silent-studio-guide/', 
         '/secret-access-portal/',
-        '/the-hidden-gate/'
+        '/the-hidden-gate/',
+        '/bingo-control-7788/',
+        '/bingo/organizador-7788.html'
       ],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
