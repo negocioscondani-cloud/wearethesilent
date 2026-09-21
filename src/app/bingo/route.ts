@@ -1,12 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import { bingoHtml } from '@/lib/bingo-html';
 
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const filePath = path.join(process.cwd(), 'src', 'bingo-files', 'index.html');
-  const html = fs.readFileSync(filePath, 'utf-8');
-  return new Response(html, {
+  return new Response(bingoHtml, {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
     },
