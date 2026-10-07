@@ -23,7 +23,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/resources',
     '/tutorials',
     '/brand-accelerator',
-    '/support-ai-film'
+    '/support-ai-film',
+    '/influencer-ia'
   ].map((route) => ({
     url: `${BASE_URL}${route}`,
     lastModified: new Date().toISOString(),

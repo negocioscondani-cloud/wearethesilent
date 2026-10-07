@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-gumroad-field="name">Influencer IA: de cero a tu primera venta | The Silent Studio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              goldLight: '#F3E5AB',
+              goldDark: '#AA820A',
+              dark: '#08080A',
+              cardDark: '#121216',
+              borderDark: '#222228',
+              accent: '#E6C657',
+            }
+          },
+          fontFamily: {
+            sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Georgia', 'Cambria', 'serif']
+          },
+          animation: {
+            'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom scrollbar and styling */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #08080A; }
+    ::-webkit-scrollbar-thumb { background: #2A2A32; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+    .glow-gold {
+      box-shadow: 0 0 40px -10px rgba(212, 175, 55, 0.25);
+    }
+    .glow-gold-hover:hover {
+      box-shadow: 0 0 50px -5px rgba(212, 175, 55, 0.4);
+    }
+    .gradient-gold-text {
+      background: linear-gradient(135deg, #FFF6D6 0%, #D4AF37 50%, #AA820A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#08080A] text-zinc-100 font-sans antialiased selection:bg-[#D4AF37] selection:text-black min-h-screen transition-colors duration-300">
+
+  <!-- TOP ANNOUNCEMENT BANNER -->
+  <aside aria-label="Aviso de oferta" class="bg-gradient-to-r from-amber-950/80 via-black to-amber-950/80 border-b border-brand-gold/30 text-xs py-2.5 px-4 text-center sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-center gap-2 flex-wrap font-medium tracking-wide">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span class="text-amber-300 font-bold uppercase tracking-wider text-[11px]">Oferta Exclusiva:</span>
+      <span class="text-zinc-200">Acceso completo con precio de lanzamiento</span>
+      <span class="line-through text-zinc-400">$37 USD</span>
+      <span class="text-[#F3E5AB] font-bold text-sm px-1.5 py-0.5 rounded bg-brand-gold/20 border border-brand-gold/40" data-gumroad-field="price">$27 USD</span>
+      <span class="text-zinc-400 text-[11px] hidden sm:inline">· Acceso vitalicio inmediato</span>
+    </div>
+  </aside>
+
+  <!-- NAVIGATION -->
+  <header class="border-b border-brand-borderDark/60 bg-[#08080A]/90 backdrop-blur-md sticky top-[41px] z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="https://thesilentstudiomk.gumroad.com/" class="flex items-center gap-3 group">
+        <img 
+          src="https://public-files.gumroad.com/jb3d0095enmjsy0cpw9db5mmcdtm" 
+          alt="Daniel StudioBoom" 
+          class="w-9 h-9 rounded-full border border-brand-gold/40 object-cover group-hover:border-brand-gold transition-colors"
+        />
+        <div class="flex flex-col">
+          <span class="text-xs uppercase tracking-[0.25em] text-zinc-400 font-semibold group-hover:text-amber-200 transition-colors">The Silent Studio</span>
+          <span class="text-sm font-bold text-white tracking-tight">Creators of the post-AI era</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <button 
+          id="theme-toggle" 
+          type="button" 
+          class="p-2 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800/60 transition-colors"
+          title="Alternar modo visual"
+          aria-label="Alternar tema"
+        >
+          <!-- Sun Icon (default dark, click for light) -->
+          <svg id="sun-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon -->
+          <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <a 
+          data-gumroad-action="buy" 
+          href="https://thesilentstudiomk.gumroad.com/l/influencerIA-mk?wanted=true"
+          class="inline-flex items-center justify-center px-4 py-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-black bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full hover:brightness-110 transition-all shadow-md active:scale-95"
+        >
+          Obtener Guía ($27)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main>
+    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+      <!-- Background Decorative Gradients -->
+      <div class="absolute inset-0 pointer-events-none opacity-40">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-b from-amber-600/20 via-yellow-600/10 to-transparent rounded-full blur-3xl"></div>
+        <div class="absolute top-0 right-10 w-96 h-96 bg-purple-900/15 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- LEFT COLUMN: Headline & Value Prop -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            
+            <!-- Category Badge -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-brand-gold/30 text-amber-300 text-xs font-semibold tracking-wider uppercase">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <span>Método Oficial · The Silent Studio</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
+              <span data-gumroad-field="name">Influencer IA: de cero a tu primera venta</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg sm:text-xl text-zinc-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Crea un personaje con inteligencia artificial, hazlo crecer y véndele a su audiencia un producto que de verdad usen.
+            </p>
+
+            <!-- Social Proof Pill -->
+            <div class="flex items-center justify-center lg:justify-start gap-4 text-xs text-zinc-400 pt-1">
+              <div class="flex text-amber-400" aria-label="Calificación de 5 estrellas">
+                ★★★★★
+              </div>
+              <span class="font-medium" data-gumroad-field="rating">5.0</span>
+              <span class="text-zinc-600">|</span>
+              <span data-gumroad-field="review-count">Guía 100% práctica de 34 páginas</span>
+            </div>
+
+            <!-- Hook Highlight Box -->
+            <div class="p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800 text-left space-y-2 backdrop-blur-sm">
+              <p class="text-zinc-300 text-sm leading-relaxed">
+                Seguro ya viste esas cuentas: <strong class="text-white">un personaje que no existe, miles de seguidores y productos que se venden</strong> mientras su creador ni sale en cámara.
+              </p>
+              <p class="text-amber-200/90 text-sm font-semibold">
+                No es suerte, es un proceso. Y casi nadie lo explica completo.
+              </p>
+            </div>
+
+            <!-- Primary CTAs -->
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+              <a 
+                data-gumroad-action="buy" 
+                href="https://thesilentstudiomk.gumroad.com/l/influencerIA-mk?wanted=true"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-black uppercase tracking-wider text-black bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] hover:brightness-110 rounded-xl shadow-xl glow-gold glow-gold-hover transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <span>Quiero crear mi Influencer IA</span>
+                <span class="bg-black/10 px-2 py-0.5 rounded text-sm">$27 USD</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+
+              <a 
+                href="#los-9-pasos" 
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-sm font-semibold text-zinc-300 hover:text-white bg-zinc-900/80 hover:bg-zinc-800/80 border border-zinc-700/60 rounded-xl transition-all"
+              >
+                <span>Ver los 9 pasos</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Trust Line -->
+            <div class="flex items-center justify-center lg:justify-start gap-4 text-xs text-zinc-400 pt-2">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Acceso inmediato
+              </span>
+              <span>·</span>
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Pago seguro vía Gumroad
+              </span>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Official Product Video & Visual Assets -->
+          <div class="lg:col-span-5 flex flex-col items-center">
+            
+            <div class="relative w-full max-w-[340px] sm:max-w-[380px] group">
+              <!-- Glow backer -->
+              <div class="absolute -inset-1.5 bg-gradient-to-tr from-amber-500/40 via-yellow-600/30 to-purple-600/30 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
+              
+              <!-- Card Container -->
+              <div class="relative rounded-2xl bg-zinc-950 border border-brand-borderDark p-3.5 shadow-2xl overflow-hidden">
+                
+                <!-- Main Product Video -->
+                <div class="relative rounded-xl overflow-hidden aspect-[9/16] bg-black">
+                  <video 
+                    src="https://public-files.gumroad.com/tdouc875tl3eoeowzbjbfke06tbg" 
+                    poster="https://public-files.gumroad.com/wu4gfvu0hjf964wkvn513k0v5iwd"
+                    controls 
+                    playsinline 
+                    autoplay 
+                    muted 
+                    loop
+                    preload="metadata"
+                    class="w-full h-full object-cover"
+                    title="Demostración de Influencer IA generada en The Silent Studio"
+                  >
+                    Tu navegador no soporta video HTML5.
+                  </video>
+
+                  <!-- Floating Quality Badge -->
+                  <div class="absolute top-3 left-3 badge-blur bg-black/70 border border-white/20 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>100% Generado con IA</span>
+                  </div>
+
+                  <!-- Floating Format Tag -->
+                  <div class="absolute bottom-3 right-3 badge-blur bg-black/70 border border-brand-gold/40 text-amber-200 text-[11px] font-bold px-2.5 py-1 rounded-full">
+                    9:16 Vertical
+                  </div>
+                </div>
+
+                <!-- Product Mini Bar under Video -->
+                <div class="pt-3 px-1 flex items-center justify-between text-xs">
+                  <div>
+                    <p class="font-bold text-white">Guía Oficial (Ebook + Método)</p>
+                    <p class="text-zinc-400 text-[11px]">34 páginas de estrategia directa</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="line-through text-zinc-500 text-[11px] mr-1">$37</span>
+                    <span class="text-amber-300 font-extrabold text-sm" data-gumroad-field="price">$27 USD</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Small Thumbnails preview of the 3 sample images -->
+            <div class="mt-4 flex items-center justify-center gap-2.5 max-w-[340px]">
+              <div class="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold mr-1">Vistas:</div>
+              <img 
+                src="https://public-files.gumroad.com/brtvr3ooqhtr22xzuzwazyuv0wze" 
+                alt="Consistencia de rostro 1" 
+                class="w-12 h-16 rounded-lg border border-zinc-800 object-cover hover:border-amber-400 transition-colors cursor-pointer"
+                title="Imagen de prueba 1"
+              />
+              <img 
+                src="https://public-files.gumroad.com/771e2ojyu80f5ctm3om84pmvucq4" 
+                alt="Consistencia de rostro 2" 
+                class="w-12 h-16 rounded-lg border border-zinc-800 object-cover hover:border-amber-400 transition-colors cursor-pointer"
+                title="Imagen de prueba 2"
+              />
+              <img 
+                src="https://public-files.gumroad.com/o2yys1t6qyt9enqflnpwejb0l2ub" 
+                alt="Consistencia de rostro 3" 
+                class="w-12 h-16 rounded-lg border border-zinc-800 object-cover hover:border-amber-400 transition-colors cursor-pointer"
+                title="Imagen de prueba 3"
+              />
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM VS SOLUTION (AUDIENCE FILTER) -->
+    <section class="py-16 bg-zinc-950/60 border-y border-zinc-800/80">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+          <h2 class="text-xs uppercase tracking-[0.25em] text-amber-400 font-bold">Diagnóstico</h2>
+          <p class="text-3xl sm:text-4xl font-black text-white">¿Por qué casi nadie logra monetizar un Influencer IA?</p>
+          <p class="text-zinc-400 text-sm sm:text-base">La mayoría crea una imagen bonita, publica dos videos en TikTok y se rinde. Esto es lo que cambia cuando tienes un sistema real:</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+          
+          <!-- Conventional Way -->
+          <div class="rounded-2xl p-6 sm:p-8 bg-red-950/10 border border-red-900/30 space-y-4">
+            <div class="inline-flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              El Enfoque Común (Frustración)
+            </div>
+            <ul class="space-y-3 text-sm text-zinc-300">
+              <li class="flex items-start gap-2.5">
+                <span class="text-red-400 font-bold">✕</span>
+                <span>Probar prompts sueltos en Midjourney sin consistencia facial entre tomas.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-red-400 font-bold">✕</span>
+                <span>Enamorarse de un solo personaje antes de saber si al público le interesa.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-red-400 font-bold">✕</span>
+                <span>Voz robótica y desincronizada que delata la falta de producción.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-red-400 font-bold">✕</span>
+                <span>Llegar a tener seguidores y no tener ni la menor idea de qué venderles.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-red-400 font-bold">✕</span>
+                <span>Abandonar a las tres semanas por falta de un flujo de trabajo replicable.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- The Silent Studio Method -->
+          <div class="rounded-2xl p-6 sm:p-8 bg-amber-950/15 border border-brand-gold/40 space-y-4 glow-gold">
+            <div class="inline-flex items-center gap-2 text-amber-300 text-xs font-bold uppercase tracking-wider">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              El Método The Silent Studio (Resultados)
+            </div>
+            <ul class="space-y-3 text-sm text-zinc-200">
+              <li class="flex items-start gap-2.5">
+                <span class="text-amber-400 font-bold">✓</span>
+                <span><strong>Rostro fijado y consistente</strong> en imágenes, primeros planos y videos completos.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-amber-400 font-bold">✓</span>
+                <span><strong>Estrategia de 3 personajes:</strong> dejas que los datos del mercado elijan al ganador.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-amber-400 font-bold">✓</span>
+                <span><strong>Voz humana y clonación:</strong> entonación natural adaptada a la personalidad.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-amber-400 font-bold">✓</span>
+                <span><strong>Monetización desde la raíz:</strong> creas una oferta digital que la audiencia compra.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-amber-400 font-bold">✓</span>
+                <span><strong>Sistema paso a paso:</strong> 9 etapas claras desde la idea hasta el checkout.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- THE 9 STEPS BREAKDOWN -->
+    <section id="los-9-pasos" class="py-20 relative">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <span class="text-xs uppercase tracking-[0.25em] text-amber-400 font-bold">Hoja de Ruta Completa</span>
+          <h2 class="text-3xl sm:text-5xl font-black text-white">Los 9 Pasos del Método</h2>
+          <p class="text-zinc-400 text-sm sm:text-base">Sin saltos, sin tecnicismos innecesarios. Un recorrido lineal diseñado para que cualquier persona pueda ejecutarlo.</p>
+        </div>
+
+        <!-- Timeline Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Paso 1 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              01
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Espía a la competencia</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Estudia quién ya lo logró en tu nicho y deja que el mercado te diga exactamente qué formatos y temas ya están funcionando.
+            </p>
+          </article>
+
+          <!-- Paso 2 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              02
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Crea tus personajes</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Diseña tres personajes en tres nichos distintos en paralelo. Porque la audiencia y los números deciden qué funciona, no tus gustos.
+            </p>
+          </article>
+
+          <!-- Paso 3 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              03
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Genera sus fotos</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              La técnica para mantener un rostro idéntico y consistente en cada toma, ángulo, ropa y locación sin deformaciones.
+            </p>
+          </article>
+
+          <!-- Paso 4 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              04
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Planifica el contenido</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Estructura un calendario sostenible para que tu personaje no publique 3 videos y desaparezca del algoritmo.
+            </p>
+          </article>
+
+          <!-- Paso 5 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              05
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Dales una voz</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              La mitad de la personalidad está en cómo suena. Selección y clonación de audio sin pausas robóticas que enganchen al oyente.
+            </p>
+          </article>
+
+          <!-- Paso 6 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              06
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Dales vida (Video)</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Une imagen, locación, guion y voz en video dinámico vertical con fluidez de movimientos y acabado profesional.
+            </p>
+          </article>
+
+          <!-- Paso 7 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              07
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Lanza las cuentas</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Configura perfiles claros, transparentes y optimizados en Instagram y TikTok desde el primer día para generar confianza.
+            </p>
+          </article>
+
+          <!-- Paso 8 -->
+          <article class="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-brand-gold/50 transition-all hover:-translate-y-1 group">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
+              08
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Corona al ganador</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Los datos objetivos (retención, likes, comentarios) eligen cuál de los 3 personajes se queda y escala con fuerza.
+            </p>
+          </article>
+
+          <!-- Paso 9 -->
+          <article class="p-6 rounded-2xl bg-gradient-to-b from-amber-950/40 to-zinc-900/80 border border-brand-gold/40 hover:border-brand-gold transition-all hover:-translate-y-1 group glow-gold">
+            <div class="w-10 h-10 rounded-xl bg-brand-gold text-black flex items-center justify-center font-black mb-4">
+              09
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">Empieza a ganar dinero</h3>
+            <p class="text-sm text-amber-100/90 leading-relaxed">
+              Tu primer producto no es un PDF aburrido: es una oferta que resuelve un dolor específico que tu audiencia muere por comprar.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALLERY / VISUAL PROOF -->
+    <section class="py-16 bg-zinc-950/80 border-t border-zinc-800">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
+          <span class="text-xs uppercase tracking-widest text-amber-400 font-bold">Muestras Reales</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Consistencia Fotográfica en Cada Toma</h2>
+          <p class="text-zinc-400 text-xs sm:text-sm">Sin variaciones bruscas en las facciones. El personaje mantiene su identidad en todo momento.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="group relative rounded-xl overflow-hidden border border-zinc-800 hover:border-brand-gold transition-all">
+            <img 
+              src="https://public-files.gumroad.com/brtvr3ooqhtr22xzuzwazyuv0wze" 
+              alt="Muestra de Influencer IA 1" 
+              class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/60 to-transparent text-xs text-zinc-300">
+              <span class="text-amber-300 font-bold">Look Editorial</span> · Iluminación natural
+            </div>
+          </div>
+
+          <div class="group relative rounded-xl overflow-hidden border border-zinc-800 hover:border-brand-gold transition-all">
+            <img 
+              src="https://public-files.gumroad.com/771e2ojyu80f5ctm3om84pmvucq4" 
+              alt="Muestra de Influencer IA 2" 
+              class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/60 to-transparent text-xs text-zinc-300">
+              <span class="text-amber-300 font-bold">Consistencia Facial</span> · Rasgos fijos
+            </div>
+          </div>
+
+          <div class="group relative rounded-xl overflow-hidden border border-zinc-800 hover:border-brand-gold transition-all">
+            <img 
+              src="https://public-files.gumroad.com/o2yys1t6qyt9enqflnpwejb0l2ub" 
+              alt="Muestra de Influencer IA 3" 
+              class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/60 to-transparent text-xs text-zinc-300">
+              <span class="text-amber-300 font-bold">Acabado Comercial</span> · Calidad de estudio
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IS THIS FOR -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="p-8 sm:p-12 rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-8">
+          
+          <div class="text-center space-y-2">
+            <h2 class="text-2xl sm:text-3xl font-black text-white">¿Esta guía es para ti?</h2>
+            <p class="text-zinc-400 text-sm">Diseñada específicamente para quienes buscan resultados medibles.</p>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-6">
+            <div class="space-y-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-400/10 text-amber-400 flex items-center justify-center font-bold">1</div>
+              <h3 class="font-bold text-white text-base">Sin mostrar tu cara</h3>
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">Quieres crear y vender contenido digital en redes sin tener que exponerte frente a la cámara.</p>
+            </div>
+
+            <div class="space-y-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-400/10 text-amber-400 flex items-center justify-center font-bold">2</div>
+              <h3 class="font-bold text-white text-base">Fin a las pruebas sueltas</h3>
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">Ya has usado herramientas de IA, pero tus personajes nunca quedan iguales o no sabes cómo organizarlos.</p>
+            </div>
+
+            <div class="space-y-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-400/10 text-amber-400 flex items-center justify-center font-bold">3</div>
+              <h3 class="font-bold text-white text-base">Buscas un sistema real</h3>
+              <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">No quieres otro tutorial superficial de 5 minutos, sino una estrategia probada que lleve a la monetización.</p>
+            </div>
+          </div>
+
+          <!-- Anti-hype pledge -->
+          <div class="p-5 rounded-2xl bg-black/60 border border-zinc-800/80 text-center space-y-1">
+            <p class="text-xs uppercase tracking-widest text-amber-400 font-bold">Compromiso de Honestidad</p>
+            <p class="text-sm text-zinc-300">
+              <strong class="text-white">Lo que no te vamos a prometer:</strong> que te harás rico en una semana.<br class="hidden sm:inline" />
+              Te prometemos un camino claro. La IA pone el rostro; la historia, el valor y el trabajo los pones tú.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU GET SECTION -->
+    <section class="py-16 bg-zinc-950/70 border-y border-zinc-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10 space-y-2">
+          <span class="text-xs uppercase tracking-widest text-amber-400 font-bold">Contenido Incluido</span>
+          <h2 class="text-3xl font-black text-white">¿Qué Recibes Exactamente?</h2>
+        </div>
+
+        <div class="space-y-4">
+          
+          <div class="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800/80 flex items-start gap-4">
+            <div class="p-2.5 rounded-xl bg-amber-400/10 text-amber-400">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">La guía completa de los 9 pasos</h3>
+              <p class="text-sm text-zinc-400">34 páginas diseñadas bajo la estética editorial The Silent Studio, directas al grano y sin relleno.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800/80 flex items-start gap-4">
+            <div class="p-2.5 rounded-xl bg-amber-400/10 text-amber-400">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">Ejemplos y criterios claros en cada etapa</h3>
+              <p class="text-sm text-zinc-400">Prompts de referencia, estructuras de guiones, configuraciones de audio y criterios para coronar al personaje ganador.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800/80 flex items-start gap-4">
+            <div class="p-2.5 rounded-xl bg-amber-400/10 text-amber-400">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">Acceso digital multiplataforma inmediato</h3>
+              <p class="text-sm text-zinc-400">Lectura cómoda desde tu teléfono, tablet o computadora, para implementar el método hoy mismo.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING & OFFER CALL TO ACTION -->
+    <section class="py-20 relative">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        
+        <div class="relative rounded-3xl bg-gradient-to-b from-zinc-900 via-zinc-950 to-black border-2 border-brand-gold/60 p-8 sm:p-12 text-center space-y-6 glow-gold">
+          
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider">
+            🔥 PRECIO ESPECIAL DE LANZAMIENTO
+          </div>
+
+          <h2 class="text-3xl sm:text-5xl font-black text-white">
+            Comienza a Construir Tu Influencer IA
+          </h2>
+
+          <p class="text-sm sm:text-base text-zinc-300 max-w-lg mx-auto">
+            El camino exacto para pasar de una idea a tu primer personaje consistente y tu primera venta en internet.
+          </p>
+
+          <!-- Price Display -->
+          <div class="py-4">
+            <div class="text-zinc-500 text-sm font-semibold">
+              PRECIO REGULAR: <span class="line-through">$37 USD</span>
+            </div>
+            <div class="text-4xl sm:text-6xl font-black text-white mt-1">
+              <span class="text-amber-400" data-gumroad-field="price">$27 USD</span>
+            </div>
+            <div class="text-xs text-amber-200/80 font-medium mt-1">
+              Pago único · Acceso vitalicio · Sin mensualidades
+            </div>
+          </div>
+
+          <!-- Big Buy Button with Gumroad Action -->
+          <div class="pt-2">
+            <a 
+              data-gumroad-action="buy" 
+              href="https://thesilentstudiomk.gumroad.com/l/influencerIA-mk?wanted=true"
+              class="w-full inline-flex items-center justify-center gap-3 px-8 py-5 text-lg font-black uppercase tracking-wider text-black bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] hover:brightness-110 rounded-2xl shadow-2xl glow-gold glow-gold-hover transition-all transform hover:-translate-y-1 active:translate-y-0"
+            >
+              <span>👉 Quiero crear mi Influencer IA</span>
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Guarantee & Support Details -->
+          <div class="pt-6 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-2">
+            <div class="flex items-center justify-center gap-6 flex-wrap">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Entrega instantánea
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Procesamiento seguro Gumroad
+              </span>
+            </div>
+            <p class="text-zinc-500 text-[11px] pt-2">
+              Soporte directo antes o después de tu compra: 
+              <a href="mailto:daniel@studioboom.online" target="_blank" class="text-amber-400 hover:underline">daniel@studioboom.online</a>
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="py-16 bg-zinc-950/60 border-t border-zinc-800">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10 space-y-2">
+          <span class="text-xs uppercase tracking-widest text-amber-400 font-bold">Preguntas Frecuentes</span>
+          <h2 class="text-3xl font-black text-white">Todo lo que Necesitas Saber</h2>
+        </div>
+
+        <div class="space-y-4">
+          
+          <details class="group p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 cursor-pointer">
+            <summary class="font-bold text-white text-base flex justify-between items-center select-none list-none">
+              <span>¿Necesito experiencia previa con herramientas de IA?</span>
+              <span class="text-amber-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              No. La guía está redactada con instrucciones claras, paso por paso, pensada tanto para quienes ya han experimentado como para quienes van a crear su primer personaje desde cero.
+            </p>
+          </details>
+
+          <details class="group p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 cursor-pointer">
+            <summary class="font-bold text-white text-base flex justify-between items-center select-none list-none">
+              <span>¿Necesito una computadora potente o tarjeta gráfica cara?</span>
+              <span class="text-amber-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              No. Todas las herramientas y modelos explicados se ejecutan en la nube a través del navegador. Puedes trabajar perfectamente desde cualquier computadora o portátil estándar.
+            </p>
+          </details>
+
+          <details class="group p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 cursor-pointer">
+            <summary class="font-bold text-white text-base flex justify-between items-center select-none list-none">
+              <span>¿Por qué la estrategia usa 3 personajes en vez de 1?</span>
+              <span class="text-amber-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              Porque enamorarse de una sola idea suele llevar a semanas de esfuerzo sin tracción. Al probar tres nichos en paralelo, dejas que sean las métricas y los seguidores quienes elijan al ganador antes de invertir más tiempo.
+            </p>
+          </details>
+
+          <details class="group p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 cursor-pointer">
+            <summary class="font-bold text-white text-base flex justify-between items-center select-none list-none">
+              <span>¿Cómo y cuándo recibo el material?</span>
+              <span class="text-amber-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-3 text-sm text-zinc-400 leading-relaxed">
+              Inmediatamente después de confirmar tu pago en Gumroad, serás redirigido a la página de entrega y recibirás un correo electrónico con tu acceso instantáneo y de por vida.
+            </p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-zinc-800/80 bg-black py-12 text-zinc-400 text-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <img 
+          src="https://public-files.gumroad.com/jb3d0095enmjsy0cpw9db5mmcdtm" 
+          alt="Daniel StudioBoom" 
+          class="w-8 h-8 rounded-full border border-zinc-700 object-cover"
+        />
+        <div>
+          <p class="font-bold text-white">The Silent Studio</p>
+          <p class="text-zinc-500 text-[11px]">Creators of the post-AI era</p>
+        </div>
+      </div>
+
+      <div class="text-center md:text-right space-y-1">
+        <p>© 2026 The Silent Studio. Todos los derechos reservados.</p>
+        <p class="text-zinc-500 text-[11px]">
+          Soporte: <a href="mailto:daniel@studioboom.online" target="_blank" class="text-zinc-400 hover:text-amber-400 transition-colors">daniel@studioboom.online</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- STICKY BOTTOM BAR FOR MOBILE -->
+  <aside aria-label="Acceso rápido de compra" class="fixed bottom-0 inset-x-0 bg-black/90 border-t border-brand-gold/40 p-3 sm:hidden z-40 backdrop-blur-lg flex items-center justify-between gap-3">
+    <div>
+      <span class="text-[10px] uppercase text-zinc-400 tracking-wider block">Lanzamiento</span>
+      <span class="text-amber-300 font-extrabold text-base" data-gumroad-field="price">$27 USD</span>
+      <span class="line-through text-zinc-500 text-xs ml-1">$37</span>
+    </div>
+    <a 
+      data-gumroad-action="buy" 
+      href="https://thesilentstudiomk.gumroad.com/l/influencerIA-mk?wanted=true"
+      class="flex-1 inline-flex items-center justify-center py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider text-black bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] shadow-lg active:scale-95"
+    >
+      Comprar ahora
+    </a>
+  </aside>
+
+  <!-- LIGHT / DARK MODE TOGGLE SCRIPT -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('theme-toggle');
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+      const html = document.documentElement;
+
+      // Check system or saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        enableLightMode();
+      }
+
+      function enableLightMode() {
+        html.classList.add('light-mode');
+        document.body.classList.remove('bg-[#08080A]', 'text-zinc-100');
+        document.body.classList.add('bg-zinc-50', 'text-zinc-900');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        localStorage.setItem('theme', 'light');
+      }
+
+      function enableDarkMode() {
+        html.classList.remove('light-mode');
+        document.body.classList.remove('bg-zinc-50', 'text-zinc-900');
+        document.body.classList.add('bg-[#08080A]', 'text-zinc-100');
+        moonIcon.classList.add('hidden');
+        sunIcon.classList.remove('hidden');
+        localStorage.setItem('theme', 'dark');
+      }
+
+      if (toggle) {
+        toggle.addEventListener('click', function() {
+          if (localStorage.getItem('theme') === 'light') {
+            enableDarkMode();
+          } else {
+            enableLightMode();
+          }
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
