@@ -10,6 +10,7 @@ interface FormSubmissionData {
   productDesc: string;
   promo?: string;
   driveUrl?: string;
+  packageChoice?: string;
 }
 
 export async function submitApplication(data: FormSubmissionData) {
@@ -56,6 +57,10 @@ export async function submitApplication(data: FormSubmissionData) {
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid rgba(31,42,46,0.08); font-weight: bold;">Promoción:</td>
               <td style="padding: 8px; border-bottom: 1px solid rgba(31,42,46,0.08);">${data.promo || 'Ninguna'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px solid rgba(31,42,46,0.08); font-weight: bold;">Paquete Deseado:</td>
+              <td style="padding: 8px; border-bottom: 1px solid rgba(31,42,46,0.08);">${data.packageChoice || 'No especificado'}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border-bottom: 1px solid rgba(31,42,46,0.08); font-weight: bold;">Enlaces / Fotos:</td>

@@ -25,7 +25,8 @@ import {
   CheckCircle2,
   Smartphone,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 
 const WHATSAPP_NUM = "50664194111";
@@ -42,10 +43,10 @@ const TRANSLATIONS = {
       whatsapp: "Contacto"
     },
     hero: {
-      badge: "AGENCIA DE INTELIGENCIA CREATIVA",
-      title: "Tu empresa no necesita más contenido. Necesita mejores ideas.",
-      subtitle: "Creamos contenido y anuncios con IA + creatividad estratégica para ayudarte a captar atención, construir autoridad y generar oportunidades de venta.",
-      ctaTest: "QUIERO PROBAR THE SILENT",
+      badge: "CREACIÓN DE INFLUENCERS IA · TECNOLOGÍA DE PUNTA",
+      title: "Influencers IA y videos de alto impacto que detienen el scroll y convierten.",
+      subtitle: "Combinamos tecnología de vanguardia y dirección creativa innovadora para diseñar influencers con inteligencia artificial hiperrealistas. Creamos videos y anuncios listos para Meta Ads, contenido recurrente para redes sociales o páginas web, ya sea alrededor de tu propia marca o para ofrecer a tus clientes.",
+      ctaTest: "COTIZAR MIS VIDEOS",
       ctaDemo: "HABLAR CON UN ESTRATEGA"
     },
     problem: {
@@ -75,71 +76,86 @@ const TRANSLATIONS = {
       ]
     },
     services: {
-      badge: "SERVICIOS Y TARIFAS",
-      title: "Elige cómo quieres crecer",
-      subtitle: "Tres formas de trabajar con nosotros, desde pruebas creativas rápidas hasta un partner creativo recurrente.",
-      test: {
-        title: "CREATIVE TEST",
-        price: "₡75.000",
-        usd: "o $150",
-        period: "Pago único",
-        desc: "Antes de contratar un sistema mensual, prueba nuestra metodología con 5 conceptos publicitarios diferentes.",
-        includes: [
-          "5 videos verticales de alta resolución",
-          "5 conceptos creativos únicos",
-          "5 hooks persuasivos testeables",
-          "Guiones estructurados de ventas",
-          "Producción de video con IA y UGC",
-          "Edición profesional y ritmo dinámico",
-          "Subtítulos de alto impacto para retención"
-        ],
-        cta: "QUIERO PROBAR THE SILENT"
+      badge: "SERVICIOS Y TARIFAS TRANSPARENTES",
+      title: "Elige el paquete ideal para tu negocio o marca",
+      subtitle: "Producción audiovisual de influencers IA con tecnología de punta. Desde videos individuales hasta paquetes de escala y planes de crecimiento.",
+      scopeNotice: {
+        title: "Alcance y Transparencia del Servicio",
+        content: "En todos nuestros paquetes entregamos el contenido 100% terminado y listo para publicar: video vertical 9:16 en alta resolución + subtítulos animados + guión + el respectivo caption para Instagram o Facebook. NO incluye la administración diaria de redes sociales ni la gestión de pauta publicitaria. Si necesitas que administremos tus redes sociales o gestionemos tu pauta publicitaria en Meta Ads / TikTok Ads, es un costo aparte que cotizamos de forma personalizada según tus requerimientos."
       },
-      engine: {
-        title: "CREATIVE ENGINE",
-        price: "₡450.000",
-        usd: "/ mes",
-        period: "Suscripción mensual",
-        desc: "Servicio mensual para empresas que necesitan producción constante de contenido y creatividades publicitarias.",
-        recommended: "RECOMENDADO",
+      single: {
+        title: "VIDEO INDIVIDUAL",
+        price: "$50 USD",
+        local: "o ₡25.000 CRC",
+        period: "Por video · A la carta",
+        desc: "Prueba la calidad y el impacto de nuestro influencer IA con un video vertical publicitario u orgánico de alta fidelidad.",
         includes: [
-          "10 videos verticales mensuales",
-          "6 piezas gráficas de diseño premium",
-          "Estrategia de contenido mensual",
-          "Investigación profunda de audiencias",
-          "Desarrollo constante de nuevos conceptos",
-          "Hooks y ganchos de retención",
-          "Guiones adaptados al acento local",
-          "Producción audiovisual con IA",
-          "Edición, colorización y ritmo",
-          "Subtítulos dinámicos optimizados",
-          "2 conceptos publicitarios mensuales",
-          "Adaptaciones para Reels, TikTok y Stories",
-          "Optimización creativa constante con datos",
-          "Reunión estratégica mensual de análisis"
+          "1 Video vertical de alta resolución (9:16)",
+          "Avatar / Influencer IA hiperrealista con voz natural",
+          "Concepto creativo y gancho persuasivo",
+          "Guión de ventas estructurado para retención",
+          "Edición dinámica y subtítulos animados de alto impacto",
+          "Entrega con su respectivo caption listo para Instagram o Facebook",
+          "Entrega ágil en 48-72h lista para publicar"
         ],
-        cta: "QUIERO EL CREATIVE ENGINE"
+        cta: "PEDIR 1 VIDEO ($50)"
       },
-      partner: {
-        title: "CREATIVE PARTNER",
-        price: "Desde ₡750.000",
-        usd: "/ mes",
-        period: "Retainer personalizado",
-        desc: "Para empresas que necesitan un equipo creativo externo y dirección estratégica dedicada de alto nivel.",
+      pack10: {
+        title: "PACK 10 VIDEOS",
+        price: "$420 USD",
+        local: "o ₡210.000 CRC",
+        period: "Ahorras $80 · $42/video",
+        badge: "OFERTA ESPECIAL",
+        desc: "El paquete perfecto para lanzar una campaña publicitaria multi-ángulo o mantener consistencia semanal en tus redes.",
         includes: [
-          "16 a 20 videos verticales al mes",
-          "Creatividades a la medida para campañas",
-          "UGC Ads con avatares de IA y personas reales",
-          "Videos de venta de formato largo (VSL)",
-          "Conceptos integrados de campaña anual",
-          "Testing creativo constante y Test A/B",
-          "Planificación de contenido orgánico",
-          "Adaptaciones de formatos de anuncios",
-          "Estrategia de embudos de conversión",
-          "Dirección creativa y de arte dedicada",
-          "Optimización y reportes mensuales de ROI"
+          "10 Videos verticales 9:16 de alta fidelidad",
+          "Diseño y consistencia de tu Influencer IA exclusivo",
+          "10 Conceptos y ganchos multi-ángulo testeables",
+          "Guiones adaptados al tono de tu cliente ideal",
+          "Edición profesional con subtítulos dinámicos",
+          "10 Captions completos para Instagram y Facebook con CTA",
+          "Variedad de formatos: UGC moda, hablado a cámara, Meta Ads",
+          "Soporte directo de producción vía WhatsApp"
         ],
-        cta: "HABLEMOS DE MI EMPRESA"
+        cta: "APROVECHAR PACK 10 ($420)"
+      },
+      pack20: {
+        title: "PACK 20 VIDEOS",
+        price: "$750 USD",
+        local: "o ₡375.000 CRC",
+        period: "Ahorras $250 · $37.5/video",
+        badge: "GRAN OFERTA · MÁS POPULAR",
+        recommended: "MEJOR VALOR",
+        desc: "Cobertura masiva para dominar el algoritmo con publicaciones casi diarias o realizar testeo agresivo en Meta Ads.",
+        includes: [
+          "20 Videos verticales 9:16 de calidad cinematográfica",
+          "Creación de tu Influencer IA institucional a medida",
+          "Matriz de 20 conceptos de contenido y conversión",
+          "Guiones persuasivos con variaciones de ganchos (hooks)",
+          "Edición prémium con música comercial y subtítulos pro",
+          "20 Captions estratégicos redactados para Instagram y Facebook",
+          "Mix equilibrado: venta directa, educativo, stories y reels",
+          "Entregas programadas semanales o en bloque"
+        ],
+        cta: "QUIERO EL PACK 20 ($750)"
+      },
+      growth: {
+        title: "PLAN DE CRECIMIENTO EN REDES",
+        price: "A Cotizar",
+        local: "Según requerimientos",
+        period: "Estrategia + Producción Continua",
+        badge: "RETAINER INTEGRAL",
+        desc: "Para empresas que buscan una solución completa de largo plazo: estrategia, creación de personaje y producción mensual recurrente.",
+        includes: [
+          "Diseño de Estrategia Integral de Crecimiento en redes",
+          "Creación de Personaje / Influencer IA permanente para tu marca",
+          "Producción recurrente mensual de videos de alto rendimiento",
+          "Planificación de contenidos con calendario editorial",
+          "Entrega de cada video con guión y caption para Instagram/Facebook",
+          "Análisis mensual de métricas creativas y optimización continua",
+          "Opción de cotizar adicionalmente gestión de redes o pauta publicitaria"
+        ],
+        cta: "COTIZAR PLAN DE CRECIMIENTO"
       }
     },
     cases: {
@@ -317,36 +333,28 @@ const TRANSLATIONS = {
       title: "Dudas comunes resueltas.",
       items: [
         {
-          q: "¿Necesito aparecer frente a cámara?",
-          a: "No. Estructuramos la producción utilizando avatares de IA de alta fidelidad, voces sintéticas profesionales, material de archivo cinemático o recursos gráficos, de modo que tu equipo no necesita perder tiempo frente a las cámaras."
+          q: "¿Cómo funciona la creación de un Influencer IA?",
+          a: "Utilizamos tecnología de punta en generación visual y consistencia facial para diseñar un personaje digital exclusivo que represente a tu marca o la de tus clientes. Definimos su estética, vestuario, tono de voz y personalidad para que siempre mantenga el mismo rostro y realismo en todos los videos."
         },
         {
-          q: "¿Los videos son creados con IA?",
-          a: "Sí, utilizamos herramientas avanzadas de generación de video, síntesis de voz y postproducción digital. Sin embargo, toda la estrategia de ventas, la redacción de guiones y la dirección de arte son 100% ideadas y validadas por nuestros directores creativos."
+          q: "¿Cada video incluye su caption para publicar?",
+          a: "Sí, absolutamente. No solo entregamos el video vertical 9:16 con subtítulos dinámicos de retención, sino que cada pieza incluye su respectivo caption redactado para Instagram o Facebook con gancho persuasivo, llamada a la acción clara y hashtags estratégicos."
         },
         {
-          q: "¿Puedo utilizar los videos para publicidad?",
-          a: "Totalmente. Todos los videos se entregan optimizados y licenciados para su uso en campañas de Meta Ads (Facebook/Instagram), TikTok Ads, YouTube Ads o uso orgánico en tus redes sociales."
+          q: "¿Administran mis redes sociales o la pauta publicitaria?",
+          a: "No directamente dentro de los paquetes de producción. Nuestro servicio se enfoca en la dirección creativa y producción de contenido listo para publicar. No incluye community management ni compra de medios. Sin embargo, si necesitas que gestionemos tus redes sociales o pauta en Meta Ads / TikTok Ads, es un servicio adicional que cotizamos por separado previa evaluación."
         },
         {
-          q: "¿Cuánto tarda la producción?",
-          a: "Para el Creative Test (5 ads), el tiempo de entrega es de 3 a 5 días hábiles una vez aprobados los guiones. Para los planes mensuales (Engine / Partner), trabajamos con un calendario constante de entregas semanales."
+          q: "¿Puedo revender este servicio a mis clientes o para marcas de terceros?",
+          a: "Totalmente. Trabajamos en formato marca blanca con agencias de marketing, consultores y creadores. Puedes encargar la creación de influencers IA y paquetes de videos para tus clientes y comercializarlos con tu propio margen."
         },
         {
-          q: "¿Trabajan únicamente con empresas de Costa Rica?",
-          a: "No, aunque nuestro foco principal está en marcas consolidadas de Costa Rica (San José, Heredia, Alajuela, etc.) para facilitar la facturación (SINPE o transferencia bancaria), también atendemos clientes internacionales en Latinoamérica y Estados Unidos."
+          q: "¿Los videos se pueden usar para anuncios pagados en Meta Ads y TikTok?",
+          a: "Sí, todos los videos se entregan en formato nativo vertical 9:16 optimizados técnica y comercialmente para campañas de Meta Ads (Facebook/Instagram), TikTok Ads o contenido orgánico."
         },
         {
-          q: "¿Puedo contratar únicamente un proyecto?",
-          a: "Sí. Si deseas probar nuestro flujo de trabajo e ideas antes de pasar a un esquema de retención mensual, puedes iniciar con el paquete 'Creative Test' de 5 anuncios por ₡75,000 / $150."
-        },
-        {
-          q: "¿Qué pasa si necesito más contenido?",
-          a: "Podemos escalar el volumen de piezas en el plan Creative Partner. Diseñamos un paquete a la medida que se adapte al volumen mensual de anuncios o publicaciones orgánicas que requiera tu embudo de ventas."
-        },
-        {
-          q: "¿Trabajan con campañas publicitarias?",
-          a: "Nos especializamos en el desarrollo creativo de las campañas (anuncios, ángulos y copywriting). No gestionamos la pauta en sí (media buying), pero trabajamos de la mano con tu equipo de marketing o agencia de pauta para entregarles los formatos ganadores que necesitan para optimizar el ROI."
+          q: "¿Cuáles son los tiempos de entrega?",
+          a: "Para un Video Individual entregamos en 48 a 72 horas. Para el Pack de 10 o 20 videos, podemos realizar entregas escalonadas semanales o una entrega en bloque en 5 a 8 días hábiles según la dinámica de tu campaña."
         }
       ]
     }
@@ -362,10 +370,10 @@ const TRANSLATIONS = {
       whatsapp: "Contact"
     },
     hero: {
-      badge: "CREATIVE INTELLIGENCE AGENCY",
-      title: "Your company doesn't need more content. It needs better ideas.",
-      subtitle: "We create content and ads with AI + strategic creativity to help you capture attention, build authority, and generate sales opportunities.",
-      ctaTest: "I WANT TO TEST THE SILENT",
+      badge: "AI INFLUENCER CREATION · CUTTING-EDGE TECH",
+      title: "AI Influencers and high-impact videos that stop the scroll and convert.",
+      subtitle: "We combine cutting-edge technology and innovative creative direction to design hyper-realistic AI influencers. We produce ready-to-run videos for Meta Ads, social media content, and landing pages — whether to scale your own brand or to offer as a service to your clients.",
+      ctaTest: "QUOTE MY VIDEOS",
       ctaDemo: "TALK TO A STRATEGIST"
     },
     problem: {
@@ -395,71 +403,86 @@ const TRANSLATIONS = {
       ]
     },
     services: {
-      badge: "SERVICES & RATES",
-      title: "Choose how you want to grow",
-      subtitle: "Three ways to work with us, from quick creative tests to a dedicated recurring creative partner.",
-      test: {
-        title: "CREATIVE TEST",
-        price: "₡75,000",
-        usd: "or $150",
-        period: "One-time payment",
-        desc: "Before hiring a monthly system, test our methodology with 5 different advertising concepts.",
-        includes: [
-          "5 high-resolution vertical videos",
-          "5 unique creative concepts",
-          "5 testable persuasive hooks",
-          "Structured sales scripts",
-          "AI and UGC video production",
-          "Professional editing and dynamic pacing",
-          "High-impact subtitles for retention"
-        ],
-        cta: "I WANT TO TEST THE SILENT"
+      badge: "TRANSPARENT SERVICES & RATES",
+      title: "Choose the ideal package for your brand",
+      subtitle: "Cutting-edge AI influencer video production. From single on-demand videos to scale packages and recurring growth plans.",
+      scopeNotice: {
+        title: "Service Scope & Transparency",
+        content: "In all packages we deliver 100% finished, ready-to-publish content: 9:16 vertical video in high-res + animated retention subtitles + scripts + corresponding caption for Instagram or Facebook. We do NOT manage social accounts (community management) or ad spend (media buying). If you require active account management or paid ad campaign buying on Meta Ads / TikTok Ads, it is an additional service quoted separately."
       },
-      engine: {
-        title: "CREATIVE ENGINE",
-        price: "₡450,000",
-        usd: "/ mo",
-        period: "Monthly subscription",
-        desc: "Monthly service for companies that need constant production of content and ad creatives.",
-        recommended: "RECOMMENDED",
+      single: {
+        title: "SINGLE VIDEO",
+        price: "$50 USD",
+        local: "or ₡25,000 CRC",
+        period: "Per video · On demand",
+        desc: "Test the realism and conversion power of our AI influencer with a single high-fidelity ad or organic vertical video.",
         includes: [
-          "10 vertical videos monthly",
-          "6 premium design graphic pieces",
-          "Monthly content strategy",
-          "Deep audience research",
-          "Constant development of new concepts",
-          "Hooks and retention angles",
-          "Scripts adapted to local accents",
-          "AI audiovisual production",
-          "Editing, color grading and pacing",
-          "Subtitles optimized for retention",
-          "2 monthly advertising concepts",
-          "Adaptations for Reels, TikTok and Stories",
-          "Constant creative optimization with data",
-          "Monthly strategic analysis meeting"
+          "1 Vertical high-resolution video (9:16)",
+          "Hyper-realistic AI Avatar / Influencer with natural voice",
+          "Creative concept and persuasive hook",
+          "Structured sales script optimized for retention",
+          "Dynamic editing and animated retention subtitles",
+          "Delivered with ready-to-post caption for Instagram or Facebook",
+          "Fast delivery in 48-72h ready to publish"
         ],
-        cta: "I WANT THE CREATIVE ENGINE"
+        cta: "ORDER 1 VIDEO ($50)"
       },
-      partner: {
-        title: "CREATIVE PARTNER",
-        price: "From ₡750,000",
-        usd: "/ mo",
-        period: "Custom retainer",
-        desc: "For companies that need an external creative team and high-level dedicated strategic direction.",
+      pack10: {
+        title: "PACK 10 VIDEOS",
+        price: "$420 USD",
+        local: "or ₡210,000 CRC",
+        period: "Save $80 · $42/video",
+        badge: "SPECIAL OFFER",
+        desc: "The perfect bundle to launch a multi-angle ad campaign or maintain weekly consistency on your social channels.",
         includes: [
-          "16 to 20 vertical videos per month",
-          "Custom creatives for campaigns",
-          "UGC Ads with AI avatars and real people",
-          "Long-form video sales letters (VSL)",
-          "Integrated annual campaign concepts",
-          "Constant creative testing and A/B testing",
-          "Organic content planning",
-          "Ad format adaptations",
-          "Conversion funnel strategy",
-          "Dedicated creative and art direction",
-          "Monthly optimization and ROI reports"
+          "10 High-fidelity vertical videos (9:16)",
+          "Consistent design of your exclusive AI Influencer",
+          "10 Multi-angle testable concepts and hooks",
+          "Scripts tailored to your ideal customer voice",
+          "Professional editing with dynamic subtitles",
+          "10 Full captions for Instagram & Facebook with clear CTA",
+          "Mixed formats: Fashion UGC, direct-to-camera, Meta Ads",
+          "Direct production support via WhatsApp"
         ],
-        cta: "LET'S TALK ABOUT MY BUSINESS"
+        cta: "GET PACK 10 ($420)"
+      },
+      pack20: {
+        title: "PACK 20 VIDEOS",
+        price: "$750 USD",
+        local: "or ₡375,000 CRC",
+        period: "Save $250 · $37.5/video",
+        badge: "BEST VALUE · MOST POPULAR",
+        recommended: "MOST POPULAR",
+        desc: "Massive monthly coverage to dominate the algorithm with daily posting or conduct aggressive creative testing on Meta Ads.",
+        includes: [
+          "20 Cinematic quality vertical videos (9:16)",
+          "Tailor-made institutional AI Influencer persona",
+          "Matrix of 20 high-converting sales & content concepts",
+          "Persuasive scripts with hook variations",
+          "Premium editing with commercial music & pro subtitles",
+          "20 Strategic captions written for Instagram and Facebook",
+          "Balanced mix: direct sales, educational, stories and reels",
+          "Scheduled weekly or bulk deliveries based on your workflow"
+        ],
+        cta: "GET PACK 20 ($750)"
+      },
+      growth: {
+        title: "SOCIAL GROWTH PLAN",
+        price: "Custom Quote",
+        local: "Tailored to needs",
+        period: "Strategy + Continuous Production",
+        badge: "COMPREHENSIVE RETAINER",
+        desc: "For brands and agencies looking for a complete long-term solution: growth strategy, permanent persona creation, and recurring monthly video batches.",
+        includes: [
+          "Comprehensive social media growth strategy design",
+          "Permanent AI Influencer / persona built for your brand",
+          "Recurring monthly batches of high-performing videos",
+          "Content planning with editorial calendar",
+          "Each video delivered with script and caption for Instagram/Facebook",
+          "Monthly creative metrics analysis and continuous optimization",
+          "Option to add social account management or media buying"
+        ],
+        cta: "QUOTE GROWTH PLAN"
       }
     },
     cases: {
@@ -637,36 +660,28 @@ const TRANSLATIONS = {
       title: "Common doubts resolved.",
       items: [
         {
-          q: "Do I need to appear in front of the camera?",
-          a: "No. We structure the production using high-fidelity AI avatars, professional synthetic voices, cinematic stock footage, or graphic resources, so your team doesn't need to waste time in front of cameras."
+          q: "How does the creation of an AI Influencer work?",
+          a: "We use state-of-the-art visual generation and facial consistency technology to design an exclusive digital persona that represents your brand or your clients. We define their aesthetics, wardrobe, voice tone, and personality so they consistently maintain the exact same face and realism in all videos."
         },
         {
-          q: "Are the videos created with AI?",
-          a: "Yes, we use advanced video generation tools, speech synthesis, and digital postproduction. However, the entire sales strategy, scriptwriting, and art direction are 100% conceptualized and validated by our creative directors."
+          q: "Does each video include a ready-to-post caption?",
+          a: "Yes, absolutely. We do not just deliver the high-res 9:16 vertical video with dynamic retention subtitles; each piece comes with its corresponding caption written for Instagram or Facebook with a persuasive hook, clear CTA, and strategic hashtags."
         },
         {
-          q: "Can I use the videos for advertising?",
-          a: "Absolutely. All videos are delivered optimized and licensed for use in campaigns on Meta Ads (Facebook/Instagram), TikTok Ads, YouTube Ads, or organic social postings."
+          q: "Do you manage social accounts or paid advertising?",
+          a: "Not directly within our core production packages. Our service specializes in high-level creative direction and delivery of ready-to-publish content. It does not include community management or ad buying. However, if you require social media management or paid ads management on Meta Ads / TikTok Ads, it is an additional service quoted separately."
         },
         {
-          q: "How long does production take?",
-          a: "For the Creative Test (5 ads), delivery takes 3 to 5 business days once scripts are approved. For monthly plans (Engine / Partner), we work with a constant weekly delivery schedule."
+          q: "Can I resell this service to my clients or third-party brands?",
+          a: "Absolutely. We work in white-label format with marketing agencies, consultants, and creators. You can order custom AI influencers and video batches for your clients and market them under your own brand."
         },
         {
-          q: "Do you work exclusively with companies in Costa Rica?",
-          a: "No, although our main focus is on consolidated brands in Costa Rica (San José, Heredia, Alajuela, etc.) to facilitate billing (SINPE or bank transfer), we also serve international clients in Latin America and the United States."
+          q: "Can the videos be used for paid ads on Meta Ads and TikTok?",
+          a: "Yes, all videos are delivered in native vertical 9:16 format, technically and commercially optimized for Meta Ads (Facebook/Instagram), TikTok Ads, or organic social posts."
         },
         {
-          q: "Can I hire a single project only?",
-          a: "Yes. If you wish to test our workflow and ideas before moving to a monthly retainer model, you can start with the 'Creative Test' package of 5 ads for ₡75,000 / $150."
-        },
-        {
-          q: "What if I need more content?",
-          a: "We can scale the volume of pieces in the Creative Partner plan. We design a tailored package that adapts to the monthly volume of ads or organic posts required by your sales funnel."
-        },
-        {
-          q: "Do you manage ad campaigns?",
-          a: "We specialize in campaign creative development (ads, angles, and copywriting). We do not manage the media buying ourselves, but we work hand-in-hand with your marketing team or ad agency to deliver the winning formats they need to optimize ROI."
+          q: "What are the turnaround times?",
+          a: "For a Single Video, we deliver within 48 to 72 hours. For 10 or 20-video packages, we can deliver in weekly staggered batches or a full block delivery in 5 to 8 business days depending on your campaign needs."
         }
       ]
     }
@@ -688,15 +703,15 @@ const STYLE_PREVIEWS = {
     },
     sources: [
       {
-        name: "Ejemplo 1 (Super Pet)",
-        url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4",
+        name: "Comercial Bolso (Moda UGC)",
+        url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/comercial-bolso.mp4",
         script: {
-          es: "«¡Gente de Costa Rica! Si tienen su propio negocio y quieren atraer clientes por Instagram sin pagar fortunas en agencias, tienen que ver esto...»",
-          en: "«People of Costa Rica! If you have your own business and want to attract customers on Instagram without spending fortunes on agencies, you need to see this...»"
+          es: "«Comercial UGC para moda y accesorios con modelo e influencer IA, iluminación cinemática y textura de alta gama...»",
+          en: "«Fashion UGC commercial for accessories with AI influencer, cinematic lighting, and high-end texture...»"
         },
         cta: {
-          es: "👉 Tocá aquí para hablar por WhatsApp",
-          en: "👉 Click here to talk via WhatsApp"
+          es: "👉 Consultar este formato por WhatsApp",
+          en: "👉 Inquire about this format on WhatsApp"
         }
       },
       {
@@ -909,59 +924,46 @@ const STYLE_PREVIEWS = {
 
 const CAROUSEL_VIDEOS = [
   {
-    title: { es: "UGC Anuncio (Super Pet)", en: "UGC Ad (Super Pet)" },
-    desc: { es: "Avatar interactivo de recomendación informal para mascotas.", en: "Interactive casual recommendation avatar for pets." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Super-Pet.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
+    tag: "UGC MODA",
+    title: { es: "Comercial UGC · Moda & Accesorios", en: "UGC Commercial · Fashion & Accessories" },
+    desc: { es: "Comercial UGC enfocado en moda y bolsos con modelo/influencer IA, iluminación de estudio, dinamismo visual y textura hiperrealista.", en: "Fashion UGC commercial showcasing designer accessories with AI model, studio lighting, visual rhythm and striking realism." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/comercial-bolso.mp4"
   },
   {
-    title: { es: "Podcast Clip (Studio Talk)", en: "Podcast Clip (Studio Talk)" },
-    desc: { es: "Fragmento conversacional con subtítulos dinámicos.", en: "Conversational excerpt with dynamic subtitles." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/PODCAST-The-Silent-Studio.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg"
+    tag: "ENTREVISTA MODERNA",
+    title: { es: "Formato Entrevista Dinámica", en: "Modern Dynamic Interview" },
+    desc: { es: "Formato moderno de entrevista con estética editorial contemporánea; ideal para responder preguntas clave, derrumbar objeciones y posicionar autoridad de marca.", en: "Modern editorial interview format; ideal for answering key customer questions, breaking objections, and building strong brand authority." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/Entrevista.mp4"
   },
   {
-    title: { es: "Entrevista (Café Naranjo)", en: "Interview Case (Café Naranjo)" },
-    desc: { es: "Caso de éxito automatizado y persuasión de marca.", en: "Automated success case and brand persuasion." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cafe-naranjo.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Coffee_expert_sitting_at_microphone_202608141035.jpeg"
+    tag: "DIRECT TO CAMERA",
+    title: { es: "Hablado a Cámara de Alto Impacto", en: "High-Impact Direct to Camera" },
+    desc: { es: "Avatar IA con presencia magnética hablando directo al espectador; dicción fluida, gestos naturales y retención absoluta en los primeros 3 segundos.", en: "AI avatar with magnetic presence speaking directly to viewer; fluid delivery, organic gestures, and instant 3-second retention." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/68de8fbe-675f-4463-958d-45f031a2d433.mp4"
   },
   {
-    title: { es: "Mini Serie (Hueles Delicioso)", en: "Mini Series (Hueles Delicioso)" },
-    desc: { es: "Micro-historia episódica de intriga para marca de lujo.", en: "Intriguing episodic micro-story for a luxury brand." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-27-Hueles-Delicioso.mp4",
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+    tag: "EDUCATIVO",
+    title: { es: "Educativo · Creación de Influencer IA", en: "Educational · AI Influencer Creation" },
+    desc: { es: "Formato tutorial de alto valor donde el influencer enseña el paso a paso para crear personajes con IA, generando autoridad y engagement.", en: "High-value tutorial format where the influencer teaches the step-by-step to create AI personas, driving authority and engagement." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/playground-result-1790652290876.mp4"
   },
   {
-    title: { es: "Mini Serie (Herencia)", en: "Mini Series (Herencia)" },
-    desc: { es: "Episodio conceptual sobre el origen de marca familiar.", en: "Conceptual episode on the origin of a family brand." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/CAP-26-Herencia.mp4",
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+    tag: "REEL / STORIES",
+    title: { es: "Micro-Reel & Stories para Instagram", en: "Micro-Reel & Instagram Stories" },
+    desc: { es: "Micro-video vertical ágil optimizado para consumo rápido en Instagram y TikTok, con llamada a la acción precisa para disparar clicks y mensajes directos.", en: "Agile vertical micro-video optimized for fast consumption on Instagram and TikTok, with a crisp CTA to trigger clicks and direct messages." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/playground-result-1790632005574.mp4"
   },
   {
-    title: { es: "UGC Ad (Variante 1)", en: "UGC Ad (Variant 1)" },
-    desc: { es: "Demo creativo multi-ángulo para testeo de campañas.", en: "Multi-angle creative demo for campaign testing." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
+    tag: "STREET Q&A",
+    title: { es: "Street Q&A · Preguntas en la Calle", en: "Street Q&A · Urban Micro-Interview" },
+    desc: { es: "Interacción espontánea en exteriores estilo documental urbano con micrófono; genera curiosidad natural y conexión empática inmediata con el público.", en: "Spontaneous outdoor street-style documentary interaction; fuels organic curiosity and immediate empathetic audience connection." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/37f2aac3-33a4-436a-9b1f-f7a7013dacf2.mp4"
   },
   {
-    title: { es: "Campaña Colección (UGC)", en: "Collection Campaign (UGC)" },
-    desc: { es: "Variante de anuncio optimizada para redes sociales.", en: "Ad variant optimized for social media." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/UGC-ads-nueva-coleccion.mp4",
-    poster: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Woman_taking_selfie_with_dog_202608141035.jpeg"
-  },
-  {
-    title: { es: "Horizontal (Transparente)", en: "Horizontal Edit (Transparente)" },
-    desc: { es: "Formato cinematográfico horizontal adaptado.", en: "Adapted horizontal cinematic format." },
-    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/08/Cap-21-Transparente_202607172109.mp4",
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg",
-    isHorizontal: true
-  },
-  {
-    title: { es: "Stop Motion (Travel)", en: "Stop Motion (Travel)" },
-    desc: { es: "Aventura visual stop-motion de gran impacto.", en: "High-impact stop-motion visual adventure." },
-    url: "http://wearethesilent.com/wp-content/uploads/2026/08/Stop_motion_characters_travel_in%E2%80%A6_202608070824.mp4",
-    poster: "http://wearethesilent.com/wp-content/uploads/2026/08/Change_character_angles_composit%E2%80%A6_2K_202608011711-scaled.jpeg"
+    tag: "META ADS",
+    title: { es: "Anuncio Directo para Meta Ads & Conversión", en: "High-Converting Meta Ads Creative" },
+    desc: { es: "Creativo publicitario estructurado con gancho visual, propuesta de valor clara y llamado a la acción probado para pauta pagada en Facebook, Instagram y TikTok.", en: "Direct-response advertising creative structured with a strong hook, clear value proposition, and proven CTA for paid ads on Facebook, Instagram and TikTok." },
+    url: "https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/4adccb1c-ce25-44b8-80f1-bffd22a2d8dc.mp4"
   }
 ];
 
@@ -988,6 +990,7 @@ export default function OfertaPage() {
   };
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectedPackage, setSelectedPackage] = useState<string>('pack20');
   const [formData, setFormData] = useState({
     businessName: '',
     province: 'San José',
@@ -999,6 +1002,10 @@ export default function OfertaPage() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState([]);
+
+  const handleSelectPackage = (pkgId: string) => {
+    setSelectedPackage(pkgId);
+  };
 
   // Video Demo Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -1056,14 +1063,25 @@ export default function OfertaPage() {
     setFormSubmitted(true);
     setSpotsLeft(prev => Math.max(1, prev - 1));
 
+    const packageLabels: Record<string, { es: string; en: string }> = {
+      single: { es: '1 Video Individual ($50 USD)', en: '1 Single Video ($50 USD)' },
+      pack10: { es: 'Pack 10 Videos ($420 USD - Oferta)', en: 'Pack 10 Videos ($420 USD - Special Offer)' },
+      pack20: { es: 'Pack 20 Videos ($750 USD - Gran Oferta)', en: 'Pack 20 Videos ($750 USD - Best Value)' },
+      growth: { es: 'Plan de Crecimiento & Estrategia Integral', en: 'Social Growth & Strategy Plan' },
+    };
+    const chosenLabel = packageLabels[selectedPackage]?.[langKey] || selectedPackage;
+
     // Call server action to notify owner and client via Resend in the background
-    submitApplication(formData).catch(err => {
+    submitApplication({
+      ...formData,
+      packageChoice: chosenLabel
+    }).catch(err => {
       console.error("Error submitting server email:", err);
     });
 
     const messageText = language === 'es' 
-      ? `¡Hola! Acabo de enviar el formulario para mi negocio *${formData.businessName}* en *${formData.province}*. Quiero reservar el paquete de 5 videos publicitarios con IA por $150 USD. Mi correo es ${formData.email} y celular ${formData.phone}.`
-      : `Hi! I just submitted the form for *${formData.businessName}* in *${formData.province}*. I want to book the 5 AI video ads package for $150 USD. My email is ${formData.email} and phone ${formData.phone}.`;
+      ? `¡Hola! Acabo de enviar el formulario para mi negocio *${formData.businessName}* en *${formData.province}*. Me interesa el paquete *${chosenLabel}*. Mi correo es ${formData.email} y celular ${formData.phone}.`
+      : `Hi! I just submitted the form for *${formData.businessName}* in *${formData.province}*. I am interested in *${chosenLabel}*. My email is ${formData.email} and phone ${formData.phone}.`;
     
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(messageText)}`;
     
@@ -1197,28 +1215,30 @@ export default function OfertaPage() {
             <div>
               <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
                 <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
-                {language === 'es' ? "SHOWCASE CREATIVO" : "CREATIVE SHOWCASE"}
+                {language === 'es' ? "SHOWCASE DE FORMATOS · TECNOLOGÍA DE PUNTA" : "FORMATS SHOWCASE · CUTTING-EDGE TECH"}
               </div>
               <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">
-                {language === 'es' ? "Tu próximo cliente está a una buena idea de distancia." : "Your next client is one good idea away."}
+                {language === 'es' ? "Formatos de Video Diseñados para Vender" : "Video Formats Engineered to Convert"}
               </h2>
-              <p className="text-gray-400 text-sm mt-3">
-                {language === 'es' ? "Reproduce directamente nuestros casos de estudio y ejemplos de anuncios de alto rendimiento." : "Play our case studies and high-performing ad examples directly here."}
+              <p className="text-gray-400 text-sm mt-3 max-w-2xl leading-relaxed">
+                {language === 'es' 
+                  ? "Explora nuestros 7 formatos de mayor rendimiento generados con tecnología de punta: moda UGC, entrevistas modernas, hablado a cámara, contenido educativo, reels, street Q&A y anuncios para Meta Ads."
+                  : "Explore our 7 top-performing formats generated with cutting-edge tech: fashion UGC, modern interviews, direct to camera, educational, reels, street Q&A, and Meta Ads creatives."}
               </p>
             </div>
             
             {/* Scroll buttons */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 shrink-0">
               <button 
                 onClick={scrollLeft}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition cursor-pointer"
                 aria-label="Scroll left"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={scrollRight}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition"
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition cursor-pointer"
                 aria-label="Scroll right"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -1235,25 +1255,48 @@ export default function OfertaPage() {
             {CAROUSEL_VIDEOS.map((v, idx) => (
               <div 
                 key={idx} 
-                className={`${(v as any).isHorizontal ? 'w-[360px] sm:w-[420px]' : 'w-[280px]'} shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/25 transition duration-300`}
+                className="w-[280px] sm:w-[310px] shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300 shadow-xl group"
               >
-                <div className={`relative ${(v as any).isHorizontal ? 'aspect-video' : 'aspect-[9/16]'} w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5`}>
-                  <video 
-                    src={v.url}
-                    className="w-full h-full object-cover"
-                    controls
-                    playsInline
-                    preload="metadata"
-                  />
+                <div>
+                  <div className="relative aspect-[9/16] w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5">
+                    <video 
+                      src={v.url}
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                      preload="metadata"
+                    />
+                    {(v as any).tag && (
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C5A059]/40 text-[#C5A059] font-mono text-[9px] uppercase tracking-wider font-bold z-10 pointer-events-none">
+                        {(v as any).tag}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-1.5">
+                    <h3 className="font-fraunces font-bold text-base text-white leading-tight">
+                      {v.title[langKey]}
+                    </h3>
+                    <p className="text-gray-400 text-xs leading-relaxed font-light">
+                      {v.desc[langKey]}
+                    </p>
+                  </div>
                 </div>
-                
-                <div className="space-y-1">
-                  <h3 className="font-fraunces font-bold text-base text-white leading-tight">
-                    {v.title[langKey]}
-                  </h3>
-                  <p className="text-gray-400 text-[11px] leading-relaxed font-light">
-                    {v.desc[langKey]}
-                  </p>
+
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase">Vertical 9:16</span>
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
+                      language === 'es'
+                        ? `¡Hola! Me gustaría cotizar un video en el formato: ${v.title.es}`
+                        : `Hi! I want to quote a video in the format: ${v.title.en}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] uppercase font-bold text-[#C5A059] hover:text-white transition flex items-center gap-1"
+                  >
+                    <span>Pedir este formato →</span>
+                  </a>
                 </div>
               </div>
             ))}
@@ -1332,8 +1375,8 @@ export default function OfertaPage() {
 
       {/* SECCIÓN DE SERVICIOS */}
       <section className="py-24 bg-[#12161A] border-y border-white/5">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
               <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
               {text.services.badge}
@@ -1342,26 +1385,26 @@ export default function OfertaPage() {
             <p className="text-gray-400 text-sm mt-3">{text.services.subtitle}</p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 items-stretch">
-            {/* TIER 1: CREATIVE TEST */}
-            <div className="bg-[#0A0D0E] border border-white/10 p-8 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/30 transition duration-300">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            {/* TIER 1: VIDEO INDIVIDUAL */}
+            <div className="bg-[#0A0D0E] border border-white/10 p-6 sm:p-7 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300">
               <div>
-                <span className="font-mono text-[9px] text-[#C5A059] border border-[#C5A059]/30 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-4">
-                  {text.services.test.period}
+                <span className="font-mono text-[9px] text-[#C5A059] border border-[#C5A059]/30 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3">
+                  {text.services.single.period}
                 </span>
-                <h3 className="font-fraunces font-bold text-2xl text-white mb-2">{text.services.test.title}</h3>
-                <p className="text-gray-400 text-xs leading-relaxed mb-6 font-light">{text.services.test.desc}</p>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.single.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed mb-5 font-light">{text.services.single.desc}</p>
                 
-                <div className="flex items-baseline gap-2 mb-8">
-                  <span className="font-fraunces text-4xl font-black text-white">{text.services.test.price}</span>
-                  <span className="font-mono text-xs text-gray-500">{text.services.test.usd}</span>
+                <div className="flex flex-col mb-6">
+                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.single.price}</span>
+                  <span className="font-mono text-[11px] text-gray-500 mt-0.5">{text.services.single.local}</span>
                 </div>
 
-                <ul className="space-y-3 font-sans text-xs text-gray-300 mb-8 border-t border-white/10 pt-6">
-                  {text.services.test.includes.map((inc, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5">
-                      <Check className="w-4 h-4 text-[#C5A059] shrink-0" />
-                      <span>{inc}</span>
+                <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
+                  {text.services.single.includes.map((inc, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
+                      <span className={inc.includes("caption") || inc.includes("Caption") ? "font-bold text-white" : ""}>{inc}</span>
                     </li>
                   ))}
                 </ul>
@@ -1370,75 +1413,110 @@ export default function OfertaPage() {
               <button 
                 onClick={(e) => {
                   e.preventDefault();
+                  handleSelectPackage('single');
                   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full text-center bg-transparent border border-[#C5A059]/40 hover:border-[#C5A059] text-[#C5A059] hover:text-white font-mono text-xs uppercase font-bold tracking-wider py-4 transition"
+                className="w-full text-center bg-transparent border border-[#C5A059]/40 hover:border-[#C5A059] text-[#C5A059] hover:text-white font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition cursor-pointer"
               >
-                {text.services.test.cta}
+                {text.services.single.cta}
               </button>
             </div>
 
-            {/* TIER 2: CREATIVE ENGINE (RECOMMENDED) */}
-            <div className="bg-[#0A0D0E] border-2 border-[#C5A059] p-8 rounded-sm flex flex-col justify-between shadow-2xl relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#C5A059] text-black font-mono text-[10px] font-black px-4 py-1 uppercase tracking-widest rounded-full">
-                {text.services.engine.recommended}
-              </div>
-              
+            {/* TIER 2: PACK 10 VIDEOS */}
+            <div className="bg-[#0A0D0E] border border-white/10 p-6 sm:p-7 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300">
               <div>
-                <span className="font-mono text-[9px] text-[#C5A059] border border-[#C5A059]/30 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-4 mt-2">
-                  {text.services.engine.period}
+                <span className="font-mono text-[9px] text-[#C5A059] bg-[#C5A059]/10 border border-[#C5A059]/40 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3">
+                  {text.services.pack10.badge}
                 </span>
-                <h3 className="font-fraunces font-bold text-2xl text-white mb-2">{text.services.engine.title}</h3>
-                <p className="text-gray-300 text-xs leading-relaxed mb-6 font-light">{text.services.engine.desc}</p>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack10.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed mb-5 font-light">{text.services.pack10.desc}</p>
                 
-                <div className="flex items-baseline gap-2 mb-8">
-                  <span className="font-fraunces text-4xl font-black text-[#C5A059]">{text.services.engine.price}</span>
-                  <span className="font-mono text-xs text-gray-500">{text.services.engine.usd}</span>
+                <div className="flex flex-col mb-6">
+                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.pack10.price}</span>
+                  <span className="font-mono text-[11px] text-[#C5A059] font-semibold mt-0.5">{text.services.pack10.period}</span>
                 </div>
 
-                <ul className="space-y-3 font-sans text-xs text-gray-200 mb-8 border-t border-white/10 pt-6">
-                  {text.services.engine.includes.map((inc, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5">
-                      <Check className="w-4 h-4 text-[#C5A059] shrink-0" />
-                      <span className={idx < 2 ? "font-bold text-white" : ""}>{inc}</span>
+                <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
+                  {text.services.pack10.includes.map((inc, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
+                      <span className={inc.includes("caption") || inc.includes("Caption") || idx === 0 ? "font-bold text-white" : ""}>{inc}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               
-              <a 
-                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
-                  language === 'es' 
-                    ? 'Hola! Quiero contratar el servicio mensual Creative Engine (₡450.000/mes) para mi negocio.'
-                    : 'Hi! I want to book the Creative Engine subscription (₡450,000/mo) for my business.'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs uppercase font-bold tracking-wider py-4 transition shadow-lg block"
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectPackage('pack10');
+                  document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full text-center bg-transparent border border-[#C5A059]/50 hover:border-[#C5A059] text-[#C5A059] hover:text-white font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition cursor-pointer"
               >
-                {text.services.engine.cta}
-              </a>
+                {text.services.pack10.cta}
+              </button>
             </div>
 
-            {/* TIER 3: CREATIVE PARTNER */}
-            <div className="bg-[#0A0D0E] border border-white/10 p-8 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/30 transition duration-300">
+            {/* TIER 3: PACK 20 VIDEOS (RECOMENDADO / POPULAR) */}
+            <div className="bg-[#0A0D0E] border-2 border-[#C5A059] p-6 sm:p-7 rounded-sm flex flex-col justify-between shadow-[0_0_35px_rgba(197,160,89,0.2)] relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C5A059] text-black font-mono text-[9px] font-black px-3.5 py-0.5 uppercase tracking-widest rounded-full whitespace-nowrap">
+                {text.services.pack20.recommended}
+              </div>
+              
               <div>
-                <span className="font-mono text-[9px] text-[#C5A059] border border-[#C5A059]/30 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-4">
-                  {text.services.partner.period}
+                <span className="font-mono text-[9px] text-[#C5A059] bg-[#C5A059]/15 border border-[#C5A059]/40 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3 mt-1">
+                  {text.services.pack20.badge}
                 </span>
-                <h3 className="font-fraunces font-bold text-2xl text-white mb-2">{text.services.partner.title}</h3>
-                <p className="text-gray-400 text-xs leading-relaxed mb-6 font-light">{text.services.partner.desc}</p>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack20.title}</h3>
+                <p className="text-gray-300 text-xs leading-relaxed mb-5 font-light">{text.services.pack20.desc}</p>
                 
-                <div className="flex items-baseline gap-2 mb-8">
-                  <span className="font-fraunces text-3xl font-black text-white">{text.services.partner.price}</span>
-                  <span className="font-mono text-xs text-gray-500">{text.services.partner.usd}</span>
+                <div className="flex flex-col mb-6">
+                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-[#C5A059]">{text.services.pack20.price}</span>
+                  <span className="font-mono text-[11px] text-[#C5A059] font-bold mt-0.5">{text.services.pack20.period}</span>
                 </div>
 
-                <ul className="space-y-3 font-sans text-xs text-gray-300 mb-8 border-t border-white/10 pt-6">
-                  {text.services.partner.includes.map((inc, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5">
-                      <Check className="w-4 h-4 text-[#C5A059] shrink-0" />
-                      <span>{inc}</span>
+                <ul className="space-y-2.5 font-sans text-xs text-gray-200 mb-6 border-t border-white/10 pt-5">
+                  {text.services.pack20.includes.map((inc, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
+                      <span className={idx < 2 || inc.includes("caption") || inc.includes("Caption") ? "font-bold text-white" : ""}>{inc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectPackage('pack20');
+                  document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full text-center bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition shadow-lg cursor-pointer"
+              >
+                {text.services.pack20.cta}
+              </button>
+            </div>
+
+            {/* TIER 4: PLAN DE CRECIMIENTO EN REDES */}
+            <div className="bg-[#0A0D0E] border border-white/10 p-6 sm:p-7 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300">
+              <div>
+                <span className="font-mono text-[9px] text-[#C5A059] border border-[#C5A059]/30 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3">
+                  {text.services.growth.badge}
+                </span>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.growth.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed mb-5 font-light">{text.services.growth.desc}</p>
+                
+                <div className="flex flex-col mb-6">
+                  <span className="font-fraunces text-2xl sm:text-3xl font-black text-white">{text.services.growth.price}</span>
+                  <span className="font-mono text-[11px] text-gray-500 mt-0.5">{text.services.growth.period}</span>
+                </div>
+
+                <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
+                  {text.services.growth.includes.map((inc, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
+                      <span className={idx === 0 || inc.includes("caption") ? "font-bold text-white" : ""}>{inc}</span>
                     </li>
                   ))}
                 </ul>
@@ -1447,14 +1525,48 @@ export default function OfertaPage() {
               <a 
                 href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
                   language === 'es' 
-                    ? 'Hola! Me interesa el servicio premium Creative Partner para estructurar la estrategia creativa de mi empresa.'
-                    : 'Hi! I am interested in the premium Creative Partner retainer for my company.'
+                    ? 'Hola! Me interesa cotizar el Plan de Crecimiento en Redes con estrategia integral, creación de personaje y producción constante de videos.'
+                    : 'Hi! I am interested in quoting the Social Media Growth Plan with comprehensive strategy, character creation and recurring videos.'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center bg-transparent border border-white/20 hover:border-white text-white font-mono text-xs uppercase font-bold tracking-wider py-4 transition block"
+                className="w-full text-center bg-transparent border border-white/20 hover:border-white text-white font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition block cursor-pointer"
               >
-                {text.services.partner.cta}
+                {text.services.growth.cta}
+              </a>
+            </div>
+          </div>
+
+          {/* DEDICATED TRANSPARENCY & SCOPE BANNER */}
+          <div className="mt-12 bg-[#0A0D0E] border-2 border-[#C5A059]/40 p-6 sm:p-8 rounded-sm">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+              <div className="space-y-3 max-w-3xl">
+                <div className="font-mono text-xs uppercase tracking-wider text-[#C5A059] font-bold flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+                  <span>{text.services.scopeNotice.title}</span>
+                </div>
+                <h3 className="font-fraunces text-xl sm:text-2xl text-white font-bold">
+                  {language === 'es' ? "¿Qué incluye y qué NO incluye cada paquete?" : "What is included and NOT included?"}
+                </h3>
+                <p className="text-gray-300 text-xs sm:text-sm leading-relaxed font-light">
+                  <strong className="text-white">✓ Lo que entregamos:</strong> Producimos el 100% del contenido audiovisual vertical en alta resolución (9:16) con subtítulos dinámicos + guiones persuasivos + <strong>cada video con su respectivo caption para Instagram o Facebook</strong> listo para copiar y publicar con ganchos, llamada a la acción y hashtags.
+                </p>
+                <div className="bg-[#161410] border-l-4 border-[#C5A059] p-3 text-xs sm:text-sm text-amber-200/90 leading-relaxed font-light">
+                  <strong className="text-white">⚠️ Importante sobre administración y pauta:</strong> Solo entregamos el contenido terminado. <u>NO administramos las redes sociales</u> (community management o publicación) ni gestionamos la pauta publicitaria (media buying). Si necesitas administración de redes o gestión de pauta en Meta Ads / TikTok Ads, es un servicio adicional independiente que cotizamos por separado previa evaluación técnica.
+                </div>
+              </div>
+
+              <a 
+                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
+                  language === 'es'
+                    ? 'Hola! Me gustaría cotizar videos de influencers IA para mi negocio o clientes y consultar sobre servicios adicionales de pauta o redes.'
+                    : 'Hi! I would like to quote AI influencer videos and ask about ad/social media management services.'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs uppercase font-bold tracking-wider px-7 py-4.5 transition shadow-lg text-center"
+              >
+                {language === 'es' ? "Conversar por WhatsApp" : "Chat on WhatsApp"}
               </a>
             </div>
           </div>
@@ -1809,29 +1921,53 @@ export default function OfertaPage() {
                       </h3>
 
                       <div>
-                        <label className="block font-mono text-[10px] uppercase text-gray-400 mb-2">{text.form.step4.styleTitle}</label>
-                        <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
-                          {text.form.step4.stylesList.map((style, sIdx) => (
-                            <label key={sIdx} className="flex items-center gap-2 p-2.5 bg-[#12161A] border border-white/10 cursor-not-allowed">
-                              <input 
-                                type="checkbox" 
-                                checked 
-                                disabled
-                                className="accent-[#C5A059]" 
-                              />
-                              <span className="text-gray-300">{style}</span>
+                        <label className="block font-mono text-[10px] uppercase text-[#C5A059] font-bold mb-2">
+                          {language === 'es' ? "Selecciona el paquete deseado:" : "Select your desired package:"}
+                        </label>
+                        <div className="grid sm:grid-cols-2 gap-2.5 font-mono text-xs">
+                          {[
+                            { id: 'single', label: language === 'es' ? '1 Video Individual ($50 USD)' : '1 Single Video ($50 USD)', tag: '$50' },
+                            { id: 'pack10', label: language === 'es' ? 'Pack 10 Videos ($420 USD)' : 'Pack 10 Videos ($420 USD)', tag: 'Oferta' },
+                            { id: 'pack20', label: language === 'es' ? 'Pack 20 Videos ($750 USD)' : 'Pack 20 Videos ($750 USD)', tag: 'Popular' },
+                            { id: 'growth', label: language === 'es' ? 'Plan de Crecimiento (Cotizar)' : 'Growth Plan (Quote)', tag: 'Estrategia' },
+                          ].map((pkg) => (
+                            <label 
+                              key={pkg.id} 
+                              onClick={() => setSelectedPackage(pkg.id)}
+                              className={`flex items-center justify-between p-3 border cursor-pointer transition rounded-sm ${
+                                selectedPackage === pkg.id 
+                                  ? 'bg-[#C5A059]/15 border-[#C5A059] text-white font-bold' 
+                                  : 'bg-[#12161A] border-white/10 text-gray-300 hover:border-white/30'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <input 
+                                  type="radio" 
+                                  name="packageChoice"
+                                  checked={selectedPackage === pkg.id} 
+                                  onChange={() => setSelectedPackage(pkg.id)}
+                                  className="accent-[#C5A059]" 
+                                />
+                                <span className="text-xs">{pkg.label}</span>
+                              </div>
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-black/40 text-[#C5A059] font-mono uppercase">
+                                {pkg.tag}
+                              </span>
                             </label>
                           ))}
                         </div>
                       </div>
 
-                      {/* Guarantee box */}
-                      <div className="bg-[#12161A] border border-[#C5A059]/40 p-4 text-xs space-y-1">
+                      {/* Guarantee and Scope box */}
+                      <div className="bg-[#12161A] border border-[#C5A059]/40 p-4 text-xs space-y-2 rounded-sm">
                         <div className="font-bold text-[#C5A059] flex items-center gap-1.5 font-mono">
-                          <Check className="w-4 h-4 text-[#C5A059]" /> {text.form.step4.termsTitle}
+                          <Check className="w-4 h-4 text-[#C5A059]" />
+                          <span>{language === 'es' ? "Términos Transparentes y Entrega" : "Transparent Terms & Delivery"}</span>
                         </div>
                         <p className="text-gray-300 leading-relaxed font-light">
-                          {text.form.step4.termsDesc}
+                          {language === 'es'
+                            ? "Entregamos cada video vertical en alta resolución (9:16) con subtítulos dinámicos de retención y su respectivo caption redactado para Instagram o Facebook con copy persuasivo y llamadas a la acción. No administramos redes sociales ni pauta publicitaria (si se requiere, se cotiza de forma independiente)."
+                            : "We deliver each vertical high-res video (9:16) with dynamic retention subtitles and its corresponding ready-to-post caption for Instagram or Facebook. We do not manage social accounts or paid media (quoted separately upon request)."}
                         </p>
                       </div>
 
