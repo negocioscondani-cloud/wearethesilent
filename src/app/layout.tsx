@@ -79,7 +79,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link 
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@200;300;400&display=swap" 
+          href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@200;300;400&display=swap" 
           rel="stylesheet" 
         />
         <link 

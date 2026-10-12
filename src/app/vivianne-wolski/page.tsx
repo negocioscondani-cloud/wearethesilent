@@ -2,28 +2,25 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   VIVIANNE_PRODUCTS,
   VIVIANNE_CATEGORIES,
+  VIVIANNE_LOOKS,
+  DOMINGO_DE_LOS_NUMEROS,
   VivianneProduct,
 } from '@/data/vivianne-products';
 import {
-  ShoppingBag,
   ExternalLink,
   Heart,
-  Sparkles,
   Search,
-  SlidersHorizontal,
   X,
-  Check,
-  Eye,
-  ShieldCheck,
-  Truck,
-  RotateCcw,
   Share2,
-  Tag,
   ArrowRight,
-  Info,
+  Eye,
+  SlidersHorizontal,
+  Bookmark,
+  Check,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -42,7 +39,8 @@ export default function VivianneWolskiPage() {
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSent, setNewsletterSent] = useState(false);
 
   // Load wishlist from localStorage
   useEffect(() => {
@@ -74,8 +72,8 @@ export default function VivianneWolskiPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Vivianne Wolski · The Curated Closet',
-          text: 'Descubre el clóset digital y piezas de inversión curadas por Vivianne Wolski.',
+          title: 'El Armario de Vivienne · Vivienne Wolski',
+          text: 'Lo que Vivienne usa. Lo que Vivienne cuenta. Piezas de inversión curadas.',
           url,
         });
       } catch {
@@ -88,6 +86,13 @@ export default function VivianneWolskiPage() {
     }
   };
 
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail.trim()) {
+      setNewsletterSent(true);
+    }
+  };
+
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
     return VIVIANNE_PRODUCTS.filter((prod) => {
@@ -96,11 +101,13 @@ export default function VivianneWolskiPage() {
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !query ||
+        prod.name.toLowerCase().includes(query) ||
         prod.title.toLowerCase().includes(query) ||
         prod.shortTitle.toLowerCase().includes(query) ||
         prod.brand.toLowerCase().includes(query) ||
         prod.description.toLowerCase().includes(query) ||
-        prod.categoryLabel.toLowerCase().includes(query);
+        prod.viviNote.toLowerCase().includes(query) ||
+        prod.tags.some((t) => t.toLowerCase().includes(query));
 
       return matchesCategory && matchesSearch;
     }).sort((a, b) => {
@@ -111,7 +118,7 @@ export default function VivianneWolskiPage() {
       }
       if (sortBy === 'price-asc') return a.priceNum - b.priceNum;
       if (sortBy === 'price-desc') return b.priceNum - a.priceNum;
-      if (sortBy === 'alpha') return a.shortTitle.localeCompare(b.shortTitle);
+      if (sortBy === 'alpha') return a.name.localeCompare(b.name);
       return 0;
     });
   }, [activeCategory, searchQuery, sortBy]);
@@ -121,920 +128,841 @@ export default function VivianneWolskiPage() {
     return VIVIANNE_PRODUCTS.filter((p) => wishlist.includes(p.id));
   }, [wishlist]);
 
-  // Styling notes specific to each item
-  const STYLING_NOTES: Record<string, string> = {
-    'perry-tote-black':
-      'Mi bolso insignia de cabecera. Llévalo al hombro con un suéter de lana vibrante o un abrigo camel estructurado. Su división interna permite portar laptop y documentos manteniendo intacta su arquitectura visual.',
-    'sueter-lana-cuello-redondo':
-      'El tono amarillo radiante rompe la monotonía del asfalto. Me gusta combinarlo con gafas oscuras de sol de acetato negro y pantalones sastre de tiro alto para una presencia imponente.',
-    'bolso-bucket-mini-romy':
-      'Una caricia de borreguillo. Úsalo cruzado sobre sastrería monocromática o de mano con asa corta para citas informales o cenas donde la textura sea la protagonista.',
-    'botas-altas-charlie':
-      'La bota de montar llevada a la cúspide del refinamiento. Su caña alta estiliza inmediatamente cualquier silueta sobre faldas midi o vaqueros ceñidos.',
-    'gabardina-lana-clasica':
-      'Una inversión patrimonial. Olvida abrochar la hebilla de forma rígida; átala con un nudo relajado al frente para lograr un movimiento teatral y desenfadado.',
-    'sueter-fair-isle':
-      'El encanto del après-ski llevado al armario de asfalto. Acompaña con pantalones de pana o denim crudo de corte recto para un domingo de galerías y café.',
-    'atorie-lazy-retro-bag':
-      'La pieza que despierta miradas curiosas. Su herraje en oro cepillado y silueta baguette de inspiración vintage son el broche de oro para estilismos minimalistas.',
-    'sueter-estilo-rugby':
-      'Audaz, deportivo y de alta costura. El cuello blanco en popelina nítida aporta luz al rostro mientras que las franjas anchas transmiten seguridad y dinamismo.',
-  };
-
-  const heroTote = VIVIANNE_PRODUCTS.find((p) => p.id === 'perry-tote-black');
-  const heroKnit = VIVIANNE_PRODUCTS.find((p) => p.id === 'sueter-lana-cuello-redondo');
-
   return (
-    <div className="relative min-h-screen bg-[#070707] text-[#f5f2eb] font-sans antialiased overflow-x-hidden">
-      {/* Editorial Announcement Bar */}
-      <div className="bg-[#121212] border-b border-[#232323] px-4 py-2.5 text-xs text-[#dcd7cb] flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 mx-auto sm:mx-0">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#c5a059] animate-pulse" />
-          <span className="tracking-widest uppercase text-[11px] font-medium text-[#c5a059]">
-            Curaduría Oficial
-          </span>
-          <span className="hidden md:inline text-[#555]">|</span>
-          <span className="hidden md:inline text-[#999]">
-            Piezas auténticas adquiridas directamente en distribuidores oficiales (Tory Burch & Atorie)
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4 mx-auto sm:mx-0 text-[11px] tracking-wider uppercase">
-          <button
-            onClick={() => setIsWishlistOpen(true)}
-            className="flex items-center gap-1.5 text-[#e5dec9] hover:text-[#c5a059] transition cursor-pointer"
-          >
-            <Heart className={`w-3.5 h-3.5 ${wishlist.length > 0 ? 'fill-[#c5a059] text-[#c5a059]' : ''}`} />
-            <span>Mi Clóset ({wishlist.length})</span>
-          </button>
-          <span className="text-[#333]">|</span>
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-1 text-[#aaa] hover:text-white transition cursor-pointer"
-          >
-            <Share2 className="w-3.5 h-3.5" />
-            <span>{copiedLink ? '¡Enlace Copiado!' : 'Compartir'}</span>
-          </button>
-        </div>
+    <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] font-sans antialiased selection:bg-[#B08D57]/30 selection:text-[#2B1D14]">
+      {/* 1. EDITORIAL ANNOUNCEMENT & TRANSPARENCY BAR */}
+      <div className="bg-[#FAF5EC] border-b border-[#B08D57]/25 px-4 py-2 text-center">
+        <p className="font-mono text-[10px] sm:text-xs text-[#7C6E65] uppercase tracking-[0.2em]">
+          El Armario de Vivienne · Piezas de inversión curadas · Enlaces directos a tiendas oficiales
+        </p>
       </div>
 
-      {/* Luxury Brand Header */}
-      <header className="sticky top-0 z-40 bg-[#070707]/90 backdrop-blur-md border-b border-[#1f1f1f]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-          {/* Brand Signature */}
-          <div className="flex flex-col">
-            <a
-              href="#top"
-              className="text-2xl sm:text-3xl font-serif tracking-[0.22em] text-[#f8f5ee] uppercase font-light hover:opacity-90 transition"
-            >
-              Vivianne Wolski
-            </a>
-            <span className="text-[10px] tracking-[0.35em] uppercase text-[#c5a059] font-medium">
-              The Curated Closet · Haute Selection
-            </span>
-          </div>
+      {/* 2. MAIN BOUTIQUE HEADER */}
+      <header className="sticky top-0 z-40 bg-[#F7F1E6]/95 backdrop-blur-md border-b border-[#B08D57]/20 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20 sm:h-24">
+            {/* Left: Quiet Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
+              <a
+                href="#catalogo"
+                className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
+              >
+                Catálogo
+              </a>
+              <a
+                href="#looks"
+                className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
+              >
+                Los Looks
+              </a>
+              <a
+                href="#domingo"
+                className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
+              >
+                El Domingo
+              </a>
+              <a
+                href="#sobre-vivienne"
+                className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
+              >
+                Sobre Vivienne
+              </a>
+            </nav>
 
-          {/* Quick Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-xs tracking-[0.2em] uppercase text-[#9f9b90]">
-            <a href="#hero-look" className="hover:text-[#c5a059] transition">
-              Look de Portada
-            </a>
-            <a href="#closet-catalog" className="hover:text-[#c5a059] transition">
-              El Clóset
-            </a>
-            <a href="#claves-estilo" className="hover:text-[#c5a059] transition">
-              Claves de Estilo
-            </a>
-            <a href="#autenticidad" className="hover:text-[#c5a059] transition">
-              Autenticidad
-            </a>
-          </nav>
-
-          {/* Header Action Buttons */}
-          <div className="flex items-center gap-3">
-            <a
-              href="#closet-catalog"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#c5a059]/40 bg-[#c5a059]/10 text-xs text-[#e8dcb8] tracking-widest uppercase hover:bg-[#c5a059] hover:text-black transition duration-300"
-            >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Ver Colección ({VIVIANNE_PRODUCTS.length})</span>
-            </a>
-            <button
-              onClick={() => setIsWishlistOpen(true)}
-              aria-label="Ver piezas guardadas"
-              className="relative p-2.5 rounded-full border border-[#262626] bg-[#111] hover:border-[#c5a059] text-[#e8dcb8] transition cursor-pointer"
-            >
-              <Heart className={`w-4 h-4 ${wishlist.length > 0 ? 'fill-[#c5a059] text-[#c5a059]' : ''}`} />
-              {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#c5a059] text-black text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {wishlist.length}
+            {/* Center: Brand Crest */}
+            <div className="text-center">
+              <Link href="/vivianne-wolski" className="inline-block group">
+                <span className="font-serif font-light text-2xl sm:text-3xl lg:text-4xl tracking-tight text-[#2B1D14] group-hover:text-[#6B1F2A] transition block">
+                  El Armario de Vivienne
                 </span>
-              )}
-            </button>
+                <span className="font-serif italic text-xs sm:text-sm text-[#B08D57] tracking-wider block mt-0.5">
+                  Lo que Vivienne usa. Lo que Vivienne cuenta.
+                </span>
+              </Link>
+            </div>
+
+            {/* Right: Actions */}
+            <div className="flex items-center gap-3 sm:gap-5">
+              <button
+                onClick={handleShare}
+                aria-label="Compartir catálogo"
+                className="p-2 text-[#7C6E65] hover:text-[#2B1D14] transition cursor-pointer"
+                title="Compartir"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => setIsWishlistOpen(true)}
+                className="flex items-center gap-2 border border-[#B08D57]/40 hover:border-[#B08D57] px-3.5 py-1.5 rounded-sm bg-[#FAF5EC] text-[#2B1D14] hover:text-[#6B1F2A] transition cursor-pointer"
+                title="Ver piezas guardadas"
+              >
+                <Heart
+                  className={`w-3.5 h-3.5 ${
+                    wishlist.length > 0 ? 'fill-[#6B1F2A] text-[#6B1F2A]' : 'text-[#7C6E65]'
+                  }`}
+                />
+                <span className="font-mono text-[10px] uppercase tracking-wider hidden sm:inline">
+                  Guardadas
+                </span>
+                {wishlist.length > 0 && (
+                  <span className="font-mono text-[10px] text-[#6B1F2A] font-bold">
+                    ({wishlist.length})
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
+        {copiedLink && (
+          <div className="bg-[#6B1F2A] text-[#F7F1E6] text-center text-xs py-1 font-mono tracking-widest uppercase animate-fade-in">
+            Enlace copiado al portapapeles
+          </div>
+        )}
       </header>
 
-      {/* Main Content */}
-      <main id="top">
-        {/* HERO SECTION: "The Signature Look" with interactive photo */}
-        <section id="hero-look" className="relative py-12 sm:py-20 border-b border-[#1b1b1b] overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#c5a059]/5 blur-[140px] pointer-events-none rounded-full" />
-
+      <main>
+        {/* 3. HERO SECTION: EDITORIAL SALON */}
+        <section className="relative pt-8 pb-16 sm:pb-24 border-b border-[#B08D57]/20 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Editorial Photo with Interactive Hotspots */}
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              {/* Left Column: Portrait */}
               <div className="lg:col-span-6 relative">
-                <div className="relative mx-auto max-w-[500px] lg:max-w-none rounded-2xl overflow-hidden border border-[#2b2b2b] bg-[#111] shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
-                  {/* Aspect wrapper */}
-                  <div className="relative aspect-[4/5] w-full">
-                    <Image
-                      src="/images/vivianne-wolski-hero.jpg"
-                      alt="Vivianne Wolski luciendo el suéter de lana amarillo y el bolso Perry Tote de Tory Burch"
-                      fill
-                      priority
-                      className="object-cover object-center filter contrast-[1.03] brightness-[0.98] transition-transform duration-700 group-hover:scale-[1.02]"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-
-                    {/* Hotspot 1: Tory Burch Perry Tote (Bag / Shoulder area) */}
-                    <div className="absolute top-[68%] left-[72%] -translate-x-1/2 -translate-y-1/2 z-20">
-                      <button
-                        onClick={() => {
-                          if (heroTote) setSelectedProduct(heroTote);
-                        }}
-                        onMouseEnter={() => setActiveHotspot('tote')}
-                        onMouseLeave={() => setActiveHotspot(null)}
-                        aria-label="Ver detalles del bolso Perry Tote"
-                        className="relative group/pin p-2 cursor-pointer focus:outline-none"
-                      >
-                        <span className="absolute -inset-1 rounded-full bg-[#c5a059]/40 animate-ping" />
-                        <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[#c5a059] text-black font-bold text-xs shadow-lg hover:scale-110 transition">
-                          1
-                        </span>
-                      </button>
-
-                      {/* Floating tooltip */}
-                      <div
-                        className={`absolute bottom-full right-0 mb-3 w-56 p-3 rounded-xl bg-[#141414]/95 border border-[#c5a059]/40 backdrop-blur-md shadow-2xl transition-all duration-300 pointer-events-auto z-30 ${
-                          activeHotspot === 'tote' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-                        }`}
-                      >
-                        <p className="text-[10px] uppercase tracking-wider text-[#c5a059] font-medium">Pieza 01 · Bolso</p>
-                        <p className="text-xs font-semibold text-white">Perry Tote in Black</p>
-                        <p className="text-[11px] text-[#bbb] mt-0.5">$395 USD · Tory Burch</p>
-                        <a
-                          href="https://go.shopmy.us/p-92983886"
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="mt-2 block w-full py-1 text-center bg-[#c5a059] text-black text-[10px] font-bold uppercase tracking-wider rounded hover:bg-white transition"
-                        >
-                          Comprar en Tienda ↗
-                        </a>
-                      </div>
+                <div className="relative aspect-[4/5] sm:aspect-[4/5] w-full max-w-md mx-auto lg:max-w-none bg-[#E8DFD0] rounded-sm overflow-hidden border border-[#B08D57]/30 shadow-xl group">
+                  <Image
+                    src="/images/vivianne-wolski-hero.jpg"
+                    alt="Vivienne Wolski con suéter amarillo de lana y bolso de mano Tory Burch"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-top filter contrast-[1.03] transition duration-700 group-hover:scale-[1.01]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2B1D14]/50 via-transparent to-transparent pointer-events-none" />
+                  
+                  {/* Subtle caption */}
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#F7F1E6]/90 backdrop-blur-sm p-3 border border-[#B08D57]/30 rounded-xs flex items-center justify-between">
+                    <div>
+                      <p className="font-serif text-xs text-[#2B1D14] font-medium">Vivienne Wolski, 82 años</p>
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-[#7C6E65]">Criterio propio e indiscutible</p>
                     </div>
-
-                    {/* Hotspot 2: Wool Sweater (Chest area) */}
-                    <div className="absolute top-[48%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20">
-                      <button
-                        onClick={() => {
-                          if (heroKnit) setSelectedProduct(heroKnit);
-                        }}
-                        onMouseEnter={() => setActiveHotspot('knit')}
-                        onMouseLeave={() => setActiveHotspot(null)}
-                        aria-label="Ver detalles del suéter de lana amarillo"
-                        className="relative group/pin p-2 cursor-pointer focus:outline-none"
-                      >
-                        <span className="absolute -inset-1 rounded-full bg-[#c5a059]/40 animate-ping" />
-                        <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[#c5a059] text-black font-bold text-xs shadow-lg hover:scale-110 transition">
-                          2
-                        </span>
-                      </button>
-
-                      {/* Floating tooltip */}
-                      <div
-                        className={`absolute bottom-full left-0 mb-3 w-56 p-3 rounded-xl bg-[#141414]/95 border border-[#c5a059]/40 backdrop-blur-md shadow-2xl transition-all duration-300 pointer-events-auto z-30 ${
-                          activeHotspot === 'knit' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-                        }`}
-                      >
-                        <p className="text-[10px] uppercase tracking-wider text-[#c5a059] font-medium">Pieza 02 · Knitwear</p>
-                        <p className="text-xs font-semibold text-white">Suéter de Lana Pura</p>
-                        <p className="text-[11px] text-[#bbb] mt-0.5">$595 USD · Tory Burch</p>
-                        <a
-                          href="https://go.shopmy.us/p-92158272"
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="mt-2 block w-full py-1 text-center bg-[#c5a059] text-black text-[10px] font-bold uppercase tracking-wider rounded hover:bg-white transition"
-                        >
-                          Comprar en Tienda ↗
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Badge on Photo */}
-                    <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
-                      <div className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#c5a059]/40 text-[#f5ebd2] text-xs font-medium tracking-wide flex items-center gap-2">
-                        <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
-                        <span>Look de Portada · Vivianne Signature</span>
-                      </div>
-                      <span className="text-[11px] text-[#aaa] font-mono tracking-widest uppercase">
-                        2 Piezas Activas
-                      </span>
-                    </div>
+                    <span className="font-script text-xl text-[#6B1F2A]">V. Wolski</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Editorial Text & Quick Shop */}
-              <div className="lg:col-span-6 flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1b1812] border border-[#c5a059]/30 text-[#c5a059] text-xs tracking-[0.25em] uppercase w-fit mb-5">
-                  <Tag className="w-3 h-3" />
-                  <span>The Signature Statement</span>
+              {/* Right Column: Editorial Claim & Manifesto */}
+              <div className="lg:col-span-6 flex flex-col justify-center max-w-xl mx-auto lg:max-w-none text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-[#FAF5EC] border border-[#B08D57]/40 text-[#B08D57] font-mono text-[10px] tracking-[0.25em] uppercase w-fit mx-auto lg:mx-0 mb-6">
+                  <span>Edición de Otoño & Invierno</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#faf7f0] font-light tracking-tight leading-[1.15] mb-6">
-                  La audacia de vestir con <span className="italic font-normal text-[#c5a059]">intención</span> y presencia.
+                <h1 className="font-serif font-light text-4xl sm:text-5xl lg:text-6xl text-[#2B1D14] tracking-tight leading-[1.08] mb-6">
+                  Lo que Vivienne usa.
+                  <span className="block italic text-[#6B1F2A] font-normal mt-1">Y por qué.</span>
                 </h1>
 
-                <div className="relative pl-5 border-l-2 border-[#c5a059]/50 mb-8">
-                  <p className="text-sm sm:text-base text-[#cfc8b8] leading-relaxed italic font-serif">
-                    &ldquo;El estilo maduro no busca pedir permiso: define el estándar. Este clóset digital es mi selección personal de prendas de inversión: donde un bolso de cuero estructurado y un suéter de punto impecable construyen una presencia magnética en cualquier ciudad del mundo.&rdquo;
-                  </p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.25em] text-[#c5a059] font-medium">
-                    — Vivianne Wolski
-                  </p>
-                </div>
+                <p className="font-serif italic text-lg sm:text-xl text-[#6B1F2A] leading-relaxed mb-6 border-l-0 lg:border-l-2 lg:border-[#B08D57] lg:pl-5">
+                  &ldquo;A los 82 años una ya no tiene tiempo para comprar dos veces la misma tontería. Se elige con rigor, se lleva con aplomo y se deja que la prenda hable.&rdquo;
+                </p>
 
-                {/* Direct Look Summary Cards */}
-                <div className="space-y-3 mb-8">
-                  <div className="p-3.5 rounded-xl bg-[#111] border border-[#222] hover:border-[#c5a059]/50 transition flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 rounded-full bg-[#c5a059] text-black font-bold text-xs flex items-center justify-center">
-                        1
-                      </span>
-                      <div>
-                        <h2 className="text-xs sm:text-sm font-semibold text-white">Perry Tote in Black · Tory Burch</h2>
-                        <p className="text-[11px] text-[#999]">Piel granulada italiana de alta resistencia</p>
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-xs font-bold text-[#c5a059]">$395 USD</p>
-                      <a
-                        href="https://go.shopmy.us/p-92983886"
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
-                        className="text-[10px] text-white hover:text-[#c5a059] flex items-center gap-1 underline underline-offset-2 transition"
-                      >
-                        Comprar Oficial <ArrowRight className="w-2.5 h-2.5" />
-                      </a>
-                    </div>
-                  </div>
+                <p className="text-sm text-[#7C6E65] leading-relaxed mb-8 font-normal max-w-lg mx-auto lg:mx-0">
+                  Una selección estricta de prendas de inversión donde cada textura, forro y corte tiene una razón observable de ser. Sin prisas, sin logotipos ruidosos y sin trucos de ocasión.
+                </p>
 
-                  <div className="p-3.5 rounded-xl bg-[#111] border border-[#222] hover:border-[#c5a059]/50 transition flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 rounded-full bg-[#c5a059] text-black font-bold text-xs flex items-center justify-center">
-                        2
-                      </span>
-                      <div>
-                        <h2 className="text-xs sm:text-sm font-semibold text-white">Suéter de Lana Cuello Redondo · Tory Burch</h2>
-                        <p className="text-[11px] text-[#999]">100% lana virgen en tono mostaza de alta vibración</p>
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-xs font-bold text-[#c5a059]">$595 USD</p>
-                      <a
-                        href="https://go.shopmy.us/p-92158272"
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
-                        className="text-[10px] text-white hover:text-[#c5a059] flex items-center gap-1 underline underline-offset-2 transition"
-                      >
-                        Comprar Oficial <ArrowRight className="w-2.5 h-2.5" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Primary Action Buttons */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                   <a
-                    href="#closet-catalog"
-                    className="px-6 py-3 rounded-full bg-[#c5a059] text-black text-xs font-bold tracking-[0.2em] uppercase hover:bg-white transition duration-300 shadow-[0_10px_30px_rgba(197,160,89,0.25)] flex items-center gap-2"
+                    href="#catalogo"
+                    className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-[#2B1D14] text-[#F7F1E6] hover:bg-[#6B1F2A] font-mono text-xs uppercase tracking-[0.2em] transition duration-300 shadow-md text-center"
                   >
-                    <span>Explorar Todo el Clóset</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    Ver el armario
                   </a>
-                  <button
-                    onClick={() => {
-                      if (heroTote) setSelectedProduct(heroTote);
-                    }}
-                    className="px-5 py-3 rounded-full border border-[#333] hover:border-[#c5a059] text-xs text-[#cfc8b8] tracking-[0.15em] uppercase hover:text-white transition duration-300 flex items-center gap-2 cursor-pointer"
+                  <a
+                    href="#domingo"
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-sm border border-[#B08D57]/60 hover:border-[#2B1D14] text-[#2B1D14] hover:text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.15em] transition duration-300 text-center"
                   >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>Ver Detalles del Look</span>
-                  </button>
+                    Ver el plan de números
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CLOSET SECTION: Interactive Walk-in Closet & Filters */}
-        <section id="closet-catalog" className="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Heading */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#171717] border border-[#2d2d2d] text-[#c5a059] text-xs tracking-[0.25em] uppercase mb-4">
-              <ShoppingBag className="w-3 h-3" />
-              <span>The Walk-in Closet Experience</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-serif text-[#faf7f0] font-light tracking-wide mb-4">
-              Las 8 Piezas Escogidas por Vivianne
-            </h2>
-            <p className="text-sm text-[#a39e93] leading-relaxed">
-              Explora las prendas y accesorios seleccionados por su corte arquitectónico, materiales nobles y durabilidad de alta gama. Haz clic en cualquier pieza para adquirirla de forma segura en la tienda oficial del diseñador.
-            </p>
-          </div>
+        {/* 4. FEATURED BAND: EL DOMINGO DE LOS NÚMEROS */}
+        <section id="domingo" className="py-14 sm:py-18 bg-[#FAF5EC] border-b border-[#B08D57]/20 relative">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="border border-[#B08D57]/40 p-8 sm:p-10 bg-[#F7F1E6] rounded-sm shadow-sm relative">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                <div className="space-y-3 max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold border-b border-[#B08D57]/40 pb-0.5">
+                      EL HÁBITO SEMANAL DE VIVIENNE
+                    </span>
+                    <span className="text-[#B08D57]">·</span>
+                    <span className="font-mono text-[10px] text-[#6B1F2A] font-bold">
+                      USD {DOMINGO_DE_LOS_NUMEROS.priceFormatted}
+                    </span>
+                  </div>
 
-          {/* Interactive Filtering & Controls Bar */}
-          <div className="bg-[#101010] border border-[#222] rounded-2xl p-4 sm:p-5 mb-10 shadow-lg">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-              {/* Category Pills */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-                {VIVIANNE_CATEGORIES.map((cat) => {
-                  const isActive = activeCategory === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => setActiveCategory(cat.id)}
-                      className={`whitespace-nowrap px-4 py-2 rounded-full text-xs tracking-wider uppercase transition cursor-pointer flex items-center gap-1.5 ${
-                        isActive
-                          ? 'bg-[#c5a059] text-black font-bold shadow-md'
-                          : 'bg-[#181818] text-[#aaa] hover:text-white hover:bg-[#222] border border-[#282828]'
-                      }`}
-                    >
-                      <span>{cat.label}</span>
-                      <span
-                        className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                          isActive ? 'bg-black/20 text-black' : 'bg-black/40 text-[#777]'
-                        }`}
-                      >
-                        {cat.count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+                  <h2 className="font-serif text-2xl sm:text-3xl text-[#2B1D14] font-normal tracking-tight">
+                    {DOMINGO_DE_LOS_NUMEROS.title}
+                  </h2>
 
-              {/* Search & Sort Controls */}
-              <div className="flex items-center gap-3">
-                {/* Search Input */}
-                <div className="relative flex-1 md:w-56">
-                  <Search className="w-3.5 h-3.5 text-[#777] absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Buscar en el clóset..."
-                    className="w-full bg-[#181818] border border-[#2b2b2b] rounded-full pl-9 pr-8 py-2 text-xs text-white placeholder-[#666] focus:outline-none focus:border-[#c5a059] transition"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#777] hover:text-white"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  )}
+                  <p className="font-serif italic text-base sm:text-lg text-[#6B1F2A] leading-relaxed">
+                    &ldquo;{DOMINGO_DE_LOS_NUMEROS.description}&rdquo;
+                  </p>
+
+                  <p className="font-mono text-[10px] text-[#7C6E65] uppercase tracking-wider pt-1">
+                    {DOMINGO_DE_LOS_NUMEROS.label}
+                  </p>
                 </div>
 
-                {/* Sort Dropdown */}
-                <div className="relative">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    aria-label="Ordenar productos"
-                    className="bg-[#181818] border border-[#2b2b2b] rounded-full px-3.5 py-2 text-xs text-[#cfc8b8] focus:outline-none focus:border-[#c5a059] cursor-pointer"
+                <div className="shrink-0 w-full md:w-auto text-left md:text-right">
+                  <a
+                    href={DOMINGO_DE_LOS_NUMEROS.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-7 py-3.5 bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.18em] rounded-sm transition duration-300 shadow-sm"
                   >
-                    <option value="featured">Destacados</option>
-                    <option value="price-desc">Precio: Mayor a Menor</option>
-                    <option value="price-asc">Precio: Menor a Mayor</option>
-                    <option value="alpha">Nombre: A - Z</option>
-                  </select>
+                    <span>{DOMINGO_DE_LOS_NUMEROS.buttonText}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                  <p className="font-mono text-[9px] text-[#7C6E65] mt-2 text-center md:text-right">
+                    Acceso inmediato al sistema
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Active filter count indicator */}
-          <div className="flex items-center justify-between text-xs text-[#888] mb-6 px-1">
-            <p>
-              Mostrando <span className="text-[#f5ebd2] font-semibold">{filteredProducts.length}</span> de {VIVIANNE_PRODUCTS.length} piezas en el clóset
+        {/* 5. "LOS LOOKS DE VIVI" (Curated Complete Outfits) */}
+        <section id="looks" className="py-20 sm:py-28 border-b border-[#B08D57]/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold block mb-2">
+                COMPOSICIONES COMPLETAS
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B1D14] font-light tracking-tight">
+                Los looks de Vivi
+              </h2>
+              <p className="font-serif italic text-sm sm:text-base text-[#7C6E65] mt-3">
+                Prendas que se conocen entre sí. Tres conjuntos armados con las piezas de su armario.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
+              {VIVIANNE_LOOKS.map((look) => {
+                const lookProducts = VIVIANNE_PRODUCTS.filter((p) =>
+                  look.productIds.includes(p.id)
+                );
+
+                return (
+                  <div
+                    key={look.id}
+                    className="bg-[#FAF5EC] border border-[#B08D57]/30 rounded-sm overflow-hidden flex flex-col justify-between hover:border-[#B08D57] transition-all duration-300 group shadow-xs"
+                  >
+                    <div>
+                      {/* Image Frame */}
+                      <div className="relative aspect-[4/5] w-full bg-[#E8DFD0] overflow-hidden border-b border-[#B08D57]/20">
+                        <Image
+                          src={look.image}
+                          alt={look.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover object-top transition duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute top-3 left-3 bg-[#F7F1E6]/95 border border-[#B08D57]/40 px-2.5 py-1 text-[9px] font-mono uppercase tracking-widest text-[#2B1D14]">
+                          {look.tagline}
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6">
+                        <h3 className="font-serif text-xl text-[#2B1D14] font-normal mb-2">
+                          {look.name}
+                        </h3>
+                        <p className="text-xs text-[#7C6E65] leading-relaxed mb-6 font-normal">
+                          {look.description}
+                        </p>
+
+                        {/* Pieces in look */}
+                        <div className="space-y-2 border-t border-[#B08D57]/20 pt-4">
+                          <p className="font-mono text-[9px] uppercase tracking-widest text-[#B08D57] font-semibold">
+                            Piezas que lo componen:
+                          </p>
+                          <ul className="space-y-1.5">
+                            {lookProducts.map((p) => (
+                              <li key={p.id}>
+                                <button
+                                  onClick={() => setSelectedProduct(p)}
+                                  className="w-full text-left text-xs text-[#2B1D14] hover:text-[#6B1F2A] flex items-center justify-between group/item py-1"
+                                >
+                                  <span className="font-serif group-hover/item:underline underline-offset-2 truncate pr-2">
+                                    {p.name}
+                                  </span>
+                                  <span className="font-mono text-[10px] text-[#6B1F2A] shrink-0 font-medium">
+                                    {p.price}
+                                  </span>
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 pt-0">
+                      <button
+                        onClick={() => {
+                          const firstPiece = lookProducts[0];
+                          if (firstPiece) setSelectedProduct(firstPiece);
+                        }}
+                        className="w-full py-2.5 border border-[#2B1D14]/30 hover:border-[#2B1D14] text-[#2B1D14] hover:text-[#6B1F2A] font-mono text-[10px] uppercase tracking-[0.18em] transition text-center rounded-xs cursor-pointer"
+                      >
+                        Ver piezas del look
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. CATÁLOGO: EXPANSIVE, AIRY TORY BURCH STYLE */}
+        <section id="catalogo" className="py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Title */}
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold block mb-2">
+              SELECCIÓN EDITORIAL
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B1D14] font-light tracking-tight mb-4">
+              El Catálogo
+            </h2>
+            <p className="font-serif italic text-base sm:text-lg text-[#7C6E65] leading-relaxed">
+              Ocho piezas escogidas por su corte arquitectónico, materiales nobles y durabilidad de alta gama.
             </p>
-            {activeCategory !== 'all' && (
-              <button
-                onClick={() => setActiveCategory('all')}
-                className="text-[#c5a059] hover:underline cursor-pointer"
-              >
-                Limpiar filtro de categoría
-              </button>
-            )}
           </div>
 
-          {/* Product Grid */}
+          {/* ROW 1: CATEGORY TABS (TORY BURCH STYLE - SPACIOUS, UNHURRIED, NO CROWDED PILLS) */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-6 sm:gap-10 overflow-x-auto scrollbar-none pb-2 border-b border-[#B08D57]/20">
+              {VIVIANNE_CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`whitespace-nowrap pb-3 transition-all duration-300 font-serif text-xs sm:text-sm tracking-[0.18em] uppercase cursor-pointer flex items-center gap-1.5 relative ${
+                      isActive
+                        ? 'text-[#2B1D14] font-semibold border-b-2 border-[#B08D57]'
+                        : 'text-[#7C6E65] hover:text-[#2B1D14] border-b-2 border-transparent'
+                    }`}
+                  >
+                    <span>{cat.label}</span>
+                    <span className="font-mono text-[10px] text-[#B08D57] font-normal">
+                      ({cat.count})
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ROW 2: SEPARATED REFINEMENT BAR (SEARCH, COUNT & SORT WITH GENEROUS AIR) */}
+          <div className="border-y border-[#B08D57]/25 py-4 mb-12 bg-[#FAF5EC]/70 rounded-xs">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 px-2 sm:px-4">
+              {/* Left: Product Counter */}
+              <div className="font-mono text-xs text-[#7C6E65] uppercase tracking-wider text-center md:text-left">
+                Mostrando <span className="text-[#2B1D14] font-semibold">{filteredProducts.length}</span> de{' '}
+                {VIVIANNE_PRODUCTS.length} piezas en el armario
+              </div>
+
+              {/* Center: Clean Luxury Search */}
+              <div className="relative w-full sm:w-80">
+                <Search className="w-3.5 h-3.5 text-[#B08D57] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Buscar prenda, tono o material..."
+                  className="w-full bg-[#F7F1E6] border border-[#B08D57]/40 focus:border-[#2B1D14] rounded-sm pl-9 pr-8 py-2 text-xs text-[#2B1D14] placeholder-[#9C8F85] focus:outline-none transition font-sans"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#7C6E65] hover:text-[#2B1D14] p-1"
+                    aria-label="Limpiar búsqueda"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+
+              {/* Right: Clean Luxury Sort */}
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-[#7C6E65] hidden lg:inline">
+                  Ordenar:
+                </span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Ordenar piezas"
+                  className="bg-[#F7F1E6] border border-[#B08D57]/40 focus:border-[#2B1D14] rounded-sm px-3 py-1.5 text-xs text-[#2B1D14] font-serif tracking-wider focus:outline-none cursor-pointer w-full sm:w-auto"
+                >
+                  <option value="featured">Selección de Vivi</option>
+                  <option value="price-desc">Precio: Mayor a Menor</option>
+                  <option value="price-asc">Precio: Menor a Mayor</option>
+                  <option value="alpha">Nombre: A - Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* PRODUCT GRID: 4:5 IMAGE RATIO, TORY BURCH LUXURY AIR, NOTA DE VIVI */}
           {filteredProducts.length === 0 ? (
-            <div className="text-center py-16 px-4 rounded-2xl bg-[#111] border border-[#222]">
-              <SlidersHorizontal className="w-10 h-10 text-[#444] mx-auto mb-3" />
-              <p className="text-base text-[#cfc8b8]">No se encontraron piezas con ese término.</p>
+            <div className="text-center py-20 px-6 bg-[#FAF5EC] border border-[#B08D57]/30 rounded-sm max-w-xl mx-auto my-8">
+              <SlidersHorizontal className="w-8 h-8 text-[#B08D57] mx-auto mb-4" />
+              <p className="font-serif italic text-lg sm:text-xl text-[#6B1F2A] mb-3">
+                &ldquo;Aquí todavía no hay nada, querida. Y eso también es elegancia.&rdquo;
+              </p>
+              <p className="text-xs text-[#7C6E65] mb-6 font-normal">
+                No hay piezas que coincidan con la búsqueda actual.
+              </p>
               <button
                 onClick={() => {
                   setSearchQuery('');
                   setActiveCategory('all');
                 }}
-                className="mt-4 px-4 py-2 rounded-full bg-[#c5a059] text-black text-xs font-bold uppercase tracking-wider cursor-pointer"
+                className="px-6 py-2.5 bg-[#2B1D14] text-[#F7F1E6] hover:bg-[#6B1F2A] font-mono text-[10px] uppercase tracking-[0.2em] rounded-sm transition"
               >
-                Restablecer Clóset
+                Ver todo el armario
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
-              {filteredProducts.map((product) => {
-                const isSaved = wishlist.includes(product.id);
-                return (
-                  <article
-                    key={product.id}
-                    className="group relative flex flex-col rounded-2xl bg-[#0f0f0f] border border-[#202020] hover:border-[#c5a059]/60 transition-all duration-300 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_40px_rgba(197,160,89,0.12)]"
-                  >
-                    {/* Image Container with Badges */}
-                    <div
-                      className="relative aspect-square w-full bg-[#181818] overflow-hidden cursor-pointer"
-                      onClick={() => setSelectedProduct(product)}
-                    >
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        fill
-                        className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
-                      />
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10">
+              {filteredProducts.map((prod) => {
+                const isSaved = wishlist.includes(prod.id);
 
-                      {/* Top Badges */}
-                      <div className="absolute top-3 left-3 right-3 flex items-start justify-between pointer-events-none">
-                        {product.badge ? (
-                          <span className="px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md border border-[#c5a059]/40 text-[#c5a059] text-[10px] font-semibold tracking-wider uppercase">
-                            {product.badge}
-                          </span>
-                        ) : (
-                          <span />
+                return (
+                  <div
+                    key={prod.id}
+                    className="bg-[#FAF7F2] border border-[#E8DFD0] hover:border-[#B08D57] transition-all duration-500 rounded-sm overflow-hidden flex flex-col justify-between group shadow-xs hover:shadow-md"
+                  >
+                    <div>
+                      {/* 4:5 Product Image Box */}
+                      <div
+                        onClick={() => setSelectedProduct(prod)}
+                        className="relative aspect-[4/5] w-full bg-[#E8DFD0] overflow-hidden cursor-pointer"
+                      >
+                        <Image
+                          src={prod.image}
+                          alt={prod.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover object-center transition duration-700 group-hover:scale-105"
+                        />
+
+                        {/* Top Overlay Badge */}
+                        {prod.badge && (
+                          <div className="absolute top-3 left-3 bg-[#F7F1E6]/95 border border-[#B08D57]/40 px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest text-[#2B1D14]">
+                            {prod.badge}
+                          </div>
                         )}
 
+                        {/* Wishlist Button */}
                         <button
-                          onClick={(e) => toggleWishlist(product.id, e)}
-                          aria-label="Guardar en mi clóset"
-                          className="pointer-events-auto p-2 rounded-full bg-black/70 backdrop-blur-md border border-[#333] hover:border-[#c5a059] text-white transition hover:scale-110 cursor-pointer"
+                          onClick={(e) => toggleWishlist(prod.id, e)}
+                          aria-label={isSaved ? 'Quitar de guardadas' : 'Guardar para después'}
+                          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#F7F1E6]/90 hover:bg-[#F7F1E6] border border-[#B08D57]/30 flex items-center justify-center transition shadow-xs cursor-pointer z-10"
                         >
                           <Heart
-                            className={`w-3.5 h-3.5 ${isSaved ? 'fill-[#c5a059] text-[#c5a059]' : 'text-white'}`}
+                            className={`w-3.5 h-3.5 transition ${
+                              isSaved ? 'fill-[#6B1F2A] text-[#6B1F2A]' : 'text-[#7C6E65] hover:text-[#6B1F2A]'
+                            }`}
                           />
                         </button>
                       </div>
 
-                      {/* Quick view hover pill */}
-                      <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="px-3.5 py-1.5 rounded-full bg-black/85 backdrop-blur-md text-[#f5ebd2] text-xs font-medium border border-[#333] flex items-center gap-1.5 shadow-lg">
-                          <Eye className="w-3.5 h-3.5 text-[#c5a059]" />
-                          <span>Ver Detalles</span>
-                        </span>
-                      </div>
-                    </div>
+                      {/* Card Content */}
+                      <div className="p-5">
+                        {/* Brand */}
+                        <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold mb-1">
+                          {prod.brand}
+                        </p>
 
-                    {/* Product Card Details */}
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        {/* Brand & Category */}
-                        <div className="flex items-center justify-between text-[11px] uppercase tracking-widest text-[#888] mb-1.5">
-                          <span className="text-[#c5a059] font-semibold">{product.brand}</span>
-                          <span>{product.categoryLabel}</span>
-                        </div>
-
-                        {/* Title */}
+                        {/* Name */}
                         <h3
-                          onClick={() => setSelectedProduct(product)}
-                          className="font-serif text-base sm:text-lg text-[#faf7f0] font-light leading-snug line-clamp-2 hover:text-[#c5a059] transition cursor-pointer mb-2"
+                          onClick={() => setSelectedProduct(prod)}
+                          className="font-serif text-lg text-[#2B1D14] font-normal leading-snug hover:text-[#6B1F2A] transition cursor-pointer mb-2 line-clamp-2"
                         >
-                          {product.shortTitle}
+                          {prod.name}
                         </h3>
 
-                        {/* Price */}
-                        <div className="flex items-baseline gap-2 mb-3">
-                          <span className="text-base font-bold text-white tracking-wide">
-                            {product.price}
-                          </span>
-                          <span className="text-[10px] text-[#777] uppercase tracking-wider">
-                            PVP Oficial
+                        {/* Price in small-caps */}
+                        <p className="font-mono text-xs uppercase tracking-wider text-[#6B1F2A] font-bold mb-4">
+                          {prod.price}
+                        </p>
+
+                        {/* Vivienne's Note (Burgundy handwritten/italic style) */}
+                        <div className="border-l-2 border-[#B08D57]/50 pl-3 py-1 mb-4 bg-[#F7F1E6]/60">
+                          <p className="font-serif italic text-xs text-[#6B1F2A] leading-relaxed">
+                            &ldquo;{prod.viviNote}&rdquo;
+                          </p>
+                          <span className="font-script text-base text-[#B08D57] block text-right mt-0.5">
+                            — Vivi
                           </span>
                         </div>
-
-                        {/* Short Description */}
-                        <p className="text-xs text-[#a09a8c] line-clamp-2 leading-relaxed mb-4">
-                          {product.description}
-                        </p>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="pt-3 border-t border-[#1d1d1d] flex flex-col gap-2">
-                        {/* Primary Affiliate Buy Button */}
-                        <a
-                          href={product.affiliateUrl}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="w-full py-2.5 px-3 rounded-xl bg-[#c5a059] hover:bg-white text-black text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(197,160,89,0.2)] hover:shadow-none"
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5" />
-                          <span>Comprar en Tienda Oficial</span>
-                          <ExternalLink className="w-3 h-3 opacity-70" />
-                        </a>
-
-                        {/* Secondary Details Button */}
-                        <button
-                          onClick={() => setSelectedProduct(product)}
-                          className="w-full py-1.5 text-center text-[11px] text-[#888] hover:text-[#c5a059] transition uppercase tracking-wider cursor-pointer"
-                        >
-                          Ver Estilismo & Medidas
-                        </button>
                       </div>
                     </div>
-                  </article>
+
+                    {/* Card Actions */}
+                    <div className="p-5 pt-0 space-y-2">
+                      <a
+                        href={prod.affiliateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        className="w-full py-3 bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-[10px] uppercase tracking-[0.18em] transition duration-300 text-center flex items-center justify-center gap-1.5 rounded-sm shadow-xs"
+                      >
+                        <span>Ver en la tienda</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+
+                      <button
+                        onClick={() => setSelectedProduct(prod)}
+                        className="w-full py-2 border border-[#B08D57]/30 hover:border-[#2B1D14] text-[#7C6E65] hover:text-[#2B1D14] font-mono text-[9px] uppercase tracking-[0.15em] transition text-center rounded-sm cursor-pointer"
+                      >
+                        Detalles de la pieza
+                      </button>
+                    </div>
+                  </div>
                 );
               })}
             </div>
           )}
         </section>
 
-        {/* EDITORIAL SECTION: Vivianne's Styling Philosophy */}
-        <section id="claves-estilo" className="py-16 sm:py-24 bg-[#0a0a0a] border-t border-b border-[#1b1b1b]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-14">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#c5a059] font-medium">
-                Filosofía de Armario
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-serif text-[#faf7f0] font-light mt-3 mb-4">
-                Las 3 Claves del Clóset Vivianne Wolski
-              </h2>
-              <p className="text-sm text-[#9f9a8e] leading-relaxed">
-                Cómo construir una identidad visual contundente invirtiendo en pocas piezas seleccionadas con criterio editorial.
+        {/* 7. SOBRE VIVIENNE WOLSKI */}
+        <section id="sobre-vivienne" className="py-20 sm:py-28 bg-[#FAF5EC] border-y border-[#B08D57]/20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold block mb-2">
+              EL MANIFIESTO
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B1D14] font-light tracking-tight mb-8">
+              Sobre Vivienne
+            </h2>
+
+            <div className="space-y-6 font-serif text-lg sm:text-xl text-[#2B1D14] leading-relaxed max-w-2xl mx-auto">
+              <p>
+                &ldquo;Tengo 82 años. He visto pasar suficientes modas pasajeras como para saber que la elegancia no es hacer ruido, sino saber salir de una habitación dejando una estela de orden.&rdquo;
+              </p>
+              <p className="font-sans text-sm text-[#7C6E65] leading-relaxed font-normal">
+                Vivienne no vende promociones ni novedades semanales. Su clóset digital es un archivo vivo de piezas de diseñador y marcas independientes seleccionadas por su arquitectura, resistencia y capacidad de trascender temporadas.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Rule 1 */}
-              <div className="p-7 rounded-2xl bg-[#111] border border-[#222] relative group hover:border-[#c5a059]/50 transition">
-                <span className="text-3xl font-serif font-light text-[#c5a059]/40 group-hover:text-[#c5a059] transition">
-                  01
-                </span>
-                <h3 className="text-lg font-serif text-white font-medium mt-3 mb-2">
-                  La Proporción y la Arquitectura
-                </h3>
-                <p className="text-xs text-[#a09b8f] leading-relaxed">
-                  Un bolso de hombro o tote estructurado en piel granulada no es un accesorio secundario: es el ancla que da rigor formal a prendas sueltas o texturas envolventes.
-                </p>
-                <div className="mt-4 pt-4 border-t border-[#1d1d1d] flex items-center justify-between text-[11px] text-[#c5a059]">
-                  <span>Pieza sugerida: Perry Tote</span>
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </div>
-
-              {/* Rule 2 */}
-              <div className="p-7 rounded-2xl bg-[#111] border border-[#222] relative group hover:border-[#c5a059]/50 transition">
-                <span className="text-3xl font-serif font-light text-[#c5a059]/40 group-hover:text-[#c5a059] transition">
-                  02
-                </span>
-                <h3 className="text-lg font-serif text-white font-medium mt-3 mb-2">
-                  El Color como Declaración
-                </h3>
-                <p className="text-xs text-[#a09b8f] leading-relaxed">
-                  El amarillo mostaza y los motivos jacquard en lana virgen no buscan la discreción tímida: inyectan luz, energía y sofisticación al paisaje invernal con total distinción.
-                </p>
-                <div className="mt-4 pt-4 border-t border-[#1d1d1d] flex items-center justify-between text-[11px] text-[#c5a059]">
-                  <span>Pieza sugerida: Suéter Lana Pura</span>
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </div>
-
-              {/* Rule 3 */}
-              <div className="p-7 rounded-2xl bg-[#111] border border-[#222] relative group hover:border-[#c5a059]/50 transition">
-                <span className="text-3xl font-serif font-light text-[#c5a059]/40 group-hover:text-[#c5a059] transition">
-                  03
-                </span>
-                <h3 className="text-lg font-serif text-white font-medium mt-3 mb-2">
-                  La Pisada Inquebrantable
-                </h3>
-                <p className="text-xs text-[#a09b8f] leading-relaxed">
-                  Las botas altas en piel de becerro hasta la rodilla con tacón bloque alargan la silueta y brindan la estabilidad necesaria para transitar el día con elegancia natural.
-                </p>
-                <div className="mt-4 pt-4 border-t border-[#1d1d1d] flex items-center justify-between text-[11px] text-[#c5a059]">
-                  <span>Pieza sugerida: Botas Charlie</span>
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </div>
+            {/* MANDATORY AI DISCLOSURE */}
+            <div className="mt-12 inline-block border border-[#B08D57]/40 bg-[#F7F1E6] px-6 py-3 rounded-sm">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[#7C6E65]">
+                Nota de transparencia: Vivienne Wolski es un personaje creado con inteligencia artificial.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* TRUST & AUTHENTICITY PILLARS */}
-        <section id="autenticidad" className="py-12 bg-[#0c0c0c] border-b border-[#1c1c1c]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div className="flex flex-col items-center p-4">
-                <ShieldCheck className="w-6 h-6 text-[#c5a059] mb-2" />
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-                  Tiendas Oficiales
-                </h4>
-                <p className="text-[11px] text-[#888] mt-1">
-                  Redirección directa y segura a Tory Burch y Atorie
-                </p>
-              </div>
+        {/* 8. NEWSLETTER: LAS SEÑALES DE VIVIENNE */}
+        <section className="py-20 sm:py-24 border-b border-[#B08D57]/20">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold block mb-2">
+              CORRESPONDENCIA PRIVADA
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#2B1D14] font-light tracking-tight mb-3">
+              Las señales de Vivienne
+            </h2>
+            <p className="font-serif italic text-base sm:text-lg text-[#6B1F2A] mb-8">
+              Una señal a la semana. Sin ruido. Con elegancia.
+            </p>
 
-              <div className="flex flex-col items-center p-4">
-                <Truck className="w-6 h-6 text-[#c5a059] mb-2" />
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-                  Envíos Globales
-                </h4>
-                <p className="text-[11px] text-[#888] mt-1">
-                  Cobertura internacional con packaging oficial de lujo
+            {newsletterSent ? (
+              <div className="p-6 bg-[#FAF5EC] border border-[#B08D57]/40 rounded-sm animate-fade-in max-w-md mx-auto">
+                <p className="font-serif italic text-base text-[#6B1F2A]">
+                  &ldquo;Anotada. Le avisaré cuando haya algo digno de su tiempo.&rdquo;
                 </p>
+                <span className="font-script text-xl text-[#B08D57] block mt-1">— Vivienne</span>
               </div>
-
-              <div className="flex flex-col items-center p-4">
-                <RotateCcw className="w-6 h-6 text-[#c5a059] mb-2" />
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-                  Garantía & Devoluciones
-                </h4>
-                <p className="text-[11px] text-[#888] mt-1">
-                  Respaldadas por las políticas oficiales de la firma
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center p-4">
-                <Sparkles className="w-6 h-6 text-[#c5a059] mb-2" />
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-                  Afiliado Verificado
-                </h4>
-                <p className="text-[11px] text-[#888] mt-1">
-                  Curaduría respaldada mediante red oficial ShopMy
-                </p>
-              </div>
-            </div>
+            ) : (
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Su correo electrónico..."
+                  className="flex-1 bg-[#FAF5EC] border border-[#B08D57]/40 focus:border-[#2B1D14] rounded-sm px-4 py-3 text-xs text-[#2B1D14] placeholder-[#9C8F85] focus:outline-none font-sans"
+                />
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-[10px] uppercase tracking-[0.2em] rounded-sm transition cursor-pointer"
+                >
+                  Quiero las señales
+                </button>
+              </form>
+            )}
           </div>
         </section>
       </main>
 
-      {/* QUICK VIEW MODAL (DIALOG) */}
-      <Dialog open={!!selectedProduct} onOpenChange={(open) => !open && setSelectedProduct(null)}>
-        {selectedProduct && (
-          <DialogContent className="max-w-3xl bg-[#111] border border-[#2b2b2b] text-[#f5f2eb] p-0 overflow-hidden sm:rounded-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 max-h-[85vh] overflow-y-auto">
-              {/* Product Image */}
-              <div className="relative aspect-square md:aspect-auto md:min-h-[420px] bg-[#1a1a1a]">
-                <Image
-                  src={selectedProduct.image}
-                  alt={selectedProduct.title}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-                {selectedProduct.badge && (
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-[#c5a059]/40 text-[#c5a059] text-[10px] font-bold uppercase tracking-wider">
-                    {selectedProduct.badge}
-                  </span>
-                )}
-              </div>
+      {/* 9. FOOTER & COMPREHENSIVE DISCLOSURES */}
+      <footer className="bg-[#FAF5EC] border-t border-[#B08D57]/30 py-16 text-[#7C6E65]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-10 pb-12 border-b border-[#B08D57]/20">
+            <div className="md:col-span-5 space-y-3">
+              <span className="font-serif text-2xl text-[#2B1D14] font-normal block">
+                El Armario de Vivienne
+              </span>
+              <p className="font-serif italic text-xs text-[#6B1F2A]">
+                Lo que Vivienne usa. Lo que Vivienne cuenta.
+              </p>
+              <p className="text-xs text-[#7C6E65] leading-relaxed max-w-sm">
+                Boutique editorial de piezas de inversión. Los enlaces de productos dirigen a tiendas oficiales de cada diseñador.
+              </p>
+            </div>
 
-              {/* Product Details & Purchase CTA */}
-              <div className="p-6 flex flex-col justify-between">
-                <div>
-                  <DialogHeader className="p-0 text-left">
-                    <div className="flex items-center justify-between text-xs uppercase tracking-widest text-[#888] mb-1">
-                      <span className="text-[#c5a059] font-bold">{selectedProduct.brand}</span>
-                      <span>{selectedProduct.categoryLabel}</span>
-                    </div>
-                    <DialogTitle className="font-serif text-xl sm:text-2xl text-white font-normal leading-tight mb-2">
-                      {selectedProduct.shortTitle}
-                    </DialogTitle>
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <span className="text-xl font-bold text-white">{selectedProduct.price}</span>
-                      <span className="text-[11px] text-[#777] uppercase tracking-wider">En tienda oficial</span>
-                    </div>
-                  </DialogHeader>
+            <div className="md:col-span-4 space-y-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[#2B1D14] font-bold">
+                Aviso de Afiliación & Precios
+              </p>
+              <p className="text-xs text-[#7C6E65] leading-relaxed">
+                Algunos enlaces son de afiliado: si compra desde ellos, puedo recibir una comisión, sin costo extra para usted. Precios y disponibilidad según la tienda oficial del vendedor.
+              </p>
+            </div>
 
-                  {/* Vivianne's Styling Note */}
-                  <div className="p-3.5 rounded-xl bg-[#171717] border border-[#262626] mb-4">
-                    <p className="text-[11px] uppercase tracking-wider text-[#c5a059] font-medium mb-1 flex items-center gap-1.5">
-                      <Sparkles className="w-3 h-3" />
-                      <span>Nota de Estilismo de Vivianne</span>
-                    </p>
-                    <p className="text-xs text-[#cfc8b8] leading-relaxed italic">
-                      &ldquo;{STYLING_NOTES[selectedProduct.id] || selectedProduct.description}&rdquo;
-                    </p>
-                  </div>
+            <div className="md:col-span-3 space-y-2">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-[#2B1D14] font-bold">
+                Navegación
+              </p>
+              <ul className="space-y-1.5 text-xs">
+                <li>
+                  <a href="#catalogo" className="hover:text-[#2B1D14] transition">
+                    Ver el armario
+                  </a>
+                </li>
+                <li>
+                  <a href="#looks" className="hover:text-[#2B1D14] transition">
+                    Los looks de Vivi
+                  </a>
+                </li>
+                <li>
+                  <a href="#domingo" className="hover:text-[#2B1D14] transition">
+                    El Domingo de los Números
+                  </a>
+                </li>
+                <li>
+                  <Link href="/privacy-policy" className="hover:text-[#2B1D14] transition">
+                    Política de privacidad
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
 
-                  {/* Bullet Specs */}
-                  {selectedProduct.details && selectedProduct.details.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-[11px] uppercase tracking-wider text-[#888] font-semibold mb-2">
-                        Especificaciones & Confección:
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-[#9C8F85]">
+            <p>© {new Date().getFullYear()} El Armario de Vivienne · Todos los derechos reservados.</p>
+            <p>Vivienne Wolski es un personaje creado con inteligencia artificial.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* PRODUCT QUICK VIEW MODAL */}
+      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+        <DialogContent className="max-w-2xl bg-[#F7F1E6] border border-[#B08D57]/40 text-[#2B1D14] p-0 overflow-hidden rounded-sm shadow-2xl">
+          {selectedProduct && (
+            <div>
+              <div className="grid sm:grid-cols-2">
+                {/* Product Image */}
+                <div className="relative aspect-[4/5] bg-[#E8DFD0] overflow-hidden">
+                  <Image
+                    src={selectedProduct.image}
+                    alt={selectedProduct.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover object-center"
+                  />
+                  {selectedProduct.badge && (
+                    <span className="absolute top-3 left-3 px-2 py-0.5 rounded-xs bg-[#F7F1E6]/95 border border-[#B08D57]/40 text-[9px] font-mono uppercase tracking-widest text-[#2B1D14]">
+                      {selectedProduct.badge}
+                    </span>
+                  )}
+                </div>
+
+                {/* Product Details */}
+                <div className="p-6 sm:p-7 flex flex-col justify-between space-y-4">
+                  <div>
+                    <DialogHeader className="p-0 text-left mb-3">
+                      <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold">
+                        {selectedProduct.brand}
                       </p>
-                      <ul className="space-y-1.5 text-xs text-[#bbb]">
-                        {selectedProduct.details.map((detail, idx) => (
+                      <DialogTitle className="font-serif text-xl sm:text-2xl text-[#2B1D14] font-normal leading-tight mt-1">
+                        {selectedProduct.name}
+                      </DialogTitle>
+                      <p className="font-mono text-sm text-[#6B1F2A] font-bold mt-1">
+                        {selectedProduct.price}
+                      </p>
+                    </DialogHeader>
+
+                    {/* Nota de Vivi */}
+                    <div className="border-l-2 border-[#B08D57] pl-3 py-1 mb-4 bg-[#FAF5EC]">
+                      <p className="font-serif italic text-xs text-[#6B1F2A] leading-relaxed">
+                        &ldquo;{selectedProduct.viviNote}&rdquo;
+                      </p>
+                      <span className="font-script text-base text-[#B08D57] block text-right">
+                        — Vivi
+                      </span>
+                    </div>
+
+                    {/* Lo que ella ve (3 bullets) */}
+                    <div className="space-y-2 mb-4">
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-[#7C6E65] font-semibold">
+                        Lo que ella ve:
+                      </p>
+                      <ul className="space-y-1.5 text-xs text-[#2B1D14]">
+                        {selectedProduct.bullets.map((b, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <Check className="w-3.5 h-3.5 text-[#c5a059] shrink-0 mt-0.5" />
-                            <span>{detail}</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#B08D57] shrink-0 mt-1.5" />
+                            <span className="leading-snug">{b}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                  )}
-                </div>
 
-                {/* Bottom Actions */}
-                <div className="pt-4 border-t border-[#222] space-y-2.5">
-                  <a
-                    href={selectedProduct.affiliateUrl}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className="w-full py-3 px-4 rounded-xl bg-[#c5a059] hover:bg-white text-black text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(197,160,89,0.3)]"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Ir a Comprar en Tienda Oficial ↗</span>
-                  </a>
+                    {/* Cómo lo lleva */}
+                    <div className="mb-4">
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-[#7C6E65] font-semibold mb-1">
+                        Cómo lo lleva:
+                      </p>
+                      <p className="text-xs text-[#7C6E65] italic leading-relaxed">
+                        {selectedProduct.howSheWearsIt}
+                      </p>
+                    </div>
+                  </div>
 
-                  <div className="flex items-center justify-between text-[11px] text-[#777] px-1">
-                    <button
-                      onClick={() => toggleWishlist(selectedProduct.id)}
-                      className="hover:text-[#c5a059] transition flex items-center gap-1.5 cursor-pointer"
+                  {/* CTAs */}
+                  <div className="space-y-2 pt-2 border-t border-[#B08D57]/20">
+                    <a
+                      href={selectedProduct.affiliateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="w-full py-3 bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-[10px] uppercase tracking-[0.18em] transition text-center flex items-center justify-center gap-1.5 rounded-sm shadow-sm"
                     >
-                      <Heart
-                        className={`w-3.5 h-3.5 ${
-                          wishlist.includes(selectedProduct.id) ? 'fill-[#c5a059] text-[#c5a059]' : ''
-                        }`}
-                      />
-                      <span>
-                        {wishlist.includes(selectedProduct.id)
-                          ? 'En tu clóset guardado'
-                          : 'Guardar en mi selección'}
-                      </span>
-                    </button>
-                    <span className="flex items-center gap-1">
-                      <Info className="w-3 h-3" />
-                      Vía enlace ShopMy
-                    </span>
+                      <span>Ver en la tienda</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+
+                    <div className="flex items-center justify-between text-[10px] text-[#7C6E65] pt-1">
+                      <button
+                        onClick={() => toggleWishlist(selectedProduct.id)}
+                        className="hover:text-[#6B1F2A] flex items-center gap-1 font-mono uppercase tracking-wider cursor-pointer"
+                      >
+                        <Heart
+                          className={`w-3 h-3 ${
+                            wishlist.includes(selectedProduct.id)
+                              ? 'fill-[#6B1F2A] text-[#6B1F2A]'
+                              : ''
+                          }`}
+                        />
+                        <span>
+                          {wishlist.includes(selectedProduct.id)
+                            ? 'Guardada'
+                            : 'Guardar para después'}
+                        </span>
+                      </button>
+
+                      <span className="font-mono text-[9px]">Tienda Oficial</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </DialogContent>
-        )}
+          )}
+        </DialogContent>
       </Dialog>
 
-      {/* WISHLIST DRAWER (SHEET) */}
+      {/* WISHLIST SLIDE-OVER SHEET */}
       <Sheet open={isWishlistOpen} onOpenChange={setIsWishlistOpen}>
-        <SheetContent className="bg-[#101010] border-l border-[#262626] text-white p-6 w-full sm:max-w-md flex flex-col justify-between">
+        <SheetContent className="bg-[#F7F1E6] border-l border-[#B08D57]/40 text-[#2B1D14] w-full sm:max-w-md p-6 flex flex-col justify-between">
           <div>
-            <SheetHeader className="text-left mb-6">
-              <SheetTitle className="text-xl font-serif text-white flex items-center gap-2">
-                <Heart className="w-5 h-5 text-[#c5a059] fill-[#c5a059]" />
-                <span>Tu Clóset Guardado</span>
+            <SheetHeader className="text-left pb-4 border-b border-[#B08D57]/20">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-[#B08D57]">
+                Colección Personal
+              </span>
+              <SheetTitle className="font-serif text-2xl text-[#2B1D14] font-normal">
+                Piezas Guardadas
               </SheetTitle>
-              <SheetDescription className="text-xs text-[#888]">
-                Piezas seleccionadas para tu próxima compra de inversión.
+              <SheetDescription className="text-xs text-[#7C6E65]">
+                {wishlist.length === 0
+                  ? 'Aún no ha seleccionado piezas para su archivo personal.'
+                  : `${wishlist.length} pieza(s) apartada(s) para su posterior revisión.`}
               </SheetDescription>
             </SheetHeader>
 
-            {wishlistProducts.length === 0 ? (
-              <div className="text-center py-12 text-[#666]">
-                <Heart className="w-10 h-10 text-[#333] mx-auto mb-3" />
-                <p className="text-xs">Aún no has guardado piezas en tu clóset.</p>
-                <p className="text-[11px] text-[#555] mt-1">
-                  Haz clic en el corazón de cualquier artículo para conservarlo aquí.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
-                {wishlistProducts.map((p) => (
+            <div className="py-6 space-y-4 overflow-y-auto max-h-[60vh] pr-1">
+              {wishlistProducts.length === 0 ? (
+                <div className="text-center py-12 text-[#7C6E65]">
+                  <Bookmark className="w-8 h-8 text-[#B08D57]/50 mx-auto mb-3" />
+                  <p className="font-serif italic text-sm text-[#6B1F2A]">
+                    &ldquo;Aquí todavía no hay nada, querida.&rdquo;
+                  </p>
+                  <p className="text-xs mt-1">Guarde piezas desde el catálogo para tenerlas a mano.</p>
+                </div>
+              ) : (
+                wishlistProducts.map((p) => (
                   <div
                     key={p.id}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-[#161616] border border-[#222]"
+                    className="flex items-center gap-3 p-3 bg-[#FAF5EC] border border-[#B08D57]/30 rounded-sm"
                   >
-                    <div className="relative w-14 h-14 rounded-lg bg-[#222] overflow-hidden shrink-0">
-                      <Image src={p.image} alt={p.shortTitle} fill className="object-cover" />
+                    <div className="relative w-14 h-16 bg-[#E8DFD0] rounded-xs overflow-hidden shrink-0">
+                      <Image src={p.image} alt={p.name} fill className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] text-[#c5a059] uppercase tracking-wider">{p.brand}</p>
-                      <h4 className="text-xs font-medium text-white truncate">{p.shortTitle}</h4>
-                      <p className="text-xs font-bold text-[#e5dec9]">{p.price}</p>
+                      <p className="font-mono text-[9px] text-[#B08D57] uppercase">{p.brand}</p>
+                      <h4 className="font-serif text-xs text-[#2B1D14] font-medium truncate">
+                        {p.name}
+                      </h4>
+                      <p className="font-mono text-[10px] text-[#6B1F2A] font-bold">{p.price}</p>
                     </div>
-                    <div className="flex flex-col gap-1.5 shrink-0">
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
                       <a
                         href={p.affiliateUrl}
                         target="_blank"
                         rel="noopener noreferrer sponsored"
-                        className="p-2 rounded-lg bg-[#c5a059] text-black hover:bg-white transition"
-                        title="Comprar en tienda oficial"
+                        className="px-2.5 py-1 bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-[9px] uppercase tracking-wider rounded-xs"
                       >
-                        <ExternalLink className="w-3.5 h-3.5" />
+                        Tienda ↗
                       </a>
                       <button
                         onClick={() => toggleWishlist(p.id)}
-                        className="p-1 text-[#666] hover:text-red-400 transition"
-                        title="Eliminar de guardados"
+                        className="text-[10px] text-[#7C6E65] hover:text-[#6B1F2A]"
                       >
-                        <X className="w-3.5 h-3.5" />
+                        Quitar
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
 
-          {wishlistProducts.length > 0 && (
-            <div className="pt-4 border-t border-[#222]">
-              <div className="flex items-center justify-between text-xs text-[#aaa] mb-3">
-                <span>Total estimado ({wishlistProducts.length} piezas):</span>
-                <span className="text-sm font-bold text-[#c5a059]">
-                  ${wishlistProducts.reduce((acc, curr) => acc + curr.priceNum, 0)} USD
-                </span>
-              </div>
-              <button
-                onClick={() => {
-                  setWishlist([]);
-                  localStorage.removeItem('vivianne_wishlist');
-                }}
-                className="w-full py-2 rounded-lg border border-[#2a2a2a] text-[#888] hover:text-white text-xs uppercase tracking-wider transition cursor-pointer"
-              >
-                Vaciar Guardados
-              </button>
-            </div>
-          )}
+          <div className="pt-4 border-t border-[#B08D57]/20 text-center">
+            <button
+              onClick={() => setIsWishlistOpen(false)}
+              className="w-full py-2.5 border border-[#2B1D14]/30 hover:border-[#2B1D14] text-[#2B1D14] font-mono text-[10px] uppercase tracking-[0.18em] rounded-sm transition"
+            >
+              Volver al armario
+            </button>
+          </div>
         </SheetContent>
       </Sheet>
-
-      {/* DEDICATED LUXURY FOOTER */}
-      <footer className="bg-[#050505] border-t border-[#1a1a1a] pt-16 pb-12 text-[#999]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-12 border-b border-[#181818]">
-            {/* Signature Brand */}
-            <div>
-              <p className="text-2xl font-serif tracking-[0.25em] text-[#faf7f0] uppercase font-light">
-                Vivianne Wolski
-              </p>
-              <p className="text-xs tracking-[0.3em] uppercase text-[#c5a059] font-medium mt-1">
-                The Curated Closet · Haute Selection
-              </p>
-              <p className="text-xs text-[#777] mt-3 max-w-md leading-relaxed">
-                Estilo personal, piezas de inversión y curaduría de autor. Cada prenda ha sido seleccionada por su excelencia en corte, confección y longevidad estética.
-              </p>
-            </div>
-
-            {/* Quick anchors */}
-            <div className="flex flex-wrap gap-8 text-xs uppercase tracking-widest text-[#bbb]">
-              <a href="#hero-look" className="hover:text-[#c5a059] transition">
-                Look de Portada
-              </a>
-              <a href="#closet-catalog" className="hover:text-[#c5a059] transition">
-                Todo el Clóset
-              </a>
-              <a href="#claves-estilo" className="hover:text-[#c5a059] transition">
-                Claves de Estilo
-              </a>
-              <button
-                onClick={() => setIsWishlistOpen(true)}
-                className="hover:text-[#c5a059] transition cursor-pointer"
-              >
-                Mi Clóset ({wishlist.length})
-              </button>
-            </div>
-          </div>
-
-          {/* Legal and Affiliate Disclosure */}
-          <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[11px] leading-relaxed text-[#666]">
-            <div className="max-w-2xl">
-              <p className="font-semibold text-[#888] uppercase tracking-wider mb-1">
-                Aviso de Transparencia & Afiliación ShopMy:
-              </p>
-              <p>
-                Vivianne Wolski es afiliada oficial del programa de creadores de ShopMy. Al hacer clic en los enlaces de compra y adquirir productos en las plataformas de Tory Burch LLC y Atorie, podemos percibir una comisión de afiliación sin ningún coste adicional para ti. Todos los pedidos, cobros, envíos internacionales y garantías son gestionados y ejecutados de forma directa y exclusiva por las tiendas oficiales de cada marca.
-              </p>
-            </div>
-
-            <div className="text-right text-[#555] shrink-0">
-              <p>© {new Date().getFullYear()} Vivianne Wolski.</p>
-              <p className="text-[10px] tracking-widest uppercase mt-0.5">Todos los derechos reservados.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

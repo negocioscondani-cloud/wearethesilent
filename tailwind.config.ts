@@ -20,6 +20,7 @@ export default {
         fraunces: ['"Fraunces"', 'serif'],
         work: ['"Work Sans"', 'sans-serif'],
         space: ['"Space Mono"', 'monospace'],
+        script: ['"Mrs Saint Delafield"', 'cursive'],
       },
       colors: {
         background: 'hsl(var(--background))',
