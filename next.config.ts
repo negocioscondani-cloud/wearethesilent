@@ -45,6 +45,24 @@ const nextConfig: NextConfig = {
         hostname: 'red-ibex-277532.hostingersite.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's7.toryburch.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'toryburch.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'd3sxx0v5qcg9oj.cloudfront.net',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

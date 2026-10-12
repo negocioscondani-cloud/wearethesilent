@@ -17,6 +17,8 @@ export default function Footer() {
   if (
     pathname.startsWith('/the-silent-studio-guide') || 
     pathname.startsWith('/manual') ||
+    pathname.startsWith('/vivianne') ||
+    pathname.startsWith('/closet') ||
     hiddenRoutes.includes(pathname)
   ) {
     return null;
