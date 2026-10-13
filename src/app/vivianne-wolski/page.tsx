@@ -21,6 +21,7 @@ import {
   SlidersHorizontal,
   Bookmark,
   Check,
+  Headphones,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -156,10 +157,10 @@ export default function VivianneWolskiPage() {
                 Los Looks
               </a>
               <a
-                href="#domingo"
+                href="#wolski-club"
                 className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
               >
-                El Domingo
+                Wolski Club
               </a>
               <a
                 href="#sobre-vivienne"
@@ -277,10 +278,10 @@ export default function VivianneWolskiPage() {
                     Ver el armario
                   </a>
                   <a
-                    href="#domingo"
+                    href="#wolski-club"
                     className="w-full sm:w-auto px-6 py-3.5 rounded-sm border border-[#B08D57]/60 hover:border-[#2B1D14] text-[#2B1D14] hover:text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.15em] transition duration-300 text-center"
                   >
-                    Ver el plan de números
+                    Entrar al Wolski Club
                   </a>
                 </div>
               </div>
@@ -288,15 +289,16 @@ export default function VivianneWolskiPage() {
           </div>
         </section>
 
-        {/* 4. FEATURED BAND: EL DOMINGO DE LOS NÚMEROS */}
-        <section id="domingo" className="py-14 sm:py-18 bg-[#FAF5EC] border-b border-[#B08D57]/20 relative">
+        {/* 4. FEATURED BAND: EL WOLSKI CLUB & EL DOMINGO DE LOS NÚMEROS */}
+        <section id="wolski-club" className="py-16 sm:py-20 bg-[#FAF5EC] border-b border-[#B08D57]/20 relative">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="border border-[#B08D57]/40 p-8 sm:p-10 bg-[#F7F1E6] rounded-sm shadow-sm relative">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div className="border border-[#B08D57]/40 p-8 sm:p-12 bg-[#F7F1E6] rounded-sm shadow-sm relative">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 pb-8 border-b border-[#B08D57]/20">
                 <div className="space-y-3 max-w-2xl">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold border-b border-[#B08D57]/40 pb-0.5">
-                      EL HÁBITO SEMANAL DE VIVIENNE
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold border border-[#B08D57]/30 bg-[#FAF5EC] px-2.5 py-1 rounded-xs">
+                      <Headphones className="w-3 h-3 text-[#6B1F2A]" />
+                      <span>{DOMINGO_DE_LOS_NUMEROS.badge}</span>
                     </span>
                     <span className="text-[#B08D57]">·</span>
                     <span className="font-mono text-[10px] text-[#6B1F2A] font-bold">
@@ -304,33 +306,56 @@ export default function VivianneWolskiPage() {
                     </span>
                   </div>
 
-                  <h2 className="font-serif text-2xl sm:text-3xl text-[#2B1D14] font-normal tracking-tight">
+                  <h2 className="font-serif text-3xl sm:text-4xl text-[#2B1D14] font-normal tracking-tight">
                     {DOMINGO_DE_LOS_NUMEROS.title}
                   </h2>
 
                   <p className="font-serif italic text-base sm:text-lg text-[#6B1F2A] leading-relaxed">
                     &ldquo;{DOMINGO_DE_LOS_NUMEROS.description}&rdquo;
                   </p>
-
-                  <p className="font-mono text-[10px] text-[#7C6E65] uppercase tracking-wider pt-1">
-                    {DOMINGO_DE_LOS_NUMEROS.label}
-                  </p>
                 </div>
 
-                <div className="shrink-0 w-full md:w-auto text-left md:text-right">
+                <div className="shrink-0 w-full lg:w-auto text-left lg:text-right">
                   <a
                     href={DOMINGO_DE_LOS_NUMEROS.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-7 py-3.5 bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.18em] rounded-sm transition duration-300 shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 w-full lg:w-auto px-8 py-4 bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] rounded-sm transition duration-300 shadow-md"
                   >
                     <span>{DOMINGO_DE_LOS_NUMEROS.buttonText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
-                  <p className="font-mono text-[9px] text-[#7C6E65] mt-2 text-center md:text-right">
-                    Acceso inmediato al sistema
+                  <p className="font-mono text-[9px] text-[#7C6E65] mt-2.5 text-center lg:text-right">
+                    Acceso inmediato a los audios y sistema
                   </p>
                 </div>
+              </div>
+
+              {/* 3 Pillars Grid: Carácter, Finanzas, Estilo */}
+              <div className="pt-8">
+                <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold mb-4 text-center sm:text-left">
+                  LOS TRES PILARES DEL WOLSKI CLUB
+                </p>
+                <div className="grid sm:grid-cols-3 gap-6">
+                  {DOMINGO_DE_LOS_NUMEROS.pillars.map((pillar, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 bg-[#FAF5EC] border border-[#B08D57]/25 rounded-xs space-y-1.5"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] text-[#6B1F2A] font-bold">0{idx + 1}.</span>
+                        <h4 className="font-serif text-base text-[#2B1D14] font-medium">{pillar.title}</h4>
+                      </div>
+                      <p className="text-xs text-[#7C6E65] leading-relaxed font-normal">
+                        {pillar.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="font-mono text-[10px] text-[#7C6E65] uppercase tracking-wider pt-6 text-center sm:text-left">
+                  {DOMINGO_DE_LOS_NUMEROS.label}
+                </p>
               </div>
             </div>
           </div>
@@ -754,8 +779,8 @@ export default function VivianneWolskiPage() {
                   </a>
                 </li>
                 <li>
-                  <a href="#domingo" className="hover:text-[#2B1D14] transition">
-                    El Domingo de los Números
+                  <a href="#wolski-club" className="hover:text-[#2B1D14] transition">
+                    El Wolski Club (Audios)
                   </a>
                 </li>
                 <li>

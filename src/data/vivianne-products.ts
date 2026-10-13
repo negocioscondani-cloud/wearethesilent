@@ -319,13 +319,21 @@ export const VIVIANNE_LOOKS: VivianneLook[] = [
   }
 ];
 
-export const DOMINGO_DE_LOS_NUMEROS = {
-  title: 'El Domingo de los Números',
-  subtitle: 'El hábito financiero semanal de Vivienne',
+export const WOLSKI_CLUB = {
+  title: 'El Wolski Club · El Domingo de los Números',
+  badge: 'CÍRCULO PRIVADO · FORMACIÓN EN AUDIOS',
+  subtitle: 'Carácter, finanzas y estilo en su oído',
   price: '9',
   priceFormatted: '$9 USD',
-  description: 'Una hora, su café y sus cuentas sobre la mesa. Eso es todo lo que pido. Saldrá del domingo sabiendo adónde va cada peso. No es magia, querida: es costumbre.',
-  label: 'Contenido educativo, no es asesoría financiera.',
-  buttonText: 'Ver el plan',
-  link: 'https://thesilentstudiomk.gumroad.com/l/influencerIA-mk?wanted=true'
+  description: 'El carácter, las finanzas y el estilo no se improvisan: se entrenan. En el Wolski Club le entrego formaciones en audio, directas y sin rodeos, para dominar sus cuentas cada domingo, vestir con criterio propio y sostener una presencia inquebrantable. Sin ruido ni promesas vacías: rigor y elegancia.',
+  pillars: [
+    { title: 'El Carácter', desc: 'Templanza, criterio propio y la serenidad de quien no necesita validación externa.' },
+    { title: 'Las Finanzas', desc: 'El Domingo de los Números: una hora semanal para saber con exactitud adónde va cada peso.' },
+    { title: 'El Estilo', desc: 'Aprender a vestir con intención, siluetas que perduran y prendas de inversión.' }
+  ],
+  label: 'Formación en audio y contenido educativo, no es asesoría financiera.',
+  buttonText: 'Unirme al Wolski Club',
+  link: 'https://thesilentstudiomk.gumroad.com/l/ltfbhx?_gl=1*1tcifm9*_ga*NjE2MjM1ODAzLjE3ODk2ODQ1NDk.*_ga_6LJN6D94N6*czE3OTE4NTM3NDUkbzE4JGcxJHQxNzkxODUzNzQ1JGo2MCRsMCRoMA..'
 };
+
+export const DOMINGO_DE_LOS_NUMEROS = WOLSKI_CLUB;
