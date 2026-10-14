@@ -31,6 +31,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from '@/components/ui/sheet';
+import AudioPlaylist from '@/components/vivianne/audio-playlist';
 
 export default function VivianneWolskiPage() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -384,6 +385,11 @@ export default function VivianneWolskiPage() {
                 <p className="font-mono text-[10px] text-[#7C6E65] uppercase tracking-wider pt-6 text-center sm:text-left">
                   {DOMINGO_DE_LOS_NUMEROS.label}
                 </p>
+              </div>
+
+              {/* SPOTIFY-STYLE AUDIO PLAYLIST */}
+              <div className="pt-10 mt-8 border-t border-[#B08D57]/25">
+                <AudioPlaylist />
               </div>
             </div>
           </div>
