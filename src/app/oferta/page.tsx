@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 import { submitApplication } from '../actions';
+import { recordConsent } from '@/lib/consent-tracker';
 import { 
   ArrowRight,
   Play,
@@ -1002,6 +1003,9 @@ export default function OfertaPage() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState([]);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [legalConsentError, setLegalConsentError] = useState('');
 
   const handleSelectPackage = (pkgId: string) => {
     setSelectedPackage(pkgId);
@@ -1060,6 +1064,31 @@ export default function OfertaPage() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!termsAccepted || !privacyAccepted) {
+      setLegalConsentError(
+        language === 'es'
+          ? 'Debe marcar ambas casillas legales obligatorias de forma separada antes de enviar su solicitud.'
+          : 'You must check both mandatory legal checkboxes separately before submitting your request.'
+      );
+      return;
+    }
+    setLegalConsentError('');
+
+    // Traceable consent audit record (AEPD / RGPD)
+    recordConsent({
+      userIdentifier: formData.email || formData.phone || formData.businessName,
+      formOrigin: '/oferta (Formulario de Cotización)',
+      termsAccepted: true,
+      privacyAccepted: true,
+      extraMetadata: {
+        businessName: formData.businessName,
+        province: formData.province,
+        phone: formData.phone,
+        packageChoice: selectedPackage,
+      },
+    });
+
     setFormSubmitted(true);
     setSpotsLeft(prev => Math.max(1, prev - 1));
 
@@ -1971,6 +2000,109 @@ export default function OfertaPage() {
                         </p>
                       </div>
 
+                      {/* TWO SEPARATE MANDATORY LEGAL CHECKBOXES (RGPD / AEPD BLINDAJE) */}
+                      <div className="pt-2 space-y-3 border-t border-white/10">
+                        <span className="block font-mono text-[10px] uppercase text-[#C5A059] font-bold tracking-wider">
+                          {language === 'es' ? "Consentimiento Legal Obligatorio (Marcado Individual)" : "Mandatory Legal Consent (Individual Check)"}
+                        </span>
+
+                        {/* Checkbox 1: Terms */}
+                        <label className={`flex items-start gap-3 p-3 rounded border cursor-pointer transition ${
+                          termsAccepted ? 'border-[#C5A059]/60 bg-[#C5A059]/5' : 'border-white/15 bg-black/30 hover:border-white/30'
+                        }`}>
+                          <input
+                            type="checkbox"
+                            checked={termsAccepted}
+                            onChange={(e) => {
+                              setTermsAccepted(e.target.checked);
+                              if (e.target.checked && privacyAccepted) setLegalConsentError('');
+                            }}
+                            className="mt-0.5 w-4 h-4 rounded border-zinc-600 accent-[#C5A059] cursor-pointer shrink-0"
+                          />
+                          <span className="text-xs text-zinc-300 leading-snug">
+                            {language === 'es' ? (
+                              <>
+                                He leído y acepto expresamente los{' '}
+                                <Link 
+                                  href="/terms-of-service" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[#C5A059] underline hover:text-amber-300 font-medium inline-flex items-center gap-1"
+                                >
+                                  Términos y Condiciones de Uso y Contratación
+                                </Link>{' '}
+                                (versión v2.1-2026-10), incluyendo el alcance de producción audiovisual con IA. *
+                              </>
+                            ) : (
+                              <>
+                                I have read and expressly accept the{' '}
+                                <Link 
+                                  href="/terms-of-service" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[#C5A059] underline hover:text-amber-300 font-medium inline-flex items-center gap-1"
+                                >
+                                  Terms and Conditions of Use & Contracting
+                                </Link>{' '}
+                                (v2.1-2026-10), including the AI audiovisual scope. *
+                              </>
+                            )}
+                          </span>
+                        </label>
+
+                        {/* Checkbox 2: Privacy */}
+                        <label className={`flex items-start gap-3 p-3 rounded border cursor-pointer transition ${
+                          privacyAccepted ? 'border-[#C5A059]/60 bg-[#C5A059]/5' : 'border-white/15 bg-black/30 hover:border-white/30'
+                        }`}>
+                          <input
+                            type="checkbox"
+                            checked={privacyAccepted}
+                            onChange={(e) => {
+                              setPrivacyAccepted(e.target.checked);
+                              if (e.target.checked && termsAccepted) setLegalConsentError('');
+                            }}
+                            className="mt-0.5 w-4 h-4 rounded border-zinc-600 accent-[#C5A059] cursor-pointer shrink-0"
+                          />
+                          <span className="text-xs text-zinc-300 leading-snug">
+                            {language === 'es' ? (
+                              <>
+                                He leído y consiento el tratamiento de mis datos de contacto conforme a la{' '}
+                                <Link 
+                                  href="/privacy-policy" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[#C5A059] underline hover:text-amber-300 font-medium inline-flex items-center gap-1"
+                                >
+                                  Política de Privacidad
+                                </Link>{' '}
+                                (RGPD/LOPDGDD) para el envío de propuestas y soporte directo. *
+                              </>
+                            ) : (
+                              <>
+                                I have read and consent to the processing of my contact details according to the{' '}
+                                <Link 
+                                  href="/privacy-policy" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[#C5A059] underline hover:text-amber-300 font-medium inline-flex items-center gap-1"
+                                >
+                                  Privacy Policy
+                                </Link>{' '}
+                                (GDPR) for project proposals and direct production support. *
+                              </>
+                            )}
+                          </span>
+                        </label>
+
+                        {/* Legal Error Banner if attempted submit without both */}
+                        {legalConsentError && (
+                          <div className="p-3 bg-red-950/50 border border-red-500/50 rounded text-xs text-red-200 flex items-center gap-2 animate-in fade-in">
+                            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                            <span>{legalConsentError}</span>
+                          </div>
+                        )}
+                      </div>
+
                       <div className="pt-4 flex justify-between">
                         <button 
                           type="button" 
@@ -2072,6 +2204,28 @@ export default function OfertaPage() {
             {language === 'es' ? 'WhatsApp Directo: ' : 'Direct WhatsApp: '} 
             <a href={`https://wa.me/${WHATSAPP_NUM}`} className="text-[#C5A059] underline hover:text-white">+506 6419-4111</a>
           </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-6 pt-6 mt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] text-zinc-500">
+          <Link href="/terms-of-service" className="hover:text-[#C5A059] transition underline underline-offset-4">
+            Términos y Condiciones
+          </Link>
+          <span>·</span>
+          <Link href="/privacy-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+            Política de Privacidad
+          </Link>
+          <span>·</span>
+          <Link href="/cookie-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+            Política de Cookies
+          </Link>
+          <span>·</span>
+          <Link href="/refund-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+            Política de Reembolso
+          </Link>
+          <span>·</span>
+          <Link href="/legal-notice" className="hover:text-[#C5A059] transition underline underline-offset-4">
+            Aviso Legal LSSI-CE
+          </Link>
         </div>
       </footer>
 

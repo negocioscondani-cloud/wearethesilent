@@ -1292,9 +1292,10 @@ export default function DomingoPage() {
         </div>
 
         {/* FOOTER */}
-        <footer className="text-center font-sans-ui text-[10.5px] text-[#A9842C] tracking-[0.1em] uppercase mt-12 pt-6 border-t border-[#E8DCC0]">
+        <footer className="text-center font-sans-ui text-[10.5px] text-[#A9842C] tracking-[0.1em] uppercase mt-12 pt-6 border-t border-[#E8DCC0] space-y-3">
           <div>THE SILENT STUDIO · VIVIENNE WOLSKI</div>
-          <div className="flex items-center justify-center gap-4 mt-2 text-[10px] text-[#7C8B6B] lowercase">
+          
+          <div className="flex flex-wrap items-center justify-center gap-3 text-[10px] text-[#7C8B6B] lowercase">
             <Link href="/vivianne-wolski" className="hover:text-[#6E1B2C] transition">
               boutique
             </Link>
@@ -1311,6 +1312,32 @@ export default function DomingoPage() {
               wolski club
             </a>
           </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 text-[9.5px] text-[#9C8F85] uppercase tracking-wider pt-2 border-t border-[#E8DCC0]/40">
+            <Link href="/terms-of-service" className="hover:text-[#6E1B2C] transition underline">
+              términos y condiciones
+            </Link>
+            <span>·</span>
+            <Link href="/privacy-policy" className="hover:text-[#6E1B2C] transition underline">
+              privacidad (rgpd)
+            </Link>
+            <span>·</span>
+            <Link href="/cookie-policy" className="hover:text-[#6E1B2C] transition underline">
+              cookies
+            </Link>
+            <span>·</span>
+            <Link href="/refund-policy" className="hover:text-[#6E1B2C] transition underline">
+              reembolso y retracto
+            </Link>
+            <span>·</span>
+            <Link href="/legal-notice" className="hover:text-[#6E1B2C] transition underline">
+              aviso legal (lssi-ce)
+            </Link>
+          </div>
+
+          <p className="text-[9px] text-[#9C8F85] normal-case max-w-xl mx-auto leading-relaxed pt-1">
+            Vivienne Wolski es un personaje ficcional creado con inteligencia artificial. Los ejercicios y reflexiones de este compañero ritual tienen fines de desarrollo personal y de hábitos; no constituyen asesoramiento financiero, contable ni fiscal profesional.
+          </p>
         </footer>
       </main>
     </div>

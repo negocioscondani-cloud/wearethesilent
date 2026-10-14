@@ -69,6 +69,13 @@ export default function SuiteOfferCheckoutPage() {
           <CardFooter className="flex flex-col items-stretch gap-4">
             <div className="flex justify-center" dangerouslySetInnerHTML={{ __html: paypalHtml }} />
              <p className="text-xs text-muted-foreground text-center">*{t('suiteOffer.bundle.note')}*</p>
+             <div className="text-[11px] text-muted-foreground text-center space-x-2 pt-2 border-t font-mono">
+               <Link href="/terms-of-service" className="underline hover:text-foreground">Términos</Link>
+               <span>·</span>
+               <Link href="/privacy-policy" className="underline hover:text-foreground">Privacidad</Link>
+               <span>·</span>
+               <Link href="/refund-policy" className="underline hover:text-foreground">Reembolso</Link>
+             </div>
           </CardFooter>
         </Card>
       </div>

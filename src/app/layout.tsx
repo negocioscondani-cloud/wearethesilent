@@ -10,6 +10,7 @@ import { LanguageProvider } from '@/context/language-context';
 import { FirebaseClientProvider } from '@/context/firebase-client-context';
 import Script from 'next/script';
 import { ThemeProvider } from '@/context/theme-provider';
+import { CookieConsentBanner } from '@/components/legal/cookie-consent-banner';
 
 const BASE_URL = 'https://wearethesilent.com';
 
@@ -97,8 +98,13 @@ export default function RootLayout({
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied'
+            });
             gtag('js', new Date());
-
             gtag('config', 'G-EZKL60C1EM');
           `}
         </Script>
@@ -148,6 +154,7 @@ export default function RootLayout({
             </LanguageProvider>
           </FirebaseClientProvider>
           <Toaster />
+          <CookieConsentBanner />
         </ThemeProvider>
       </body>
     </html>

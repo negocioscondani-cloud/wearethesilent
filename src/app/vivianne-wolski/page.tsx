@@ -834,17 +834,43 @@ export default function VivianneWolskiPage() {
                   </a>
                 </li>
                 <li>
+                  <Link href="/terms-of-service" className="hover:text-[#2B1D14] transition">
+                    Términos y condiciones
+                  </Link>
+                </li>
+                <li>
                   <Link href="/privacy-policy" className="hover:text-[#2B1D14] transition">
                     Política de privacidad
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cookie-policy" className="hover:text-[#2B1D14] transition">
+                    Política de cookies
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/refund-policy" className="hover:text-[#2B1D14] transition">
+                    Política de reembolso
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/legal-notice" className="hover:text-[#2B1D14] transition">
+                    Aviso legal (LSSI-CE)
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-[#9C8F85]">
+          <div className="pt-6 border-t border-[#B08D57]/20 text-[10px] text-[#7C6E65] leading-relaxed">
+            <p>
+              <strong>Aviso de Afiliación Comercial (FTC / Directiva UE):</strong> Los enlaces salientes de compra en este armario utilizan enlaces de afiliación de ShopMy y marcas oficiales. Al comprar a través de ellos, podemos percibir una comisión editorial sin coste adicional para usted. Las transacciones, pagos, garantías y envíos se completan exclusivamente en las plataformas externas oficiales.
+            </p>
+          </div>
+
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-[#9C8F85]">
             <p>© {new Date().getFullYear()} El Armario de Vivienne · Todos los derechos reservados.</p>
-            <p>Vivienne Wolski es un personaje creado con inteligencia artificial.</p>
+            <p>Vivienne Wolski es un personaje creado con inteligencia artificial · Fines de entretenimiento e inspiración de estilo.</p>
           </div>
         </div>
       </footer>

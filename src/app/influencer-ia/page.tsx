@@ -947,6 +947,29 @@ export default function InfluencerIAPage() {
             </p>
           </div>
         </div>
+
+        {/* LEGAL LINKS ROW */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 mt-6 border-t border-zinc-900 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-mono text-zinc-500">
+          <Link href="/terms-of-service" className="hover:text-amber-300 transition underline underline-offset-4">
+            Términos y Condiciones
+          </Link>
+          <span>·</span>
+          <Link href="/privacy-policy" className="hover:text-amber-300 transition underline underline-offset-4">
+            Política de Privacidad
+          </Link>
+          <span>·</span>
+          <Link href="/cookie-policy" className="hover:text-amber-300 transition underline underline-offset-4">
+            Política de Cookies
+          </Link>
+          <span>·</span>
+          <Link href="/refund-policy" className="hover:text-amber-300 transition underline underline-offset-4">
+            Política de Reembolso (Retracto)
+          </Link>
+          <span>·</span>
+          <Link href="/legal-notice" className="hover:text-amber-300 transition underline underline-offset-4">
+            Aviso Legal LSSI-CE
+          </Link>
+        </div>
       </footer>
 
       {/* STICKY BOTTOM BAR FOR MOBILE */}
