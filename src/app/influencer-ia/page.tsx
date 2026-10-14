@@ -48,55 +48,64 @@ export default function InfluencerIAPage() {
       num: "01",
       title: "Espía a la competencia",
       icon: Eye,
-      desc: "Estudia quién ya lo logró en tu nicho y deja que el mercado te diga exactamente qué formatos, temas y ganchos están funcionando hoy."
+      chapter: "Paso 01",
+      topic: "Mapeo de mercado y benchmarking de formatos activos."
     },
     {
       num: "02",
       title: "Crea tus personajes",
       icon: Users,
-      desc: "Diseña 3 personajes en 3 nichos diferentes en paralelo. Porque la audiencia y los números deciden qué funciona, no tus suposiciones."
+      chapter: "Paso 02",
+      topic: "Estructura de perfiles y selección de nichos estratégicos."
     },
     {
       num: "03",
       title: "Genera sus fotos",
       icon: Sparkles,
-      desc: "Aprende la técnica exacta para fijar un rostro consistente en cada imagen, ángulo, ropa y locación sin deformaciones faciales."
+      chapter: "Paso 03",
+      topic: "Fijación facial y consistencia visual en cada toma."
     },
     {
       num: "04",
       title: "Planifica el contenido",
       icon: Layers,
-      desc: "Estructura un calendario sostenible para que tu personaje no publique 3 videos aislados y desaparezca del algoritmo de Instagram o TikTok."
+      chapter: "Paso 04",
+      topic: "Calendario editorial y estructuras de retención de audiencia."
     },
     {
       num: "05",
       title: "Dales una voz",
       icon: Mic,
-      desc: "La mitad de la personalidad está en cómo suena. Selección y clonación de audio sin pausas robóticas para retener la atención."
+      chapter: "Paso 05",
+      topic: "Identidad sonora, tono auditivo y síntesis de audio."
     },
     {
       num: "06",
       title: "Dales vida (Video)",
       icon: Film,
-      desc: "Une imagen, locación, guion y voz en video dinámico vertical 9:16 con fluidez de movimientos y acabado cinematográfico."
+      chapter: "Paso 06",
+      topic: "Producción audiovisual y movimiento en video vertical 9:16."
     },
     {
       num: "07",
       title: "Lanza las cuentas",
       icon: Zap,
-      desc: "Configura perfiles claros, transparentes y profesionales desde el primer día para generar confianza y evitar penalizaciones."
+      chapter: "Paso 07",
+      topic: "Estructura profesional y lanzamiento de perfiles oficiales."
     },
     {
       num: "08",
       title: "Corona al ganador",
       icon: TrendingUp,
-      desc: "Los datos objetivos (retención, alcance y comentarios) eligen cuál de los 3 personajes se queda y se escala a diario."
+      chapter: "Paso 08",
+      topic: "Métricas de validación y selección del personaje definitivo."
     },
     {
       num: "09",
       title: "Empieza a ganar dinero",
       icon: DollarSign,
-      desc: "Tu primer producto no es un PDF que nadie lee: es una oferta digital que resuelve un dolor real que tu audiencia muere por comprar."
+      chapter: "Paso 09",
+      topic: "Diseño de tu primera oferta digital y monetización."
     }
   ];
 
@@ -383,37 +392,47 @@ export default function InfluencerIAPage() {
         </div>
       </section>
 
-      {/* THE 9 STEPS TIMELINE */}
+      {/* THE 9 STEPS TIMELINE / TEMARIO DE LA GUÍA */}
       <section id="los-9-pasos" className="py-20 relative">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs uppercase tracking-[0.25em] text-amber-400 font-bold">Hoja de Ruta Completa</span>
-            <h2 className="text-3xl sm:text-5xl font-black text-white">Los 9 Pasos del Método</h2>
-            <p className="text-zinc-400 text-sm sm:text-base">Sin saltos, sin tecnicismos innecesarios. Un recorrido lineal diseñado para que cualquier persona pueda ejecutarlo.</p>
+          <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+            <span className="text-xs uppercase tracking-[0.25em] text-amber-400 font-bold">Índice del Método</span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white">Temario de la Guía</h2>
+            <p className="text-zinc-400 text-sm sm:text-base">Los 9 capítulos desarrollados paso a paso en 34 páginas, directo al grano y sin información de relleno.</p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {steps.map((step) => {
               const Icon = step.icon;
               return (
-                <article 
+                <div 
                   key={step.num}
-                  className="p-6 rounded-2xl bg-zinc-900/60 border border-zinc-800 hover:border-[#D4AF37]/50 transition-all hover:-translate-y-1 group"
+                  className="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800/80 hover:border-[#D4AF37]/50 transition-all hover:-translate-y-0.5 group flex flex-col justify-between"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-400 mb-4 group-hover:bg-amber-400 group-hover:text-black transition-colors">
-                    {step.num}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-[11px] font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">
+                      {step.chapter}
+                    </span>
+                    <Icon className="w-4 h-4 text-zinc-500 group-hover:text-amber-400 transition-colors" />
                   </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Icon className="w-4 h-4 text-amber-400" />
-                    <h3 className="text-lg font-bold text-white">{step.title}</h3>
+                  <div>
+                    <h3 className="text-base font-bold text-white group-hover:text-amber-200 transition-colors mb-1.5">
+                      {step.title}
+                    </h3>
+                    <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                      {step.topic}
+                    </p>
                   </div>
-                  <p className="text-sm text-zinc-400 leading-relaxed">
-                    {step.desc}
-                  </p>
-                </article>
+                </div>
               );
             })}
+          </div>
+
+          {/* Curriculum Index Note */}
+          <div className="mt-8 p-4 rounded-xl bg-black/50 border border-zinc-800/80 text-center text-xs text-zinc-400 max-w-xl mx-auto flex items-center justify-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span>Los prompts, configuraciones y fórmulas de ejecución de cada paso están explicados al detalle dentro de la guía.</span>
           </div>
 
         </div>
@@ -463,6 +482,49 @@ export default function InfluencerIAPage() {
               <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black via-black/60 to-transparent text-xs text-zinc-300">
                 <span className="text-amber-300 font-bold">Acabado Comercial</span> · Calidad de estudio
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CASE STUDY: VIVIENNE WOLSKI & EL WOLSKI CLUB */}
+      <section className="py-12 bg-gradient-to-b from-zinc-950 via-zinc-900/40 to-zinc-950 border-t border-zinc-800/80">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="p-6 sm:p-8 rounded-3xl bg-zinc-900/60 border border-[#D4AF37]/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-amber-950/20">
+            <div className="flex items-center gap-4 sm:gap-5">
+              <img 
+                src="/images/vivianne-wolski-hero.jpg" 
+                alt="Vivienne Wolski" 
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-[#D4AF37]/50 shrink-0 shadow-md"
+              />
+              <div className="space-y-1">
+                <span className="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">
+                  Caso Real de Estudio · Creado con este Método
+                </span>
+                <h3 className="text-lg sm:text-xl font-bold text-white">
+                  Vivienne Wolski (82 años)
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-lg">
+                  Personaje de inteligencia artificial con presencia digital, boutique curada y su círculo privado en audios: <strong className="text-amber-300">El Wolski Club</strong>.
+                </p>
+              </div>
+            </div>
+            <div className="shrink-0 flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+              <Link 
+                href="/vivianne-wolski" 
+                className="w-full sm:w-auto text-center px-4 py-2.5 rounded-xl border border-zinc-700 text-xs font-semibold text-zinc-300 hover:text-white hover:border-zinc-500 transition"
+              >
+                Ver Tienda
+              </Link>
+              <a 
+                href="https://thesilentstudiomk.gumroad.com/l/ltfbhx" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-full sm:w-auto text-center px-5 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#F3E5AB] text-black text-xs font-bold uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-1.5"
+              >
+                <span>Conocer el Club</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
         </div>
