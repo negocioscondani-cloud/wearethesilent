@@ -1299,6 +1299,10 @@ export default function DomingoPage() {
               boutique
             </Link>
             <span>·</span>
+            <a href="https://www.instagram.com/vivianne_wolski/" target="_blank" rel="noopener noreferrer" className="hover:text-[#6E1B2C] transition">
+              instagram
+            </a>
+            <span>·</span>
             <Link href="/domingo.html" className="hover:text-[#6E1B2C] transition">
               versión descargable
             </Link>
