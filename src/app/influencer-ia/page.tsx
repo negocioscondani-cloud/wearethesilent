@@ -38,7 +38,7 @@ export default function InfluencerIAPage() {
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'InitiateCheckout', {
         content_name: 'Influencer IA: de cero a tu primera venta',
-        value: 27.00,
+        value: 47.00,
         currency: 'USD'
       });
     }
@@ -144,9 +144,9 @@ export default function InfluencerIAPage() {
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
           <span className="text-amber-300 font-bold uppercase tracking-wider text-[11px]">Oferta de Lanzamiento:</span>
           <span className="text-zinc-200">Acceso completo con descuento inmediato</span>
-          <span className="line-through text-zinc-400">$37 USD</span>
+          <span className="line-through text-zinc-400">$67 USD</span>
           <span className="text-[#F3E5AB] font-bold text-sm px-2 py-0.5 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40">
-            $27 USD
+            $47 USD
           </span>
           <span className="text-zinc-400 text-[11px] hidden sm:inline">· Acceso digital vitalicio</span>
         </div>
@@ -212,7 +212,7 @@ export default function InfluencerIAPage() {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-black uppercase tracking-wider text-black bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] hover:brightness-110 rounded-xl shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <span>Quiero crear mi Influencer IA</span>
-                  <span className="bg-black/10 px-2 py-0.5 rounded text-sm">$27 USD</span>
+                  <span className="bg-black/10 px-2 py-0.5 rounded text-sm">$47 USD</span>
                   <ArrowRight className="w-5 h-5" />
                 </a>
 
@@ -282,8 +282,8 @@ export default function InfluencerIAPage() {
                       <p className="text-zinc-400 text-[11px]">34 páginas de estrategia directa</p>
                     </div>
                     <div className="text-right">
-                      <span className="line-through text-zinc-500 text-[11px] mr-1">$37</span>
-                      <span className="text-amber-300 font-extrabold text-sm">$27 USD</span>
+                      <span className="line-through text-zinc-500 text-[11px] mr-1">$67</span>
+                      <span className="text-amber-300 font-extrabold text-sm">$47 USD</span>
                     </div>
                   </div>
 
@@ -839,10 +839,10 @@ export default function InfluencerIAPage() {
             {/* Price Display */}
             <div className="py-4">
               <div className="text-zinc-500 text-sm font-semibold">
-                PRECIO REGULAR: <span className="line-through">$37 USD</span>
+                PRECIO REGULAR: <span className="line-through">$67 USD</span>
               </div>
               <div className="text-4xl sm:text-6xl font-black text-white mt-1">
-                <span className="text-amber-400">$27 USD</span>
+                <span className="text-amber-400">$47 USD</span>
               </div>
               <div className="text-xs text-amber-200/80 font-medium mt-1">
                 Pago único · Acceso vitalicio · Sin mensualidades
@@ -953,8 +953,8 @@ export default function InfluencerIAPage() {
       <aside aria-label="Acceso rápido móvil" className="fixed bottom-0 inset-x-0 bg-black/95 border-t border-[#D4AF37]/40 p-3 sm:hidden z-40 backdrop-blur-lg flex items-center justify-between gap-3">
         <div>
           <span className="text-[10px] uppercase text-zinc-400 tracking-wider block">Lanzamiento</span>
-          <span className="text-amber-300 font-extrabold text-base">$27 USD</span>
-          <span className="line-through text-zinc-500 text-xs ml-1">$37</span>
+          <span className="text-amber-300 font-extrabold text-base">$47 USD</span>
+          <span className="line-through text-zinc-500 text-xs ml-1">$67</span>
         </div>
         <a 
           href={GUMROAD_CHECKOUT_URL}
