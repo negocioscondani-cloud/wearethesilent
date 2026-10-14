@@ -31,6 +31,7 @@ export default function Header() {
     pathname.startsWith('/manual') ||
     pathname.startsWith('/vivianne') ||
     pathname.startsWith('/closet') ||
+    pathname.startsWith('/domingo') ||
     hiddenRoutes.includes(pathname)
   ) {
     return null;

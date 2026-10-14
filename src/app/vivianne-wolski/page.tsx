@@ -156,6 +156,12 @@ export default function VivianneWolskiPage() {
               >
                 Los Looks
               </a>
+              <Link
+                href="/domingo"
+                className="font-serif text-xs uppercase tracking-[0.2em] text-[#6B1F2A] font-semibold hover:text-[#2B1D14] transition"
+              >
+                El Domingo
+              </Link>
               <a
                 href="#wolski-club"
                 className="font-serif text-xs uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition"
@@ -315,18 +321,27 @@ export default function VivianneWolskiPage() {
                   </p>
                 </div>
 
-                <div className="shrink-0 w-full lg:w-auto text-left lg:text-right">
+                <div className="shrink-0 w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col gap-3 text-left lg:text-right">
                   <a
                     href={DOMINGO_DE_LOS_NUMEROS.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 w-full lg:w-auto px-8 py-4 bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] rounded-sm transition duration-300 shadow-md"
+                    className="inline-flex items-center justify-center gap-2 w-full px-8 py-3.5 bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] rounded-sm transition duration-300 shadow-md text-center"
                   >
                     <span>{DOMINGO_DE_LOS_NUMEROS.buttonText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
-                  <p className="font-mono text-[9px] text-[#7C6E65] mt-2.5 text-center lg:text-right">
-                    Acceso inmediato a los audios y sistema
+
+                  <Link
+                    href="/domingo"
+                    className="inline-flex items-center justify-center gap-2 w-full px-8 py-3.5 border border-[#B08D57] hover:border-[#6B1F2A] bg-[#FAF5EC] hover:bg-white text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.18em] rounded-sm transition duration-300 text-center"
+                  >
+                    <span>Abrir Compañero Web</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#B08D57]" />
+                  </Link>
+
+                  <p className="font-mono text-[9px] text-[#7C6E65] text-center lg:text-right">
+                    Acceso inmediato a los audios y herramienta interactiva
                   </p>
                 </div>
               </div>
@@ -777,6 +792,11 @@ export default function VivianneWolskiPage() {
                   <a href="#looks" className="hover:text-[#2B1D14] transition">
                     Los looks de Vivi
                   </a>
+                </li>
+                <li>
+                  <Link href="/domingo" className="hover:text-[#2B1D14] transition font-medium text-[#6B1F2A]">
+                    El Domingo de los Números (Compañero)
+                  </Link>
                 </li>
                 <li>
                   <a href="#wolski-club" className="hover:text-[#2B1D14] transition">

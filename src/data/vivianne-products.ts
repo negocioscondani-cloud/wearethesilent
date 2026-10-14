@@ -333,7 +333,9 @@ export const WOLSKI_CLUB = {
   ],
   label: 'Formación en audio y contenido educativo, no es asesoría financiera.',
   buttonText: 'Unirme al Wolski Club',
-  link: 'https://thesilentstudiomk.gumroad.com/l/ltfbhx'
+  link: 'https://thesilentstudiomk.gumroad.com/l/ltfbhx',
+  companionLink: '/domingo',
+  companionButtonText: 'Abrir Compañero Interactivo'
 };
 
 export const DOMINGO_DE_LOS_NUMEROS = WOLSKI_CLUB;

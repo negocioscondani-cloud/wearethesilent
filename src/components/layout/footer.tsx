@@ -19,6 +19,7 @@ export default function Footer() {
     pathname.startsWith('/manual') ||
     pathname.startsWith('/vivianne') ||
     pathname.startsWith('/closet') ||
+    pathname.startsWith('/domingo') ||
     hiddenRoutes.includes(pathname)
   ) {
     return null;
