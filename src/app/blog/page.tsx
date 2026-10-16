@@ -95,32 +95,6 @@ export default function BlogPage() {
 
   return (
     <div className="container max-w-6xl mx-auto py-8 md:py-16 animate-in fade-in duration-500 px-5 space-y-10">
-      {/* Top Back & Ecosystem Navigation Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/10">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xs bg-zinc-900 hover:bg-[#C5A059] text-zinc-100 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-xs uppercase tracking-wider font-bold transition shadow-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>{language === 'es' ? 'Volver al Inicio' : 'Back to Home'}</span>
-        </Link>
-
-        <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono">
-          <Link
-            href="/oferta"
-            className="px-3.5 py-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#C5A059]/50 text-zinc-200 transition"
-          >
-            {language === 'es' ? 'Servicios Video IA (₡30.000 / $60)' : 'AI Video Services (₡30,000 / $60)'}
-          </Link>
-          <Link
-            href="/influencer-ia"
-            className="px-3.5 py-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#C5A059]/50 text-zinc-200 transition"
-          >
-            {language === 'es' ? 'Guía Influencer IA ($47)' : 'AI Guide ($47)'}
-          </Link>
-        </div>
-      </div>
-
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/30 font-mono text-[10px] tracking-[0.2em] uppercase text-[#C5A059] font-bold">

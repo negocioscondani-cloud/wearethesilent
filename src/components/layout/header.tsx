@@ -41,25 +41,27 @@ export default function Header() {
   const isBlogPost = pathname.startsWith('/blog/') && pathname !== '/blog';
 
   const mainNavLinks = [
-    { href: '/', label: language === 'es' ? 'Inicio' : 'Home' },
     { href: '/oferta', label: language === 'es' ? 'Servicios Video IA' : 'AI Video Services' },
-    { href: '/influencer-ia', label: language === 'es' ? 'Guía Influencer IA' : 'AI Influencer Guide' },
+    { href: '/influencer-ia', label: language === 'es' ? 'Guía $47' : '$47 Guide' },
     { href: '/blog', label: t('header.blog') },
     { href: '/vivianne-wolski', label: 'Vivienne Wolski' },
     { href: '/contact', label: t('header.contact') },
   ];
 
-  const mobileNavLinks = [...mainNavLinks];
+  const mobileNavLinks = [
+    { href: '/', label: language === 'es' ? 'Inicio' : 'Home' },
+    ...mainNavLinks,
+  ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0A0D0E]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[#C5A059]/25 bg-[#0A0D0E]/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 md:px-8 gap-3">
         {/* Left: Explicit Back Button + Brand */}
-        <div className="flex items-center gap-2.5 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {isBlogPost ? (
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs bg-white/5 hover:bg-[#C5A059] text-zinc-200 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-[11px] uppercase tracking-wider font-semibold transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-[#C5A059] text-[#E5DEC9] hover:text-black border border-[#C5A059]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>{language === 'es' ? 'Volver al Blog' : 'Back to Blog'}</span>
@@ -67,18 +69,18 @@ export default function Header() {
           ) : (
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs bg-white/5 hover:bg-[#C5A059] text-zinc-200 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-[11px] uppercase tracking-wider font-semibold transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-[#C5A059] text-[#E5DEC9] hover:text-black border border-[#C5A059]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>{language === 'es' ? 'Inicio' : 'Home'}</span>
+              <span>{language === 'es' ? 'Volver al Inicio' : 'Back to Home'}</span>
             </Link>
           )}
 
           <Link
             href="/"
-            className="font-headline text-base sm:text-xl tracking-wider uppercase text-white hover:text-[#C5A059] transition hidden xs:inline-block"
+            className="font-fraunces font-bold text-lg sm:text-2xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition hidden sm:inline-block"
           >
-            {t('header.brand')}
+            The Silent<span className="text-[#D4AF6A]">.</span>
           </Link>
         </div>
 
