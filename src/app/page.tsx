@@ -264,33 +264,42 @@ export default function Home() {
               <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block" />
             </div>
 
-            <h1 className="silent-fade-up-2 font-fraunces font-bold text-4xl sm:text-6xl lg:text-[68px] leading-[1.08] mb-8 text-[#F7F4ED] tracking-tight">
-              {language === 'es' ? (
-                <>
-                  Influencers IA y videos de{' '}
-                  <span className="italic font-normal bg-gradient-to-r from-[#E6CDA3] via-[#FFF0CE] to-[#C8A161] bg-clip-text text-transparent">
-                    alto impacto
-                  </span>{' '}
-                  que detienen el scroll y{' '}
-                  <span className="italic font-normal bg-gradient-to-r from-[#E6CDA3] via-[#FFF0CE] to-[#C8A161] bg-clip-text text-transparent">
-                    convierten
-                  </span>
-                  .
-                </>
-              ) : (
-                <>
-                  AI Influencers and{' '}
-                  <span className="italic font-normal bg-gradient-to-r from-[#E6CDA3] via-[#FFF0CE] to-[#C8A161] bg-clip-text text-transparent">
-                    high-impact
-                  </span>{' '}
-                  videos that stop the scroll and{' '}
-                  <span className="italic font-normal bg-gradient-to-r from-[#E6CDA3] via-[#FFF0CE] to-[#C8A161] bg-clip-text text-transparent">
-                    convert
-                  </span>
-                  .
-                </>
-              )}
-            </h1>
+            <div className="relative inline-block">
+              <h1 className="silent-fade-up-2 silent-title-glow font-fraunces font-bold text-4xl sm:text-6xl lg:text-[68px] leading-[1.08] mb-6 text-[#F7F4ED] tracking-tight">
+                {language === 'es' ? (
+                  <>
+                    Influencers IA y videos de{' '}
+                    <span className="italic font-normal silent-gold-text-shimmer">
+                      alto impacto
+                    </span>{' '}
+                    que detienen el scroll y{' '}
+                    <span className="italic font-normal silent-gold-text-shimmer">
+                      convierten
+                    </span>
+                    .
+                  </>
+                ) : (
+                  <>
+                    AI Influencers and{' '}
+                    <span className="italic font-normal silent-gold-text-shimmer">
+                      high-impact
+                    </span>{' '}
+                    videos that stop the scroll and{' '}
+                    <span className="italic font-normal silent-gold-text-shimmer">
+                      convert
+                    </span>
+                    .
+                  </>
+                )}
+              </h1>
+
+              {/* Subtle centered luxury ornamental light line under the title */}
+              <div className="silent-fade-up-2 flex items-center justify-center gap-3 mb-7">
+                <span className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
+                <span className="w-1.5 h-1.5 rotate-45 bg-[#E5C88D] shadow-[0_0_12px_#C5A059]" />
+                <span className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
+              </div>
+            </div>
 
             <p className="silent-fade-up-3 text-[#C8C0B3] text-base sm:text-lg lg:text-[19px] max-w-2xl mx-auto mb-12 leading-[1.65] font-light">
               {text.subtitle}

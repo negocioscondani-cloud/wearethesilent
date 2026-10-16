@@ -1,39 +1,22 @@
 import React from 'react';
 
 /**
- * Renders the signature "The Silent" dark-luxury hero atmosphere with subtle,
- * modern kinetic animations:
- * - Deep obsidian-charcoal base
- * - Breathing warm champagne-gold sunflare & lens bokeh from the top-left corner
- * - Drifting bronze atmospheric mist clouds
- * - Continuously undulating multi-strand golden silk wave mesh (SVG bezier ribbons)
- *   with a subtle travelling golden light pulse
+ * Renders a quiet-luxury, high-fashion cinema spotlight atmosphere
+ * centered directly behind the Hero headline:
+ * - Deep obsidian-velvet vignette base
+ * - Soft breathing champagne-gold halo centered behind the title text
+ * - Ultra-subtle eclipse light rim & floating micro-bokeh dust around the headline
+ * - Animated liquid-gold metallic sheen utility for the headline's italic keywords
  */
 export function LuxuryHeroBackdrop() {
-  const wavePaths = Array.from({ length: 22 }, (_, i) => {
-    const offset = i * 5.5;
-    const yStart = 430 + i * 4.2;
-    const cp1x = 280 - i * 3;
-    const cp1y = 260 + i * 7;
-    const cp2x = 640 + i * 4;
-    const cp2y = 590 - i * 5.5;
-    const midX = 960;
-    const midY = 390 + i * 2.5;
-    const cp3x = 1220 - i * 3;
-    const cp3y = 210 + i * 8;
-    const cp4x = 1380 + i * 2;
-    const cp4y = 330 - i * 4;
-    const endX = 1440;
-    const endY = 250 + offset * 0.8;
-
-    const d = `M -40 ${yStart} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${midX} ${midY} C ${cp3x} ${cp3y}, ${cp4x} ${cp4y}, ${endX + 40} ${endY}`;
-    const opacity = (0.08 + Math.sin((i / 22) * Math.PI) * 0.24).toFixed(3);
-    const delay = (i * -0.35).toFixed(2);
-    const duration = (9 + (i % 5) * 1.4).toFixed(2);
-    const isHighlightStrand = i === 6 || i === 11 || i === 16;
-
-    return { d, opacity, delay, duration, isHighlightStrand, key: i };
-  });
+  const dustParticles = [
+    { top: '28%', left: '34%', size: 3, duration: '9s', delay: '0s', opacity: 0.35 },
+    { top: '34%', left: '64%', size: 2.5, duration: '11s', delay: '-2s', opacity: 0.3 },
+    { top: '45%', left: '29%', size: 2, duration: '13s', delay: '-4s', opacity: 0.25 },
+    { top: '42%', left: '70%', size: 3.5, duration: '10s', delay: '-1.5s', opacity: 0.32 },
+    { top: '24%', left: '52%', size: 2, duration: '12s', delay: '-5s', opacity: 0.28 },
+    { top: '52%', left: '46%', size: 2.5, duration: '14s', delay: '-3s', opacity: 0.22 },
+  ];
 
   return (
     <div
@@ -41,48 +24,55 @@ export function LuxuryHeroBackdrop() {
       className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0"
     >
       <style>{`
-        @keyframes silentWaveFloat {
+        @keyframes silentHaloBreathe {
           0%, 100% {
-            transform: translate3d(0px, 0px, 0px) scaleY(1);
+            opacity: 0.72;
+            transform: translate(-50%, -50%) scale(1);
           }
           50% {
-            transform: translate3d(-14px, -12px, 0px) scaleY(1.035);
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.06);
           }
         }
-        @keyframes silentWaveStrand {
+        @keyframes silentCorePulse {
           0%, 100% {
-            transform: translateY(0px);
+            opacity: 0.55;
+            transform: translate(-50%, -50%) scale(0.97);
           }
           50% {
-            transform: translateY(-9px);
+            opacity: 0.88;
+            transform: translate(-50%, -50%) scale(1.04);
           }
         }
-        @keyframes silentGoldPulse {
-          0% {
-            stroke-dashoffset: 1600;
-          }
-          100% {
-            stroke-dashoffset: -1600;
-          }
-        }
-        @keyframes silentFlareBreathe {
+        @keyframes silentHorizonSweep {
           0%, 100% {
-            opacity: 0.78;
-            transform: scale(1) translate3d(0, 0, 0);
+            opacity: 0.28;
+            transform: translateX(-50%) scaleX(0.92);
           }
           50% {
-            opacity: 0.96;
-            transform: scale(1.06) translate3d(8px, 6px, 0);
+            opacity: 0.55;
+            transform: translateX(-50%) scaleX(1.05);
           }
         }
-        @keyframes silentBokehFloat {
+        @keyframes silentDustDrift {
           0%, 100% {
             transform: translate3d(0, 0, 0) scale(1);
-            opacity: 0.45;
+            opacity: 0.18;
           }
           50% {
-            transform: translate3d(10px, -8px, 0) scale(1.08);
-            opacity: 0.8;
+            transform: translate3d(0, -14px, 0) scale(1.25);
+            opacity: 0.55;
+          }
+        }
+        @keyframes silentTextShimmer {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
           }
         }
         @keyframes silentFadeUp {
@@ -95,29 +85,36 @@ export function LuxuryHeroBackdrop() {
             transform: translate3d(0, 0, 0);
           }
         }
-        .silent-wave-group {
-          animation: silentWaveFloat 14s ease-in-out infinite;
-          transform-origin: center;
-          will-change: transform;
+        .silent-halo-outer {
+          animation: silentHaloBreathe 10s ease-in-out infinite;
+          will-change: transform, opacity;
         }
-        .silent-wave-strand {
-          animation-name: silentWaveStrand;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-          will-change: transform;
+        .silent-halo-core {
+          animation: silentCorePulse 7s ease-in-out infinite;
+          will-change: transform, opacity;
         }
-        .silent-wave-shimmer {
-          stroke-dasharray: 220 1380;
-          animation: silentGoldPulse 11s linear infinite;
+        .silent-horizon-beam {
+          animation: silentHorizonSweep 9s ease-in-out infinite;
+          will-change: transform, opacity;
         }
-        .silent-flare-breathe {
-          animation: silentFlareBreathe 9s ease-in-out infinite;
+        .silent-gold-text-shimmer {
+          background-image: linear-gradient(
+            110deg,
+            #D5B47B 0%,
+            #FFF3D6 28%,
+            #C5A059 52%,
+            #FFF5DC 74%,
+            #C8A161 100%
+          );
+          background-size: 220% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: silentTextShimmer 7.5s ease-in-out infinite;
+          filter: drop-shadow(0 0 24px rgba(197, 160, 89, 0.22));
         }
-        .silent-bokeh-1 {
-          animation: silentBokehFloat 8s ease-in-out infinite;
-        }
-        .silent-bokeh-2 {
-          animation: silentBokehFloat 11s ease-in-out infinite -3s;
+        .silent-title-glow {
+          text-shadow: 0 4px 42px rgba(197, 160, 89, 0.14);
         }
         .silent-fade-up-1 {
           animation: silentFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
@@ -133,109 +130,80 @@ export function LuxuryHeroBackdrop() {
         }
       `}</style>
 
-      {/* 1. Deep Obsidian & Warm Charcoal Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#171410_0%,#0B0A09_70%,#060606_100%)]" />
-
-      {/* 2. Top-Left Golden Sunflare / Lens Flare (Breathing) */}
+      {/* 1. Deep Obsidian & Velvet Charcoal Base */}
+      <div className="absolute inset-0 bg-[#080808]" />
       <div
-        className="silent-flare-breathe absolute -top-36 -left-36 w-[620px] h-[620px] rounded-full blur-3xl"
+        className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(circle, rgba(235,198,125,0.42) 0%, rgba(197,160,89,0.18) 38%, rgba(197,160,89,0.04) 65%, transparent 80%)',
-        }}
-      />
-      {/* Intense core flare at top-left */}
-      <div
-        className="silent-flare-breathe absolute -top-16 -left-16 w-[280px] h-[280px] rounded-full blur-2xl"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(255,236,190,0.55) 0%, rgba(212,175,95,0.22) 45%, transparent 75%)',
-        }}
-      />
-      {/* Diagonal sunbeam ray */}
-      <div
-        className="absolute -top-24 -left-24 w-[780px] h-[340px] origin-top-left rotate-[28deg] opacity-40 blur-2xl"
-        style={{
-          background:
-            'linear-gradient(90deg, rgba(242,213,152,0.40) 0%, rgba(197,160,89,0.12) 55%, transparent 100%)',
-        }}
-      />
-      {/* Subtle Lens Bokeh Rings along the flare axis */}
-      <div className="silent-bokeh-1 absolute top-[110px] left-[135px] w-14 h-14 rounded-full border border-[#E5C88D]/20 bg-[#E5C88D]/5 blur-[1px]" />
-      <div className="silent-bokeh-2 absolute top-[165px] left-[220px] w-8 h-8 rounded-full border border-[#E5C88D]/15 bg-[#E5C88D]/10 blur-[1px]" />
-      <div className="silent-bokeh-1 absolute top-[210px] left-[295px] w-20 h-20 rounded-full bg-[#C5A059]/5 blur-md" />
-
-      {/* 3. Atmospheric Warm Smoke / Mist Clouds */}
-      <div
-        className="silent-bokeh-2 absolute bottom-[-80px] left-[-60px] w-[560px] h-[340px] rounded-full opacity-35 blur-3xl"
-        style={{
-          background:
-            'radial-gradient(ellipse at center, rgba(185,148,82,0.28) 0%, rgba(90,72,42,0.10) 55%, transparent 80%)',
-        }}
-      />
-      <div
-        className="silent-bokeh-1 absolute top-[22%] right-[-80px] w-[520px] h-[320px] rounded-full opacity-25 blur-3xl"
-        style={{
-          background:
-            'radial-gradient(ellipse at center, rgba(197,160,89,0.22) 0%, rgba(120,96,55,0.08) 55%, transparent 80%)',
+            'radial-gradient(ellipse 75% 58% at 50% 40%, rgba(28, 23, 16, 0.92) 0%, rgba(11, 10, 9, 0.97) 62%, #070707 100%)',
         }}
       />
 
-      {/* 4. Flowing & Animated Golden Silk Wave Mesh SVG */}
-      <svg
-        viewBox="0 0 1440 680"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-        className="absolute inset-x-0 bottom-0 w-full h-[85%] opacity-95"
-      >
-        <defs>
-          <linearGradient id="silentGoldWave" x1="0%" y1="50%" x2="100%" y2="50%">
-            <stop offset="0%" stopColor="#8F7239" stopOpacity="0.15" />
-            <stop offset="22%" stopColor="#D8B982" stopOpacity="0.78" />
-            <stop offset="50%" stopColor="#C5A059" stopOpacity="0.42" />
-            <stop offset="82%" stopColor="#E6C994" stopOpacity="0.88" />
-            <stop offset="100%" stopColor="#9A7B3E" stopOpacity="0.2" />
-          </linearGradient>
-          <linearGradient id="silentGoldShimmer" x1="0%" y1="50%" x2="100%" y2="50%">
-            <stop offset="0%" stopColor="#FFF3D1" stopOpacity="0" />
-            <stop offset="50%" stopColor="#FFF3D1" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#FFF3D1" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <g className="silent-wave-group">
-          {wavePaths.map((p) => (
-            <React.Fragment key={p.key}>
-              <path
-                d={p.d}
-                stroke="url(#silentGoldWave)"
-                strokeWidth="0.9"
-                strokeOpacity={p.opacity}
-                strokeLinecap="round"
-                className="silent-wave-strand"
-                style={{
-                  animationDuration: `${p.duration}s`,
-                  animationDelay: `${p.delay}s`,
-                }}
-              />
-              {p.isHighlightStrand && (
-                <path
-                  d={p.d}
-                  stroke="url(#silentGoldShimmer)"
-                  strokeWidth="1.35"
-                  strokeLinecap="round"
-                  className="silent-wave-shimmer"
-                  style={{
-                    animationDelay: `${p.delay}s`,
-                  }}
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </g>
-      </svg>
+      {/* 2. Primary Champagne-Gold Spotlight Halo Centered Behind the Title */}
+      <div
+        className="silent-halo-outer absolute top-[41%] left-1/2 w-[680px] sm:w-[880px] h-[380px] sm:h-[440px] rounded-full blur-3xl"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(197, 160, 89, 0.20) 0%, rgba(216, 185, 130, 0.09) 38%, rgba(197, 160, 89, 0.02) 68%, transparent 82%)',
+        }}
+      />
 
-      {/* Bottom subtle fade into page body */}
+      {/* 3. Focused Warm Inner Core Directly Behind the Headline Words */}
+      <div
+        className="silent-halo-core absolute top-[39%] left-1/2 w-[360px] sm:w-[520px] h-[190px] sm:h-[230px] rounded-full blur-2xl"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(245, 220, 168, 0.22) 0%, rgba(197, 160, 89, 0.08) 50%, transparent 78%)',
+        }}
+      />
+
+      {/* 4. Subtle Architectural Eclipse Halo Framing the Title Centerpiece */}
+      <div
+        className="silent-halo-outer absolute top-[41%] left-1/2 w-[540px] sm:w-[760px] h-[300px] sm:h-[380px] rounded-full border border-[#C5A059]/[0.07]"
+        style={{
+          maskImage: 'radial-gradient(ellipse at center, black 35%, transparent 78%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 35%, transparent 78%)',
+        }}
+      />
+
+      {/* 5. Delicate Horizontal Golden Light Whisper Behind the Title Axis */}
+      <div
+        className="silent-horizon-beam absolute top-[39%] left-1/2 w-[320px] sm:w-[580px] h-px"
+        style={{
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(216, 185, 130, 0.26) 50%, transparent 100%)',
+          boxShadow: '0 0 28px 2px rgba(197, 160, 89, 0.18)',
+        }}
+      />
+
+      {/* 6. Ultra-Subtle Top Crown Ambient Glow */}
+      <div
+        className="absolute -top-28 left-1/2 -translate-x-1/2 w-[540px] h-[220px] rounded-full blur-3xl opacity-45"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(216, 185, 130, 0.16) 0%, transparent 75%)',
+        }}
+      />
+
+      {/* 7. Micro Champagne Dust Motes Floating Around the Title */}
+      {dustParticles.map((p, idx) => (
+        <span
+          key={idx}
+          className="absolute rounded-full bg-[#F3DFB6]"
+          style={{
+            top: p.top,
+            left: p.left,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            opacity: p.opacity,
+            boxShadow: '0 0 10px 2px rgba(216, 185, 130, 0.35)',
+            animation: `silentDustDrift ${p.duration} ease-in-out ${p.delay} infinite`,
+          }}
+        />
+      ))}
+
+      {/* 8. Bottom Seamless Fade Into Page Body */}
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0A0D0E] to-transparent" />
     </div>
   );
