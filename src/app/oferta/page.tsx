@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 import { submitApplication } from '../actions';
 import { recordConsent } from '@/lib/consent-tracker';
+import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
 import { 
   ArrowRight,
   Play,
@@ -1154,12 +1155,12 @@ export default function OfertaPage() {
     <div className="bg-[#0A0D0E] text-[#F5F3EF] font-sans antialiased selection:bg-[#C5A059] selection:text-black min-h-screen flex flex-col justify-between relative overflow-x-hidden">
       
       {/* Top Live Banner */}
-      <div id="top-banner" className="bg-[#12161A] text-white py-2.5 px-4 text-xs font-mono border-b border-white/10 sticky top-0 z-50 flex items-center justify-between">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#C5A059] animate-pulse"></span>
-            <span className="font-bold text-[#C5A059] uppercase tracking-wider">{text.banner.promo}</span>
-            <span className="hidden md:inline text-gray-300">
+      <div id="top-banner" className="bg-[#0B0A08] text-white py-2.5 px-4 text-[11px] font-mono border-b border-[#C5A059]/35 sticky top-0 z-50 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#D8B982] shadow-[0_0_8px_#D8B982] animate-pulse"></span>
+            <span className="font-bold text-[#D8B982] uppercase tracking-wider">{text.banner.promo}</span>
+            <span className="hidden md:inline text-[#C9C2B4]">
               {text.banner.spots.replace('{spots}', spotsLeft.toString())}
             </span>
           </div>
@@ -1167,7 +1168,7 @@ export default function OfertaPage() {
             href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsapp.prefill)}`} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-[#C5A059] hover:text-white underline font-bold transition flex items-center gap-1"
+            className="text-[#D8B982] hover:text-white underline underline-offset-4 font-medium transition flex items-center gap-1"
           >
             <span>{text.banner.cta}</span>
           </a>
@@ -1175,37 +1176,39 @@ export default function OfertaPage() {
       </div>
 
       {/* HEADER & HERO SECTION */}
-      <header className="pt-6 pb-16 relative">
-        <div className="max-w-6xl mx-auto px-6">
+      <header className="pt-8 pb-24 sm:pb-32 relative overflow-hidden">
+        <LuxuryHeroBackdrop />
+
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
           {/* Navbar */}
-          <nav className="flex flex-wrap justify-between items-center gap-4 pb-12 border-b border-white/10">
+          <nav className="flex flex-wrap justify-between items-center gap-4 pb-8">
             <div className="flex items-center gap-4">
+              <Link href="/" className="font-fraunces font-bold text-2xl sm:text-3xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition">
+                The Silent<span className="text-[#D4AF6A]">.</span>
+              </Link>
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xs bg-white/5 hover:bg-[#C5A059] text-zinc-200 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-xs uppercase tracking-wider font-bold transition"
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/[0.04] hover:bg-[#C5A059]/20 text-[#C9C2B4] hover:text-[#E5C88D] border border-white/10 hover:border-[#C5A059]/40 font-mono text-[10px] uppercase tracking-widest transition"
               >
-                <ChevronLeft className="w-4 h-4" />
-                <span>{language === 'es' ? 'Volver al Inicio' : 'Back to Home'}</span>
-              </Link>
-              <Link href="/" className="font-fraunces font-black text-2xl tracking-tight text-white hover:opacity-85 transition hidden sm:inline-block">
-                The Silent<span className="text-[#C5A059]">.</span>
+                <ChevronLeft className="w-3.5 h-3.5 text-[#D4AF6A]" />
+                <span>{language === 'es' ? 'Inicio' : 'Home'}</span>
               </Link>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Link href="/blog" className="hidden md:inline-block font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-[#C5A059] px-3 py-2 transition">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-7">
+              <Link href="/blog" className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition">
                 {language === 'es' ? 'Blog IA' : 'AI Blog'}
               </Link>
-              <Link href="/influencer-ia" className="hidden md:inline-block font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-[#C5A059] px-3 py-2 transition">
+              <Link href="/influencer-ia" className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition">
                 {language === 'es' ? 'Guía $47' : '$47 Guide'}
               </Link>
-              <a href="#estrategia" className="hidden sm:inline-block font-mono text-xs uppercase tracking-wider border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition">
+              <a href="#estrategia" className="font-mono text-xs uppercase tracking-[0.2em] text-[#E5DEC9] hover:text-[#E5C88D] transition">
                 {text.nav.strategy}
               </a>
               <a 
                 href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsapp.prefill)}`} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="font-mono text-xs uppercase tracking-wider bg-[#C5A059] text-black border border-[#C5A059] px-4 py-2 hover:bg-[#B38F48] transition flex items-center gap-1.5 font-bold"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-[#E8D5B0] border border-[#C5A059]/65 hover:border-[#E5C88D] bg-[#17130D]/70 hover:bg-[#C5A059]/15 px-6 py-2.5 rounded-full transition shadow-[0_0_20px_rgba(197,160,89,0.15)]"
               >
                 <span>{text.nav.whatsapp}</span>
               </a>
@@ -1213,25 +1216,40 @@ export default function OfertaPage() {
           </nav>
 
           {/* Hero Content */}
-          <div className="max-w-4xl mx-auto text-center pt-20 pb-10">
-            <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-4">
-              <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
-              {text.hero.badge}
+          <div className="max-w-4xl mx-auto text-center pt-14 sm:pt-20 pb-8">
+            <div className="font-mono text-[11px] sm:text-xs text-[#D8B982] tracking-[0.22em] uppercase inline-flex items-center justify-center gap-3 mb-6">
+              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block"></span>
+              <span>{text.hero.badge}</span>
+              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block"></span>
             </div>
-            <h1 className="font-fraunces font-bold text-4xl sm:text-6xl lg:text-7xl leading-tight mb-6 text-white tracking-tight">
-              {text.hero.title}
+
+            <h1 className="font-fraunces font-bold text-4xl sm:text-6xl lg:text-[68px] leading-[1.08] mb-8 text-[#F7F4ED] tracking-tight">
+              {language === 'es' ? (
+                <>
+                  Influencers IA y videos de{' '}
+                  <span className="italic font-normal text-[#DFC28E]">alto impacto</span> que detienen el scroll y{' '}
+                  <span className="italic font-normal text-[#DFC28E]">convierten</span>.
+                </>
+              ) : (
+                <>
+                  AI Influencers and{' '}
+                  <span className="italic font-normal text-[#DFC28E]">high-impact</span> videos that stop the scroll and{' '}
+                  <span className="italic font-normal text-[#DFC28E]">convert</span>.
+                </>
+              )}
             </h1>
-            <p className="text-gray-300 text-base sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+
+            <p className="text-[#C8C0B3] text-base sm:text-lg lg:text-[19px] max-w-2xl mx-auto mb-12 leading-[1.65] font-light">
               {text.hero.subtitle}
             </p>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
               <button 
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="inline-flex items-center justify-center gap-3 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs uppercase tracking-wider px-7 py-4.5 transition transform hover:-translate-y-0.5 shadow-lg font-bold"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-sans text-xs uppercase tracking-[0.16em] px-9 py-4 transition-all transform hover:-translate-y-0.5 shadow-[0_0_35px_rgba(216,185,130,0.42)] hover:shadow-[0_0_48px_rgba(216,185,130,0.65)] font-bold cursor-pointer"
               >
                 <span>{text.hero.ctaTest}</span>
               </button>
@@ -1243,9 +1261,10 @@ export default function OfertaPage() {
                 )}`}
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="inline-flex items-center justify-center gap-2 bg-transparent text-white font-mono text-xs uppercase tracking-wider px-6 py-4.5 border border-white/20 hover:border-white transition"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-[#12100D]/75 backdrop-blur-sm text-[#E6DEC8] hover:text-white font-sans text-xs uppercase tracking-[0.16em] px-8 py-4 border border-[#C5A059]/55 hover:border-[#E5C88D] transition-all"
               >
                 <span>{text.hero.ctaDemo}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#D8B982]" />
               </a>
             </div>
           </div>
@@ -2251,10 +2270,12 @@ export default function OfertaPage() {
         href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsapp.prefill)}`} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-2xl transition duration-300 flex items-center justify-center group" 
+        className="fixed bottom-6 right-6 z-40 bg-[#1B3324]/90 hover:bg-[#23422F] border border-[#6EE7B7]/45 text-[#E8D5B0] p-3.5 rounded-full shadow-[0_0_28px_rgba(74,222,128,0.45)] hover:shadow-[0_0_38px_rgba(74,222,128,0.65)] backdrop-blur-md transition duration-300 flex items-center justify-center group" 
         title={text.whatsapp.float}
       >
-        <Smartphone className="w-6 h-6 shrink-0 text-white" />
+        <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0 fill-current text-[#E8D5B0]" aria-hidden="true">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.448 5.581-1.464c1.908 1.253 4.19 1.983 6.627 1.983 6.627 0 12-5.373 12-12s-5.373-12-12-12z" />
+        </svg>
         <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-mono text-xs font-bold pl-0 group-hover:pl-2">
           {text.whatsapp.float}
         </span>

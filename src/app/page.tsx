@@ -3,25 +3,39 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
-import { ArrowUpRight, Video, BookOpen, Sparkles, Newspaper, Globe } from 'lucide-react';
+import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
+import { ArrowUpRight, ArrowRight, Video, BookOpen, Sparkles, Newspaper, Globe } from 'lucide-react';
+
+const WHATSAPP_NUM = '50664194111';
 
 const TRANSLATIONS = {
   es: {
-    badge: 'AGENCIA DE DIRECCIÓN CREATIVA & INTELIGENCIA GENERATIVA',
-    slogan: 'CREATORS OF THE POST-AI ERA',
+    banner: {
+      promo: 'CREATIVE INTELLIGENCE AGENCY:',
+      spots: 'Cupos limitados. Trabajamos con 10 empresas por ciclo (Quedan 7 disponibles)',
+      cta: 'Contacto Directo por WhatsApp →',
+    },
+    nav: {
+      services: 'Estrategia',
+      guide: 'Guía $47',
+      vivienne: 'Vivienne',
+      blog: 'Blog IA',
+      contact: 'Contacto',
+    },
+    badge: 'CREACIÓN DE INFLUENCERS IA • TECNOLOGÍA DE PUNTA',
     subtitle:
-      'Construimos influencers virtuales hiperrealistas, comerciales UGC de alta conversión y ecosistemas digitales que transforman la atención en ventas reales.',
-    primaryCta: 'Cotizar Videos con IA (₡30.000 / $60)',
-    secondaryCta: 'Leer Artículos Diarios de IA',
-    pillarsTitle: 'DESCUBRE EL ECOSISTEMA',
+      'Combinamos tecnología de vanguardia y dirección creativa innovadora para diseñar influencers con inteligencia artificial hiperrealistas. Creamos videos y anuncios listos para Meta Ads, contenido recurrente para redes sociales o páginas web, ya sea alrededor de tu propia marca o para ofrecer a tus clientes.',
+    primaryCta: 'COTIZAR MIS VIDEOS',
+    secondaryCta: 'HABLAR CON UN ESTRATEGA',
+    pillarsTitle: 'DESCUBRE EL ECOSISTEMA THE SILENT',
     pillars: [
       {
         num: '01',
         tag: 'SERVICIOS PARA MARCAS · DESDE ₡30.000 ($60 USD)',
         title: 'Producción de Videos & Anuncios IA',
-        desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar.',
+        desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar. Paquetes de 1, 10 (₡420.000) y 20 videos (₡750.000).',
         href: '/oferta',
-        cta: 'Ver formatos y precios',
+        cta: 'Ver formatos y tarifas',
         icon: 'video',
         highlight: true,
       },
@@ -61,22 +75,35 @@ const TRANSLATIONS = {
       domingo: 'El Domingo de los Números',
       skool: 'Comunidad Skool',
     },
+    whatsappPrefill:
+      'Hola! Me interesa conversar sobre la estrategia creativa y producción de videos con Influencers IA para mi negocio.',
     footer: 'The Silent Studio © Todos los derechos reservados.',
   },
   en: {
-    badge: 'CREATIVE DIRECTION & GENERATIVE INTELLIGENCE AGENCY',
-    slogan: 'CREATORS OF THE POST-AI ERA',
+    banner: {
+      promo: 'CREATIVE INTELLIGENCE AGENCY:',
+      spots: 'Limited slots. We work with 10 companies per cycle (7 available)',
+      cta: 'Direct WhatsApp Contact →',
+    },
+    nav: {
+      services: 'Strategy',
+      guide: '$47 Guide',
+      vivienne: 'Vivienne',
+      blog: 'AI Blog',
+      contact: 'Contact',
+    },
+    badge: 'AI INFLUENCER CREATION • CUTTING-EDGE TECH',
     subtitle:
-      'We build hyper-realistic virtual influencers, high-converting UGC commercials, and digital ecosystems that turn attention into measurable sales.',
-    primaryCta: 'Order AI Videos (₡30,000 / $60)',
-    secondaryCta: 'Read Daily AI Articles',
-    pillarsTitle: 'EXPLORE THE ECOSYSTEM',
+      'We combine cutting-edge technology and innovative creative direction to design hyper-realistic AI influencers. We produce ready-to-run videos for Meta Ads, recurring social media content, and landing pages — whether around your own brand or to offer your clients.',
+    primaryCta: 'QUOTE MY VIDEOS',
+    secondaryCta: 'TALK TO A STRATEGIST',
+    pillarsTitle: 'EXPLORE THE SILENT ECOSYSTEM',
     pillars: [
       {
         num: '01',
         tag: 'AGENCY SERVICES · FROM ₡30,000 ($60 USD)',
         title: 'AI Video & Ad Production',
-        desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included.',
+        desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included. Single, 10-Pack (₡420,000) and 20-Pack (₡750,000).',
         href: '/oferta',
         cta: 'View formats & pricing',
         icon: 'video',
@@ -118,6 +145,8 @@ const TRANSLATIONS = {
       domingo: 'El Domingo de los Números',
       skool: 'Skool Community',
     },
+    whatsappPrefill:
+      'Hi! I want to discuss creative strategy and AI Influencer video production for my business.',
     footer: 'The Silent Studio © All rights reserved.',
   },
 };
@@ -129,108 +158,165 @@ export default function Home() {
   const renderPillarIcon = (type: string) => {
     switch (type) {
       case 'video':
-        return <Video className="w-5 h-5 text-[#C5A059]" />;
+        return <Video className="w-5 h-5 text-[#D8B982]" />;
       case 'book':
-        return <BookOpen className="w-5 h-5 text-[#C5A059]" />;
+        return <BookOpen className="w-5 h-5 text-[#D8B982]" />;
       case 'sparkles':
-        return <Sparkles className="w-5 h-5 text-[#C5A059]" />;
+        return <Sparkles className="w-5 h-5 text-[#D8B982]" />;
       default:
-        return <Newspaper className="w-5 h-5 text-[#C5A059]" />;
+        return <Newspaper className="w-5 h-5 text-[#D8B982]" />;
     }
   };
 
   return (
-    <div className="bg-[#0A0D0E] text-[#F5F3EF] min-h-screen flex flex-col justify-between selection:bg-[#C5A059] selection:text-black relative font-sans">
-      {/* Subtle cinematic pattern overlay */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.02] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-
-      {/* Top Navigation Bar */}
-      <header className="max-w-6xl mx-auto w-full px-6 py-6 flex flex-wrap justify-between items-center gap-4 z-10 border-b border-white/5">
-        <div className="flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-[#C5A059]" />
-          <span className="font-mono text-[11px] tracking-[0.2em] text-[#C5A059] font-bold uppercase">
-            THE SILENT STUDIO
-          </span>
-        </div>
-
-        <nav
-          aria-label="Navegación principal"
-          className="hidden md:flex items-center gap-6 font-mono text-[11px] tracking-widest uppercase text-zinc-400"
-        >
-          <Link href="/oferta" className="hover:text-[#C5A059] transition">
-            Servicios IA
-          </Link>
-          <Link href="/influencer-ia" className="hover:text-[#C5A059] transition">
-            Guía $47
-          </Link>
-          <Link href="/vivianne-wolski" className="hover:text-[#C5A059] transition">
-            Caso Vivienne
-          </Link>
-          <Link href="/blog" className="hover:text-[#C5A059] transition text-white font-semibold">
-            Blog Diario IA
-          </Link>
-          <Link href="/galeria" className="hover:text-[#C5A059] transition">
-            {text.quickLinks.gallery}
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-white/10 hover:border-[#C5A059]/50 font-mono text-[10px] tracking-wider uppercase text-zinc-300 transition"
-            aria-label="Cambiar idioma"
+    <div className="bg-[#0A0D0E] text-[#F5F3EF] min-h-screen flex flex-col justify-between selection:bg-[#C5A059] selection:text-black relative font-sans overflow-x-hidden">
+      {/* Top Live Agency Bar (matches reference image) */}
+      <div className="bg-[#0B0A08] text-white py-2.5 px-4 text-[11px] font-mono border-b border-[#C5A059]/35 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#D8B982] shadow-[0_0_8px_#D8B982] animate-pulse" />
+            <span className="font-bold text-[#D8B982] uppercase tracking-wider">
+              {text.banner.promo}
+            </span>
+            <span className="hidden md:inline text-[#C9C2B4]">{text.banner.spots}</span>
+          </div>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#D8B982] hover:text-white underline underline-offset-4 font-medium transition flex items-center gap-1"
           >
-            <Globe className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>{language === 'es' ? 'ES / EN' : 'EN / ES'}</span>
-          </button>
+            <span>{text.banner.cta}</span>
+          </a>
         </div>
-      </header>
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-grow max-w-6xl mx-auto w-full px-6 py-14 sm:py-20 z-10 space-y-16">
-        {/* Hero Block */}
-        <section className="text-center max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C5A059]/10 border border-[#C5A059]/30 font-mono text-[10px] tracking-[0.2em] text-[#C5A059] uppercase font-bold">
-            <span>{text.badge}</span>
-          </div>
+      {/* HERO PORTADA SECTION */}
+      <section className="relative pt-8 pb-24 sm:pb-32 overflow-hidden">
+        <LuxuryHeroBackdrop />
 
-          <h1 className="font-fraunces font-bold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white leading-[1.08]">
-            The Silent Studio
-          </h1>
-
-          <p className="font-mono text-xs sm:text-sm tracking-[0.25em] text-[#C5A059] uppercase font-semibold">
-            {text.slogan}
-          </p>
-
-          <p className="text-zinc-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-light">
-            {text.subtitle}
-          </p>
-
-          <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          {/* Luxury Navbar */}
+          <header className="flex flex-wrap justify-between items-center gap-4 pb-8">
             <Link
-              href="/oferta"
-              className="w-full sm:w-auto px-7 py-4 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs uppercase font-bold tracking-widest transition inline-flex items-center justify-center gap-2 rounded-xs shadow-lg shadow-[#C5A059]/10"
+              href="/"
+              className="font-fraunces font-bold text-2xl sm:text-3xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition"
             >
-              <span>{text.primaryCta}</span>
-              <ArrowUpRight className="w-4 h-4" />
+              The Silent<span className="text-[#D4AF6A]">.</span>
             </Link>
-            <Link
-              href="/blog"
-              className="w-full sm:w-auto px-7 py-4 bg-white/5 hover:bg-white/10 border border-white/15 hover:border-[#C5A059]/50 text-white font-mono text-xs uppercase font-semibold tracking-widest transition inline-flex items-center justify-center gap-2 rounded-xs"
-            >
-              <Newspaper className="w-4 h-4 text-[#C5A059]" />
-              <span>{text.secondaryCta}</span>
-            </Link>
-          </div>
-        </section>
 
-        {/* 4-Pillar Discovery Grid */}
+            <nav
+              aria-label="Navegación principal"
+              className="flex flex-wrap items-center gap-4 sm:gap-7"
+            >
+              <Link
+                href="/oferta"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-[#E5DEC9] hover:text-[#E5C88D] transition"
+              >
+                {text.nav.services}
+              </Link>
+              <Link
+                href="/blog"
+                className="hidden sm:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
+              >
+                {text.nav.blog}
+              </Link>
+              <Link
+                href="/influencer-ia"
+                className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
+              >
+                {text.nav.guide}
+              </Link>
+              <Link
+                href="/vivianne-wolski"
+                className="hidden lg:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
+              >
+                {text.nav.vivienne}
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 hover:border-[#C5A059]/50 font-mono text-[10px] tracking-wider uppercase text-[#C9C2B4] transition"
+                aria-label="Cambiar idioma"
+              >
+                <Globe className="w-3 h-3 text-[#D8B982]" />
+                <span>{language === 'es' ? 'ES' : 'EN'}</span>
+              </button>
+
+              <a
+                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-[#E8D5B0] border border-[#C5A059]/65 hover:border-[#E5C88D] bg-[#17130D]/70 hover:bg-[#C5A059]/15 px-6 py-2.5 rounded-full transition shadow-[0_0_20px_rgba(197,160,89,0.15)]"
+              >
+                {text.nav.contact}
+              </a>
+            </nav>
+          </header>
+
+          {/* Hero Centerpiece */}
+          <div className="max-w-4xl mx-auto text-center pt-14 sm:pt-20 pb-8">
+            <div className="font-mono text-[11px] sm:text-xs text-[#D8B982] tracking-[0.22em] uppercase inline-flex items-center justify-center gap-3 mb-6">
+              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block" />
+              <span>{text.badge}</span>
+              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block" />
+            </div>
+
+            <h1 className="font-fraunces font-bold text-4xl sm:text-6xl lg:text-[68px] leading-[1.08] mb-8 text-[#F7F4ED] tracking-tight">
+              {language === 'es' ? (
+                <>
+                  Influencers IA y videos de{' '}
+                  <span className="italic font-normal text-[#DFC28E]">alto impacto</span> que
+                  detienen el scroll y{' '}
+                  <span className="italic font-normal text-[#DFC28E]">convierten</span>.
+                </>
+              ) : (
+                <>
+                  AI Influencers and{' '}
+                  <span className="italic font-normal text-[#DFC28E]">high-impact</span> videos
+                  that stop the scroll and{' '}
+                  <span className="italic font-normal text-[#DFC28E]">convert</span>.
+                </>
+              )}
+            </h1>
+
+            <p className="text-[#C8C0B3] text-base sm:text-lg lg:text-[19px] max-w-2xl mx-auto mb-12 leading-[1.65] font-light">
+              {text.subtitle}
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+              <Link
+                href="/oferta"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-sans text-xs uppercase tracking-[0.16em] px-9 py-4 transition-all transform hover:-translate-y-0.5 shadow-[0_0_35px_rgba(216,185,130,0.42)] hover:shadow-[0_0_48px_rgba(216,185,130,0.65)] font-bold"
+              >
+                <span>{text.primaryCta}</span>
+              </Link>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
+                  language === 'es'
+                    ? 'Hola! Me interesa agendar una llamada estratégica con un estratega creativo para mi negocio.'
+                    : 'Hi! I want to book a creative strategy call for my business.'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-[#12100D]/75 backdrop-blur-sm text-[#E6DEC8] hover:text-white font-sans text-xs uppercase tracking-[0.16em] px-8 py-4 border border-[#C5A059]/55 hover:border-[#E5C88D] transition-all"
+              >
+                <span>{text.secondaryCta}</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#D8B982]" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content: 4-Pillar Discovery Grid */}
+      <main className="flex-grow max-w-6xl mx-auto w-full px-6 py-12 sm:py-16 z-10 space-y-16">
         <section aria-labelledby="ecosystem-heading" className="space-y-6">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="flex items-center justify-between border-b border-[#C5A059]/20 pb-3">
             <h2
               id="ecosystem-heading"
-              className="font-mono text-xs tracking-[0.22em] uppercase text-[#C5A059] font-bold"
+              className="font-mono text-xs tracking-[0.22em] uppercase text-[#D8B982] font-bold"
             >
               {text.pillarsTitle}
             </h2>
@@ -242,15 +328,15 @@ export default function Home() {
               <Link
                 key={pillar.num}
                 href={pillar.href}
-                className={`group relative p-6 sm:p-8 rounded-sm border transition-all duration-300 flex flex-col justify-between ${
+                className={`group relative p-6 sm:p-8 rounded-2xl border transition-all duration-300 flex flex-col justify-between ${
                   pillar.highlight
-                    ? 'bg-gradient-to-br from-[#151A1F] to-[#0D1013] border-[#C5A059]/50 hover:border-[#C5A059]'
-                    : 'bg-[#111518]/90 border-white/10 hover:border-[#C5A059]/50 hover:bg-[#14191D]'
+                    ? 'bg-gradient-to-br from-[#17140F] to-[#0D0B09] border-[#C5A059]/55 hover:border-[#E5C88D] shadow-[0_0_30px_rgba(197,160,89,0.08)]'
+                    : 'bg-[#11100E]/90 border-white/10 hover:border-[#C5A059]/50 hover:bg-[#161411]'
                 }`}
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[10px] tracking-[0.18em] uppercase px-2.5 py-1 rounded bg-black/50 text-[#C5A059] border border-[#C5A059]/25 font-semibold">
+                    <span className="font-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1 rounded-full bg-black/60 text-[#D8B982] border border-[#C5A059]/30 font-semibold">
                       {pillar.tag}
                     </span>
                     <div className="flex items-center gap-2">
@@ -261,16 +347,16 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <h3 className="font-fraunces text-2xl sm:text-3xl font-bold text-white group-hover:text-[#C5A059] transition-colors leading-snug">
+                  <h3 className="font-fraunces text-2xl sm:text-3xl font-bold text-[#F7F4ED] group-hover:text-[#DFC28E] transition-colors leading-snug">
                     {pillar.title}
                   </h3>
 
-                  <p className="text-zinc-300 text-sm leading-relaxed font-light">
+                  <p className="text-[#C8C0B3] text-sm leading-relaxed font-light">
                     {pillar.desc}
                   </p>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between font-mono text-xs uppercase tracking-wider text-[#C5A059] font-bold">
+                <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between font-mono text-xs uppercase tracking-wider text-[#D8B982] font-bold">
                   <span>{pillar.cta}</span>
                   <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
@@ -281,24 +367,24 @@ export default function Home() {
 
         {/* Secondary Quick Access Strip */}
         <section className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 font-mono text-xs tracking-[0.18em] uppercase text-zinc-400">
-          <Link href="/galeria" className="hover:text-[#C5A059] transition flex items-center gap-1.5">
+          <Link href="/galeria" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
             <span>{text.quickLinks.gallery}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#C5A059]" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
           </Link>
           <span className="hidden sm:inline text-zinc-700">/</span>
-          <Link href="/domingo" className="hover:text-[#C5A059] transition flex items-center gap-1.5">
+          <Link href="/domingo" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
             <span>{text.quickLinks.domingo}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#C5A059]" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
           </Link>
           <span className="hidden sm:inline text-zinc-700">/</span>
           <a
             href="https://www.skool.com/we-are-the-silent-ia-8224/about"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#C5A059] transition flex items-center gap-1.5"
+            className="hover:text-[#D8B982] transition flex items-center gap-1.5"
           >
             <span>{text.quickLinks.skool}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#C5A059]" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
           </a>
         </section>
       </main>
@@ -306,28 +392,46 @@ export default function Home() {
       {/* Clean Compliant Footer */}
       <footer className="max-w-6xl mx-auto w-full px-6 py-8 z-10 border-t border-white/10 space-y-4 text-center">
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-mono text-zinc-400">
-          <Link href="/terms-of-service" className="hover:text-[#C5A059] transition underline underline-offset-4">
+          <Link href="/terms-of-service" className="hover:text-[#D8B982] transition underline underline-offset-4">
             Términos y Condiciones
           </Link>
           <span>·</span>
-          <Link href="/privacy-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+          <Link href="/privacy-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
             Política de Privacidad (RGPD)
           </Link>
           <span>·</span>
-          <Link href="/cookie-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+          <Link href="/cookie-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
             Política de Cookies
           </Link>
           <span>·</span>
-          <Link href="/refund-policy" className="hover:text-[#C5A059] transition underline underline-offset-4">
+          <Link href="/refund-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
             Política de Reembolso
           </Link>
           <span>·</span>
-          <Link href="/legal-notice" className="hover:text-[#C5A059] transition underline underline-offset-4">
+          <Link href="/legal-notice" className="hover:text-[#D8B982] transition underline underline-offset-4">
             Aviso Legal LSSI-CE
           </Link>
         </div>
         <p className="text-[11px] font-mono tracking-wider text-zinc-500">{text.footer}</p>
       </footer>
+
+      {/* Floating Glowing WhatsApp Button (matches reference image) */}
+      <a
+        href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-40 bg-[#1B3324]/90 hover:bg-[#23422F] border border-[#6EE7B7]/45 text-[#E8D5B0] p-3.5 rounded-full shadow-[0_0_28px_rgba(74,222,128,0.45)] hover:shadow-[0_0_38px_rgba(74,222,128,0.65)] backdrop-blur-md transition duration-300 flex items-center justify-center group"
+        title="WhatsApp Directo"
+        aria-label="Contactar por WhatsApp"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-6 h-6 shrink-0 fill-current text-[#E8D5B0]"
+          aria-hidden="true"
+        >
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.448 5.581-1.464c1.908 1.253 4.19 1.983 6.627 1.983 6.627 0 12-5.373 12-12s-5.373-12-12-12z" />
+        </svg>
+      </a>
     </div>
   );
 }
