@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Link from 'next/link';
 import {
   ChevronLeft,
   ChevronRight,
@@ -371,7 +372,7 @@ export function VideoRouletteShowcase({
                   ref={(el) => {
                     videoRefs.current[idx] = el;
                   }}
-                  src={video.url}
+                  src={`${video.url}#t=0.001`}
                   className="w-full h-full object-cover"
                   playsInline
                   loop
@@ -469,6 +470,17 @@ export function VideoRouletteShowcase({
               </span>
               <ArrowUpRight className="w-4 h-4" />
             </a>
+
+            <Link
+              href="/galeria"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/5 hover:bg-[#C5A059]/15 text-[#E6DEC8] hover:text-white border border-[#C5A059]/45 font-mono text-xs uppercase tracking-wider font-bold transition"
+            >
+              <span>
+                {language === 'es'
+                  ? 'Ver Galería Completa (42 Videos)'
+                  : 'View Full Gallery (42 Videos)'}
+              </span>
+            </Link>
           </div>
 
           {/* Roulette Step Dots */}
