@@ -67,6 +67,48 @@ const CONVERSION_BOX_EN = `
 
 export const DAILY_AI_ARTICLES_ES: EnhancedPost[] = [
   {
+    slug: 'tutorial-entrevista-calle-vox-pop-ia-reels',
+    title: 'Cómo Crear un Formato de "Entrevista en la Calle" (Vox Pop) con IA Hiperrealista en 15 Minutos',
+    description:
+      'Paso a paso para producir videos dinámicos de pregunta y respuesta en la vía pública con personajes de Inteligencia Artificial que superan el 70% de retención en Instagram Reels y TikTok.',
+    date: '2026-10-16',
+    author: 'Daniel Calderón',
+    category: 'Tutoriales',
+    readTime: '6 min',
+    tags: ['Vox Pop IA', 'Reels Virales', 'Tutorial IA', 'UGC'],
+    image: {
+      id: 'daily-ai-voxpop-1',
+      description: 'Entrevista callejera formato Vox Pop producida con Inteligencia Artificial.',
+      imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80',
+      imageHint: 'street interview microphone video',
+    },
+    body: `
+      <p><strong>Resumen Ejecutivo:</strong> El formato de <strong>"Pregunta y Respuesta en la Calle" (Vox Pop)</strong> es uno de los activos con mayor retención orgánica y retorno publicitario en Instagram Reels, TikTok y Meta Ads. ¿La razón? El cerebro del espectador lo procesa como una conversación espontánea real, no como un anuncio invasivo. Aquí tienes el método exacto para producirlo con IA en 15 minutos sin salir a grabar con cámaras ni micrófonos.</p>
+
+      <h2>1. Por qué el formato Vox Pop supera al anuncio tradicional</h2>
+      <p>Cuando un usuario hace scroll y ve un micrófono de mano en medio de una avenida con profundidad de campo cinematográfica (<em>bokeh</em> urbano), se activa la curiosidad social: <em>"¿Qué le acaban de preguntar y qué va a responder?"</em>. Este micro-compromiso eleva la retención de los primeros 3 segundos por encima del 70%.</p>
+
+      <h2>2. Estructura del Guion de Doble Personaje (25 Segundos)</h2>
+      <p>Para que una entrevista callejera generada con IA funcione para vender un servicio o producto, estructura el diálogo en 3 intercambios rápidos:</p>
+      <ul>
+        <li><strong>Segundo 0 a 4 (La Pregunta Gancho):</strong> El entrevistador lanza una pregunta directa sobre un problema común o un secreto del sector. Ejemplo: <em>"Disculpa, ¿cuánto te costó producir toda la campaña visual de tu marca este mes?"</em></li>
+        <li><strong>Segundo 4 a 15 (La Revelación Contraintuitiva):</strong> El entrevistado sonríe con naturalidad y rompe la creencia habitual: <em>"Antes gastábamos más de $1,200 en estudio y modelos. Ahora usamos un propio Influencer IA en formato 9:16 y cada video nos cuesta $50 con guion incluido."</em></li>
+        <li><strong>Segundo 15 a 25 (La Prueba y el Llamado a la Acción):</strong> El entrevistador repregunta <em>"¿Y la gente nota la diferencia?"</em>, dando pie al cierre con el beneficio principal y la invitación a visitar el enlace del perfil.</li>
+      </ul>
+
+      <h2>3. Configuración Visual y Sonora Paso a Paso</h2>
+      <ol>
+        <li><strong>Encuadre 9:16 con profundidad urbana:</strong> Genera la escena con lente <code>50mm f/1.8</code>, luz natural de media tarde (<em>golden hour</em> suave) y fondo de calle desenfocado para que toda la atención recaiga en la expresión facial.</li>
+        <li><strong>Diseño de audio con ambiente sutil:</strong> Mezcla las dos voces de IA con una pista casi imperceptible de ambiente exterior (-28 dB). Ese pequeño detalle acústico hace que el cerebro perciba la escena como 100% grabada en locación real.</li>
+        <li><strong>Subtítulos bicolor por interlocutor:</strong> Usa blanco para el entrevistado y dorado/amarillo para la pregunta del entrevistador, facilitando la lectura incluso sin sonido.</li>
+      </ol>
+
+      <p>Puedes ver ejemplos reales de este formato de entrevista y de pregunta/respuesta en la calle directamente en nuestra galería de formatos de <a href="/oferta"><strong>Servicios de Video IA (/oferta)</strong></a>.</p>
+
+      ${CONVERSION_BOX_ES}
+    `,
+  },
+  {
     slug: 'anuncios-ugc-ia-meta-ads-estructura-retencion-2026',
     title: 'Cómo Crear Anuncios UGC con IA que Convierten en Meta Ads y TikTok (Estructura de 3 Segundos)',
     description:
@@ -324,6 +366,38 @@ export const DAILY_AI_ARTICLES_ES: EnhancedPost[] = [
 ];
 
 export const DAILY_AI_ARTICLES_EN: EnhancedPost[] = [
+  {
+    slug: 'tutorial-entrevista-calle-vox-pop-ia-reels',
+    title: 'How to Create a Hyper-Realistic AI "Street Interview" (Vox Pop) Reel in 15 Minutes',
+    description:
+      'Step-by-step workflow to produce dynamic street Q&A videos with AI characters that achieve 70%+ retention on Instagram Reels and TikTok.',
+    date: '2026-10-16',
+    author: 'Daniel Calderón',
+    category: 'Tutoriales',
+    readTime: '6 min',
+    tags: ['AI Vox Pop', 'Viral Reels', 'AI Tutorial', 'UGC'],
+    image: {
+      id: 'daily-ai-voxpop-1',
+      description: 'AI street interview Vox Pop video format.',
+      imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80',
+      imageHint: 'street interview microphone video',
+    },
+    body: `
+      <p><strong>Executive Summary:</strong> The <strong>"Street Interview" (Vox Pop Q&A)</strong> format is one of the highest-retention organic and paid creative assets on Instagram Reels and TikTok. Viewers process it as a spontaneous human conversation rather than an intrusive ad. Follow this 3-step blueprint to produce it with AI in 15 minutes.</p>
+
+      <h2>1. The 25-Second Two-Character Script Structure</h2>
+      <ul>
+        <li><strong>0–4s (The Hook Question):</strong> The interviewer asks a sharp, curiosity-inducing question about a common industry pain point.</li>
+        <li><strong>4–15s (The Contrarian Reveal):</strong> The interviewee responds naturally, contrasting expensive traditional shoots with $50 9:16 AI video creatives.</li>
+        <li><strong>15–25s (Social Proof & CTA):</strong> A quick follow-up question leads directly into the call to action.</li>
+      </ul>
+
+      <h2>2. Visual & Audio Polish</h2>
+      <p>Use a <code>50mm f/1.8</code> shallow depth-of-field urban background, subtle -28 dB ambient street audio for acoustic realism, and two-tone dynamic subtitles to distinguish speaker turns effortlessly.</p>
+
+      ${CONVERSION_BOX_EN}
+    `,
+  },
   {
     slug: 'anuncios-ugc-ia-meta-ads-estructura-retencion-2026',
     title: 'How to Create High-Converting AI UGC Ads for Meta & TikTok (The 3-Second Retention Structure)',
