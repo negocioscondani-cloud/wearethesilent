@@ -1,19 +1,24 @@
-
 import { MetadataRoute } from 'next';
 import { posts } from '@/lib/blog';
 
 const BASE_URL = 'https://wearethesilent.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = [
-    '/',
-    '/mentorship',
+  const highPriorityRoutes = [
+    { route: '', priority: 1.0, changeFrequency: 'daily' as const },
+    { route: '/oferta', priority: 1.0, changeFrequency: 'weekly' as const },
+    { route: '/influencer-ia', priority: 1.0, changeFrequency: 'weekly' as const },
+    { route: '/vivianne-wolski', priority: 1.0, changeFrequency: 'weekly' as const },
+    { route: '/domingo', priority: 0.9, changeFrequency: 'weekly' as const },
+    { route: '/blog', priority: 0.9, changeFrequency: 'daily' as const },
+    { route: '/galeria', priority: 0.8, changeFrequency: 'weekly' as const },
+  ];
+
+  const secondaryRoutes = [
     '/the-silent-studio',
-    '/blog',
+    '/mentorship',
     '/editorial-resources',
     '/contact',
-    '/privacy-policy',
-    '/terms-of-service',
     '/luxe-prompt-studio',
     '/the-oracle-luxe-agency',
     '/the-ugc-society',
@@ -24,16 +29,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/tutorials',
     '/brand-accelerator',
     '/support-ai-film',
-    '/influencer-ia'
-  ].map((route) => ({
-    url: `${BASE_URL}${route}`,
-    lastModified: new Date().toISOString(),
+  ];
+
+  const legalRoutes = [
+    '/terms-of-service',
+    '/privacy-policy',
+    '/cookie-policy',
+    '/refund-policy',
+    '/legal-notice',
+  ];
+
+  const now = new Date().toISOString();
+
+  const primaryEntries: MetadataRoute.Sitemap = highPriorityRoutes.map((item) => ({
+    url: `${BASE_URL}${item.route}`,
+    lastModified: now,
+    changeFrequency: item.changeFrequency,
+    priority: item.priority,
   }));
 
-  const blogPosts = posts.map((post) => ({
+  const secondaryEntries: MetadataRoute.Sitemap = secondaryRoutes.map((route) => ({
+    url: `${BASE_URL}${route}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  const legalEntries: MetadataRoute.Sitemap = legalRoutes.map((route) => ({
+    url: `${BASE_URL}${route}`,
+    lastModified: now,
+    changeFrequency: 'yearly',
+    priority: 0.4,
+  }));
+
+  const blogPosts: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.date).toISOString(),
+    changeFrequency: 'weekly',
+    priority: 0.85,
   }));
 
-  return [...staticPages, ...blogPosts];
+  return [...primaryEntries, ...blogPosts, ...secondaryEntries, ...legalEntries];
 }

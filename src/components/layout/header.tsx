@@ -25,7 +25,7 @@ export default function Header() {
   const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
 
-  const hiddenRoutes = ['/', '/oferta', '/galeria', '/we-are-the-silent', '/menu-digital', '/reels-ia', '/reels'];
+  const hiddenRoutes = ['/', '/oferta', '/influencer-ia', '/galeria', '/we-are-the-silent', '/menu-digital', '/reels-ia', '/reels'];
   if (
     pathname.startsWith('/the-silent-studio-guide') || 
     pathname.startsWith('/manual') ||
@@ -38,6 +38,8 @@ export default function Header() {
   }
 
   const mainNavLinks = [
+    { href: '/oferta', label: language === 'es' ? 'Servicios Video IA' : 'AI Video Services' },
+    { href: '/influencer-ia', label: language === 'es' ? 'Guía Influencer IA' : 'AI Influencer Guide' },
     { href: '/blog', label: t('header.blog') },
     { href: '/editorial-resources', label: t('header.resources') },
     { href: '/contact', label: t('header.contact') },

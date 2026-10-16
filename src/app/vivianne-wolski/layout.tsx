@@ -1,40 +1,48 @@
 import type { Metadata } from 'next';
 
+const HERO_IMAGE = 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/descarga.png';
+
 export const metadata: Metadata = {
-  title: 'Vivianne Wolski · The Curated Closet | Luxury Fashion & Style',
+  title: 'El Armario de Vivienne · Vivienne Wolski | Lo que Vivienne usa. Lo que Vivienne cuenta.',
   description:
-    'El clóset personal y curaduría de moda de Vivianne Wolski. Bolsos icónicos, prendas de punto premium, abrigos y calzado seleccionados con compra directa en tiendas oficiales.',
+    'El salón editorial y armario curado de Vivienne Wolski. Piezas de inversión, bolsos icónicos, prendas de punto, el Wolski Club de audios y El Domingo de los Números.',
   keywords: [
+    'El Armario de Vivienne',
+    'Vivienne Wolski',
     'Vivianne Wolski',
-    'The Curated Closet',
+    'Wolski Club',
+    'El Domingo de los Números',
     'Tory Burch',
-    'Atorie',
-    'Perry Tote',
-    'ShopMy',
-    'Moda de Lujo',
     'Quiet Luxury',
-    'Estilo Personal',
+    'Lujo Silencioso',
+    'Moda Clásica',
+    'ShopMy',
   ],
+  alternates: {
+    canonical: 'https://wearethesilent.com/vivianne-wolski',
+  },
   openGraph: {
-    title: 'Vivianne Wolski · The Curated Closet',
+    title: 'El Armario de Vivienne · Vivienne Wolski',
     description:
-      'Curaduría exclusiva de moda, bolsos y prendas de autor por Vivianne Wolski. Compra directa en distribuidores oficiales.',
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Piezas de inversión curadas, notas manuscritas y fonoteca del Wolski Club.',
+    url: 'https://wearethesilent.com/vivianne-wolski',
     images: [
       {
-        url: '/images/vivianne-wolski-hero.jpg',
+        url: HERO_IMAGE,
         width: 1200,
-        height: 1200,
-        alt: 'Vivianne Wolski · The Curated Closet',
+        height: 1500,
+        alt: 'Vivienne Wolski · El Armario de Vivienne',
       },
     ],
+    locale: 'es_ES',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Vivianne Wolski · The Curated Closet',
+    title: 'El Armario de Vivienne · Vivienne Wolski',
     description:
-      'Curaduría exclusiva de moda, bolsos y prendas de autor por Vivianne Wolski.',
-    images: ['/images/vivianne-wolski-hero.jpg'],
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Boutique de lujo silencioso y archivo sonoro del Wolski Club.',
+    images: [HERO_IMAGE],
   },
 };
 
@@ -43,5 +51,37 @@ export default function VivianneLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="min-h-screen bg-[#080808] text-[#f4efe6] selection:bg-[#c5a059] selection:text-black">{children}</div>;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': 'https://wearethesilent.com/vivianne-wolski',
+        name: 'El Armario de Vivienne · Vivienne Wolski',
+        description:
+          'Boutique curada de lujo silencioso, piezas de inversión, audios de formación del Wolski Club y El Domingo de los Números.',
+        url: 'https://wearethesilent.com/vivianne-wolski',
+        inLanguage: 'es',
+      },
+      {
+        '@type': 'Person',
+        name: 'Vivienne Wolski',
+        description:
+          'Aristócrata hecha a sí misma de 82 años y referente editorial de estilo, carácter y finanzas personales (Personaje digital de IA creado por The Silent Studio).',
+        image: HERO_IMAGE,
+        url: 'https://wearethesilent.com/vivianne-wolski',
+        sameAs: ['https://www.instagram.com/vivianne_wolski/'],
+      },
+    ],
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] selection:bg-[#B08D57]/30 selection:text-[#2B1D14]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </div>
+  );
 }

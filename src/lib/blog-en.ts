@@ -1,4 +1,5 @@
 import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
+import { DAILY_AI_ARTICLES_EN, type ArticleCategory } from './daily-ai-articles';
 
 export interface Post {
   slug: string;
@@ -6,6 +7,9 @@ export interface Post {
   description: string;
   date: string;
   author: string;
+  category?: ArticleCategory;
+  readTime?: string;
+  tags?: string[];
   image: ImagePlaceholder;
   body: string;
 }
@@ -24,6 +28,7 @@ const SKOOL_CTA = `
 `;
 
 export const posts: Post[] = [
+  ...DAILY_AI_ARTICLES_EN,
   {
     slug: 'avatar-realista-vs-animado-guia-seleccion-2026',
     title: 'How to Choose Between a Realistic or Animated Avatar?',

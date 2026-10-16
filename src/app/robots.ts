@@ -1,7 +1,6 @@
-
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://thesilent.studioboom.online';
+const BASE_URL = 'https://wearethesilent.com';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,12 +8,13 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/dashboard/', 
-        '/the-silent-studio-guide/', 
+        '/dashboard/',
+        '/the-silent-studio-guide/',
         '/secret-access-portal/',
-        '/the-hidden-gate/'
+        '/the-hidden-gate/',
       ],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
+    host: BASE_URL,
   };
 }

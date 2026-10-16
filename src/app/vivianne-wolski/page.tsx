@@ -234,6 +234,32 @@ export default function VivianneWolskiPage() {
               </button>
             </div>
           </div>
+
+          {/* Mobile Quick-Jump Navigation Strip */}
+          <nav
+            aria-label="Navegación móvil"
+            className="flex md:hidden items-center justify-start sm:justify-center gap-5 overflow-x-auto scrollbar-none py-2.5 border-t border-[#B08D57]/20 text-[11px] font-serif uppercase tracking-[0.18em] text-[#2B1D14]"
+          >
+            <a href="#catalogo" className="whitespace-nowrap hover:text-[#6B1F2A] font-medium">
+              Catálogo
+            </a>
+            <span className="text-[#B08D57]/50">·</span>
+            <a href="#looks" className="whitespace-nowrap hover:text-[#6B1F2A]">
+              Los Looks
+            </a>
+            <span className="text-[#B08D57]/50">·</span>
+            <a href="#wolski-club" className="whitespace-nowrap hover:text-[#6B1F2A]">
+              Audios Club
+            </a>
+            <span className="text-[#B08D57]/50">·</span>
+            <Link href="/domingo" className="whitespace-nowrap text-[#6B1F2A] font-semibold">
+              El Domingo
+            </Link>
+            <span className="text-[#B08D57]/50">·</span>
+            <a href="#sobre-vivienne" className="whitespace-nowrap hover:text-[#6B1F2A]">
+              Sobre Vivi
+            </a>
+          </nav>
         </div>
         {copiedLink && (
           <div className="bg-[#6B1F2A] text-[#F7F1E6] text-center text-xs py-1 font-mono tracking-widest uppercase animate-fade-in">
@@ -244,7 +270,7 @@ export default function VivianneWolskiPage() {
 
       <main>
         {/* 3. HERO SECTION: EDITORIAL SALON */}
-        <section className="relative pt-8 pb-16 sm:pb-24 border-b border-[#B08D57]/20 overflow-hidden">
+        <section className="relative pt-8 pb-14 sm:pb-20 border-b border-[#B08D57]/20 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               {/* Left Column: Portrait */}
@@ -261,10 +287,10 @@ export default function VivianneWolskiPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#2B1D14]/50 via-transparent to-transparent pointer-events-none" />
                   
                   {/* Subtle caption */}
-                  <div className="absolute bottom-4 left-4 right-4 bg-[#F7F1E6]/90 backdrop-blur-sm p-3 border border-[#B08D57]/30 rounded-xs flex items-center justify-between">
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#F7F1E6]/95 backdrop-blur-sm p-3.5 border border-[#B08D57]/30 rounded-xs flex items-center justify-between">
                     <div>
-                      <p className="font-serif text-xs text-[#2B1D14] font-medium">Vivienne Wolski, 82 años</p>
-                      <p className="font-mono text-[9px] uppercase tracking-widest text-[#7C6E65]">Criterio propio e indiscutible</p>
+                      <p className="font-serif text-xs sm:text-sm text-[#2B1D14] font-medium">Vivienne Wolski, 82 años</p>
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-[#5A4D44]">Criterio propio e indiscutible</p>
                     </div>
                     <span className="font-script text-xl text-[#6B1F2A]">V. Wolski</span>
                   </div>
@@ -286,7 +312,7 @@ export default function VivianneWolskiPage() {
                   &ldquo;A los 82 años una ya no tiene tiempo para comprar dos veces la misma tontería. Se elige con rigor, se lleva con aplomo y se deja que la prenda hable.&rdquo;
                 </p>
 
-                <p className="text-sm text-[#7C6E65] leading-relaxed mb-8 font-normal max-w-lg mx-auto lg:mx-0">
+                <p className="text-sm sm:text-base text-[#5A4D44] leading-relaxed mb-8 font-normal max-w-lg mx-auto lg:mx-0">
                   Una selección estricta de prendas de inversión donde cada textura, forro y corte tiene una razón observable de ser. Sin prisas, sin logotipos ruidosos y sin trucos de ocasión.
                 </p>
 
@@ -295,16 +321,73 @@ export default function VivianneWolskiPage() {
                     href="#catalogo"
                     className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-[#2B1D14] text-[#F7F1E6] hover:bg-[#6B1F2A] font-mono text-xs uppercase tracking-[0.2em] transition duration-300 shadow-md text-center"
                   >
-                    Ver el armario
+                    Explorar el Catálogo (8 piezas)
                   </a>
                   <a
                     href="#wolski-club"
                     className="w-full sm:w-auto px-6 py-3.5 rounded-sm border border-[#B08D57]/60 hover:border-[#2B1D14] text-[#2B1D14] hover:text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.15em] transition duration-300 text-center"
                   >
-                    Entrar al Wolski Club
+                    Escuchar Audios del Club
                   </a>
                 </div>
               </div>
+            </div>
+
+            {/* 3-PILLAR QUICK DISCOVERY INDEX */}
+            <div className="mt-12 pt-8 border-t border-[#B08D57]/25 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a
+                href="#catalogo"
+                className="p-4 bg-[#FAF5EC] border border-[#B08D57]/30 hover:border-[#6B1F2A] rounded-xs transition flex items-start justify-between gap-3 group"
+              >
+                <div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#B08D57] font-semibold block">
+                    I · La Boutique
+                  </span>
+                  <h2 className="font-serif text-lg text-[#2B1D14] group-hover:text-[#6B1F2A] font-medium mt-0.5">
+                    El Armario Curado
+                  </h2>
+                  <p className="text-xs text-[#5A4D44] mt-1 leading-relaxed">
+                    Bolsos, abrigos y punto seleccionados por Vivienne con enlace directo a tienda oficial.
+                  </p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[#B08D57] group-hover:text-[#6B1F2A] shrink-0 mt-1" />
+              </a>
+
+              <a
+                href="#wolski-club"
+                className="p-4 bg-[#FAF5EC] border border-[#B08D57]/30 hover:border-[#6B1F2A] rounded-xs transition flex items-start justify-between gap-3 group"
+              >
+                <div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#B08D57] font-semibold block">
+                    II · Archivo Sonoro
+                  </span>
+                  <h2 className="font-serif text-lg text-[#2B1D14] group-hover:text-[#6B1F2A] font-medium mt-0.5">
+                    Fonoteca Wolski Club
+                  </h2>
+                  <p className="text-xs text-[#5A4D44] mt-1 leading-relaxed">
+                    7 temas y 33 capítulos en audio sobre carácter, finanzas y estilo (2 episodios abiertos).
+                  </p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[#B08D57] group-hover:text-[#6B1F2A] shrink-0 mt-1" />
+              </a>
+
+              <Link
+                href="/domingo"
+                className="p-4 bg-[#FAF5EC] border border-[#B08D57]/30 hover:border-[#6B1F2A] rounded-xs transition flex items-start justify-between gap-3 group"
+              >
+                <div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#6B1F2A] font-semibold block">
+                    III · Compañero Interactivo
+                  </span>
+                  <h2 className="font-serif text-lg text-[#2B1D14] group-hover:text-[#6B1F2A] font-medium mt-0.5">
+                    El Domingo de los Números
+                  </h2>
+                  <p className="text-xs text-[#5A4D44] mt-1 leading-relaxed">
+                    El ritual de 15 minutos cada domingo para poner orden en tus cuentas con calma.
+                  </p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[#6B1F2A] shrink-0 mt-1" />
+              </Link>
             </div>
           </div>
         </section>
