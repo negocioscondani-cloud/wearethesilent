@@ -86,8 +86,8 @@ const TRANSLATIONS = {
       },
       single: {
         title: "VIDEO INDIVIDUAL",
-        price: "$50 USD",
-        local: "o ₡25.000 CRC",
+        price: "₡30.000",
+        local: "Equivalente a $60 USD",
         period: "Por video · A la carta",
         desc: "Prueba la calidad y el impacto de nuestro influencer IA con un video vertical publicitario u orgánico de alta fidelidad.",
         includes: [
@@ -99,13 +99,13 @@ const TRANSLATIONS = {
           "Entrega con su respectivo caption listo para Instagram o Facebook",
           "Entrega ágil en 48-72h lista para publicar"
         ],
-        cta: "PEDIR 1 VIDEO ($50)"
+        cta: "PEDIR 1 VIDEO (₡30.000 / $60)"
       },
       pack10: {
         title: "PACK 10 VIDEOS",
-        price: "$420 USD",
-        local: "o ₡210.000 CRC",
-        period: "Ahorras $80 · $42/video",
+        price: "₡420.000",
+        local: "Equivalente a $840 USD",
+        period: "Incluye diseño de Influencer IA exclusivo",
         badge: "OFERTA ESPECIAL",
         desc: "El paquete perfecto para lanzar una campaña publicitaria multi-ángulo o mantener consistencia semanal en tus redes.",
         includes: [
@@ -118,13 +118,13 @@ const TRANSLATIONS = {
           "Variedad de formatos: UGC moda, hablado a cámara, Meta Ads",
           "Soporte directo de producción vía WhatsApp"
         ],
-        cta: "APROVECHAR PACK 10 ($420)"
+        cta: "APROVECHAR PACK 10 (₡420.000)"
       },
       pack20: {
         title: "PACK 20 VIDEOS",
-        price: "$750 USD",
-        local: "o ₡375.000 CRC",
-        period: "Ahorras $250 · $37.5/video",
+        price: "₡750.000",
+        local: "Equivalente a $1.500 USD",
+        period: "Mejor valor por video · ₡37.500 ($75) c/u",
         badge: "GRAN OFERTA · MÁS POPULAR",
         recommended: "MEJOR VALOR",
         desc: "Cobertura masiva para dominar el algoritmo con publicaciones casi diarias o realizar testeo agresivo en Meta Ads.",
@@ -138,7 +138,7 @@ const TRANSLATIONS = {
           "Mix equilibrado: venta directa, educativo, stories y reels",
           "Entregas programadas semanales o en bloque"
         ],
-        cta: "QUIERO EL PACK 20 ($750)"
+        cta: "QUIERO EL PACK 20 (₡750.000)"
       },
       growth: {
         title: "PLAN DE CRECIMIENTO EN REDES",
@@ -309,22 +309,22 @@ const TRANSLATIONS = {
         next: "Siguiente Paso"
       },
       step4: {
-        title: "4. Confirmación de Creative Test",
-        styleTitle: "Estilos que se incluirán en tu Creative Test (Vertical 9:16)",
+        title: "4. Confirmación de Paquete",
+        styleTitle: "Estilos que se incluirán en tu producción (Vertical 9:16)",
         stylesList: ["01. UGC con IA", "02. PodCast Clip", "03. Dual Cast", "04. Animados", "05. Mini Series"],
         termsTitle: "CONDICIONES TRANSPARENTES",
-        termsDesc: "Precio del Creative Test: ₡75.000 / $150. Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega. Producción por cupos limitados (máximo 10 negocios por ciclo).",
+        termsDesc: "Tarifas transparentes: 1 Video Individual (₡30.000 / $60 USD), Pack 10 Videos (₡420.000 / $840 USD) o Pack 20 Videos (₡750.000 / $1.500 USD). Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega. Producción por cupos limitados (máximo 10 negocios por ciclo).",
         prev: "Anterior",
         submit: "Enviar y Chatear por WhatsApp"
       },
       success: {
-        title: "¡Prueba Iniciada!",
-        body: "Excelente {business} ({province}). Hemos registrado tu solicitud de Creative Test por ₡75.000 / $150.",
+        title: "¡Solicitud Registrada!",
+        body: "Excelente {business} ({province}). Hemos registrado tu solicitud de producción audiovisual con IA.",
         stepsTitle: "Redireccionando a WhatsApp...",
         steps: [
           "Se abrirá tu chat con nuestro WhatsApp para coordinar el adelanto del 50%.",
-          "Te enviaremos los guiones en unas horas.",
-          "Los 5 videos estarán listos al finalizar el ciclo de producción."
+          "Definiremos el estilo de tu Influencer IA y te enviaremos los guiones.",
+          "Tus videos verticales 9:16 + captions estarán listos en el ciclo de producción."
         ],
         btnWhatsapp: "Chatear Directo ahora"
       }
@@ -413,8 +413,8 @@ const TRANSLATIONS = {
       },
       single: {
         title: "SINGLE VIDEO",
-        price: "$50 USD",
-        local: "or ₡25,000 CRC",
+        price: "₡30,000",
+        local: "Equivalent to $60 USD",
         period: "Per video · On demand",
         desc: "Test the realism and conversion power of our AI influencer with a single high-fidelity ad or organic vertical video.",
         includes: [
@@ -426,13 +426,13 @@ const TRANSLATIONS = {
           "Delivered with ready-to-post caption for Instagram or Facebook",
           "Fast delivery in 48-72h ready to publish"
         ],
-        cta: "ORDER 1 VIDEO ($50)"
+        cta: "ORDER 1 VIDEO (₡30,000 / $60)"
       },
       pack10: {
         title: "PACK 10 VIDEOS",
-        price: "$420 USD",
-        local: "or ₡210,000 CRC",
-        period: "Save $80 · $42/video",
+        price: "₡420,000",
+        local: "Equivalent to $840 USD",
+        period: "Includes custom AI Influencer creation",
         badge: "SPECIAL OFFER",
         desc: "The perfect bundle to launch a multi-angle ad campaign or maintain weekly consistency on your social channels.",
         includes: [
@@ -445,13 +445,13 @@ const TRANSLATIONS = {
           "Mixed formats: Fashion UGC, direct-to-camera, Meta Ads",
           "Direct production support via WhatsApp"
         ],
-        cta: "GET PACK 10 ($420)"
+        cta: "GET PACK 10 (₡420,000)"
       },
       pack20: {
         title: "PACK 20 VIDEOS",
-        price: "$750 USD",
-        local: "or ₡375,000 CRC",
-        period: "Save $250 · $37.5/video",
+        price: "₡750,000",
+        local: "Equivalent to $1,500 USD",
+        period: "Best value · ₡37,500 ($75) per video",
         badge: "BEST VALUE · MOST POPULAR",
         recommended: "MOST POPULAR",
         desc: "Massive monthly coverage to dominate the algorithm with daily posting or conduct aggressive creative testing on Meta Ads.",
@@ -465,7 +465,7 @@ const TRANSLATIONS = {
           "Balanced mix: direct sales, educational, stories and reels",
           "Scheduled weekly or bulk deliveries based on your workflow"
         ],
-        cta: "GET PACK 20 ($750)"
+        cta: "GET PACK 20 (₡750,000)"
       },
       growth: {
         title: "SOCIAL GROWTH PLAN",
@@ -636,22 +636,22 @@ const TRANSLATIONS = {
         next: "Next Step"
       },
       step4: {
-        title: "4. Creative Test Confirmation",
-        styleTitle: "Styles that will be included in your Creative Test (Vertical 9:16)",
+        title: "4. Package Confirmation",
+        styleTitle: "Styles that will be included in your production (Vertical 9:16)",
         stylesList: ["01. UGC with AI", "02. PodCast Clip", "03. Dual Cast", "04. Animated", "05. Mini Series"],
         termsTitle: "TRANSPARENT TERMS",
-        termsDesc: "Creative Test price: ₡75,000 / $150. Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery. Limited production slots (maximum 10 businesses per cycle).",
+        termsDesc: "Transparent rates: 1 Single Video (₡30,000 / $60 USD), Pack 10 Videos (₡420,000 / $840 USD) or Pack 20 Videos (₡750,000 / $1,500 USD). Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery. Limited production slots (maximum 10 businesses per cycle).",
         prev: "Previous",
         submit: "Submit and Chat on WhatsApp"
       },
       success: {
-        title: "Test Initiated!",
-        body: "Great {business} ({province}). We have registered your request for Creative Test for ₡75,000 / $150.",
+        title: "Request Registered!",
+        body: "Great {business} ({province}). We have registered your AI video production request.",
         stepsTitle: "Redirecting to WhatsApp...",
         steps: [
           "Your chat with our WhatsApp will open to coordinate the 50% advance.",
-          "We will send you the scripts in a few hours.",
-          "The 5 videos will be ready when the production cycle completes."
+          "We will define your AI Influencer style and send you the scripts.",
+          "Your 9:16 vertical videos + captions will be ready when the production cycle completes."
         ],
         btnWhatsapp: "Chat Direct Now"
       }
@@ -1093,9 +1093,9 @@ export default function OfertaPage() {
     setSpotsLeft(prev => Math.max(1, prev - 1));
 
     const packageLabels: Record<string, { es: string; en: string }> = {
-      single: { es: '1 Video Individual ($50 USD)', en: '1 Single Video ($50 USD)' },
-      pack10: { es: 'Pack 10 Videos ($420 USD - Oferta)', en: 'Pack 10 Videos ($420 USD - Special Offer)' },
-      pack20: { es: 'Pack 20 Videos ($750 USD - Gran Oferta)', en: 'Pack 20 Videos ($750 USD - Best Value)' },
+      single: { es: '1 Video Individual (₡30.000 CRC / $60 USD)', en: '1 Single Video (₡30,000 CRC / $60 USD)' },
+      pack10: { es: 'Pack 10 Videos (₡420.000 CRC / $840 USD)', en: 'Pack 10 Videos (₡420,000 CRC / $840 USD)' },
+      pack20: { es: 'Pack 20 Videos (₡750.000 CRC / $1.500 USD)', en: 'Pack 20 Videos (₡750,000 CRC / $1,500 USD)' },
       growth: { es: 'Plan de Crecimiento & Estrategia Integral', en: 'Social Growth & Strategy Plan' },
     };
     const chosenLabel = packageLabels[selectedPackage]?.[langKey] || selectedPackage;
@@ -1441,7 +1441,7 @@ export default function OfertaPage() {
                 
                 <div className="flex flex-col mb-6">
                   <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.single.price}</span>
-                  <span className="font-mono text-[11px] text-gray-500 mt-0.5">{text.services.single.local}</span>
+                  <span className="font-mono text-xs text-[#C5A059] font-semibold mt-1">{text.services.single.local}</span>
                 </div>
 
                 <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
@@ -1477,7 +1477,8 @@ export default function OfertaPage() {
                 
                 <div className="flex flex-col mb-6">
                   <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.pack10.price}</span>
-                  <span className="font-mono text-[11px] text-[#C5A059] font-semibold mt-0.5">{text.services.pack10.period}</span>
+                  <span className="font-mono text-xs text-[#C5A059] font-semibold mt-1">{text.services.pack10.local}</span>
+                  <span className="font-mono text-[10px] text-gray-400 mt-0.5">{text.services.pack10.period}</span>
                 </div>
 
                 <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
@@ -1517,7 +1518,8 @@ export default function OfertaPage() {
                 
                 <div className="flex flex-col mb-6">
                   <span className="font-fraunces text-3xl sm:text-4xl font-black text-[#C5A059]">{text.services.pack20.price}</span>
-                  <span className="font-mono text-[11px] text-[#C5A059] font-bold mt-0.5">{text.services.pack20.period}</span>
+                  <span className="font-mono text-xs text-white font-bold mt-1">{text.services.pack20.local}</span>
+                  <span className="font-mono text-[10px] text-[#C5A059] mt-0.5">{text.services.pack20.period}</span>
                 </div>
 
                 <ul className="space-y-2.5 font-sans text-xs text-gray-200 mb-6 border-t border-white/10 pt-5">
@@ -1741,8 +1743,8 @@ export default function OfertaPage() {
                 <a 
                   href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
                     language === 'es' 
-                      ? `¡Hola! Acabo de enviar el formulario para mi negocio *${formData.businessName}* en *${formData.province}*. Quiero reservar mi Creative Test de ₡75.000.`
-                      : `Hi! I just completed the form for *${formData.businessName}* in *${formData.province}*. I want to book my Creative Test.`
+                      ? `¡Hola! Acabo de enviar el formulario para mi negocio *${formData.businessName}* en *${formData.province}*. Quiero coordinar mi paquete de producción de videos IA.`
+                      : `Hi! I just completed the form for *${formData.businessName}* in *${formData.province}*. I want to coordinate my AI video production package.`
                   )}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
@@ -1970,9 +1972,9 @@ export default function OfertaPage() {
                         </label>
                         <div className="grid sm:grid-cols-2 gap-2.5 font-mono text-xs">
                           {[
-                            { id: 'single', label: language === 'es' ? '1 Video Individual ($50 USD)' : '1 Single Video ($50 USD)', tag: '$50' },
-                            { id: 'pack10', label: language === 'es' ? 'Pack 10 Videos ($420 USD)' : 'Pack 10 Videos ($420 USD)', tag: 'Oferta' },
-                            { id: 'pack20', label: language === 'es' ? 'Pack 20 Videos ($750 USD)' : 'Pack 20 Videos ($750 USD)', tag: 'Popular' },
+                            { id: 'single', label: language === 'es' ? '1 Video Individual (₡30.000 / $60 USD)' : '1 Single Video (₡30,000 / $60 USD)', tag: '₡30.000' },
+                            { id: 'pack10', label: language === 'es' ? 'Pack 10 Videos (₡420.000 / $840 USD)' : 'Pack 10 Videos (₡420,000 / $840 USD)', tag: 'Oferta' },
+                            { id: 'pack20', label: language === 'es' ? 'Pack 20 Videos (₡750.000 / $1.500 USD)' : 'Pack 20 Videos (₡750,000 / $1,500 USD)', tag: 'Popular' },
                             { id: 'growth', label: language === 'es' ? 'Plan de Crecimiento (Cotizar)' : 'Growth Plan (Quote)', tag: 'Estrategia' },
                           ].map((pkg) => (
                             <label 

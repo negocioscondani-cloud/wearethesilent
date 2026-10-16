@@ -34,7 +34,7 @@ const CONVERSION_BOX_ES = `
   </p>
   <div class="pt-2 flex flex-wrap gap-3">
     <a href="/oferta" class="inline-block bg-[#C5A059] text-black font-mono font-bold uppercase tracking-wider text-xs px-5 py-3 rounded-xs hover:bg-[#B38F48] transition">
-      Cotizar Videos IA ($50 USD) →
+      Cotizar Videos IA (₡30.000 / $60 USD) →
     </a>
     <a href="/influencer-ia" class="inline-block bg-zinc-900 text-white border border-white/20 font-mono font-semibold uppercase tracking-wider text-xs px-5 py-3 rounded-xs hover:border-[#C5A059] transition">
       Ver Guía Influencer IA ($47 USD)
@@ -56,7 +56,7 @@ const CONVERSION_BOX_EN = `
   </p>
   <div class="pt-2 flex flex-wrap gap-3">
     <a href="/oferta" class="inline-block bg-[#C5A059] text-black font-mono font-bold uppercase tracking-wider text-xs px-5 py-3 rounded-xs hover:bg-[#B38F48] transition">
-      Order AI Videos ($50 USD) →
+      Order AI Videos (₡30,000 / $60 USD) →
     </a>
     <a href="/influencer-ia" class="inline-block bg-zinc-900 text-white border border-white/20 font-mono font-semibold uppercase tracking-wider text-xs px-5 py-3 rounded-xs hover:border-[#C5A059] transition">
       Get AI Influencer Guide ($47 USD)
@@ -253,7 +253,7 @@ export const DAILY_AI_ARTICLES_ES: EnhancedPost[] = [
       <p><strong>Resumen Ejecutivo:</strong> La tecnología generativa por sí sola no genera ingresos si no está conectada a una oferta clara. Estos son los <strong>5 vehículos de monetización más rentables</strong> que estamos operando y recomendando en 2026.</p>
 
       <h2>1. Producción de Videos Comerciales por Paquete (B2B / Marcas)</h2>
-      <p>Miles de clínicas, tiendas de moda, inmobiliarias y restaurantes necesitan publicar Reels y anuncios todas las semanas, pero no tienen tiempo para grabarse. Ofrecer un servicio claro —por ejemplo, <strong>$50 USD por video individual</strong> o paquetes de <strong>10 videos por $420 USD</strong> y <strong>20 videos por $750 USD</strong> entregados en 9:16 con su respectivo caption— resuelve un dolor urgente con un margen operativo excelente.</p>
+      <p>Miles de clínicas, tiendas de moda, inmobiliarias y restaurantes necesitan publicar Reels y anuncios todas las semanas, pero no tienen tiempo para grabarse. Ofrecer un servicio claro —por ejemplo, <strong>₡30.000 CRC ($60 USD) por video individual</strong> o paquetes de <strong>10 videos por ₡420.000 CRC ($840 USD)</strong> y <strong>20 videos por ₡750.000 CRC ($1.500 USD)</strong> entregados en 9:16 con su respectivo caption— resuelve un dolor urgente con un margen operativo excelente.</p>
 
       <h2>2. Creación de un Vocero o Influencer IA Exclusivo para una Marca</h2>
       <p>Además de los videos sueltos, las empresas pagan por tener su propio embajador virtual exclusivo que represente su identidad las 24 horas del día, sin contratos de exclusividad humana millonarios ni retrasos de agenda.</p>
@@ -506,7 +506,7 @@ export const DAILY_AI_ARTICLES_EN: EnhancedPost[] = [
     slug: '5-modelos-monetizar-ia-generativa-2026',
     title: '5 Proven Ways to Monetize Generative AI in 2026 (High-Margin Business Models)',
     description:
-      'From B2B AI video production packages ($50–$750) to curated affiliate boutiques and digital playbooks.',
+      'From B2B AI video production packages (₡30,000–₡750,000 CRC / $60–$1,500 USD) to curated affiliate boutiques and digital playbooks.',
     date: '2026-10-13',
     author: 'Daniel Calderón',
     category: 'Monetización',
@@ -521,7 +521,7 @@ export const DAILY_AI_ARTICLES_EN: EnhancedPost[] = [
     body: `
       <p><strong>Executive Summary:</strong> Generative AI only produces revenue when paired with a clear commercial offer. Here are the <strong>5 highest-margin monetization models</strong> in 2026.</p>
 
-      <h2>1. Done-For-You AI Video Packages ($50 Single / $420 Pack 10 / $750 Pack 20)</h2>
+      <h2>1. Done-For-You AI Video Packages (₡30,000 / $60 Single · ₡420,000 / $840 Pack 10 · ₡750,000 / $1,500 Pack 20)</h2>
       <p>Delivering ready-to-post 9:16 vertical videos with dynamic subtitles and social captions solves a massive weekly pain point for brands.</p>
 
       <h2>2. Custom Brand AI Spokespeople</h2>

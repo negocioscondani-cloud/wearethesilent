@@ -38,7 +38,7 @@ Inject valid `<script type="application/ld+json">` on key pages to unlock Google
 - **Vivienne Wolski (`/vivianne-wolski`)**:
   - `CollectionPage` + `ItemList` of curated luxury products + `Person` (fictional AI creator profile with `sameAs: ["https://www.instagram.com/vivianne_wolski/"]`).
 - **Servicios de Video IA (`/oferta`)**:
-  - `ProfessionalService` + `OfferCatalog` ($50 single video, $420 pack 10, $750 pack 20) + `FAQPage` schema for the FAQ section.
+  - `ProfessionalService` + `OfferCatalog` (₡30.000 / $60 USD single video, ₡420.000 / $840 USD pack 10, ₡750.000 / $1.500 USD pack 20) + `FAQPage` schema for the FAQ section.
 - **Guía Influencer IA (`/influencer-ia`)**:
   - `Product` / `Book` ($47 USD offer, availability `InStock`) + `FAQPage` schema.
 - **Artículos del Blog (`/blog/[slug]`)**:
@@ -57,7 +57,7 @@ To dominate organic search in Spanish and English for Generative AI, every daily
 3. **Casos de Éxito (Case Studies)**:
    - Real breakdowns (like *Vivienne Wolski* or retail/fashion brands), metrics, before/after ROAS, organic reach analysis.
 4. **Formas de Monetización (Monetization Models)**:
-   - Selling AI video packages ($50–$750), ShopMy/affiliate boutiques, digital clubs (Gumroad/Skool), brand sponsorships.
+   - Selling AI video packages (₡30.000 / $60 USD single, ₡420.000 / $840 USD pack 10, ₡750.000 / $1.500 USD pack 20), ShopMy/affiliate boutiques, digital clubs (Gumroad/Skool), brand sponsorships.
 5. **Usos Prácticos (Practical Workflows)**:
    - E-commerce product photography, virtual try-on, multilingual dubbing, automated content calendars.
 6. **Planes de Trabajo (Action Plans & Roadmaps)**:

@@ -11,13 +11,13 @@ const TRANSLATIONS = {
     slogan: 'CREATORS OF THE POST-AI ERA',
     subtitle:
       'Construimos influencers virtuales hiperrealistas, comerciales UGC de alta conversión y ecosistemas digitales que transforman la atención en ventas reales.',
-    primaryCta: 'Cotizar Videos con IA ($50)',
+    primaryCta: 'Cotizar Videos con IA (₡30.000 / $60)',
     secondaryCta: 'Leer Artículos Diarios de IA',
     pillarsTitle: 'DESCUBRE EL ECOSISTEMA',
     pillars: [
       {
         num: '01',
-        tag: 'SERVICIOS PARA MARCAS · DESDE $50 USD',
+        tag: 'SERVICIOS PARA MARCAS · DESDE ₡30.000 ($60 USD)',
         title: 'Producción de Videos & Anuncios IA',
         desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar.',
         href: '/oferta',
@@ -68,13 +68,13 @@ const TRANSLATIONS = {
     slogan: 'CREATORS OF THE POST-AI ERA',
     subtitle:
       'We build hyper-realistic virtual influencers, high-converting UGC commercials, and digital ecosystems that turn attention into measurable sales.',
-    primaryCta: 'Order AI Videos ($50)',
+    primaryCta: 'Order AI Videos (₡30,000 / $60)',
     secondaryCta: 'Read Daily AI Articles',
     pillarsTitle: 'EXPLORE THE ECOSYSTEM',
     pillars: [
       {
         num: '01',
-        tag: 'AGENCY SERVICES · FROM $50 USD',
+        tag: 'AGENCY SERVICES · FROM ₡30,000 ($60 USD)',
         title: 'AI Video & Ad Production',
         desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included.',
         href: '/oferta',

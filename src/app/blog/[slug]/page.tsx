@@ -91,7 +91,7 @@ export default function PostPage() {
                 href="/oferta"
                 className="px-3.5 py-2 rounded-xs bg-[#C5A059]/15 hover:bg-[#C5A059] text-[#C5A059] hover:text-black border border-[#C5A059]/40 font-semibold transition"
               >
-                {language === 'es' ? 'Servicios IA ($50)' : 'AI Videos ($50)'}
+                {language === 'es' ? 'Servicios IA (₡30.000 / $60)' : 'AI Videos (₡30,000 / $60)'}
               </Link>
             </div>
           </div>

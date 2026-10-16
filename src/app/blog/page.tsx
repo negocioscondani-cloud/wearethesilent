@@ -110,7 +110,7 @@ export default function BlogPage() {
             href="/oferta"
             className="px-3.5 py-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#C5A059]/50 text-zinc-200 transition"
           >
-            {language === 'es' ? 'Servicios Video IA ($50)' : 'AI Video Services ($50)'}
+            {language === 'es' ? 'Servicios Video IA (₡30.000 / $60)' : 'AI Video Services (₡30,000 / $60)'}
           </Link>
           <Link
             href="/influencer-ia"
@@ -335,8 +335,8 @@ export default function BlogPage() {
           </h2>
           <p className="text-zinc-300 text-sm leading-relaxed font-light">
             {language === 'es'
-              ? 'Encarga tus videos verticales 9:16 con guion y caption desde $50 USD o descarga la guía paso a paso por $47 USD.'
-              : 'Order custom 9:16 vertical AI videos from $50 USD or get our step-by-step playbook for $47 USD.'}
+              ? 'Encarga tus videos verticales 9:16 con guion y caption desde ₡30.000 ($60 USD) o descarga la guía paso a paso por $47 USD.'
+              : 'Order custom 9:16 vertical AI videos from ₡30,000 ($60 USD) or get our step-by-step playbook for $47 USD.'}
           </p>
         </div>
 
@@ -346,7 +346,7 @@ export default function BlogPage() {
             className="w-full sm:w-auto px-6 py-3.5 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs font-bold uppercase tracking-wider rounded-xs flex items-center justify-center gap-2 transition"
           >
             <Video className="w-4 h-4" />
-            <span>{language === 'es' ? 'Cotizar Videos ($50)' : 'Order Videos ($50)'}</span>
+            <span>{language === 'es' ? 'Cotizar Videos (₡30.000 / $60)' : 'Order Videos (₡30,000 / $60)'}</span>
           </Link>
           <Link
             href="/influencer-ia"
