@@ -1178,11 +1178,26 @@ export default function OfertaPage() {
       <header className="pt-6 pb-16 relative">
         <div className="max-w-6xl mx-auto px-6">
           {/* Navbar */}
-          <nav className="flex justify-between items-center pb-16 border-b border-white/5">
-            <Link href="/" className="font-fraunces font-black text-2xl tracking-tight text-white hover:opacity-85 transition">
-              The Silent<span className="text-[#C5A059]">.</span>
-            </Link>
+          <nav className="flex flex-wrap justify-between items-center gap-4 pb-12 border-b border-white/10">
             <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xs bg-white/5 hover:bg-[#C5A059] text-zinc-200 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-xs uppercase tracking-wider font-bold transition"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span>{language === 'es' ? 'Volver al Inicio' : 'Back to Home'}</span>
+              </Link>
+              <Link href="/" className="font-fraunces font-black text-2xl tracking-tight text-white hover:opacity-85 transition hidden sm:inline-block">
+                The Silent<span className="text-[#C5A059]">.</span>
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link href="/blog" className="hidden md:inline-block font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-[#C5A059] px-3 py-2 transition">
+                {language === 'es' ? 'Blog IA' : 'AI Blog'}
+              </Link>
+              <Link href="/influencer-ia" className="hidden md:inline-block font-mono text-xs uppercase tracking-wider text-zinc-300 hover:text-[#C5A059] px-3 py-2 transition">
+                {language === 'es' ? 'Guía $47' : '$47 Guide'}
+              </Link>
               <a href="#estrategia" className="hidden sm:inline-block font-mono text-xs uppercase tracking-wider border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition">
                 {text.nav.strategy}
               </a>

@@ -7,6 +7,7 @@ import {
   Check, 
   X, 
   ArrowRight, 
+  ArrowLeft,
   Sparkles, 
   ShieldCheck, 
   Lock, 
@@ -151,6 +152,35 @@ export default function InfluencerIAPage() {
           <span className="text-zinc-400 text-[11px] hidden sm:inline">· Acceso digital vitalicio</span>
         </div>
       </aside>
+
+      {/* BACK & ECOSYSTEM NAVIGATION BAR */}
+      <nav aria-label="Navegación principal" className="border-b border-zinc-800/80 bg-[#08080A]/90 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border border-zinc-800 bg-zinc-900/80 text-zinc-300 hover:text-[#D4AF37] hover:border-[#D4AF37]/40 transition-all font-mono text-[10px] uppercase tracking-[0.2em]"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Volver al Inicio</span>
+            </Link>
+            <Link
+              href="/"
+              className="hidden sm:inline-block font-headline text-sm tracking-[0.25em] text-zinc-200 uppercase font-light hover:text-[#D4AF37] transition-colors"
+            >
+              THE SILENT STUDIO
+            </Link>
+          </div>
+          <div className="flex items-center gap-3 sm:gap-5 font-mono text-[10px] uppercase tracking-[0.2em]">
+            <Link href="/blog" className="text-zinc-400 hover:text-[#D4AF37] transition-colors">
+              Blog Diario IA
+            </Link>
+            <Link href="/oferta" className="text-zinc-400 hover:text-[#D4AF37] transition-colors hidden sm:inline">
+              Servicios Video ($50)
+            </Link>
+          </div>
+        </div>
+      </nav>
 
       {/* HERO SECTION */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">

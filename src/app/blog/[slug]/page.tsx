@@ -71,13 +71,30 @@ export default function PostPage() {
       <article className="animate-in fade-in duration-500 pb-20">
         {/* Top Back Navigation */}
         <div className="container mx-auto max-w-4xl px-5 pt-8 pb-4">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-zinc-400 hover:text-[#C5A059] transition"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{language === 'es' ? 'Volver a la Revista de IA' : 'Back to AI Journal'}</span>
-          </Link>
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xs bg-zinc-900 hover:bg-[#C5A059] text-zinc-100 hover:text-black border border-white/15 hover:border-[#C5A059] font-mono text-xs uppercase tracking-wider font-bold transition shadow-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{language === 'es' ? 'Volver a la Revista de IA' : 'Back to AI Journal'}</span>
+            </Link>
+
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <Link
+                href="/"
+                className="px-3.5 py-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#C5A059]/40 text-zinc-300 hover:text-white transition"
+              >
+                {language === 'es' ? 'Inicio' : 'Home'}
+              </Link>
+              <Link
+                href="/oferta"
+                className="px-3.5 py-2 rounded-xs bg-[#C5A059]/15 hover:bg-[#C5A059] text-[#C5A059] hover:text-black border border-[#C5A059]/40 font-semibold transition"
+              >
+                {language === 'es' ? 'Servicios IA ($50)' : 'AI Videos ($50)'}
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Article Header */}
@@ -143,6 +160,28 @@ export default function PostPage() {
               ))}
             </div>
           )}
+
+          {/* Bottom Back Navigation Bar */}
+          <div className="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xs bg-zinc-900 hover:bg-[#C5A059] text-zinc-100 hover:text-black border border-white/20 hover:border-[#C5A059] font-mono text-xs uppercase tracking-wider font-bold transition"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>
+                {language === 'es'
+                  ? 'Volver a todos los artículos del Blog'
+                  : 'Back to all Blog articles'}
+              </span>
+            </Link>
+
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-xs bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider transition"
+            >
+              <span>{language === 'es' ? 'Ir al Inicio' : 'Go to Home'}</span>
+            </Link>
+          </div>
         </div>
 
         {/* Related Articles */}
