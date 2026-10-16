@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
+import { VideoRouletteShowcase } from '@/components/ui/video-roulette-showcase';
 import { ArrowUpRight, ArrowRight, Video, BookOpen, Sparkles, Newspaper, Globe } from 'lucide-react';
 
 const WHATSAPP_NUM = '50664194111';
@@ -319,6 +320,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 3D Interactive Roulette Video Showcase */}
+      <VideoRouletteShowcase language={language} whatsappNum={WHATSAPP_NUM} />
 
       {/* Main Content: 4-Pillar Discovery Grid */}
       <main className="flex-grow max-w-6xl mx-auto w-full px-6 py-12 sm:py-16 z-10 space-y-16">

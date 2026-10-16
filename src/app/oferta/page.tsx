@@ -6,6 +6,7 @@ import { useLanguage } from '@/context/language-context';
 import { submitApplication } from '../actions';
 import { recordConsent } from '@/lib/consent-tracker';
 import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
+import { VideoRouletteShowcase } from '@/components/ui/video-roulette-showcase';
 import { 
   ArrowRight,
   Play,
@@ -1283,101 +1284,8 @@ export default function OfertaPage() {
         </div>
       </header>
 
-      {/* VIDEOS CAROUSEL SECTION */}
-      <section className="py-24 bg-[#0A0D0E] relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div>
-              <div className="font-mono text-xs text-[#C5A059] tracking-widest uppercase inline-flex items-center gap-2 mb-3">
-                <span className="w-6 h-px bg-[#C5A059] inline-block"></span>
-                {language === 'es' ? "SHOWCASE DE FORMATOS · TECNOLOGÍA DE PUNTA" : "FORMATS SHOWCASE · CUTTING-EDGE TECH"}
-              </div>
-              <h2 className="font-fraunces font-bold text-3xl sm:text-5xl text-white">
-                {language === 'es' ? "Formatos de Video Diseñados para Vender" : "Video Formats Engineered to Convert"}
-              </h2>
-              <p className="text-gray-400 text-sm mt-3 max-w-2xl leading-relaxed">
-                {language === 'es' 
-                  ? "Explora nuestros 7 formatos de mayor rendimiento generados con tecnología de punta: moda UGC, entrevistas modernas, hablado a cámara, contenido educativo, reels, street Q&A y anuncios para Meta Ads."
-                  : "Explore our 7 top-performing formats generated with cutting-edge tech: fashion UGC, modern interviews, direct to camera, educational, reels, street Q&A, and Meta Ads creatives."}
-              </p>
-            </div>
-            
-            {/* Scroll buttons */}
-            <div className="flex gap-2 shrink-0">
-              <button 
-                onClick={scrollLeft}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition cursor-pointer"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={scrollRight}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-[#C5A059]/40 hover:text-[#C5A059] transition cursor-pointer"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Carousel Track */}
-          <div 
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-8"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {CAROUSEL_VIDEOS.map((v, idx) => (
-              <div 
-                key={idx} 
-                className="w-[280px] sm:w-[310px] shrink-0 snap-start bg-[#12161A] border border-white/10 p-4 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300 shadow-xl group"
-              >
-                <div>
-                  <div className="relative aspect-[9/16] w-full bg-black rounded-sm overflow-hidden mb-4 border border-white/5">
-                    <video 
-                      src={v.url}
-                      className="w-full h-full object-cover"
-                      controls
-                      playsInline
-                      preload="metadata"
-                    />
-                    {(v as any).tag && (
-                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-black/85 backdrop-blur-md border border-[#C5A059]/40 text-[#C5A059] font-mono text-[9px] uppercase tracking-wider font-bold z-10 pointer-events-none">
-                        {(v as any).tag}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-1.5">
-                    <h3 className="font-fraunces font-bold text-base text-white leading-tight">
-                      {v.title[langKey]}
-                    </h3>
-                    <p className="text-gray-400 text-xs leading-relaxed font-light">
-                      {v.desc[langKey]}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-gray-500 uppercase">Vertical 9:16</span>
-                  <a
-                    href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
-                      language === 'es'
-                        ? `¡Hola! Me gustaría cotizar un video en el formato: ${v.title.es}`
-                        : `Hi! I want to quote a video in the format: ${v.title.en}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-mono text-[10px] uppercase font-bold text-[#C5A059] hover:text-white transition flex items-center gap-1"
-                  >
-                    <span>Pedir este formato →</span>
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 3D VIDEO ROULETTE SHOWCASE (Right -> Center -> Left) */}
+      <VideoRouletteShowcase language={language} whatsappNum={WHATSAPP_NUM} />
 
       {/* SECCIÓN 2 — EL PROBLEMA */}
       <section className="py-24 bg-[#12161A] border-y border-white/5 relative">
