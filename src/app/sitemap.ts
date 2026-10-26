@@ -9,9 +9,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/oferta', priority: 1.0, changeFrequency: 'weekly' as const },
     { route: '/influencer-ia', priority: 1.0, changeFrequency: 'weekly' as const },
     { route: '/vivianne-wolski', priority: 1.0, changeFrequency: 'weekly' as const },
+    { route: '/we-are-the-silent', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/domingo', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/blog', priority: 0.9, changeFrequency: 'daily' as const },
-    { route: '/galeria', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/galeria', priority: 0.85, changeFrequency: 'weekly' as const },
   ];
 
   const secondaryRoutes = [

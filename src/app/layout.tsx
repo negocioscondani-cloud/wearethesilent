@@ -17,25 +17,42 @@ const BASE_URL = 'https://wearethesilent.com';
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'The Silent Studio | Creative Direction & AI Content Agency',
+    default:
+      'The Silent Studio | Agencia de Influencers IA, Videos Publicitarios UGC y Anuncios con IA',
     template: '%s | The Silent Studio',
   },
   description:
-    'A complete ecosystem of generative intelligences designed to master the audiovisual process. We help you become a Creative Director, building visual empires with AI.',
+    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC 9:16 que detienen el scroll y convierten en Meta Ads, TikTok e Instagram. Cotiza tus videos desde ₡30.000 ($60 USD) o aprende nuestro método paso a paso.',
+  keywords: [
+    'Influencers IA',
+    'Crear videos con inteligencia artificial',
+    'IA para crear videos publicitarios',
+    'Publicidad con inteligencia artificial',
+    'Anuncios UGC con IA',
+    'Videos para Meta Ads Costa Rica',
+    'Crear anuncios publicitarios con IA',
+    'Agencia de contenido con IA',
+    'The Silent Studio',
+  ],
+  alternates: {
+    canonical: BASE_URL,
+  },
   icons: {
     icon: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
   },
   openGraph: {
-    title: 'The Silent Studio | Creative Direction & AI Content Agency',
-    description: 'Master the audiovisual process with our ecosystem of generative intelligences.',
+    title:
+      'The Silent Studio | Influencers IA y Videos Publicitarios de Alto Impacto',
+    description:
+      'Agencia de dirección creativa e Inteligencia Artificial: producción de videos comerciales UGC 9:16 listos para Meta Ads, creación de Influencers IA y formación práctica.',
     url: BASE_URL,
     siteName: 'The Silent Studio',
     images: [
       {
-        url: 'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif', // A representative image
+        url: 'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif',
         width: 1200,
         height: 630,
-        alt: 'A minimalist and luxurious creative studio space.',
+        alt: 'The Silent Studio · Agencia de Influencers IA y Videos Publicitarios',
       },
     ],
     locale: 'es_ES',
@@ -54,9 +71,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Silent Studio | Creative Direction & AI Content Agency',
-    description: 'Master the audiovisual process with our ecosystem of generative intelligences.',
-    images: ['http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif'],
+    title:
+      'The Silent Studio | Influencers IA y Videos Publicitarios con Inteligencia Artificial',
+    description:
+      'Producimos anuncios UGC con Influencers IA hiperrealistas para Meta Ads, TikTok y Reels desde ₡30.000 ($60 USD) y guías paso a paso.',
+    images: [
+      'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif',
+    ],
   },
 };
 
@@ -66,9 +87,42 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const rootJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${BASE_URL}/#organization`,
+        name: 'The Silent Studio',
+        url: BASE_URL,
+        logo: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
+        description:
+          'Agencia de Dirección Creativa e Inteligencia Artificial Generativa especializada en Influencers IA, videos publicitarios UGC 9:16 para Meta Ads y formación estratégica.',
+        sameAs: [
+          'https://www.instagram.com/vivianne_wolski/',
+          'https://www.skool.com/we-are-the-silent-ia-8224/about',
+        ],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${BASE_URL}/#website`,
+        url: BASE_URL,
+        name: 'The Silent Studio',
+        inLanguage: 'es',
+        publisher: {
+          '@id': `${BASE_URL}/#organization`,
+        },
+      },
+    ],
+  };
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(rootJsonLd) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

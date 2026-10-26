@@ -38,28 +38,58 @@ export default function PostPage() {
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://wearethesilent.com/blog/${post.slug}`,
-    },
-    headline: post.title,
-    description: post.description,
-    image: post.image.imageUrl,
-    author: {
-      '@type': 'Person',
-      name: post.author,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'The Silent Studio',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `https://wearethesilent.com/blog/${post.slug}`,
+        },
+        headline: post.title,
+        description: post.description,
+        image: post.image.imageUrl,
+        inLanguage: language === 'es' ? 'es' : 'en',
+        keywords: post.tags ? post.tags.join(', ') : 'Inteligencia Artificial, Publicidad con IA, Influencer IA',
+        author: {
+          '@type': 'Person',
+          name: post.author,
+          url: 'https://wearethesilent.com',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'The Silent Studio',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
+          },
+        },
+        datePublished: post.date,
+        dateModified: post.date,
       },
-    },
-    datePublished: post.date,
-    dateModified: post.date,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Inicio',
+            item: 'https://wearethesilent.com',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Blog de IA Generativa',
+            item: 'https://wearethesilent.com/blog',
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: post.title,
+            item: `https://wearethesilent.com/blog/${post.slug}`,
+          },
+        ],
+      },
+    ],
   };
 
   return (

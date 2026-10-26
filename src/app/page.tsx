@@ -388,10 +388,121 @@ export default function Home() {
           </div>
         </section>
 
+        {/* SEO Silo Hub: Direct Internal Links to Top-Ranking Guides in Google Search Console */}
+        <section
+          aria-labelledby="seo-guides-heading"
+          className="p-6 sm:p-8 rounded-2xl bg-[#11100E]/80 border border-white/10 space-y-5"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+            <h2
+              id="seo-guides-heading"
+              className="font-mono text-xs tracking-[0.2em] uppercase text-[#D8B982] font-bold"
+            >
+              {language === 'es'
+                ? 'GUÍAS DESTACADAS · PUBLICIDAD Y VIDEOS CON IA'
+                : 'FEATURED GUIDES · AI VIDEO & ADVERTISING'}
+            </h2>
+            <Link
+              href="/blog"
+              className="font-mono text-[11px] uppercase tracking-wider text-[#C8C0B3] hover:text-[#D8B982] transition flex items-center gap-1"
+            >
+              <span>{language === 'es' ? 'Ver las 30+ guías' : 'View all 30+ guides'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <Link
+              href="/blog/ia-para-crear-videos-publicitarios-gratis"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                IA para Crear Videos Publicitarios Gratis [Comparativa + Flujo]
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/crear-videos-con-inteligencia-artificial-gratis-online"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Crear Videos con Inteligencia Artificial Gratis Online
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Cómo Hacer Publicidad con Inteligencia Artificial Gratis
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/crear-anuncios-publicitarios-gratis-ia"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Crear Anuncios Publicitarios Gratis con IA de Alta Conversión
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/crear-videos-con-ia-a-partir-de-texto-gratis"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Cómo Crear Videos con IA a partir de Texto Gratis (Prompts)
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/como-hacer-videos-con-inteligencia-artificial-gratis"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Cómo Hacer Videos con Inteligencia Artificial Gratis Paso a Paso
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/avatar-realista-vs-animado-guia-seleccion-2026"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                Avatar Realista vs Animado con IA: ¿Cuál Vende Más?
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+
+            <Link
+              href="/blog/el-arte-de-crear-publicidad-con-inteligencia-artificial"
+              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
+            >
+              <span className="leading-snug font-medium">
+                El Arte de Crear Publicidad con Inteligencia Artificial
+              </span>
+              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
+            </Link>
+          </div>
+        </section>
+
         {/* Secondary Quick Access Strip */}
         <section className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 font-mono text-xs tracking-[0.18em] uppercase text-zinc-400">
           <Link href="/galeria" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
             <span>{text.quickLinks.gallery}</span>
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
+          </Link>
+          <span className="hidden sm:inline text-zinc-700">/</span>
+          <Link href="/we-are-the-silent" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
+            <span>Academia We Are The Silent</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
           </Link>
           <span className="hidden sm:inline text-zinc-700">/</span>
@@ -400,15 +511,10 @@ export default function Home() {
             <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
           </Link>
           <span className="hidden sm:inline text-zinc-700">/</span>
-          <a
-            href="https://www.skool.com/we-are-the-silent-ia-8224/about"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#D8B982] transition flex items-center gap-1.5"
-          >
-            <span>{text.quickLinks.skool}</span>
+          <Link href="/contact" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
+            <span>{language === 'es' ? 'Contacto Directo' : 'Direct Contact'}</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-          </a>
+          </Link>
         </section>
       </main>
 
