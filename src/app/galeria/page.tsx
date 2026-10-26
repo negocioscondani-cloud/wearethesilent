@@ -19,6 +19,7 @@ import videoGalleryData from '@/lib/video-gallery.json';
 import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
 
 const WHATSAPP_NUM = '50686809636';
+const INITIAL_VISIBLE_COUNT = 12;
 
 interface GalleryVideoItem {
   title: string;
@@ -27,6 +28,23 @@ interface GalleryVideoItem {
   aspect?: 'vertical' | 'horizontal';
   url: string;
 }
+
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  'Formatos Estrella':
+    'radial-gradient(circle at 50% 30%, rgba(216,185,130,0.26) 0%, rgba(24,19,14,0.95) 60%, #090806 100%)',
+  'UGC & Ads':
+    'radial-gradient(circle at 50% 30%, rgba(197,160,89,0.24) 0%, rgba(18,22,26,0.95) 60%, #080A0C 100%)',
+  'Campaña Moda UGC':
+    'radial-gradient(circle at 50% 30%, rgba(229,200,141,0.25) 0%, rgba(25,19,16,0.95) 60%, #0A0807 100%)',
+  'Podcast & Entrevistas':
+    'radial-gradient(circle at 50% 30%, rgba(186,150,90,0.24) 0%, rgba(16,21,24,0.95) 60%, #07090B 100%)',
+  'Mini Series & Storytelling':
+    'radial-gradient(circle at 50% 30%, rgba(212,175,106,0.25) 0%, rgba(22,18,24,0.95) 60%, #09070A 100%)',
+  'Casos de Estudio':
+    'radial-gradient(circle at 50% 30%, rgba(197,160,89,0.25) 0%, rgba(17,22,20,0.95) 60%, #070A09 100%)',
+  'Archivo Creativo IA':
+    'radial-gradient(circle at 50% 30%, rgba(216,185,130,0.22) 0%, rgba(20,20,22,0.95) 60%, #08080A 100%)',
+};
 
 const TRANSLATIONS = {
   es: {
@@ -39,10 +57,13 @@ const TRANSLATIONS = {
     filterAll: 'Todos',
     searchPlaceholder: 'Buscar formato, estilo o campaña...',
     expand: 'Ver en pantalla completa',
+    playInline: 'Toca para reproducir video',
     quoteStyle: 'Cotizar este formato →',
     showing: 'Mostrando',
     of: 'de',
     videosLabel: 'videos disponibles',
+    loadMore: 'Cargar más videos',
+    showAll: 'Ver los 42 videos completos',
     ctaTitle: '¿Listo para producir este nivel de contenido para tu marca?',
     ctaSub:
       'Entregamos cada video en 9:16 con subtítulos dinámicos y su respectivo caption listo para Instagram, TikTok o Meta Ads.',
@@ -59,10 +80,13 @@ const TRANSLATIONS = {
     filterAll: 'All',
     searchPlaceholder: 'Search format, style or campaign...',
     expand: 'Watch fullscreen',
+    playInline: 'Tap to play video',
     quoteStyle: 'Quote this format →',
     showing: 'Showing',
     of: 'of',
     videosLabel: 'available videos',
+    loadMore: 'Load more videos',
+    showAll: 'Show all 42 videos',
     ctaTitle: 'Ready to produce this level of content for your brand?',
     ctaSub:
       'We deliver every 9:16 video with dynamic retention subtitles and ready-to-post captions for Instagram, TikTok, or Meta Ads.',
@@ -78,8 +102,20 @@ export default function GaleriaPage() {
   const videos = videoGalleryData as GalleryVideoItem[];
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [aspectRatios, setAspectRatios] = useState<Record<string, 'horizontal' | 'vertical'>>({});
+  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_VISIBLE_COUNT);
+  const [playingUrl, setPlayingUrl] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Release any active video decoder when switching browser tabs (prevents GPU decoder contention with YouTube)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') {
+        setPlayingUrl(null);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   // Collect all unique categories with counts
   const categories = useMemo(() => {
@@ -93,14 +129,6 @@ export default function GaleriaPage() {
     }));
   }, [videos]);
 
-  const handleLoadedMetadata = (url: string, e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const video = e.currentTarget;
-    if (video.videoWidth && video.videoHeight) {
-      const aspect = video.videoWidth > video.videoHeight ? 'horizontal' : 'vertical';
-      setAspectRatios((prev) => (prev[url] === aspect ? prev : { ...prev, [url]: aspect }));
-    }
-  };
-
   const filteredVideos = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     return videos.filter((v) => {
@@ -113,6 +141,17 @@ export default function GaleriaPage() {
       return matchesCat && matchesSearch;
     });
   }, [videos, activeCategory, searchQuery]);
+
+  // Reset pagination & inline player when filter changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    setPlayingUrl(null);
+  }, [activeCategory, searchQuery]);
+
+  const displayedVideos = useMemo(
+    () => filteredVideos.slice(0, visibleCount),
+    [filteredVideos, visibleCount]
+  );
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -142,7 +181,7 @@ export default function GaleriaPage() {
   return (
     <div className="bg-[#0A0D0E] text-white min-h-screen flex flex-col justify-between selection:bg-[#C5A059] selection:text-black font-sans antialiased">
       {/* Top Sticky Navigation */}
-      <header className="border-b border-[#C5A059]/15 bg-[#080808]/90 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-[#C5A059]/15 bg-[#080808]/95 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center gap-4">
           <Link
             href="/"
@@ -161,7 +200,7 @@ export default function GaleriaPage() {
 
           <Link
             href="/oferta"
-            className="hidden sm:inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-[#14110C] bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] px-5 py-2 rounded-full font-bold hover:brightness-110 transition shadow-[0_0_20px_rgba(197,160,89,0.28)]"
+            className="hidden sm:inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-[#14110C] bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] px-5 py-2 rounded-full font-bold hover:brightness-110 transition"
           >
             <span>{text.ctaBtn}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -190,7 +229,7 @@ export default function GaleriaPage() {
 
             <div className="silent-fade-up-2 flex items-center justify-center gap-3 mb-6">
               <span className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
-              <span className="w-1.5 h-1.5 rotate-45 bg-[#E5C88D] shadow-[0_0_12px_#C5A059]" />
+              <span className="w-1.5 h-1.5 rotate-45 bg-[#E5C88D]" />
               <span className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
             </div>
           </div>
@@ -219,7 +258,7 @@ export default function GaleriaPage() {
                   onClick={() => setActiveCategory(cat.name)}
                   className={`font-mono text-xs uppercase tracking-wider px-4 py-2.5 border transition shrink-0 rounded-full flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] border-[#E5C88D] text-[#14110C] font-bold shadow-[0_0_20px_rgba(197,160,89,0.3)]'
+                      ? 'bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] border-[#E5C88D] text-[#14110C] font-bold'
                       : 'bg-[#12161A] border-white/10 text-gray-300 hover:border-[#C5A059]/50 hover:text-white'
                   }`}
                 >
@@ -262,51 +301,90 @@ export default function GaleriaPage() {
           <div className="flex items-center gap-2">
             <Film className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>
-              {text.showing} <strong className="text-white">{filteredVideos.length}</strong>{' '}
-              {text.of} {videos.length} {text.videosLabel}
+              {text.showing}{' '}
+              <strong className="text-white">{displayedVideos.length}</strong> {text.of}{' '}
+              {filteredVideos.length} {text.videosLabel}
             </span>
           </div>
         </div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid (Click-to-Play: at most 1 hardware <video> decoder mounted at any time) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
-          {filteredVideos.map((v, idx) => {
-            const detectedAspect = aspectRatios[v.url] || v.aspect || 'vertical';
-            const isHorizontal = detectedAspect === 'horizontal';
+          {displayedVideos.map((v, idx) => {
+            const isHorizontal = v.aspect === 'horizontal';
+            const isPlayingThis = playingUrl === v.url && lightboxIndex === null;
+            const bgGradient =
+              CATEGORY_GRADIENTS[v.category] || CATEGORY_GRADIENTS['Archivo Creativo IA'];
 
             return (
               <div
                 key={v.url + idx}
-                className={`group bg-[#12161A] border border-white/10 hover:border-[#C5A059]/55 p-3.5 rounded-xl flex flex-col justify-between transition-all duration-300 shadow-[0_12px_35px_rgba(0,0,0,0.6)] hover:shadow-[0_16px_45px_rgba(197,160,89,0.14)] ${
+                className={`group bg-[#12161A] border ${
+                  isPlayingThis ? 'border-[#D8B982]' : 'border-white/10 hover:border-[#C5A059]/55'
+                } p-3.5 rounded-xl flex flex-col justify-between transition-colors duration-200 shadow-lg ${
                   isHorizontal ? 'sm:col-span-2' : 'col-span-1'
                 }`}
               >
-                {/* Video Container */}
+                {/* Video / Luxury Preview Container */}
                 <div
                   className={`relative ${
                     isHorizontal ? 'aspect-video' : 'aspect-[9/16]'
                   } w-full bg-[#07090B] rounded-lg overflow-hidden mb-3.5 border border-white/10`}
                 >
-                  <video
-                    src={`${v.url}#t=0.001`}
-                    className="w-full h-full object-cover"
-                    controls
-                    playsInline
-                    preload="metadata"
-                    onLoadedMetadata={(e) => handleLoadedMetadata(v.url, e)}
-                  />
+                  {isPlayingThis ? (
+                    <video
+                      key={v.url}
+                      src={v.url}
+                      className="w-full h-full object-cover bg-black"
+                      controls
+                      autoPlay
+                      playsInline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setPlayingUrl(v.url)}
+                      className="w-full h-full flex flex-col justify-between p-5 text-left relative cursor-pointer group/card focus:outline-none"
+                      style={{ background: bgGradient }}
+                    >
+                      <div className="my-auto flex flex-col items-center text-center w-full space-y-4 px-2">
+                        <div className="w-14 h-14 rounded-full bg-[#C5A059]/15 group-hover/card:bg-[#C5A059] border border-[#D8B982]/60 flex items-center justify-center text-[#E8D5B0] group-hover/card:text-black transition-all duration-200 shadow-lg group-hover/card:scale-105">
+                          <Play className="w-5 h-5 fill-current ml-0.5" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#D8B982] block">
+                            {v.category}
+                          </span>
+                          <p className="font-fraunces font-bold text-base sm:text-lg text-[#F7F4ED] leading-snug line-clamp-3">
+                            {v.title}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="w-full text-center pt-2 border-t border-white/10">
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-[#D8B982] group-hover/card:text-white transition">
+                          ▶ {text.playInline}
+                        </span>
+                      </div>
+                    </button>
+                  )}
 
                   {/* Top Badges */}
                   <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
-                    <span className="px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md border border-[#C5A059]/45 text-[#E5C88D] font-mono text-[9px] uppercase tracking-wider font-bold">
+                    <span className="px-2.5 py-1 rounded-full bg-black/85 border border-[#C5A059]/45 text-[#E5C88D] font-mono text-[9px] uppercase tracking-wider font-bold">
                       {v.tag || v.category}
                     </span>
 
                     <button
                       type="button"
-                      onClick={() => setLightboxIndex(idx)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPlayingUrl(null);
+                        setLightboxIndex(idx);
+                      }}
                       title={text.expand}
-                      className="pointer-events-auto w-8 h-8 rounded-full bg-black/80 hover:bg-[#C5A059] text-white hover:text-black border border-white/15 flex items-center justify-center transition cursor-pointer"
+                      className="pointer-events-auto w-8 h-8 rounded-full bg-black/85 hover:bg-[#C5A059] text-white hover:text-black border border-white/15 flex items-center justify-center transition cursor-pointer"
                     >
                       <Maximize2 className="w-3.5 h-3.5" />
                     </button>
@@ -347,8 +425,28 @@ export default function GaleriaPage() {
           })}
         </div>
 
+        {/* Load More Pagination Buttons */}
+        {visibleCount < filteredVideos.length && (
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + 12)}
+              className="px-7 py-3.5 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase tracking-wider font-bold hover:brightness-110 transition cursor-pointer"
+            >
+              {text.loadMore} (+12)
+            </button>
+            <button
+              type="button"
+              onClick={() => setVisibleCount(filteredVideos.length)}
+              className="px-6 py-3.5 rounded-full bg-white/5 hover:bg-[#C5A059]/15 text-[#E6DEC8] border border-[#C5A059]/45 font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer"
+            >
+              {text.showAll} ({filteredVideos.length})
+            </button>
+          </div>
+        )}
+
         {/* Dynamic Luxury CTA Banner */}
-        <div className="mt-20 bg-gradient-to-b from-[#15130F] to-[#0D0F12] text-white p-8 sm:p-12 text-center rounded-2xl border border-[#C5A059]/35 max-w-4xl mx-auto relative overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.8)]">
+        <div className="mt-20 bg-gradient-to-b from-[#15130F] to-[#0D0F12] text-white p-8 sm:p-12 text-center rounded-2xl border border-[#C5A059]/35 max-w-4xl mx-auto relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-[2px] bg-gradient-to-r from-transparent via-[#E5C88D] to-transparent" />
           <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-[#D8B982] mb-3">
             <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
@@ -363,7 +461,7 @@ export default function GaleriaPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/oferta"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase font-bold px-8 py-4 transition transform hover:-translate-y-0.5 shadow-[0_0_30px_rgba(197,160,89,0.35)]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase font-bold px-8 py-4 transition hover:brightness-110"
             >
               <span>{text.ctaBtn}</span>
               <ArrowRight className="w-4 h-4" />
@@ -387,7 +485,7 @@ export default function GaleriaPage() {
       {/* Fullscreen Lightbox Modal */}
       {activeLightboxVideo && (
         <div
-          className="fixed inset-0 z-50 bg-black/92 backdrop-blur-xl flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setLightboxIndex(null)}
         >
           <button
@@ -442,7 +540,7 @@ export default function GaleriaPage() {
               </h3>
             </div>
 
-            <div className="w-full max-h-[74vh] aspect-[9/16] bg-black rounded-2xl overflow-hidden border border-[#C5A059]/50 shadow-[0_0_60px_rgba(197,160,89,0.25)]">
+            <div className="w-full max-h-[74vh] aspect-[9/16] bg-black rounded-2xl overflow-hidden border border-[#C5A059]/50 shadow-2xl">
               <video
                 key={activeLightboxVideo.url}
                 src={activeLightboxVideo.url}
