@@ -310,10 +310,10 @@ export default function DomingoPage() {
             <Link
               href="/vivianne-wolski"
               className="inline-flex items-center gap-1.5 font-sans-ui text-[11px] uppercase tracking-wider text-[#7C8B6B] hover:text-[#6E1B2C] transition"
-              title="Volver a la boutique"
+              title="Volver a Vivienne"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Armario de Vivienne</span>
+              <span className="hidden sm:inline">Vivienne</span>
             </Link>
 
             <span className="text-[#E8DCC0] hidden sm:inline">|</span>
