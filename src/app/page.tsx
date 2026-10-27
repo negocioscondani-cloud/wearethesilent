@@ -1,154 +1,211 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 import { LuxuryHeroBackdrop } from '@/components/ui/luxury-hero-backdrop';
 import { VideoRouletteShowcase } from '@/components/ui/video-roulette-showcase';
-import { ArrowUpRight, ArrowRight, Video, BookOpen, Sparkles, Newspaper, Globe } from 'lucide-react';
+import { ArrowUpRight, Check, Globe } from 'lucide-react';
 
 const WHATSAPP_NUM = '50664194111';
 
 const TRANSLATIONS = {
   es: {
-    banner: {
-      promo: 'CREATIVE INTELLIGENCE AGENCY:',
-      spots: 'Cupos limitados. Trabajamos con 10 empresas por ciclo (Quedan 7 disponibles)',
-      cta: 'Contacto Directo por WhatsApp →',
-    },
     nav: {
-      services: 'Estrategia',
-      guide: 'Guía $47',
-      vivienne: 'Vivienne',
+      videos: 'Videos',
+      service: 'El Servicio',
+      guide: 'La Guía $47',
+      caseStudy: 'Caso de Éxito',
       blog: 'Blog IA',
-      contact: 'Contacto',
     },
-    badge: 'CREACIÓN DE INFLUENCERS IA • TECNOLOGÍA DE PUNTA',
-    subtitle:
-      'Combinamos tecnología de vanguardia y dirección creativa innovadora para diseñar influencers con inteligencia artificial hiperrealistas. Creamos videos y anuncios listos para Meta Ads, contenido recurrente para redes sociales o páginas web, ya sea alrededor de tu propia marca o para ofrecer a tus clientes.',
-    primaryCta: 'COTIZAR MIS VIDEOS',
-    secondaryCta: 'HABLAR CON UN ESTRATEGA',
-    pillarsTitle: 'DESCUBRE EL ECOSISTEMA THE SILENT',
-    pillars: [
-      {
-        num: '01',
-        tag: 'SERVICIOS PARA MARCAS · DESDE $50 USD',
-        title: 'Producción de Videos & Anuncios IA',
-        desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar. Paquetes de 1 video ($50), Pack 4 ($170 · antes $200) y Pack 8 videos ($300 · antes $400).',
-        href: '/oferta',
-        cta: 'Ver formatos y tarifas',
-        icon: 'video',
-        highlight: true,
+    hero: {
+      eyebrow: 'THE SILENT STUDIO · AGENCIA CREATIVA IA',
+      titleLine1: 'Influencers IA y videos',
+      titleHighlight: 'que convierten.',
+      subtitle:
+        'Dirección creativa e inteligencia artificial hiperrealista para marcas y creadores. Sin ruido, directo al resultado.',
+      buttons: {
+        service: 'El Servicio · Videos IA',
+        guide: 'La Guía Paso a Paso · $47',
+        caseStudy: 'Caso de Éxito · Vivienne',
       },
-      {
-        num: '02',
-        tag: 'FORMACIÓN PASO A PASO · $47 USD',
-        title: 'Guía: Influencer IA de Cero a tu Primera Venta',
-        desc: 'El mapa exacto en 9 pasos resumidos y accionables para crear tu propio personaje con IA, fijar su rostro, darle voz y monetizarlo sin mostrar tu cara.',
-        href: '/influencer-ia',
-        cta: 'Explorar el método',
-        icon: 'book',
-        highlight: false,
-      },
-      {
-        num: '03',
-        tag: 'CASO DE ÉXITO VIVO · BOUTIQUE & CLUB',
-        title: 'El Armario de Vivienne Wolski',
-        desc: 'Nuestro personaje insignia en acción: una aristócrata digital con tienda curada de lujo silencioso (afiliados ShopMy), fonoteca de audios y El Domingo de los Números.',
-        href: '/vivianne-wolski',
-        cta: 'Visitar universo Vivienne',
-        icon: 'sparkles',
-        highlight: false,
-      },
-      {
-        num: '04',
-        tag: 'PUBLICACIÓN DIARIA · 100% PRÁCTICO',
-        title: 'Revista Diaria de IA Generativa',
-        desc: 'Artículos diarios sobre IA para anuncios, tutoriales técnicos, casos de éxito, modelos de monetización, usos prácticos y planes de trabajo ejecutables.',
-        href: '/blog',
-        cta: 'Leer artículos del día',
-        icon: 'news',
-        highlight: false,
-      },
-    ],
-    quickLinks: {
-      gallery: 'Galería Visual',
-      domingo: 'El Domingo de los Números',
-      skool: 'Comunidad Skool',
+    },
+    serviceSection: {
+      tag: '01 · EL SERVICIO',
+      title: 'Producción de Videos & Anuncios con IA',
+      subtitle:
+        'Entregamos cada video vertical 9:16 listo para publicar en Reels, TikTok o Meta Ads: incluye Influencer IA, guion de retención, subtítulos dinámicos y caption.',
+      packs: [
+        {
+          name: '1 Video Individual',
+          oldPrice: '',
+          price: '$50 USD',
+          saveTag: '',
+          detail: 'Pago único · Entrega en 48-72h',
+          features: [
+            '1 Video vertical 9:16 en alta definición',
+            'Guion persuasivo + subtítulos dinámicos',
+            'Caption listo para Instagram o Facebook',
+          ],
+          highlight: false,
+        },
+        {
+          name: 'Pack 4 Videos',
+          oldPrice: '$200 USD',
+          price: '$170 USD',
+          saveTag: 'Ahorrás $30',
+          detail: '$42.50 por video · Incluye Influencer IA',
+          features: [
+            '4 Videos verticales 9:16 multi-ángulo',
+            'Diseño consistente de tu Influencer IA',
+            '4 Guiones + subtítulos + captions con CTA',
+          ],
+          highlight: false,
+        },
+        {
+          name: 'Pack 8 Videos',
+          oldPrice: '$400 USD',
+          price: '$300 USD',
+          saveTag: 'Ahorrás $100',
+          detail: 'Mejor valor · $37.50 por video',
+          features: [
+            '8 Videos 9:16 para todo el mes o pauta',
+            'Creación de Influencer IA exclusivo de marca',
+            '8 Guiones + subtítulos pro + captions listos',
+          ],
+          highlight: true,
+        },
+      ],
+      cta: 'Ver detalles y cotizar servicio',
+    },
+    guideSection: {
+      tag: '02 · LA GUÍA ($47 USD)',
+      title: 'Crea tu propio Influencer IA de cero a tu primera venta',
+      subtitle:
+        'El método exacto en 9 pasos resumidos y accionables para diseñar tu personaje hiperrealista, fijar su rostro, darle voz natural y monetizarlo sin mostrar tu cara.',
+      bullets: [
+        'Consistencia facial absoluta en fotos y videos 9:16',
+        'Prompts maestros, clonación de voz y estructura de guiones',
+        'Rutas reales de monetización: servicios, afiliados y productos digitales',
+      ],
+      priceLabel: 'Acceso inmediato y de por vida',
+      price: '$47 USD',
+      cta: 'Explorar la Guía Paso a Paso',
+    },
+    caseSection: {
+      tag: '03 · CASO DE ÉXITO VIVO',
+      title: 'Vivienne Wolski',
+      subtitle:
+        'Nuestra influencer insignia creada 100% con IA. Un ecosistema minimalista en producción real con boutique de lujo silencioso, club de audio y ritual financiero.',
+      stats: [
+        { label: 'Estancia 01', value: 'El Armario (Boutique)' },
+        { label: 'Estancia 02', value: 'Club Vivi (33 Audios)' },
+        { label: 'Estancia 03', value: 'Honestidad Financiera' },
+      ],
+      cta: 'Entrar al universo de Vivienne',
     },
     whatsappPrefill:
-      'Hola! Me interesa conversar sobre la estrategia creativa y producción de videos con Influencers IA para mi negocio.',
-    footer: 'The Silent Studio © Todos los derechos reservados.',
+      'Hola! Me interesa conversar sobre la producción de videos con Influencers IA para mi marca.',
+    footer: '© The Silent Studio · Silencio, Orden y Conversión.',
   },
   en: {
-    banner: {
-      promo: 'CREATIVE INTELLIGENCE AGENCY:',
-      spots: 'Limited slots. We work with 10 companies per cycle (7 available)',
-      cta: 'Direct WhatsApp Contact →',
-    },
     nav: {
-      services: 'Strategy',
+      videos: 'Videos',
+      service: 'The Service',
       guide: '$47 Guide',
-      vivienne: 'Vivienne',
+      caseStudy: 'Case Study',
       blog: 'AI Blog',
-      contact: 'Contact',
     },
-    badge: 'AI INFLUENCER CREATION • CUTTING-EDGE TECH',
-    subtitle:
-      'We combine cutting-edge technology and innovative creative direction to design hyper-realistic AI influencers. We produce ready-to-run videos for Meta Ads, recurring social media content, and landing pages — whether around your own brand or to offer your clients.',
-    primaryCta: 'QUOTE MY VIDEOS',
-    secondaryCta: 'TALK TO A STRATEGIST',
-    pillarsTitle: 'EXPLORE THE SILENT ECOSYSTEM',
-    pillars: [
-      {
-        num: '01',
-        tag: 'AGENCY SERVICES · FROM $50 USD',
-        title: 'AI Video & Ad Production',
-        desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included. Single ($50), 4-Pack ($170 · reg. $200) and 8-Pack ($300 · reg. $400).',
-        href: '/oferta',
-        cta: 'View formats & pricing',
-        icon: 'video',
-        highlight: true,
+    hero: {
+      eyebrow: 'THE SILENT STUDIO · AI CREATIVE AGENCY',
+      titleLine1: 'AI Influencers & videos',
+      titleHighlight: 'built to convert.',
+      subtitle:
+        'Creative direction and hyper-realistic artificial intelligence for brands and creators. Zero noise, straight to results.',
+      buttons: {
+        service: 'The Service · AI Videos',
+        guide: 'Step-by-Step Guide · $47',
+        caseStudy: 'Live Case Study · Vivienne',
       },
-      {
-        num: '02',
-        tag: 'STEP-BY-STEP PLAYBOOK · $47 USD',
-        title: 'Guide: AI Influencer From Zero to First Sale',
-        desc: 'The exact 9-step blueprint to design your own AI character, lock facial consistency, synthesize voice, and monetize without showing your face.',
-        href: '/influencer-ia',
-        cta: 'Explore the method',
-        icon: 'book',
-        highlight: false,
-      },
-      {
-        num: '03',
-        tag: 'LIVE CASE STUDY · BOUTIQUE & CLUB',
-        title: 'El Armario de Vivienne Wolski',
-        desc: 'Our flagship AI persona in action: a quiet-luxury affiliate boutique (ShopMy), audio training library, and El Domingo de los Números ritual.',
-        href: '/vivianne-wolski',
-        cta: 'Visit Vivienne Universe',
-        icon: 'sparkles',
-        highlight: false,
-      },
-      {
-        num: '04',
-        tag: 'DAILY PUBLICATION · ACTIONABLE',
-        title: 'Daily Generative AI Journal',
-        desc: 'Daily deep-dives on AI for ads, step-by-step tutorials, case studies, monetization models, practical workflows, and execution plans.',
-        href: '/blog',
-        cta: 'Read today’s articles',
-        icon: 'news',
-        highlight: false,
-      },
-    ],
-    quickLinks: {
-      gallery: 'Visual Gallery',
-      domingo: 'El Domingo de los Números',
-      skool: 'Skool Community',
+    },
+    serviceSection: {
+      tag: '01 · THE SERVICE',
+      title: 'AI Video & Ad Production',
+      subtitle:
+        'Every 9:16 vertical video is delivered ready to post on Reels, TikTok, or Meta Ads: includes AI Influencer, retention script, dynamic subtitles, and caption.',
+      packs: [
+        {
+          name: '1 Single Video',
+          oldPrice: '',
+          price: '$50 USD',
+          saveTag: '',
+          detail: 'One-time · 48-72h turnaround',
+          features: [
+            '1 High-definition 9:16 vertical video',
+            'Persuasive script + dynamic subtitles',
+            'Ready-to-post Instagram/Facebook caption',
+          ],
+          highlight: false,
+        },
+        {
+          name: 'Pack 4 Videos',
+          oldPrice: '$200 USD',
+          price: '$170 USD',
+          saveTag: 'Save $30',
+          detail: '$42.50 per video · Includes AI Influencer',
+          features: [
+            '4 Multi-angle 9:16 vertical videos',
+            'Consistent custom AI Influencer design',
+            '4 Scripts + subtitles + captions with CTA',
+          ],
+          highlight: false,
+        },
+        {
+          name: 'Pack 8 Videos',
+          oldPrice: '$400 USD',
+          price: '$300 USD',
+          saveTag: 'Save $100',
+          detail: 'Best value · $37.50 per video',
+          features: [
+            '8 Vertical 9:16 videos for monthly scale',
+            'Exclusive brand AI Influencer creation',
+            '8 Scripts + pro subtitles + ready captions',
+          ],
+          highlight: true,
+        },
+      ],
+      cta: 'View details & quote service',
+    },
+    guideSection: {
+      tag: '02 · THE PLAYBOOK ($47 USD)',
+      title: 'Build your own AI Influencer from zero to first sale',
+      subtitle:
+        'The exact 9-step actionable blueprint to design a hyper-realistic character, lock facial consistency, synthesize natural voice, and monetize without showing your face.',
+      bullets: [
+        'Locked facial identity across photos and 9:16 videos',
+        'Master prompts, voice synthesis & conversion script templates',
+        'Proven monetization paths: client services, affiliates & digital products',
+      ],
+      priceLabel: 'Instant lifetime access',
+      price: '$47 USD',
+      cta: 'Explore the Step-by-Step Guide',
+    },
+    caseSection: {
+      tag: '03 · LIVE CASE STUDY',
+      title: 'Vivienne Wolski',
+      subtitle:
+        'Our flagship persona built 100% with AI. A live minimalist ecosystem featuring a quiet-luxury boutique, audio club, and financial honesty ritual.',
+      stats: [
+        { label: 'Room 01', value: 'El Armario (Boutique)' },
+        { label: 'Room 02', value: 'Club Vivi (33 Audios)' },
+        { label: 'Room 03', value: 'Financial Honesty' },
+      ],
+      cta: 'Enter Vivienne’s Universe',
     },
     whatsappPrefill:
-      'Hi! I want to discuss creative strategy and AI Influencer video production for my business.',
-    footer: 'The Silent Studio © All rights reserved.',
+      'Hi! I want to discuss AI Influencer video production for my brand.',
+    footer: '© The Silent Studio · Silence, Order & Conversion.',
   },
 };
 
@@ -156,400 +213,356 @@ export default function Home() {
   const { language, setLanguage } = useLanguage();
   const text = language === 'es' ? TRANSLATIONS.es : TRANSLATIONS.en;
 
-  const renderPillarIcon = (type: string) => {
-    switch (type) {
-      case 'video':
-        return <Video className="w-5 h-5 text-[#D8B982]" />;
-      case 'book':
-        return <BookOpen className="w-5 h-5 text-[#D8B982]" />;
-      case 'sparkles':
-        return <Sparkles className="w-5 h-5 text-[#D8B982]" />;
-      default:
-        return <Newspaper className="w-5 h-5 text-[#D8B982]" />;
-    }
-  };
-
   return (
     <div className="bg-[#0A0D0E] text-[#F5F3EF] min-h-screen flex flex-col justify-between selection:bg-[#C5A059] selection:text-black relative font-sans overflow-x-hidden">
-      {/* Top Live Agency Bar (matches reference image) */}
-      <div className="bg-[#0B0A08] text-white py-2.5 px-4 text-[11px] font-mono border-b border-[#C5A059]/35 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto w-full flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#D8B982] shadow-[0_0_8px_#D8B982] animate-pulse" />
-            <span className="font-bold text-[#D8B982] uppercase tracking-wider">
-              {text.banner.promo}
-            </span>
-            <span className="hidden md:inline text-[#C9C2B4]">{text.banner.spots}</span>
-          </div>
-          <a
-            href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#D8B982] hover:text-white underline underline-offset-4 font-medium transition flex items-center gap-1"
-          >
-            <span>{text.banner.cta}</span>
-          </a>
-        </div>
-      </div>
+      {/* Minimalist Top Bar (Vivi-inspired visual order) */}
+      <header className="w-full px-6 md:px-12 py-6 flex items-center justify-between border-b border-white/[0.07] relative z-20">
+        <Link
+          href="/"
+          className="font-fraunces font-bold text-xl sm:text-2xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition"
+        >
+          The Silent<span className="text-[#D4AF6A]">.</span>
+        </Link>
 
-      {/* HERO PORTADA SECTION */}
-      <section className="relative pt-8 pb-24 sm:pb-32 overflow-hidden">
+        <nav
+          aria-label="Navegación principal"
+          className="hidden md:flex items-center gap-8 font-mono text-[11px] uppercase tracking-[0.22em] text-[#C8C0B3]"
+        >
+          <a href="#videos" className="hover:text-[#E5C88D] transition">
+            {text.nav.videos}
+          </a>
+          <a href="#servicio" className="hover:text-[#E5C88D] transition">
+            {text.nav.service}
+          </a>
+          <a href="#guia" className="hover:text-[#E5C88D] transition">
+            {text.nav.guide}
+          </a>
+          <a href="#caso-de-exito" className="hover:text-[#E5C88D] transition">
+            {text.nav.caseStudy}
+          </a>
+          <Link href="/blog" className="hover:text-[#E5C88D] transition">
+            {text.nav.blog}
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 hover:border-[#C5A059]/50 font-mono text-[10px] tracking-widest uppercase text-[#C9C2B4] transition"
+            aria-label="Cambiar idioma"
+          >
+            <Globe className="w-3 h-3 text-[#D8B982]" />
+            <span>{language === 'es' ? 'ES' : 'EN'}</span>
+          </button>
+        </div>
+      </header>
+
+      {/* ABOVE THE FOLD: Minimalist Entry with 3 Pure Navigation Buttons (Vivi-style order) */}
+      <section className="relative py-20 sm:py-28 px-6 overflow-hidden border-b border-white/[0.06]">
         <LuxuryHeroBackdrop />
 
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          {/* Luxury Navbar */}
-          <header className="flex flex-wrap justify-between items-center gap-4 pb-8">
-            <Link
-              href="/"
-              className="font-fraunces font-bold text-2xl sm:text-3xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition"
-            >
-              The Silent<span className="text-[#D4AF6A]">.</span>
-            </Link>
+        <div className="max-w-3xl mx-auto text-center relative z-10 space-y-8">
+          <p className="font-mono text-[10px] sm:text-xs text-[#D8B982] tracking-[0.28em] uppercase">
+            {text.hero.eyebrow}
+          </p>
 
-            <nav
-              aria-label="Navegación principal"
-              className="flex flex-wrap items-center gap-4 sm:gap-7"
-            >
-              <Link
-                href="/oferta"
-                className="font-mono text-xs uppercase tracking-[0.2em] text-[#E5DEC9] hover:text-[#E5C88D] transition"
-              >
-                {text.nav.services}
-              </Link>
-              <Link
-                href="/blog"
-                className="hidden sm:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
-              >
-                {text.nav.blog}
-              </Link>
-              <Link
-                href="/influencer-ia"
-                className="hidden md:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
-              >
-                {text.nav.guide}
-              </Link>
-              <Link
-                href="/vivianne-wolski"
-                className="hidden lg:inline-block font-mono text-xs uppercase tracking-[0.2em] text-[#D8D1C5] hover:text-[#E5C88D] transition"
-              >
-                {text.nav.vivienne}
-              </Link>
+          <div className="space-y-4">
+            <h1 className="font-fraunces font-bold text-4xl sm:text-6xl leading-[1.08] text-[#F7F4ED] tracking-tight">
+              {text.hero.titleLine1}{' '}
+              <span className="italic font-normal silent-gold-text-shimmer">
+                {text.hero.titleHighlight}
+              </span>
+            </h1>
 
-              <button
-                type="button"
-                onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
-                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/10 hover:border-[#C5A059]/50 font-mono text-[10px] tracking-wider uppercase text-[#C9C2B4] transition"
-                aria-label="Cambiar idioma"
-              >
-                <Globe className="w-3 h-3 text-[#D8B982]" />
-                <span>{language === 'es' ? 'ES' : 'EN'}</span>
-              </button>
-
-              <a
-                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-xs uppercase tracking-[0.2em] text-[#E8D5B0] border border-[#C5A059]/65 hover:border-[#E5C88D] bg-[#17130D]/70 hover:bg-[#C5A059]/15 px-6 py-2.5 rounded-full transition shadow-[0_0_20px_rgba(197,160,89,0.15)]"
-              >
-                {text.nav.contact}
-              </a>
-            </nav>
-          </header>
-
-          {/* Hero Centerpiece */}
-          <div className="max-w-4xl mx-auto text-center pt-14 sm:pt-20 pb-8">
-            <div className="silent-fade-up-1 font-mono text-[11px] sm:text-xs text-[#D8B982] tracking-[0.22em] uppercase inline-flex items-center justify-center gap-3 mb-6">
-              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block" />
-              <span>{text.badge}</span>
-              <span className="w-6 sm:w-8 h-px bg-[#C5A059]/70 inline-block" />
-            </div>
-
-            <div className="relative inline-block">
-              <h1 className="silent-fade-up-2 silent-title-glow font-fraunces font-bold text-4xl sm:text-6xl lg:text-[68px] leading-[1.08] mb-6 text-[#F7F4ED] tracking-tight">
-                {language === 'es' ? (
-                  <>
-                    Influencers IA y videos de{' '}
-                    <span className="italic font-normal silent-gold-text-shimmer">
-                      alto impacto
-                    </span>{' '}
-                    que detienen el scroll y{' '}
-                    <span className="italic font-normal silent-gold-text-shimmer">
-                      convierten
-                    </span>
-                    .
-                  </>
-                ) : (
-                  <>
-                    AI Influencers and{' '}
-                    <span className="italic font-normal silent-gold-text-shimmer">
-                      high-impact
-                    </span>{' '}
-                    videos that stop the scroll and{' '}
-                    <span className="italic font-normal silent-gold-text-shimmer">
-                      convert
-                    </span>
-                    .
-                  </>
-                )}
-              </h1>
-
-              {/* Subtle centered luxury ornamental light line under the title */}
-              <div className="silent-fade-up-2 flex items-center justify-center gap-3 mb-7">
-                <span className="w-16 sm:w-28 h-px bg-gradient-to-r from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
-                <span className="w-1.5 h-1.5 rotate-45 bg-[#E5C88D] shadow-[0_0_12px_#C5A059]" />
-                <span className="w-16 sm:w-28 h-px bg-gradient-to-l from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
-              </div>
-            </div>
-
-            <p className="silent-fade-up-3 text-[#C8C0B3] text-base sm:text-lg lg:text-[19px] max-w-2xl mx-auto mb-12 leading-[1.65] font-light">
-              {text.subtitle}
-            </p>
-
-            <div className="silent-fade-up-4 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-              <Link
-                href="/oferta"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-sans text-xs uppercase tracking-[0.16em] px-9 py-4 transition-all duration-500 transform hover:-translate-y-0.5 hover:scale-[1.02] shadow-[0_0_35px_rgba(216,185,130,0.42)] hover:shadow-[0_0_52px_rgba(216,185,130,0.68)] font-bold"
-              >
-                <span>{text.primaryCta}</span>
-              </Link>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
-                  language === 'es'
-                    ? 'Hola! Me interesa agendar una llamada estratégica con un estratega creativo para mi negocio.'
-                    : 'Hi! I want to book a creative strategy call for my business.'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-[#12100D]/75 backdrop-blur-sm text-[#E6DEC8] hover:text-white font-sans text-xs uppercase tracking-[0.16em] px-8 py-4 border border-[#C5A059]/55 hover:border-[#E5C88D] hover:bg-[#C5A059]/10 transition-all duration-300"
-              >
-                <span>{text.secondaryCta}</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#D8B982] transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
+            <div className="flex items-center justify-center gap-3 pt-1">
+              <span className="w-16 h-px bg-gradient-to-r from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
+              <span className="w-1.5 h-1.5 rotate-45 bg-[#E5C88D]" />
+              <span className="w-16 h-px bg-gradient-to-l from-transparent via-[#C5A059]/60 to-[#E5C88D]" />
             </div>
           </div>
+
+          <p className="text-[#C8C0B3] text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-light">
+            {text.hero.subtitle}
+          </p>
+
+          {/* 3 Clean Entry Buttons (Matching Vivienne's Minimalist Architecture) */}
+          <nav
+            aria-label="Accesos principales"
+            className="flex flex-col sm:flex-row items-stretch justify-center gap-3.5 max-w-2xl mx-auto pt-2"
+          >
+            <Link
+              href="/oferta"
+              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase tracking-[0.16em] font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_30px_rgba(216,185,130,0.28)]"
+            >
+              <span>{text.hero.buttons.service}</span>
+              <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+
+            <Link
+              href="/influencer-ia"
+              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <span>{text.hero.buttons.guide}</span>
+              <ArrowUpRight className="w-4 h-4 shrink-0 text-[#D8B982] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+
+            <Link
+              href="/vivianne-wolski"
+              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <span>{text.hero.buttons.caseStudy}</span>
+              <ArrowUpRight className="w-4 h-4 shrink-0 text-[#D8B982] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </nav>
         </div>
       </section>
 
-      {/* 3D Interactive Roulette Video Showcase */}
-      <VideoRouletteShowcase language={language} whatsappNum={WHATSAPP_NUM} />
+      {/* SECTION 1: LOS VIDEOS (3D Roulette Showcase) */}
+      <div id="videos">
+        <VideoRouletteShowcase language={language} whatsappNum={WHATSAPP_NUM} />
+      </div>
 
-      {/* Main Content: 4-Pillar Discovery Grid */}
-      <main className="flex-grow max-w-6xl mx-auto w-full px-6 py-12 sm:py-16 z-10 space-y-16">
-        <section aria-labelledby="ecosystem-heading" className="space-y-6">
-          <div className="flex items-center justify-between border-b border-[#C5A059]/20 pb-3">
-            <h2
-              id="ecosystem-heading"
-              className="font-mono text-xs tracking-[0.22em] uppercase text-[#D8B982] font-bold"
-            >
-              {text.pillarsTitle}
+      {/* MAIN CONTENT: Minimalist, Straight-to-the-Point Blocks */}
+      <main className="max-w-5xl mx-auto w-full px-6 py-20 space-y-24">
+        {/* SECTION 2: EL SERVICIO ($50 / $170 / $300) */}
+        <section id="servicio" className="space-y-10 scroll-mt-12">
+          <div className="max-w-2xl space-y-3">
+            <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#D8B982] font-bold block">
+              {text.serviceSection.tag}
+            </span>
+            <h2 className="font-fraunces text-3xl sm:text-4xl font-bold text-[#F7F4ED] tracking-tight">
+              {text.serviceSection.title}
             </h2>
-            <span className="font-mono text-[11px] text-zinc-400">01 — 04</span>
+            <p className="text-[#C8C0B3] text-sm sm:text-base font-light leading-relaxed">
+              {text.serviceSection.subtitle}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {text.pillars.map((pillar) => (
-              <Link
-                key={pillar.num}
-                href={pillar.href}
-                className={`group relative p-6 sm:p-8 rounded-2xl border transition-all duration-500 transform hover:-translate-y-1 flex flex-col justify-between ${
-                  pillar.highlight
-                    ? 'bg-gradient-to-br from-[#17140F] to-[#0D0B09] border-[#C5A059]/55 hover:border-[#E5C88D] shadow-[0_0_30px_rgba(197,160,89,0.08)] hover:shadow-[0_12px_40px_rgba(197,160,89,0.18)]'
-                    : 'bg-[#11100E]/90 border-white/10 hover:border-[#C5A059]/50 hover:bg-[#161411] hover:shadow-[0_12px_35px_rgba(0,0,0,0.6)]'
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {text.serviceSection.packs.map((pack) => (
+              <div
+                key={pack.name}
+                className={`p-6 rounded-2xl border flex flex-col justify-between transition-all ${
+                  pack.highlight
+                    ? 'bg-[#14120E] border-[#C5A059] shadow-[0_0_30px_rgba(197,160,89,0.12)]'
+                    : 'bg-[#0F1316] border-white/10 hover:border-white/25'
                 }`}
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1 rounded-full bg-black/60 text-[#D8B982] border border-[#C5A059]/30 font-semibold">
-                      {pillar.tag}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {renderPillarIcon(pillar.icon)}
-                      <span className="font-mono text-xs text-zinc-500 font-bold">
-                        /{pillar.num}
+                    <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-[#F5F3EF] font-bold">
+                      {pack.name}
+                    </h3>
+                    {pack.saveTag && (
+                      <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#C5A059]/20 text-[#E5C88D] border border-[#C5A059]/40 font-bold">
+                        {pack.saveTag}
                       </span>
-                    </div>
+                    )}
                   </div>
 
-                  <h3 className="font-fraunces text-2xl sm:text-3xl font-bold text-[#F7F4ED] group-hover:text-[#DFC28E] transition-colors leading-snug">
-                    {pillar.title}
-                  </h3>
+                  <div>
+                    {pack.oldPrice && (
+                      <span className="font-mono text-xs text-zinc-500 line-through decoration-red-500/80 decoration-2 block">
+                        {pack.oldPrice}
+                      </span>
+                    )}
+                    <span className="font-fraunces text-3xl sm:text-4xl font-bold text-[#F7F4ED]">
+                      {pack.price}
+                    </span>
+                    <p className="font-mono text-[11px] text-[#D8B982] mt-1">
+                      {pack.detail}
+                    </p>
+                  </div>
 
-                  <p className="text-[#C8C0B3] text-sm leading-relaxed font-light">
-                    {pillar.desc}
-                  </p>
+                  <ul className="space-y-2 pt-3 border-t border-white/10 text-xs text-[#C8C0B3] font-light">
+                    {pack.features.map((feat) => (
+                      <li key={feat} className="flex items-start gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#D8B982] shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between font-mono text-xs uppercase tracking-wider text-[#D8B982] font-bold">
-                  <span>{pillar.cta}</span>
-                  <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
+                <Link
+                  href="/oferta"
+                  className={`mt-6 w-full py-3 rounded-xl font-mono text-[11px] uppercase tracking-[0.18em] font-bold flex items-center justify-center gap-2 transition ${
+                    pack.highlight
+                      ? 'bg-[#C5A059] hover:bg-[#D8B982] text-black'
+                      : 'bg-white/[0.05] hover:bg-white/[0.1] text-[#F5F3EF] border border-white/10'
+                  }`}
+                >
+                  <span>{text.serviceSection.cta}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             ))}
           </div>
         </section>
 
-        {/* SEO Silo Hub: Direct Internal Links to Top-Ranking Guides in Google Search Console */}
+        {/* SECTION 3: LA GUÍA PASO A PASO ($47 USD) */}
         <section
-          aria-labelledby="seo-guides-heading"
-          className="p-6 sm:p-8 rounded-2xl bg-[#11100E]/80 border border-white/10 space-y-5"
+          id="guia"
+          className="p-8 sm:p-10 rounded-2xl bg-[#0F1316] border border-white/10 scroll-mt-12"
         >
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
-            <h2
-              id="seo-guides-heading"
-              className="font-mono text-xs tracking-[0.2em] uppercase text-[#D8B982] font-bold"
-            >
-              {language === 'es'
-                ? 'GUÍAS DESTACADAS · PUBLICIDAD Y VIDEOS CON IA'
-                : 'FEATURED GUIDES · AI VIDEO & ADVERTISING'}
-            </h2>
-            <Link
-              href="/blog"
-              className="font-mono text-[11px] uppercase tracking-wider text-[#C8C0B3] hover:text-[#D8B982] transition flex items-center gap-1"
-            >
-              <span>{language === 'es' ? 'Ver las 30+ guías' : 'View all 30+ guides'}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-            <Link
-              href="/blog/ia-para-crear-videos-publicitarios-gratis"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                IA para Crear Videos Publicitarios Gratis [Comparativa + Flujo]
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-8 space-y-4">
+              <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-[#D8B982] font-bold block">
+                {text.guideSection.tag}
               </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
+              <h2 className="font-fraunces text-2xl sm:text-4xl font-bold text-[#F7F4ED] tracking-tight leading-snug">
+                {text.guideSection.title}
+              </h2>
+              <p className="text-[#C8C0B3] text-sm sm:text-base font-light leading-relaxed">
+                {text.guideSection.subtitle}
+              </p>
+              <ul className="space-y-2 pt-2 text-xs sm:text-sm text-[#E5DEC9] font-light">
+                {text.guideSection.bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-[#D8B982] shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            <Link
-              href="/blog/crear-videos-con-inteligencia-artificial-gratis-online"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Crear Videos con Inteligencia Artificial Gratis Online
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
+            <div className="md:col-span-4 flex flex-col items-start md:items-end justify-between space-y-4 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
+              <div className="md:text-right">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 block">
+                  {text.guideSection.priceLabel}
+                </span>
+                <span className="font-fraunces text-4xl font-bold text-[#D8B982]">
+                  {text.guideSection.price}
+                </span>
+              </div>
 
-            <Link
-              href="/blog/como-hacer-publicidad-con-inteligencia-artificial-gratis"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Cómo Hacer Publicidad con Inteligencia Artificial Gratis
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
-
-            <Link
-              href="/blog/crear-anuncios-publicitarios-gratis-ia"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Crear Anuncios Publicitarios Gratis con IA de Alta Conversión
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
-
-            <Link
-              href="/blog/crear-videos-con-ia-a-partir-de-texto-gratis"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Cómo Crear Videos con IA a partir de Texto Gratis (Prompts)
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
-
-            <Link
-              href="/blog/como-hacer-videos-con-inteligencia-artificial-gratis"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Cómo Hacer Videos con Inteligencia Artificial Gratis Paso a Paso
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
-
-            <Link
-              href="/blog/avatar-realista-vs-animado-guia-seleccion-2026"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                Avatar Realista vs Animado con IA: ¿Cuál Vende Más?
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
-
-            <Link
-              href="/blog/el-arte-de-crear-publicidad-con-inteligencia-artificial"
-              className="p-3.5 rounded-xl bg-black/40 border border-white/5 hover:border-[#C5A059]/45 text-[#E5DEC9] hover:text-[#D8B982] transition flex items-start justify-between gap-2"
-            >
-              <span className="leading-snug font-medium">
-                El Arte de Crear Publicidad con Inteligencia Artificial
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-[#D8B982] mt-0.5" />
-            </Link>
+              <Link
+                href="/influencer-ia"
+                className="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase tracking-[0.16em] font-bold flex items-center justify-center gap-2 hover:brightness-110 transition"
+              >
+                <span>{text.guideSection.cta}</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* Secondary Quick Access Strip */}
-        <section className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 font-mono text-xs tracking-[0.18em] uppercase text-zinc-400">
-          <Link href="/galeria" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
-            <span>{text.quickLinks.gallery}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-          </Link>
-          <span className="hidden sm:inline text-zinc-700">/</span>
-          <Link href="/we-are-the-silent" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
-            <span>Academia We Are The Silent</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-          </Link>
-          <span className="hidden sm:inline text-zinc-700">/</span>
-          <Link href="/domingo" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
-            <span>{text.quickLinks.domingo}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-          </Link>
-          <span className="hidden sm:inline text-zinc-700">/</span>
-          <Link href="/contact" className="hover:text-[#D8B982] transition flex items-center gap-1.5">
-            <span>{language === 'es' ? 'Contacto Directo' : 'Direct Contact'}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#D8B982]" />
-          </Link>
+        {/* SECTION 4: CASO DE ÉXITO VIVO (Vivienne Wolski) */}
+        <section
+          id="caso-de-exito"
+          className="p-8 sm:p-10 rounded-2xl bg-[#F7F1E6] text-[#2B1D14] border border-[#D8CBB8] scroll-mt-12"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-4 flex justify-center">
+              <div className="relative w-full max-w-[240px] aspect-[4/5] rounded-xl overflow-hidden border border-[#D8CBB8] shadow-md bg-[#EFE6D5]">
+                <Image
+                  src="/images/vivianne-wolski-hero.jpg"
+                  alt="Vivienne Wolski · Caso de Éxito Influencer IA"
+                  fill
+                  sizes="(max-width: 768px) 60vw, 240px"
+                  className="object-cover object-top"
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-8 space-y-5">
+              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#6B1F2A] font-bold block">
+                {text.caseSection.tag}
+              </span>
+              <h2 className="font-fraunces text-3xl sm:text-4xl font-bold text-[#2B1D14] tracking-tight">
+                {text.caseSection.title}
+              </h2>
+              <p className="text-[#5C4A3E] text-sm sm:text-base font-light leading-relaxed max-w-xl">
+                {text.caseSection.subtitle}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                {text.caseSection.stats.map((st) => (
+                  <div
+                    key={st.label}
+                    className="p-3.5 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8]"
+                  >
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-[#8A7665] block">
+                      {st.label}
+                    </span>
+                    <span className="text-xs font-medium text-[#2B1D14] mt-0.5 block">
+                      {st.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/vivianne-wolski"
+                  className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] transition-colors"
+                >
+                  <span>{text.caseSection.cta}</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
-      {/* Clean Compliant Footer */}
-      <footer className="max-w-6xl mx-auto w-full px-6 py-8 z-10 border-t border-white/10 space-y-4 text-center">
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-mono text-zinc-400">
-          <Link href="/terms-of-service" className="hover:text-[#D8B982] transition underline underline-offset-4">
-            Términos y Condiciones
+      {/* Ultra-Clean Minimalist Footer */}
+      <footer className="max-w-5xl mx-auto w-full px-6 py-10 border-t border-white/10 space-y-5 text-center">
+        <div className="flex flex-wrap items-center justify-center gap-6 font-mono text-xs uppercase tracking-[0.18em] text-[#C8C0B3]">
+          <Link href="/oferta" className="hover:text-[#D8B982] transition">
+            {text.nav.service}
           </Link>
-          <span>·</span>
-          <Link href="/privacy-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
-            Política de Privacidad (RGPD)
+          <Link href="/influencer-ia" className="hover:text-[#D8B982] transition">
+            {text.nav.guide}
           </Link>
-          <span>·</span>
-          <Link href="/cookie-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
-            Política de Cookies
+          <Link href="/vivianne-wolski" className="hover:text-[#D8B982] transition">
+            Vivienne Wolski
           </Link>
-          <span>·</span>
-          <Link href="/refund-policy" className="hover:text-[#D8B982] transition underline underline-offset-4">
-            Política de Reembolso
+          <Link href="/galeria" className="hover:text-[#D8B982] transition">
+            {language === 'es' ? 'Galería' : 'Gallery'}
           </Link>
-          <span>·</span>
-          <Link href="/legal-notice" className="hover:text-[#D8B982] transition underline underline-offset-4">
-            Aviso Legal LSSI-CE
+          <Link href="/blog" className="hover:text-[#D8B982] transition">
+            {text.nav.blog}
+          </Link>
+          <Link href="/contact" className="hover:text-[#D8B982] transition">
+            {language === 'es' ? 'Contacto' : 'Contact'}
           </Link>
         </div>
-        <p className="text-[11px] font-mono tracking-wider text-zinc-500">{text.footer}</p>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] font-mono text-zinc-500">
+          <Link href="/terms-of-service" className="hover:text-[#D8B982] transition">
+            Términos
+          </Link>
+          <span>·</span>
+          <Link href="/privacy-policy" className="hover:text-[#D8B982] transition">
+            Privacidad
+          </Link>
+          <span>·</span>
+          <Link href="/cookie-policy" className="hover:text-[#D8B982] transition">
+            Cookies
+          </Link>
+          <span>·</span>
+          <Link href="/refund-policy" className="hover:text-[#D8B982] transition">
+            Reembolsos
+          </Link>
+          <span>·</span>
+          <Link href="/legal-notice" className="hover:text-[#D8B982] transition">
+            Aviso Legal
+          </Link>
+        </div>
+
+        <p className="text-[11px] font-mono tracking-wider text-zinc-500">
+          {text.footer}
+        </p>
       </footer>
 
-      {/* Floating Glowing WhatsApp Button (matches reference image) */}
+      {/* Floating WhatsApp Button */}
       <a
         href={`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text.whatsappPrefill)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-[#1B3324]/90 hover:bg-[#23422F] border border-[#6EE7B7]/45 text-[#E8D5B0] p-3.5 rounded-full shadow-[0_0_28px_rgba(74,222,128,0.45)] hover:shadow-[0_0_38px_rgba(74,222,128,0.65)] backdrop-blur-md transition duration-300 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 z-40 bg-[#1B3324]/90 hover:bg-[#23422F] border border-[#6EE7B7]/45 text-[#E8D5B0] p-3.5 rounded-full shadow-[0_0_28px_rgba(74,222,128,0.45)] backdrop-blur-md transition duration-300 flex items-center justify-center"
         title="WhatsApp Directo"
         aria-label="Contactar por WhatsApp"
       >
