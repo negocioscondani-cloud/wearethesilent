@@ -309,8 +309,8 @@ export default function BlogPage() {
           </h2>
           <p className="text-zinc-300 text-sm leading-relaxed font-light">
             {language === 'es'
-              ? 'Encarga tus videos verticales 9:16 con guion y caption desde ₡30.000 ($60 USD) o descarga la guía paso a paso por $47 USD.'
-              : 'Order custom 9:16 vertical AI videos from ₡30,000 ($60 USD) or get our step-by-step playbook for $47 USD.'}
+              ? 'Encarga tus videos verticales 9:16 con guion y caption desde $50 USD (Pack 4 por $170 · Pack 8 por $300) o descarga la guía paso a paso por $47 USD.'
+              : 'Order custom 9:16 vertical AI videos from $50 USD (4-Pack $170 · 8-Pack $300) or get our step-by-step playbook for $47 USD.'}
           </p>
         </div>
 
@@ -320,7 +320,7 @@ export default function BlogPage() {
             className="w-full sm:w-auto px-6 py-3.5 bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-xs font-bold uppercase tracking-wider rounded-xs flex items-center justify-center gap-2 transition"
           >
             <Video className="w-4 h-4" />
-            <span>{language === 'es' ? 'Cotizar Videos (₡30.000 / $60)' : 'Order Videos (₡30,000 / $60)'}</span>
+            <span>{language === 'es' ? 'Cotizar Videos (Desde $50 USD)' : 'Order Videos (From $50 USD)'}</span>
           </Link>
           <Link
             href="/influencer-ia"

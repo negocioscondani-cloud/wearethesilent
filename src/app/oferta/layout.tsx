@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title:
-    'Producción de Videos Publicitarios con IA e Influencers Virtuales (Desde ₡30.000 / $60 USD)',
+    'Producción de Videos Publicitarios con IA e Influencers Virtuales (Desde $50 USD)',
   description:
-    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC verticales 9:16 listos para Meta Ads, TikTok e Instagram. Incluye guion, edición y caption: 1 video ₡30.000 ($60), Pack 10 ₡420.000 ($840) y Pack 20 ₡750.000 ($1.500).',
+    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC verticales 9:16 listos para Meta Ads, TikTok e Instagram. Incluye guion, edición y caption: 1 video $50 USD, Pack 4 $170 USD (antes $200) y Pack 8 $300 USD (antes $400).',
   keywords: [
     'Videos con IA',
     'Crear videos publicitarios con IA',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title:
       'Videos Comerciales e Influencers IA para Anuncios y Redes | The Silent Studio',
     description:
-      'Tecnología generativa de punta para crear anuncios UGC, entrevistas y voceros IA hiperrealistas con guion y caption incluidos. Desde ₡30.000 ($60 USD) por video.',
+      'Tecnología generativa de punta para crear anuncios UGC, entrevistas y voceros IA hiperrealistas con guion y caption incluidos. Desde $50 USD por video.',
     url: 'https://wearethesilent.com/oferta',
     locale: 'es_ES',
     type: 'website',
@@ -43,28 +43,28 @@ export default function OfertaLayout({
         url: 'https://wearethesilent.com/oferta',
         description:
           'Agencia especializada en creación de influencers con Inteligencia Artificial, videos UGC verticales 9:16 y anuncios para Meta Ads, Instagram y TikTok.',
-        priceRange: '₡30.000 - ₡750.000 CRC ($60 - $1,500 USD)',
+        priceRange: '$50 - $300 USD',
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: 'Paquetes de Producción de Video con IA',
           itemListElement: [
             {
               '@type': 'Offer',
-              name: '1 Video Individual IA (9:16 + Caption) — ₡30.000 CRC / $60 USD',
-              price: '30000',
-              priceCurrency: 'CRC',
+              name: '1 Video Individual IA (9:16 + Caption) — $50 USD',
+              price: '50',
+              priceCurrency: 'USD',
             },
             {
               '@type': 'Offer',
-              name: 'Pack 10 Videos Comerciales IA — ₡420.000 CRC / $840 USD',
-              price: '420000',
-              priceCurrency: 'CRC',
+              name: 'Pack 4 Videos Comerciales IA — $170 USD (Antes $200 USD)',
+              price: '170',
+              priceCurrency: 'USD',
             },
             {
               '@type': 'Offer',
-              name: 'Pack 20 Videos Comerciales IA — ₡750.000 CRC / $1,500 USD',
-              price: '750000',
-              priceCurrency: 'CRC',
+              name: 'Pack 8 Videos Comerciales IA — $300 USD (Antes $400 USD)',
+              price: '300',
+              priceCurrency: 'USD',
             },
           ],
         },
@@ -93,7 +93,7 @@ export default function OfertaLayout({
             name: '¿Cuáles son los precios de los videos con IA?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Ofrecemos 1 Video Individual por ₡30.000 colones ($60 USD), Pack de 10 Videos por ₡420.000 colones ($840 USD) y Pack de 20 Videos por ₡750.000 colones ($1.500 USD).',
+              text: 'Ofrecemos 1 Video Individual por $50 USD, Pack de 4 Videos por $170 USD (precio regular $200 USD) y Pack de 8 Videos por $300 USD (precio regular $400 USD).',
             },
           },
         ],

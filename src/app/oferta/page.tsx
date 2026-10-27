@@ -87,10 +87,12 @@ const TRANSLATIONS = {
         content: "En todos nuestros paquetes entregamos el contenido 100% terminado y listo para publicar: video vertical 9:16 en alta resolución + subtítulos animados + guión + el respectivo caption para Instagram o Facebook. NO incluye la administración diaria de redes sociales ni la gestión de pauta publicitaria. Si necesitas que administremos tus redes sociales o gestionemos tu pauta publicitaria en Meta Ads / TikTok Ads, es un costo aparte que cotizamos de forma personalizada según tus requerimientos."
       },
       single: {
-        title: "VIDEO INDIVIDUAL",
-        price: "₡30.000",
-        local: "Equivalente a $60 USD",
-        period: "Por video · A la carta",
+        title: "1 VIDEO INDIVIDUAL",
+        price: "$50 USD",
+        oldPrice: "",
+        savings: "",
+        local: "Pago único · A la carta",
+        period: "Por video · Prueba de impacto",
         desc: "Prueba la calidad y el impacto de nuestro influencer IA con un video vertical publicitario u orgánico de alta fidelidad.",
         includes: [
           "1 Video vertical de alta resolución (9:16)",
@@ -101,46 +103,50 @@ const TRANSLATIONS = {
           "Entrega con su respectivo caption listo para Instagram o Facebook",
           "Entrega ágil en 48-72h lista para publicar"
         ],
-        cta: "PEDIR 1 VIDEO (₡30.000 / $60)"
+        cta: "PEDIR 1 VIDEO ($50 USD)"
       },
-      pack10: {
-        title: "PACK 10 VIDEOS",
-        price: "₡420.000",
-        local: "Equivalente a $840 USD",
+      pack4: {
+        title: "PACK 4 VIDEOS",
+        oldPrice: "$200 USD",
+        price: "$170 USD",
+        savings: "AHORRÁS $30 USD",
+        local: "$42.50 USD por video",
         period: "Incluye diseño de Influencer IA exclusivo",
-        badge: "OFERTA ESPECIAL",
-        desc: "El paquete perfecto para lanzar una campaña publicitaria multi-ángulo o mantener consistencia semanal en tus redes.",
+        badge: "OFERTA ESPECIAL · 4 X $50 = $200",
+        desc: "El paquete ideal para lanzar una campaña publicitaria multi-ángulo o mantener presencia semanal constante en tus redes.",
         includes: [
-          "10 Videos verticales 9:16 de alta fidelidad",
+          "4 Videos verticales 9:16 de alta fidelidad",
           "Diseño y consistencia de tu Influencer IA exclusivo",
-          "10 Conceptos y ganchos multi-ángulo testeables",
+          "4 Conceptos y ganchos multi-ángulo testeables",
           "Guiones adaptados al tono de tu cliente ideal",
           "Edición profesional con subtítulos dinámicos",
-          "10 Captions completos para Instagram y Facebook con CTA",
+          "4 Captions completos para Instagram y Facebook con CTA",
           "Variedad de formatos: UGC moda, hablado a cámara, Meta Ads",
           "Soporte directo de producción vía WhatsApp"
         ],
-        cta: "APROVECHAR PACK 10 (₡420.000)"
+        cta: "APROVECHAR PACK 4 ($170 USD)"
       },
-      pack20: {
-        title: "PACK 20 VIDEOS",
-        price: "₡750.000",
-        local: "Equivalente a $1.500 USD",
-        period: "Mejor valor por video · ₡37.500 ($75) c/u",
-        badge: "GRAN OFERTA · MÁS POPULAR",
-        recommended: "MEJOR VALOR",
-        desc: "Cobertura masiva para dominar el algoritmo con publicaciones casi diarias o realizar testeo agresivo en Meta Ads.",
+      pack8: {
+        title: "PACK 8 VIDEOS",
+        oldPrice: "$400 USD",
+        price: "$300 USD",
+        savings: "AHORRÁS $100 USD",
+        local: "Mejor valor · Solo $37.50 USD por video",
+        period: "2 videos gratis respecto al precio individual",
+        badge: "GRAN OFERTA · 8 X $50 = $400",
+        recommended: "MÁS POPULAR · MEJOR VALOR",
+        desc: "Cobertura completa para dominar el algoritmo durante el mes o realizar testeo agresivo de ángulos creativos en Meta Ads.",
         includes: [
-          "20 Videos verticales 9:16 de calidad cinematográfica",
+          "8 Videos verticales 9:16 de calidad cinematográfica",
           "Creación de tu Influencer IA institucional a medida",
-          "Matriz de 20 conceptos de contenido y conversión",
+          "Matriz de 8 conceptos de contenido y conversión",
           "Guiones persuasivos con variaciones de ganchos (hooks)",
           "Edición prémium con música comercial y subtítulos pro",
-          "20 Captions estratégicos redactados para Instagram y Facebook",
+          "8 Captions estratégicos redactados para Instagram y Facebook",
           "Mix equilibrado: venta directa, educativo, stories y reels",
           "Entregas programadas semanales o en bloque"
         ],
-        cta: "QUIERO EL PACK 20 (₡750.000)"
+        cta: "QUIERO EL PACK 8 ($300 USD)"
       },
       growth: {
         title: "PLAN DE CRECIMIENTO EN REDES",
@@ -315,7 +321,7 @@ const TRANSLATIONS = {
         styleTitle: "Estilos que se incluirán en tu producción (Vertical 9:16)",
         stylesList: ["01. UGC con IA", "02. PodCast Clip", "03. Dual Cast", "04. Animados", "05. Mini Series"],
         termsTitle: "CONDICIONES TRANSPARENTES",
-        termsDesc: "Tarifas transparentes: 1 Video Individual (₡30.000 / $60 USD), Pack 10 Videos (₡420.000 / $840 USD) o Pack 20 Videos (₡750.000 / $1.500 USD). Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega. Producción por cupos limitados (máximo 10 negocios por ciclo).",
+        termsDesc: "Tarifas transparentes: 1 Video Individual ($50 USD), Pack 4 Videos ($170 USD, antes $200 USD) o Pack 8 Videos ($300 USD, antes $400 USD). Pago en dos tractos: 50% inicial para coordinar guiones y producir, y 50% final contra entrega. Producción por cupos limitados (máximo 10 negocios por ciclo).",
         prev: "Anterior",
         submit: "Enviar y Chatear por WhatsApp"
       },
@@ -357,7 +363,7 @@ const TRANSLATIONS = {
         },
         {
           q: "¿Cuáles son los tiempos de entrega?",
-          a: "Para un Video Individual entregamos en 48 a 72 horas. Para el Pack de 10 o 20 videos, podemos realizar entregas escalonadas semanales o una entrega en bloque en 5 a 8 días hábiles según la dinámica de tu campaña."
+          a: "Para un Video Individual entregamos en 48 a 72 horas. Para el Pack de 4 o 8 videos, podemos realizar entregas escalonadas semanales o una entrega en bloque en 4 a 7 días hábiles según la dinámica de tu campaña."
         }
       ]
     }
@@ -408,16 +414,18 @@ const TRANSLATIONS = {
     services: {
       badge: "TRANSPARENT SERVICES & RATES",
       title: "Choose the ideal package for your brand",
-      subtitle: "Cutting-edge AI influencer video production. From single on-demand videos to scale packages and recurring growth plans.",
+      subtitle: "Cutting-edge AI influencer video production. From single on-demand videos to 4-video and 8-video scale packages.",
       scopeNotice: {
         title: "Service Scope & Transparency",
         content: "In all packages we deliver 100% finished, ready-to-publish content: 9:16 vertical video in high-res + animated retention subtitles + scripts + corresponding caption for Instagram or Facebook. We do NOT manage social accounts (community management) or ad spend (media buying). If you require active account management or paid ad campaign buying on Meta Ads / TikTok Ads, it is an additional service quoted separately."
       },
       single: {
-        title: "SINGLE VIDEO",
-        price: "₡30,000",
-        local: "Equivalent to $60 USD",
-        period: "Per video · On demand",
+        title: "1 SINGLE VIDEO",
+        price: "$50 USD",
+        oldPrice: "",
+        savings: "",
+        local: "One-time payment · On demand",
+        period: "Per video · Impact test",
         desc: "Test the realism and conversion power of our AI influencer with a single high-fidelity ad or organic vertical video.",
         includes: [
           "1 Vertical high-resolution video (9:16)",
@@ -428,46 +436,50 @@ const TRANSLATIONS = {
           "Delivered with ready-to-post caption for Instagram or Facebook",
           "Fast delivery in 48-72h ready to publish"
         ],
-        cta: "ORDER 1 VIDEO (₡30,000 / $60)"
+        cta: "ORDER 1 VIDEO ($50 USD)"
       },
-      pack10: {
-        title: "PACK 10 VIDEOS",
-        price: "₡420,000",
-        local: "Equivalent to $840 USD",
+      pack4: {
+        title: "PACK 4 VIDEOS",
+        oldPrice: "$200 USD",
+        price: "$170 USD",
+        savings: "SAVE $30 USD",
+        local: "$42.50 USD per video",
         period: "Includes custom AI Influencer creation",
-        badge: "SPECIAL OFFER",
-        desc: "The perfect bundle to launch a multi-angle ad campaign or maintain weekly consistency on your social channels.",
+        badge: "SPECIAL OFFER · 4 X $50 = $200",
+        desc: "The ideal bundle to launch a multi-angle ad campaign or maintain weekly consistency on your social channels.",
         includes: [
-          "10 High-fidelity vertical videos (9:16)",
+          "4 High-fidelity vertical videos (9:16)",
           "Consistent design of your exclusive AI Influencer",
-          "10 Multi-angle testable concepts and hooks",
+          "4 Multi-angle testable concepts and hooks",
           "Scripts tailored to your ideal customer voice",
           "Professional editing with dynamic subtitles",
-          "10 Full captions for Instagram & Facebook with clear CTA",
+          "4 Full captions for Instagram & Facebook with clear CTA",
           "Mixed formats: Fashion UGC, direct-to-camera, Meta Ads",
           "Direct production support via WhatsApp"
         ],
-        cta: "GET PACK 10 (₡420,000)"
+        cta: "GET PACK 4 ($170 USD)"
       },
-      pack20: {
-        title: "PACK 20 VIDEOS",
-        price: "₡750,000",
-        local: "Equivalent to $1,500 USD",
-        period: "Best value · ₡37,500 ($75) per video",
-        badge: "BEST VALUE · MOST POPULAR",
-        recommended: "MOST POPULAR",
-        desc: "Massive monthly coverage to dominate the algorithm with daily posting or conduct aggressive creative testing on Meta Ads.",
+      pack8: {
+        title: "PACK 8 VIDEOS",
+        oldPrice: "$400 USD",
+        price: "$300 USD",
+        savings: "SAVE $100 USD",
+        local: "Best value · Only $37.50 USD per video",
+        period: "2 free videos compared to single rate",
+        badge: "BIG OFFER · 8 X $50 = $400",
+        recommended: "MOST POPULAR · BEST VALUE",
+        desc: "Complete monthly coverage to dominate the algorithm or conduct aggressive creative testing on Meta Ads.",
         includes: [
-          "20 Cinematic quality vertical videos (9:16)",
+          "8 Cinematic quality vertical videos (9:16)",
           "Tailor-made institutional AI Influencer persona",
-          "Matrix of 20 high-converting sales & content concepts",
+          "Matrix of 8 high-converting sales & content concepts",
           "Persuasive scripts with hook variations",
           "Premium editing with commercial music & pro subtitles",
-          "20 Strategic captions written for Instagram and Facebook",
+          "8 Strategic captions written for Instagram and Facebook",
           "Balanced mix: direct sales, educational, stories and reels",
           "Scheduled weekly or bulk deliveries based on your workflow"
         ],
-        cta: "GET PACK 20 (₡750,000)"
+        cta: "GET PACK 8 ($300 USD)"
       },
       growth: {
         title: "SOCIAL GROWTH PLAN",
@@ -642,7 +654,7 @@ const TRANSLATIONS = {
         styleTitle: "Styles that will be included in your production (Vertical 9:16)",
         stylesList: ["01. UGC with AI", "02. PodCast Clip", "03. Dual Cast", "04. Animated", "05. Mini Series"],
         termsTitle: "TRANSPARENT TERMS",
-        termsDesc: "Transparent rates: 1 Single Video (₡30,000 / $60 USD), Pack 10 Videos (₡420,000 / $840 USD) or Pack 20 Videos (₡750,000 / $1,500 USD). Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery. Limited production slots (maximum 10 businesses per cycle).",
+        termsDesc: "Transparent rates: 1 Single Video ($50 USD), Pack 4 Videos ($170 USD, reg. $200 USD) or Pack 8 Videos ($300 USD, reg. $400 USD). Payment in two parts: 50% initial to coordinate scripts and produce, and 50% final against delivery. Limited production slots (maximum 10 businesses per cycle).",
         prev: "Previous",
         submit: "Submit and Chat on WhatsApp"
       },
@@ -684,7 +696,7 @@ const TRANSLATIONS = {
         },
         {
           q: "What are the turnaround times?",
-          a: "For a Single Video, we deliver within 48 to 72 hours. For 10 or 20-video packages, we can deliver in weekly staggered batches or a full block delivery in 5 to 8 business days depending on your campaign needs."
+          a: "For a Single Video, we deliver within 48 to 72 hours. For 4 or 8-video packages, we can deliver in weekly staggered batches or a full block delivery in 4 to 7 business days depending on your campaign needs."
         }
       ]
     }
@@ -993,7 +1005,7 @@ export default function OfertaPage() {
   };
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedPackage, setSelectedPackage] = useState<string>('pack20');
+  const [selectedPackage, setSelectedPackage] = useState<string>('pack8');
   const [formData, setFormData] = useState({
     businessName: '',
     province: 'San José',
@@ -1095,9 +1107,9 @@ export default function OfertaPage() {
     setSpotsLeft(prev => Math.max(1, prev - 1));
 
     const packageLabels: Record<string, { es: string; en: string }> = {
-      single: { es: '1 Video Individual (₡30.000 CRC / $60 USD)', en: '1 Single Video (₡30,000 CRC / $60 USD)' },
-      pack10: { es: 'Pack 10 Videos (₡420.000 CRC / $840 USD)', en: 'Pack 10 Videos (₡420,000 CRC / $840 USD)' },
-      pack20: { es: 'Pack 20 Videos (₡750.000 CRC / $1.500 USD)', en: 'Pack 20 Videos (₡750,000 CRC / $1,500 USD)' },
+      single: { es: '1 Video Individual ($50 USD)', en: '1 Single Video ($50 USD)' },
+      pack4: { es: 'Pack 4 Videos ($170 USD · antes $200)', en: 'Pack 4 Videos ($170 USD · reg. $200)' },
+      pack8: { es: 'Pack 8 Videos ($300 USD · antes $400)', en: 'Pack 8 Videos ($300 USD · reg. $400)' },
       growth: { es: 'Plan de Crecimiento & Estrategia Integral', en: 'Social Growth & Strategy Plan' },
     };
     const chosenLabel = packageLabels[selectedPackage]?.[langKey] || selectedPackage;
@@ -1414,23 +1426,31 @@ export default function OfertaPage() {
               </button>
             </div>
 
-            {/* TIER 2: PACK 10 VIDEOS */}
+            {/* TIER 2: PACK 4 VIDEOS */}
             <div className="bg-[#0A0D0E] border border-white/10 p-6 sm:p-7 rounded-sm flex flex-col justify-between hover:border-[#C5A059]/40 transition duration-300">
               <div>
                 <span className="font-mono text-[9px] text-[#C5A059] bg-[#C5A059]/10 border border-[#C5A059]/40 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3">
-                  {text.services.pack10.badge}
+                  {text.services.pack4.badge}
                 </span>
-                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack10.title}</h3>
-                <p className="text-gray-400 text-xs leading-relaxed mb-5 font-light">{text.services.pack10.desc}</p>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack4.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed mb-5 font-light">{text.services.pack4.desc}</p>
                 
                 <div className="flex flex-col mb-6">
-                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.pack10.price}</span>
-                  <span className="font-mono text-xs text-[#C5A059] font-semibold mt-1">{text.services.pack10.local}</span>
-                  <span className="font-mono text-[10px] text-gray-400 mt-0.5">{text.services.pack10.period}</span>
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <span className="font-mono text-sm text-gray-500 line-through decoration-red-500/80 decoration-2">
+                      {text.services.pack4.oldPrice}
+                    </span>
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+                      {text.services.pack4.savings}
+                    </span>
+                  </div>
+                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-white">{text.services.pack4.price}</span>
+                  <span className="font-mono text-xs text-[#C5A059] font-semibold mt-1">{text.services.pack4.local}</span>
+                  <span className="font-mono text-[10px] text-gray-400 mt-0.5">{text.services.pack4.period}</span>
                 </div>
 
                 <ul className="space-y-2.5 font-sans text-xs text-gray-300 mb-6 border-t border-white/10 pt-5">
-                  {text.services.pack10.includes.map((inc, idx) => (
+                  {text.services.pack4.includes.map((inc, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
                       <span className={inc.includes("caption") || inc.includes("Caption") || idx === 0 ? "font-bold text-white" : ""}>{inc}</span>
@@ -1442,36 +1462,44 @@ export default function OfertaPage() {
               <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  handleSelectPackage('pack10');
+                  handleSelectPackage('pack4');
                   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="w-full text-center bg-transparent border border-[#C5A059]/50 hover:border-[#C5A059] text-[#C5A059] hover:text-white font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition cursor-pointer"
               >
-                {text.services.pack10.cta}
+                {text.services.pack4.cta}
               </button>
             </div>
 
-            {/* TIER 3: PACK 20 VIDEOS (RECOMENDADO / POPULAR) */}
+            {/* TIER 3: PACK 8 VIDEOS (RECOMENDADO / POPULAR) */}
             <div className="bg-[#0A0D0E] border-2 border-[#C5A059] p-6 sm:p-7 rounded-sm flex flex-col justify-between shadow-[0_0_35px_rgba(197,160,89,0.2)] relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C5A059] text-black font-mono text-[9px] font-black px-3.5 py-0.5 uppercase tracking-widest rounded-full whitespace-nowrap">
-                {text.services.pack20.recommended}
+                {text.services.pack8.recommended}
               </div>
               
               <div>
                 <span className="font-mono text-[9px] text-[#C5A059] bg-[#C5A059]/15 border border-[#C5A059]/40 px-2 py-0.5 rounded uppercase tracking-wider block w-fit mb-3 mt-1">
-                  {text.services.pack20.badge}
+                  {text.services.pack8.badge}
                 </span>
-                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack20.title}</h3>
-                <p className="text-gray-300 text-xs leading-relaxed mb-5 font-light">{text.services.pack20.desc}</p>
+                <h3 className="font-fraunces font-bold text-xl sm:text-2xl text-white mb-2">{text.services.pack8.title}</h3>
+                <p className="text-gray-300 text-xs leading-relaxed mb-5 font-light">{text.services.pack8.desc}</p>
                 
                 <div className="flex flex-col mb-6">
-                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-[#C5A059]">{text.services.pack20.price}</span>
-                  <span className="font-mono text-xs text-white font-bold mt-1">{text.services.pack20.local}</span>
-                  <span className="font-mono text-[10px] text-[#C5A059] mt-0.5">{text.services.pack20.period}</span>
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <span className="font-mono text-sm text-gray-400 line-through decoration-red-500/90 decoration-2">
+                      {text.services.pack8.oldPrice}
+                    </span>
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#C5A059]/20 text-[#E5C88D] border border-[#C5A059]/50 uppercase tracking-wider">
+                      {text.services.pack8.savings}
+                    </span>
+                  </div>
+                  <span className="font-fraunces text-3xl sm:text-4xl font-black text-[#C5A059]">{text.services.pack8.price}</span>
+                  <span className="font-mono text-xs text-white font-bold mt-1">{text.services.pack8.local}</span>
+                  <span className="font-mono text-[10px] text-[#C5A059] mt-0.5">{text.services.pack8.period}</span>
                 </div>
 
                 <ul className="space-y-2.5 font-sans text-xs text-gray-200 mb-6 border-t border-white/10 pt-5">
-                  {text.services.pack20.includes.map((inc, idx) => (
+                  {text.services.pack8.includes.map((inc, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <Check className="w-3.5 h-3.5 text-[#C5A059] shrink-0 mt-0.5" />
                       <span className={idx < 2 || inc.includes("caption") || inc.includes("Caption") ? "font-bold text-white" : ""}>{inc}</span>
@@ -1483,12 +1511,12 @@ export default function OfertaPage() {
               <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  handleSelectPackage('pack20');
+                  handleSelectPackage('pack8');
                   document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="w-full text-center bg-[#C5A059] hover:bg-[#B38F48] text-black font-mono text-[11px] uppercase font-bold tracking-wider py-3.5 transition shadow-lg cursor-pointer"
               >
-                {text.services.pack20.cta}
+                {text.services.pack8.cta}
               </button>
             </div>
 
@@ -1920,9 +1948,9 @@ export default function OfertaPage() {
                         </label>
                         <div className="grid sm:grid-cols-2 gap-2.5 font-mono text-xs">
                           {[
-                            { id: 'single', label: language === 'es' ? '1 Video Individual (₡30.000 / $60 USD)' : '1 Single Video (₡30,000 / $60 USD)', tag: '₡30.000' },
-                            { id: 'pack10', label: language === 'es' ? 'Pack 10 Videos (₡420.000 / $840 USD)' : 'Pack 10 Videos (₡420,000 / $840 USD)', tag: 'Oferta' },
-                            { id: 'pack20', label: language === 'es' ? 'Pack 20 Videos (₡750.000 / $1.500 USD)' : 'Pack 20 Videos (₡750,000 / $1,500 USD)', tag: 'Popular' },
+                            { id: 'single', label: language === 'es' ? '1 Video Individual ($50 USD)' : '1 Single Video ($50 USD)', tag: '$50 USD' },
+                            { id: 'pack4', label: language === 'es' ? 'Pack 4 Videos ($170 USD · antes $200)' : 'Pack 4 Videos ($170 USD · reg. $200)', tag: '-$30 USD' },
+                            { id: 'pack8', label: language === 'es' ? 'Pack 8 Videos ($300 USD · antes $400)' : 'Pack 8 Videos ($300 USD · reg. $400)', tag: '-$100 USD' },
                             { id: 'growth', label: language === 'es' ? 'Plan de Crecimiento (Cotizar)' : 'Growth Plan (Quote)', tag: 'Estrategia' },
                           ].map((pkg) => (
                             <label 

@@ -117,7 +117,7 @@ export default function TermsOfServicePage() {
               Alcance de los Servicios de Video y Tarifas
             </h2>
             <p>
-              En la contratación de paquetes de video (Video Individual ₡30.000 CRC / $60 USD, Pack 10 Videos ₡420.000 CRC / $840 USD, Pack 20 Videos ₡750.000 CRC / $1.500 USD o planes a medida):
+              En la contratación de paquetes de video (1 Video Individual $50 USD, Pack 4 Videos $170 USD, Pack 8 Videos $300 USD o planes a medida):
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>

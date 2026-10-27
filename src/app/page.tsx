@@ -32,9 +32,9 @@ const TRANSLATIONS = {
     pillars: [
       {
         num: '01',
-        tag: 'SERVICIOS PARA MARCAS · DESDE ₡30.000 ($60 USD)',
+        tag: 'SERVICIOS PARA MARCAS · DESDE $50 USD',
         title: 'Producción de Videos & Anuncios IA',
-        desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar. Paquetes de 1, 10 (₡420.000) y 20 videos (₡750.000).',
+        desc: 'Comerciales UGC, entrevistas en calle, voceros virtuales y campañas para Meta Ads o TikTok en formato 9:16 con guion y caption listos para publicar. Paquetes de 1 video ($50), Pack 4 ($170 · antes $200) y Pack 8 videos ($300 · antes $400).',
         href: '/oferta',
         cta: 'Ver formatos y tarifas',
         icon: 'video',
@@ -102,9 +102,9 @@ const TRANSLATIONS = {
     pillars: [
       {
         num: '01',
-        tag: 'AGENCY SERVICES · FROM ₡30,000 ($60 USD)',
+        tag: 'AGENCY SERVICES · FROM $50 USD',
         title: 'AI Video & Ad Production',
-        desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included. Single, 10-Pack (₡420,000) and 20-Pack (₡750,000).',
+        desc: 'UGC commercials, street interviews, virtual spokespeople, and Meta/TikTok ad campaigns in 9:16 vertical format with script and caption included. Single ($50), 4-Pack ($170 · reg. $200) and 8-Pack ($300 · reg. $400).',
         href: '/oferta',
         cta: 'View formats & pricing',
         icon: 'video',

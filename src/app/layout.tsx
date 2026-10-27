@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: '%s | The Silent Studio',
   },
   description:
-    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC 9:16 que detienen el scroll y convierten en Meta Ads, TikTok e Instagram. Cotiza tus videos desde ₡30.000 ($60 USD) o aprende nuestro método paso a paso.',
+    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC 9:16 que detienen el scroll y convierten en Meta Ads, TikTok e Instagram. Cotiza tus videos desde $50 USD (Pack 4 por $170 y Pack 8 por $300) o aprende nuestro método paso a paso.',
   keywords: [
     'Influencers IA',
     'Crear videos con inteligencia artificial',
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title:
       'The Silent Studio | Influencers IA y Videos Publicitarios con Inteligencia Artificial',
     description:
-      'Producimos anuncios UGC con Influencers IA hiperrealistas para Meta Ads, TikTok y Reels desde ₡30.000 ($60 USD) y guías paso a paso.',
+      'Producimos anuncios UGC con Influencers IA hiperrealistas para Meta Ads, TikTok y Reels desde $50 USD y guías paso a paso.',
     images: [
       'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif',
     ],

@@ -40,10 +40,10 @@ const SKOOL_CTA = `
 
     <div class="p-5 bg-black/60 border border-white/15 rounded-sm flex flex-col justify-between">
       <div>
-        <span class="text-gray-300 font-mono text-[10px] uppercase tracking-widest block mb-1">OPCIÓN 2 · LO HACEMOS POR TI (DESDE ₡30.000 / $60)</span>
+        <span class="text-gray-300 font-mono text-[10px] uppercase tracking-widest block mb-1">OPCIÓN 2 · LO HACEMOS POR TI (DESDE $50 USD)</span>
         <h4 class="text-white font-bold text-base mb-2">Producción de Videos & Anuncios IA para tu Marca</h4>
         <p class="text-gray-400 text-xs leading-relaxed mb-4">
-          Entregamos tus videos verticales 9:16 con Influencer IA, subtítulos dinámicos y caption listos para Meta Ads (1 video ₡30.000, Pack 10 ₡420.000, Pack 20 ₡750.000).
+          Entregamos tus videos verticales 9:16 con Influencer IA, subtítulos dinámicos y caption listos para Meta Ads (1 video $50 USD, Pack 4 $170 USD [antes $200], Pack 8 $300 USD [antes $400]).
         </p>
       </div>
       <a href="/oferta" class="inline-block text-center bg-white/10 text-white border border-[#C5A059]/50 font-mono font-bold uppercase tracking-wider text-xs px-5 py-3 rounded-sm hover:bg-[#C5A059] hover:text-black transition-colors">
@@ -376,7 +376,7 @@ export const posts: Post[] = [
       </blockquote>
 
       <h2>3. Cuándo Hacerlo Gratis vs. Cuándo Escalar con un Sistema Profesional</h2>
-      <p>Las herramientas gratuitas son excelentes para validar tus primeros ganchos publicitarios. Una vez que descubres qué ángulo atrae prospectos, el secreto para multiplicar tu retorno de inversión (ROAS) es fijar la <strong>consistencia facial absoluta de tu propio Influencer IA</strong> (como lo enseñamos paso a paso en nuestra <a href="/influencer-ia" class="text-primary hover:underline"><strong>Guía de Influencer IA de Cero a tu Primera Venta por $47 USD</strong></a>) o delegar la producción de tus paquetes de anuncios en <a href="/oferta" class="text-primary hover:underline"><strong>nuestro estudio de producción IA (videos desde ₡30.000 / $60 USD)</strong></a>.</p>
+      <p>Las herramientas gratuitas son excelentes para validar tus primeros ganchos publicitarios. Una vez que descubres qué ángulo atrae prospectos, el secreto para multiplicar tu retorno de inversión (ROAS) es fijar la <strong>consistencia facial absoluta de tu propio Influencer IA</strong> (como lo enseñamos paso a paso en nuestra <a href="/influencer-ia" class="text-primary hover:underline"><strong>Guía de Influencer IA de Cero a tu Primera Venta por $47 USD</strong></a>) o delegar la producción de tus paquetes de anuncios en <a href="/oferta" class="text-primary hover:underline"><strong>nuestro estudio de producción IA (1 video $50 USD, Pack 4 por $170 USD y Pack 8 por $300 USD)</strong></a>.</p>
 
       <h2>4. Conectando con la Estructura Silo de Aprendizaje</h2>
       <p>Para profundizar en cada una de las ramificaciones técnicas que requiere este proceso, sigue nuestros tutoriales especializados:</p>

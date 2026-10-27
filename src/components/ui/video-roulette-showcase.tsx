@@ -518,8 +518,8 @@ export function VideoRouletteShowcase({
             <a
               href={`https://wa.me/${whatsappNum}?text=${encodeURIComponent(
                 language === 'es'
-                  ? `¡Hola! Me gustaría cotizar un video en el formato: ${activeVideo.title.es} (₡30.000 / $60 USD o en paquete).`
-                  : `Hi! I want to quote a video in the format: ${activeVideo.title.en} (₡30,000 / $60 USD or package).`
+                  ? `¡Hola! Me gustaría cotizar un video en el formato: ${activeVideo.title.es} (1 video $50 USD, Pack 4 $170 o Pack 8 $300).`
+                  : `Hi! I want to quote a video in the format: ${activeVideo.title.en} ($50 USD single, $170 4-Pack or $300 8-Pack).`
               )}`}
               target="_blank"
               rel="noopener noreferrer"

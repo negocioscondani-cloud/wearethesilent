@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     'Contacto Directo · Cotizar Videos con IA e Influencers Virtuales | The Silent Studio',
   description:
-    'Habla directamente con un estratega creativo de The Silent Studio en Costa Rica. Cotiza producción de videos publicitarios con IA (desde ₡30.000 / $60 USD), paquetes para Meta Ads o creación de Influencers IA.',
+    'Habla directamente con un estratega creativo de The Silent Studio en Costa Rica. Cotiza producción de videos publicitarios con IA (1 video $50 USD, Pack 4 $170 USD y Pack 8 $300 USD), paquetes para Meta Ads o creación de Influencers IA.',
   keywords: [
     'Contacto The Silent Studio',
     'Agencia de videos con IA Costa Rica',

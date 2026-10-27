@@ -176,7 +176,7 @@ export default function InfluencerIAPage() {
               Blog Diario IA
             </Link>
             <Link href="/oferta" className="text-zinc-400 hover:text-[#D4AF37] transition-colors hidden sm:inline">
-              Servicios Video (₡30.000 / $60)
+              Servicios Video (Desde $50 USD)
             </Link>
           </div>
         </div>
@@ -745,7 +745,7 @@ export default function InfluencerIAPage() {
                   ¿Quieres producir estos mismos formatos para tu marca o crear tu propio Influencer IA?
                 </p>
                 <p className="text-[11px] text-zinc-400">
-                  Videos individuales a ₡30.000 ($60 USD) o paquetes de 10 (₡420.000 / $840) y 20 videos (₡750.000 / $1.500) listos para pauta y redes.
+                  Videos individuales a $50 USD o paquetes de 4 ($170 USD · antes $200) y 8 videos ($300 USD · antes $400) listos para pauta y redes.
                 </p>
               </div>
               <Link
