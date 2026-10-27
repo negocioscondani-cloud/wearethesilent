@@ -26,9 +26,9 @@ const TRANSLATIONS = {
       subtitle:
         'Dirección creativa e inteligencia artificial hiperrealista para marcas y creadores. Sin ruido, directo al resultado.',
       buttons: {
-        service: 'El Servicio · Videos IA',
-        guide: 'La Guía Paso a Paso · $47',
-        caseStudy: 'Caso de Éxito · Vivienne',
+        service: 'Videos IA',
+        guide: 'La Guía · $47',
+        caseStudy: 'Vivienne Wolski',
       },
     },
     serviceSection: {
@@ -48,6 +48,7 @@ const TRANSLATIONS = {
             'Guion persuasivo + subtítulos dinámicos',
             'Caption listo para Instagram o Facebook',
           ],
+          cta: 'Pedir 1 Video',
           highlight: false,
         },
         {
@@ -61,6 +62,7 @@ const TRANSLATIONS = {
             'Diseño consistente de tu Influencer IA',
             '4 Guiones + subtítulos + captions con CTA',
           ],
+          cta: 'Elegir Pack 4',
           highlight: false,
         },
         {
@@ -74,10 +76,10 @@ const TRANSLATIONS = {
             'Creación de Influencer IA exclusivo de marca',
             '8 Guiones + subtítulos pro + captions listos',
           ],
+          cta: 'Elegir Pack 8',
           highlight: true,
         },
       ],
-      cta: 'Ver detalles y cotizar servicio',
     },
     guideSection: {
       tag: '02 · LA GUÍA ($47 USD)',
@@ -91,7 +93,7 @@ const TRANSLATIONS = {
       ],
       priceLabel: 'Acceso inmediato y de por vida',
       price: '$47 USD',
-      cta: 'Explorar la Guía Paso a Paso',
+      cta: 'Obtener la Guía',
     },
     caseSection: {
       tag: '03 · CASO DE ÉXITO VIVO',
@@ -103,7 +105,7 @@ const TRANSLATIONS = {
         { label: 'Estancia 02', value: 'Club Vivi (33 Audios)' },
         { label: 'Estancia 03', value: 'Honestidad Financiera' },
       ],
-      cta: 'Entrar al universo de Vivienne',
+      cta: 'Ver Caso de Éxito',
     },
     whatsappPrefill:
       'Hola! Me interesa conversar sobre la producción de videos con Influencers IA para mi marca.',
@@ -124,9 +126,9 @@ const TRANSLATIONS = {
       subtitle:
         'Creative direction and hyper-realistic artificial intelligence for brands and creators. Zero noise, straight to results.',
       buttons: {
-        service: 'The Service · AI Videos',
-        guide: 'Step-by-Step Guide · $47',
-        caseStudy: 'Live Case Study · Vivienne',
+        service: 'AI Videos',
+        guide: 'The Guide · $47',
+        caseStudy: 'Vivienne Wolski',
       },
     },
     serviceSection: {
@@ -146,6 +148,7 @@ const TRANSLATIONS = {
             'Persuasive script + dynamic subtitles',
             'Ready-to-post Instagram/Facebook caption',
           ],
+          cta: 'Order 1 Video',
           highlight: false,
         },
         {
@@ -159,6 +162,7 @@ const TRANSLATIONS = {
             'Consistent custom AI Influencer design',
             '4 Scripts + subtitles + captions with CTA',
           ],
+          cta: 'Choose Pack 4',
           highlight: false,
         },
         {
@@ -172,10 +176,10 @@ const TRANSLATIONS = {
             'Exclusive brand AI Influencer creation',
             '8 Scripts + pro subtitles + ready captions',
           ],
+          cta: 'Choose Pack 8',
           highlight: true,
         },
       ],
-      cta: 'View details & quote service',
     },
     guideSection: {
       tag: '02 · THE PLAYBOOK ($47 USD)',
@@ -189,7 +193,7 @@ const TRANSLATIONS = {
       ],
       priceLabel: 'Instant lifetime access',
       price: '$47 USD',
-      cta: 'Explore the Step-by-Step Guide',
+      cta: 'Get the Guide',
     },
     caseSection: {
       tag: '03 · LIVE CASE STUDY',
@@ -201,7 +205,7 @@ const TRANSLATIONS = {
         { label: 'Room 02', value: 'Club Vivi (33 Audios)' },
         { label: 'Room 03', value: 'Financial Honesty' },
       ],
-      cta: 'Enter Vivienne’s Universe',
+      cta: 'View Case Study',
     },
     whatsappPrefill:
       'Hi! I want to discuss AI Influencer video production for my brand.',
@@ -293,7 +297,7 @@ export default function Home() {
           >
             <Link
               href="/oferta"
-              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase tracking-[0.16em] font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_30px_rgba(216,185,130,0.28)]"
+              className="group flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-gradient-to-r from-[#BA965A] via-[#E5CBA1] to-[#B58F50] text-[#14110C] font-mono text-xs uppercase tracking-[0.18em] font-bold whitespace-nowrap transition-all duration-300 hover:-translate-y-0.5 shadow-[0_0_30px_rgba(216,185,130,0.28)]"
             >
               <span>{text.hero.buttons.service}</span>
               <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -301,7 +305,7 @@ export default function Home() {
 
             <Link
               href="/influencer-ia"
-              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5"
+              className="group flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.18em] whitespace-nowrap transition-all duration-300 hover:-translate-y-0.5"
             >
               <span>{text.hero.buttons.guide}</span>
               <ArrowUpRight className="w-4 h-4 shrink-0 text-[#D8B982] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -309,7 +313,7 @@ export default function Home() {
 
             <Link
               href="/vivianne-wolski"
-              className="group flex-1 flex items-center justify-between px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5"
+              className="group flex-1 flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#121518] border border-white/15 hover:border-[#C5A059] text-[#F5F3EF] font-mono text-xs uppercase tracking-[0.18em] whitespace-nowrap transition-all duration-300 hover:-translate-y-0.5"
             >
               <span>{text.hero.buttons.caseStudy}</span>
               <ArrowUpRight className="w-4 h-4 shrink-0 text-[#D8B982] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -387,14 +391,14 @@ export default function Home() {
 
                 <Link
                   href="/oferta"
-                  className={`mt-6 w-full py-3 rounded-xl font-mono text-[11px] uppercase tracking-[0.18em] font-bold flex items-center justify-center gap-2 transition ${
+                  className={`mt-6 w-full px-5 py-3.5 rounded-xl font-mono text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 whitespace-nowrap transition ${
                     pack.highlight
-                      ? 'bg-[#C5A059] hover:bg-[#D8B982] text-black'
-                      : 'bg-white/[0.05] hover:bg-white/[0.1] text-[#F5F3EF] border border-white/10'
+                      ? 'bg-[#C5A059] hover:bg-[#D8B982] text-black shadow-[0_0_20px_rgba(197,160,89,0.25)]'
+                      : 'bg-white/[0.06] hover:bg-[#C5A059] text-[#F5F3EF] hover:text-black border border-white/15 hover:border-[#C5A059]'
                   }`}
                 >
-                  <span>{text.serviceSection.cta}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>{pack.cta}</span>
+                  <ArrowUpRight className="w-4 h-4 shrink-0" />
                 </Link>
               </div>
             ))}

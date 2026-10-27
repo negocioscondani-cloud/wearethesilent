@@ -103,7 +103,7 @@ const TRANSLATIONS = {
           "Entrega con su respectivo caption listo para Instagram o Facebook",
           "Entrega ágil en 48-72h lista para publicar"
         ],
-        cta: "PEDIR 1 VIDEO ($50 USD)"
+        cta: "PEDIR 1 VIDEO"
       },
       pack4: {
         title: "PACK 4 VIDEOS",
@@ -124,7 +124,7 @@ const TRANSLATIONS = {
           "Variedad de formatos: UGC moda, hablado a cámara, Meta Ads",
           "Soporte directo de producción vía WhatsApp"
         ],
-        cta: "APROVECHAR PACK 4 ($170 USD)"
+        cta: "ELEGIR PACK 4"
       },
       pack8: {
         title: "PACK 8 VIDEOS",
@@ -146,7 +146,7 @@ const TRANSLATIONS = {
           "Mix equilibrado: venta directa, educativo, stories y reels",
           "Entregas programadas semanales o en bloque"
         ],
-        cta: "QUIERO EL PACK 8 ($300 USD)"
+        cta: "ELEGIR PACK 8"
       },
       growth: {
         title: "PLAN DE CRECIMIENTO EN REDES",
@@ -164,7 +164,7 @@ const TRANSLATIONS = {
           "Análisis mensual de métricas creativas y optimización continua",
           "Opción de cotizar adicionalmente gestión de redes o pauta publicitaria"
         ],
-        cta: "COTIZAR PLAN DE CRECIMIENTO"
+        cta: "COTIZAR PLAN"
       }
     },
     cases: {
