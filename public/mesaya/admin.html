@@ -68,10 +68,15 @@ tr.low td:first-child{box-shadow:inset 4px 0 0 var(--alert)}
 .sw input:checked{background:var(--alert)}
 .sw input:checked::after{left:21px}
 .save-bar{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-.login{max-width:380px;margin:12vh auto 0;display:grid;gap:14px}
-.login h1{font-size:30px}
-.demo-tip{font-size:13px;border:1px dashed var(--mango);border-radius:12px;padding:10px 12px}
-.err{color:var(--alert);margin:0;font-size:14px}
+.login{max-width:410px;margin:8vh auto 0;display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.login h1{font-size:28px}
+.or-sep{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.08em}
+.or-sep::before,.or-sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1F1F1F;border:1px solid #DADCE0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;width:100%}
+.btn-google:hover{background:#F8FAFD}
+.demo-tip{font-size:13px;border:1px dashed var(--mango);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.demo-tip a{color:var(--brand);font-weight:700}
+.err{color:var(--alert);margin:0;font-size:14px;font-weight:600}
 .note{font-size:12.5px;color:var(--muted)}
 </style>
 </head>
@@ -93,25 +98,63 @@ function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false
 
 let tab = "resumen", range = 30, started = false, inv = null, pub = null, cache = {};
 
-/* ---------- acceso ---------- */
+/* ---------- acceso (Google o Correo y Contraseña) ---------- */
 function showLogin(err){
   const demo = Store.mode() === "demo";
-  $("#app").innerHTML = `<form class="login" id="lf"><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1>
-    ${demo ? "" : `<label class="f">Correo<input id="le" type="email" autocomplete="username" required></label>`}
-    <label class="f">${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" autocomplete="current-password" required></label>
-    ${err ? `<p class="err">${esc(err)}</p>` : ""}<button class="btn brand block" type="submit">Entrar</button>
-    ${demo ? `<div class="demo-tip"><b>Modo demo</b> · PIN del dueño: ${esc(C.demoOwnerPin)}. Se cargan 30 días de datos de ejemplo para ver la analítica.</div>` : ""}</form>`;
+  const gIcon = `<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
+  $("#app").innerHTML = `<form class="login" id="lf">
+    <div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1></div>
+    ${demo ? "" : `<button class="btn-google" type="button" id="gbtn">${gIcon}<span>Continuar con Google</span></button><div class="or-sep">o con correo y contraseña</div>`}
+    ${demo ? "" : `<label class="f">Correo electrónico<input id="le" type="email" autocomplete="username" placeholder="dueno@restaurante.com" required></label>`}
+    <label class="f">${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" ${demo ? "" : 'placeholder="Mínimo 6 caracteres"'} autocomplete="current-password" required></label>
+    ${err ? `<p class="err">${esc(err)}</p>` : ""}
+    <div style="display:grid;gap:8px">
+      <button class="btn brand block" type="submit">Entrar con correo</button>
+      ${demo ? "" : `<button class="btn line block" type="button" id="regbtn">Crear cuenta nueva con este correo</button>`}
+    </div>
+    <div class="demo-tip">
+      <b>Accesos directos conectados (Firestore en vivo):</b>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px">
+        <a href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">📱 Menú Mesa 7</a>
+        <a href="salon.html">🛎️ Salón</a>
+        <a href="cocina.html">👨‍🍳 Cocina</a>
+        <a href="mesas.html">🖨️ QR Mesas</a>
+      </div>
+    </div>
+  </form>`;
+  if ($("#gbtn")) {
+    $("#gbtn").onclick = async () => {
+      try { await Store.loginWithGoogle("owner"); start(); }
+      catch (x) { showLogin(Store.humanAuthError(x)); }
+    };
+  }
+  if ($("#regbtn")) {
+    $("#regbtn").onclick = async () => {
+      const email = ($("#le").value || "").trim(), pass = $("#lp").value || "";
+      if (!email || !pass) { showLogin("Escribe tu correo y una contraseña de al menos 6 caracteres para crear la cuenta."); return; }
+      try { await Store.register("owner", email, pass); toast("Cuenta creada y conectada"); start(); }
+      catch (x) { showLogin(Store.humanAuthError(x)); }
+    };
+  }
   $("#lf").onsubmit = async e => {
     e.preventDefault();
     try { await Store.login("owner", demo ? "" : $("#le").value.trim(), $("#lp").value); start(); }
-    catch (x) { showLogin(x.message && x.message.includes("auth/") ? "Correo o contraseña incorrectos" : (x.message || "No se pudo entrar")); }
+    catch (x) { showLogin(Store.humanAuthError(x)); }
   };
 }
 function start(){
   if (started) return; started = true;
-  if (Store.mode() === "demo") Store.seedDemo();
-  $("#app").innerHTML = `<div class="top"><div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1></div>
-    <div class="row"><a class="btn line sm" href="salon.html">Panel del salón</a><a class="btn line sm" href="cocina.html">Cocina</a><a class="btn line sm" href="mesas.html">QR de mesas</a><button class="btn ghost sm" id="out">Salir</button></div></div>
+  Store.seedDemo();
+  const u = Store.user();
+  $("#app").innerHTML = `<div class="top"><div><span class="eyebrow">${esc(R.name)}${u && u.email ? " · " + esc(u.email) : ""}</span><h1>Panel del dueño</h1></div>
+    <div class="row">
+      <span class="chip ok">${Store.mode() === "demo" ? "Modo demo" : "Firestore en vivo"}</span>
+      <a class="btn line sm" href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">Menú Mesa 7</a>
+      <a class="btn line sm" href="salon.html">Panel del salón</a>
+      <a class="btn line sm" href="cocina.html">Cocina</a>
+      <a class="btn line sm" href="mesas.html">QR de mesas</a>
+      <button class="btn ghost sm" id="out">Salir</button>
+    </div></div>
     <nav class="nav" aria-label="Secciones"><button data-t="resumen">Resumen</button><button data-t="inventario">Inventario</button><button data-t="menu">Menú y precios</button></nav>
     <div id="view"></div>`;
   $$(".nav button").forEach(b => b.onclick = () => { tab = b.dataset.t; show(); });

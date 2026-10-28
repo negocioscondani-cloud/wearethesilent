@@ -112,13 +112,13 @@ export default function MesaYaShowcasePage() {
             {/* Credentials Pill & Table Switcher */}
             <div className="p-3.5 rounded-xl bg-[#12161A] border border-[#C5A059]/40 flex flex-wrap items-center gap-4 text-xs font-mono shrink-0">
               <div>
-                <span className="text-zinc-400 block text-[10px] uppercase">PIN Salón y Cocina</span>
-                <strong className="text-[#E5C88D] text-sm">1234</strong>
+                <span className="text-zinc-400 block text-[10px] uppercase">Base de Datos</span>
+                <strong className="text-emerald-400 text-xs">Firestore En Vivo</strong>
               </div>
               <span className="text-white/10">|</span>
               <div>
-                <span className="text-zinc-400 block text-[10px] uppercase">PIN Dueño / Admin</span>
-                <strong className="text-[#E5C88D] text-sm">4321</strong>
+                <span className="text-zinc-400 block text-[10px] uppercase">Acceso Paneles</span>
+                <strong className="text-[#E5C88D] text-xs">Google o Correo</strong>
               </div>
               <span className="text-white/10">|</span>
               <div>
@@ -178,7 +178,7 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <Bell className="w-4 h-4" />
-                <span>2. Salón (PIN 1234)</span>
+                <span>2. Salón</span>
               </button>
 
               <button
@@ -191,7 +191,7 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <ChefHat className="w-4 h-4" />
-                <span>3. Cocina (PIN 1234)</span>
+                <span>3. Cocina</span>
               </button>
 
               <button
@@ -204,7 +204,7 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <BarChart3 className="w-4 h-4" />
-                <span>4. Dueño (PIN 4321)</span>
+                <span>4. Dueño</span>
               </button>
 
               <button
@@ -300,7 +300,7 @@ export default function MesaYaShowcasePage() {
                           : 'bg-white/5 text-zinc-300 hover:bg-white/10'
                       }`}
                     >
-                      🛎️ Panel Salón (PIN 1234)
+                      🛎️ Panel Salón (Firestore)
                     </button>
                     <button
                       type="button"
@@ -311,7 +311,7 @@ export default function MesaYaShowcasePage() {
                           : 'bg-white/5 text-zinc-300 hover:bg-white/10'
                       }`}
                     >
-                      👨‍🍳 Pantalla Cocina (PIN 1234)
+                      👨‍🍳 Pantalla Cocina (Firestore)
                     </button>
                   </div>
                   <span className="text-zinc-400">
@@ -359,7 +359,7 @@ export default function MesaYaShowcasePage() {
             <div className="bg-[#111518] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-xs font-mono">
                 <span className="text-[#E5C88D] font-bold">
-                  🛎️ Panel del Salón y Meseros · PIN de acceso: 1234
+                  🛎️ Panel del Salón y Meseros · Acceso con Google o Correo
                 </span>
                 <a
                   href="/mesaya/salon.html"
@@ -383,7 +383,7 @@ export default function MesaYaShowcasePage() {
             <div className="bg-[#111518] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-xs font-mono">
                 <span className="text-[#E5C88D] font-bold">
-                  👨‍🍳 Pantalla de Cocina (KDS en vivo para Tablet o TV) · PIN de acceso: 1234
+                  👨‍🍳 Pantalla de Cocina (KDS en vivo para Tablet o TV) · Acceso con Google o Correo
                 </span>
                 <a
                   href="/mesaya/cocina.html"
@@ -407,7 +407,7 @@ export default function MesaYaShowcasePage() {
             <div className="bg-[#111518] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-xs font-mono">
                 <span className="text-[#E5C88D] font-bold">
-                  📊 Panel del Dueño (Analítica 30 días, Inventario y Precios) · PIN: 4321
+                  📊 Panel del Dueño (Analítica, Inventario y Precios) · Acceso con Google o Correo
                 </span>
                 <a
                   href="/mesaya/admin.html"

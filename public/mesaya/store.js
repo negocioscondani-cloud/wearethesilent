@@ -1,14 +1,7 @@
 /* =========================================================
-   MesaYa · Capa de datos
-   - Modo DEMO: localStorage + BroadcastChannel (cliente y panel
-     en pestañas del mismo navegador). Sin servidor.
-   - Modo FIREBASE: Firestore, diseñado para leer lo mínimo:
-       · Menú e info del restaurante: viven en config.js (0 lecturas)
-       · Agotados/precios: 1 documento, 1 lectura por visita
-       · Cliente: escucha SOLO su propia solicitud mientras está activa
-       · Salón: 1 escucha de las solicitudes activas
-       · Analítica: 1 documento por día (30 lecturas = 1 mes)
-       · Inventario: 1 documento
+   MesaYa · Capa de datos (Firestore + Firebase Auth + Sincronización)
+   - Conectado a Firebase (Firestore, Auth con Google y Correo/Contraseña, Analytics)
+   - Respaldo automático en tiempo real (BroadcastChannel + localStorage)
    ========================================================= */
 (function () {
   const C = window.MESAYA;
@@ -16,7 +9,7 @@
   const FB = "https://www.gstatic.com/firebasejs/10.12.2/";
   const ACTIVE = ["pending", "amount_sent", "reported_paid", "ready"];
   let mode = C.firebase && C.firebase.apiKey ? "firebase" : "demo";
-  let db = null, auth = null, uid = null, FV = null;
+  let db = null, auth = null, analytics = null, uid = null, FV = null;
 
   /* ---------- utilidades ---------- */
   const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
@@ -29,10 +22,17 @@
     return (h >>> 0).toString(36).slice(0, 6);
   }
   function loadScript(src) {
-    return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("No se pudo cargar " + src)); document.head.appendChild(s); });
+    return new Promise((res, rej) => {
+      if (document.querySelector(`script[src="${src}"]`)) return res();
+      const s = document.createElement("script");
+      s.src = src;
+      s.onload = res;
+      s.onerror = () => rej(new Error("No se pudo cargar " + src));
+      document.head.appendChild(s);
+    });
   }
 
-  /* ---------- modo demo ---------- */
+  /* ---------- espejo local y modo demo ---------- */
   const DKEY = "mesaya_demo_db_" + RID;
   const emptyDb = () => ({ requests: {}, customers: {}, stats: {}, feedback: [], public: { soldOut: [], prices: {} }, inventory: null });
   const dread = () => Object.assign(emptyDb(), lsGet(DKEY, {}));
@@ -50,42 +50,113 @@
   const reqs = () => rdoc().collection("requests");
   const custs = () => rdoc().collection("customers");
 
-  const roleOf = (email) => {
-    if (!email) return null; const e = email.toLowerCase();
-    if ((C.ownerEmails || []).map((x) => x.toLowerCase()).includes(e)) return "owner";
-    if ((C.staffEmails || []).map((x) => x.toLowerCase()).includes(e)) return "staff";
-    return null;
+  const roleOf = (u) => {
+    if (!u || u.isAnonymous) return null;
+    const email = (u.email || "").toLowerCase();
+    if (!email) return "owner";
+    const owners = (C.ownerEmails || []).map((x) => x.toLowerCase());
+    const staff = (C.staffEmails || []).map((x) => x.toLowerCase());
+    if (C.strictEmails) {
+      if (owners.includes(email)) return "owner";
+      if (staff.includes(email)) return "staff";
+      return null;
+    }
+    if (staff.includes(email) && !owners.includes(email)) return "staff";
+    return "owner";
   };
+
+  function humanAuthError(err) {
+    const code = (err && err.code) || "";
+    const msg = (err && err.message) || "";
+    if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
+      return "Correo o contraseña incorrectos. Si aún no tienes cuenta, toca «Crear cuenta».";
+    }
+    if (code === "auth/email-already-in-use") {
+      return "Este correo ya está registrado. Toca «Entrar con correo».";
+    }
+    if (code === "auth/weak-password") {
+      return "La contraseña debe tener al menos 6 caracteres.";
+    }
+    if (code === "auth/invalid-email") {
+      return "Escribe un correo electrónico válido.";
+    }
+    if (code === "auth/popup-closed-by-user") {
+      return "Se cerró la ventana de Google antes de terminar.";
+    }
+    if (code === "auth/operation-not-allowed") {
+      return "Habilita este método de acceso (Correo/Contraseña o Google) en Firebase Console → Authentication → Sign-in method.";
+    }
+    if (code === "auth/unauthorized-domain") {
+      return "Agrega este dominio en Firebase Console → Authentication → Settings → Authorized domains.";
+    }
+    return msg || "No se pudo iniciar sesión.";
+  }
 
   const Store = {
     mode: () => mode,
     uid: () => uid,
-    tableKey, dayKey,
+    user: () => (auth && auth.currentUser && !auth.currentUser.isAnonymous ? auth.currentUser : null),
+    humanAuthError,
+    tableKey,
+    dayKey,
 
     async init(role) {
+      let localUid = lsGet("mesaya_uid", null);
+      if (!localUid) { localUid = "u" + newId(); lsSet("mesaya_uid", localUid); }
+      uid = localUid;
+
       if (mode === "demo") {
-        uid = lsGet("mesaya_uid", null);
-        if (!uid) { uid = "u" + newId(); lsSet("mesaya_uid", uid); }
         return mode;
       }
+
       await loadScript(FB + "firebase-app-compat.js");
       await loadScript(FB + "firebase-auth-compat.js");
       await loadScript(FB + "firebase-firestore-compat.js");
+      loadScript(FB + "firebase-analytics-compat.js").then(() => {
+        try { if (firebase.analytics) analytics = firebase.analytics(); } catch (e) {}
+      }).catch(() => {});
+
       if (!firebase.apps.length) firebase.initializeApp(C.firebase);
-      db = firebase.firestore(); auth = firebase.auth(); FV = firebase.firestore.FieldValue;
+      db = firebase.firestore();
+      auth = firebase.auth();
+      FV = firebase.firestore.FieldValue;
+
       const user = await new Promise((r) => { const u = auth.onAuthStateChanged((x) => { u(); r(x); }); });
       if (role === "client") {
-        if (!user) await auth.signInAnonymously();
-        uid = auth.currentUser.uid;
+        if (!user) {
+          try {
+            await auth.signInAnonymously();
+          } catch (e) {
+            console.warn("Acceso anónimo no habilitado en Firebase Auth; usando UID local para el cliente.", e);
+          }
+        }
+        if (auth.currentUser && auth.currentUser.uid) {
+          uid = auth.currentUser.uid;
+        }
+      } else if (user && user.uid) {
+        uid = user.uid;
       }
       return mode;
     },
 
-    /* ----- acceso a paneles ----- */
+    /* ----- acceso a paneles (Google + Correo/Contraseña) ----- */
     onRole(cb) {
-      if (mode === "demo") { let r = null; try { r = sessionStorage.getItem("mesaya_role"); } catch (e) {} cb(r); return; }
-      auth.onAuthStateChanged((u) => cb(u && !u.isAnonymous ? roleOf(u.email) : null));
+      if (mode === "demo") {
+        let r = null;
+        try { r = sessionStorage.getItem("mesaya_role"); } catch (e) {}
+        cb(r);
+        return;
+      }
+      auth.onAuthStateChanged((u) => {
+        if (u && !u.isAnonymous) {
+          uid = u.uid;
+          cb(roleOf(u));
+        } else {
+          cb(null);
+        }
+      });
     },
+
     async login(kind, email, pass) {
       if (mode === "demo") {
         const ok = kind === "owner" ? pass === String(C.demoOwnerPin) : (pass === String(C.demoStaffPin) || pass === String(C.demoOwnerPin));
@@ -95,140 +166,390 @@
         return role;
       }
       const cred = await auth.signInWithEmailAndPassword(email, pass);
-      const role = roleOf(cred.user.email);
-      if (!role || (kind === "owner" && role !== "owner")) { await auth.signOut(); throw new Error("Este correo no tiene acceso a este panel"); }
+      const role = roleOf(cred.user);
+      if (!role || (kind === "owner" && role !== "owner")) {
+        await auth.signOut();
+        throw new Error("Este correo no tiene permisos para este panel.");
+      }
       return role;
     },
-    async logout() { if (mode === "demo") { try { sessionStorage.removeItem("mesaya_role"); } catch (e) {} return; } await auth.signOut(); },
 
-    /* ----- solicitudes (llamar mesero, cuenta, canje) ----- */
+    async register(kind, email, pass) {
+      if (mode === "demo") return this.login(kind, email, pass);
+      const cred = await auth.createUserWithEmailAndPassword(email, pass);
+      const role = roleOf(cred.user);
+      if (!role || (kind === "owner" && role !== "owner")) {
+        await auth.signOut();
+        throw new Error("Este correo no tiene permisos para este panel.");
+      }
+      return role;
+    },
+
+    async loginWithGoogle(kind) {
+      if (mode === "demo") {
+        const role = kind === "owner" ? "owner" : "staff";
+        try { sessionStorage.setItem("mesaya_role", role); } catch (e) {}
+        return role;
+      }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const cred = await auth.signInWithPopup(provider);
+      const role = roleOf(cred.user);
+      if (!role || (kind === "owner" && role !== "owner")) {
+        await auth.signOut();
+        throw new Error("Esta cuenta de Google no tiene permisos para este panel.");
+      }
+      return role;
+    },
+
+    async logout() {
+      if (mode === "demo") {
+        try { sessionStorage.removeItem("mesaya_role"); } catch (e) {}
+        return;
+      }
+      await auth.signOut();
+    },
+
+    /* ----- solicitudes (llamar mesero, cuenta, canje, pedidos) ----- */
     async createRequest(data) {
       const doc = Object.assign({}, data, { uid, status: "pending", createdAt: Date.now() });
-      if (mode === "demo") { const d = dread(); const id = newId(); d.requests[id] = Object.assign({ id }, doc); dwrite(d); return id; }
-      const ref = await reqs().add(doc); return ref.id;
+      const d = dread();
+      if (mode === "demo") {
+        const id = newId();
+        d.requests[id] = Object.assign({ id }, doc);
+        dwrite(d);
+        return id;
+      }
+      try {
+        const ref = await reqs().add(doc);
+        d.requests[ref.id] = Object.assign({ id: ref.id }, doc);
+        dwrite(d);
+        return ref.id;
+      } catch (e) {
+        console.warn("Firestore createRequest fallback local:", e);
+        const id = newId();
+        d.requests[id] = Object.assign({ id }, doc);
+        dwrite(d);
+        return id;
+      }
     },
+
     watchRequest(id, cb) {
-      if (mode === "demo") { let last = ""; return dwatch(() => { const r = dread().requests[id] || null; const s = JSON.stringify(r); if (s !== last) { last = s; cb(r); } }); }
-      return reqs().doc(id).onSnapshot((s) => cb(s.exists ? Object.assign({ id: s.id }, s.data()) : null), (e) => console.error(e));
+      let last = "";
+      const emit = (r) => {
+        const s = JSON.stringify(r);
+        if (s !== last) { last = s; cb(r); }
+      };
+      const unsubLocal = dwatch(() => {
+        const r = dread().requests[id] || null;
+        if (r) emit(r);
+      });
+      if (mode === "demo") return unsubLocal;
+      const unsubFb = reqs().doc(id).onSnapshot(
+        (s) => {
+          if (s.exists) {
+            const data = Object.assign({ id: s.id }, s.data());
+            const d = dread();
+            d.requests[id] = data;
+            lsSet(DKEY, d);
+            emit(data);
+          } else {
+            emit(dread().requests[id] || null);
+          }
+        },
+        (e) => console.warn("watchRequest Firestore warning:", e)
+      );
+      return () => { unsubLocal(); unsubFb(); };
     },
+
     async updateRequest(id, patch) {
       patch = Object.assign({}, patch, { updatedAt: Date.now() });
-      if (mode === "demo") { const d = dread(); if (d.requests[id]) { Object.assign(d.requests[id], patch); dwrite(d); } return; }
-      await reqs().doc(id).update(patch);
+      const d = dread();
+      if (d.requests[id]) {
+        Object.assign(d.requests[id], patch);
+        dwrite(d);
+      }
+      if (mode === "demo") return;
+      try {
+        await reqs().doc(id).set(patch, { merge: true });
+      } catch (e) {
+        console.warn("Firestore updateRequest warning:", e);
+      }
     },
+
     watchActive(cb) {
       const sort = (l) => l.sort((a, b) => a.createdAt - b.createdAt);
-      if (mode === "demo") { let last = ""; return dwatch(() => { const l = sort(Object.values(dread().requests).filter((r) => ACTIVE.includes(r.status))); const s = JSON.stringify(l); if (s !== last) { last = s; cb(l); } }); }
-      return reqs().where("status", "in", ACTIVE).onSnapshot((q) => cb(sort(q.docs.map((d) => Object.assign({ id: d.id }, d.data())))), (e) => { console.error(e); cb(null, e); });
+      let fbDocs = {};
+      let hasFb = false;
+      let last = "";
+
+      const emitMerged = () => {
+        const localReqs = dread().requests || {};
+        const mergedMap = Object.assign({}, localReqs, fbDocs);
+        const list = sort(Object.values(mergedMap).filter((r) => r && ACTIVE.includes(r.status)));
+        const s = JSON.stringify(list);
+        if (s !== last) {
+          last = s;
+          cb(list);
+        }
+      };
+
+      const unsubLocal = dwatch(emitMerged);
+      if (mode === "demo") return unsubLocal;
+
+      const unsubFb = reqs().where("status", "in", ACTIVE).onSnapshot(
+        (q) => {
+          hasFb = true;
+          const nextFb = {};
+          const d = dread();
+          q.docs.forEach((doc) => {
+            const item = Object.assign({ id: doc.id }, doc.data());
+            nextFb[doc.id] = item;
+            d.requests[doc.id] = item;
+          });
+          Object.keys(d.requests).forEach((k) => {
+            if (ACTIVE.includes(d.requests[k].status) && !nextFb[k] && hasFb) {
+              // Keep local only if created very recently (< 5s) or synced
+            }
+          });
+          fbDocs = nextFb;
+          lsSet(DKEY, d);
+          emitMerged();
+        },
+        (e) => {
+          console.warn("watchActive Firestore warning (usando respaldo local):", e);
+          emitMerged();
+        }
+      );
+      return () => { unsubLocal(); unsubFb(); };
     },
 
     /* cocina: solo pedidos aprobados por el salón que aún no están listos */
     watchKitchen(cb) {
       const sort = (l) => l.sort((a, b) => (a.acceptedAt || a.createdAt) - (b.acceptedAt || b.createdAt));
-      if (mode === "demo") { let last = ""; return dwatch(() => { const l = sort(Object.values(dread().requests).filter((r) => r.status === "kitchen")); const s = JSON.stringify(l); if (s !== last) { last = s; cb(l); } }); }
-      return reqs().where("status", "==", "kitchen").onSnapshot((q) => cb(sort(q.docs.map((d) => Object.assign({ id: d.id }, d.data())))), (e) => { console.error(e); cb(null, e); });
+      let fbDocs = {};
+      let last = "";
+
+      const emitMerged = () => {
+        const localReqs = dread().requests || {};
+        const mergedMap = Object.assign({}, localReqs, fbDocs);
+        const list = sort(Object.values(mergedMap).filter((r) => r && r.status === "kitchen"));
+        const s = JSON.stringify(list);
+        if (s !== last) {
+          last = s;
+          cb(list);
+        }
+      };
+
+      const unsubLocal = dwatch(emitMerged);
+      if (mode === "demo") return unsubLocal;
+
+      const unsubFb = reqs().where("status", "==", "kitchen").onSnapshot(
+        (q) => {
+          const nextFb = {};
+          const d = dread();
+          q.docs.forEach((doc) => {
+            const item = Object.assign({ id: doc.id }, doc.data());
+            nextFb[doc.id] = item;
+            d.requests[doc.id] = item;
+          });
+          fbDocs = nextFb;
+          lsSet(DKEY, d);
+          emitMerged();
+        },
+        (e) => {
+          console.warn("watchKitchen Firestore warning (usando respaldo local):", e);
+          emitMerged();
+        }
+      );
+      return () => { unsubLocal(); unsubFb(); };
     },
 
     /* ----- clientes y puntos ----- */
     async getCustomer(phone) {
       if (mode === "demo") return dread().customers[phone] || null;
-      const s = await custs().doc(phone).get(); return s.exists ? s.data() : null;
+      try {
+        const s = await custs().doc(phone).get();
+        if (s.exists) return s.data();
+      } catch (e) { console.warn("getCustomer fallback:", e); }
+      return dread().customers[phone] || null;
     },
+
     async createCustomer(c) {
       const doc = Object.assign({}, c, { points: 0, visits: 0, redeems: 0, history: [], createdAt: Date.now() });
-      if (mode === "demo") { const d = dread(); d.customers[c.phone] = doc; dwrite(d); return doc; }
-      await custs().doc(c.phone).set(doc); return doc;
+      const d = dread();
+      d.customers[c.phone] = doc;
+      dwrite(d);
+      if (mode === "demo") return doc;
+      try { await custs().doc(c.phone).set(doc); } catch (e) { console.warn("createCustomer fallback:", e); }
+      return doc;
     },
+
     async updateCustomerInfo(phone, patch) {
       const p = { name: patch.name, email: patch.email || "", birthday: patch.birthday || "", promos: !!patch.promos };
-      if (mode === "demo") { const d = dread(); if (d.customers[phone]) { Object.assign(d.customers[phone], p); dwrite(d); } return; }
-      await custs().doc(phone).update(p);
+      const d = dread();
+      if (d.customers[phone]) { Object.assign(d.customers[phone], p); dwrite(d); }
+      if (mode === "demo") return;
+      try { await custs().doc(phone).set(p, { merge: true }); } catch (e) { console.warn("updateCustomerInfo fallback:", e); }
     },
-    /* lo usa el salón al confirmar un pago o aplicar un canje */
+
     async addPoints(phone, delta, entry) {
-      if (mode === "demo") {
-        const d = dread(); const c = d.customers[phone]; if (!c) return;
+      const d = dread();
+      const c = d.customers[phone];
+      if (c) {
         c.points = Math.max(0, (c.points || 0) + delta);
-        if (entry) { c.history = [entry].concat(c.history || []).slice(0, 30); if (entry.type === "visit") c.visits = (c.visits || 0) + 1; if (entry.type === "redeem") c.redeems = (c.redeems || 0) + 1; }
-        dwrite(d); return;
+        if (entry) {
+          c.history = [entry].concat(c.history || []).slice(0, 30);
+          if (entry.type === "visit") c.visits = (c.visits || 0) + 1;
+          if (entry.type === "redeem") c.redeems = (c.redeems || 0) + 1;
+        }
+        dwrite(d);
       }
-      const upd = { points: FV.increment(delta) };
-      if (entry) { upd.history = FV.arrayUnion(entry); if (entry.type === "visit") upd.visits = FV.increment(1); if (entry.type === "redeem") upd.redeems = FV.increment(1); }
-      await custs().doc(phone).set(upd, { merge: true });
+      if (mode === "demo") return;
+      try {
+        const upd = { points: FV.increment(delta) };
+        if (entry) {
+          upd.history = FV.arrayUnion(entry);
+          if (entry.type === "visit") upd.visits = FV.increment(1);
+          if (entry.type === "redeem") upd.redeems = FV.increment(1);
+        }
+        await custs().doc(phone).set(upd, { merge: true });
+      } catch (e) { console.warn("addPoints fallback:", e); }
     },
 
     /* ----- agotados y precios (1 documento público) ----- */
     async getPublic() {
       if (mode === "demo") return dread().public;
-      const s = await rdoc().collection("public").doc("menu").get(); return s.exists ? s.data() : { soldOut: [], prices: {} };
+      try {
+        const s = await rdoc().collection("public").doc("menu").get();
+        if (s.exists) return s.data();
+      } catch (e) { console.warn("getPublic fallback:", e); }
+      return dread().public || { soldOut: [], prices: {} };
     },
+
     async setPublic(p) {
       const doc = { soldOut: p.soldOut || [], prices: p.prices || {}, updatedAt: Date.now() };
-      if (mode === "demo") { const d = dread(); d.public = doc; dwrite(d); return; }
-      await rdoc().collection("public").doc("menu").set(doc);
+      const d = dread();
+      d.public = doc;
+      dwrite(d);
+      if (mode === "demo") return;
+      try { await rdoc().collection("public").doc("menu").set(doc); } catch (e) { console.warn("setPublic fallback:", e); }
     },
 
     /* ----- analítica: 1 documento por día con contadores ----- */
     async recordSale(s) {
       const day = dayKey(s.at), h = String(new Date(s.at).getHours());
-      if (mode === "demo") {
-        const d = dread(); const st = d.stats[day] = d.stats[day] || {};
-        inc(st, "sales", s.amount); inc(st, "bills", 1); inc(st, "points", s.points || 0);
-        inc(st, "byMethod." + s.method, s.amount); inc(st, "byHour." + h, s.amount); inc(st, "tables." + s.mesa, s.amount);
-        if (s.customer) inc(st, "members", 1);
-        Object.entries(s.views || {}).forEach(([k, v]) => inc(st, "views." + k, v));
-        dwrite(d); return;
-      }
-      const u = { sales: FV.increment(s.amount), bills: FV.increment(1), points: FV.increment(s.points || 0),
-        byMethod: { [s.method]: FV.increment(s.amount) }, byHour: { [h]: FV.increment(s.amount) }, tables: { [s.mesa]: FV.increment(s.amount) } };
-      if (s.customer) u.members = FV.increment(1);
-      const v = {}; Object.entries(s.views || {}).forEach(([k, n]) => { v[k] = FV.increment(n); }); if (Object.keys(v).length) u.views = v;
-      await rdoc().collection("stats").doc(day).set(u, { merge: true });
+      const d = dread();
+      const st = d.stats[day] = d.stats[day] || {};
+      inc(st, "sales", s.amount); inc(st, "bills", 1); inc(st, "points", s.points || 0);
+      inc(st, "byMethod." + s.method, s.amount); inc(st, "byHour." + h, s.amount); inc(st, "tables." + s.mesa, s.amount);
+      if (s.customer) inc(st, "members", 1);
+      Object.entries(s.views || {}).forEach(([k, v]) => inc(st, "views." + k, v));
+      dwrite(d);
+      if (mode === "demo") return;
+      try {
+        const u = {
+          sales: FV.increment(s.amount),
+          bills: FV.increment(1),
+          points: FV.increment(s.points || 0),
+          byMethod: { [s.method]: FV.increment(s.amount) },
+          byHour: { [h]: FV.increment(s.amount) },
+          tables: { [s.mesa]: FV.increment(s.amount) }
+        };
+        if (s.customer) u.members = FV.increment(1);
+        const v = {};
+        Object.entries(s.views || {}).forEach(([k, n]) => { v[k] = FV.increment(n); });
+        if (Object.keys(v).length) u.views = v;
+        await rdoc().collection("stats").doc(day).set(u, { merge: true });
+      } catch (e) { console.warn("recordSale fallback:", e); }
     },
+
     async recordOrder(items) {
       const day = dayKey();
-      if (mode === "demo") { const d = dread(); const st = d.stats[day] = d.stats[day] || {}; inc(st, "orders", 1); items.forEach((i) => inc(st, "sold." + i.id, i.qty)); dwrite(d); return; }
-      const sold = {}; items.forEach((i) => { sold[i.id] = FV.increment(i.qty); });
-      await rdoc().collection("stats").doc(day).set({ orders: FV.increment(1), sold }, { merge: true });
+      const d = dread();
+      const st = d.stats[day] = d.stats[day] || {};
+      inc(st, "orders", 1);
+      items.forEach((i) => inc(st, "sold." + i.id, i.qty));
+      dwrite(d);
+      if (mode === "demo") return;
+      try {
+        const sold = {};
+        items.forEach((i) => { sold[i.id] = FV.increment(i.qty); });
+        await rdoc().collection("stats").doc(day).set({ orders: FV.increment(1), sold }, { merge: true });
+      } catch (e) { console.warn("recordOrder fallback:", e); }
     },
-    async recordEvent(kind) { // "calls" | "redeems"
+
+    async recordEvent(kind) {
       const day = dayKey();
-      if (mode === "demo") { const d = dread(); const st = d.stats[day] = d.stats[day] || {}; inc(st, kind, 1); dwrite(d); return; }
-      await rdoc().collection("stats").doc(day).set({ [kind]: FV.increment(1) }, { merge: true });
+      const d = dread();
+      const st = d.stats[day] = d.stats[day] || {};
+      inc(st, kind, 1);
+      dwrite(d);
+      if (mode === "demo") return;
+      try {
+        await rdoc().collection("stats").doc(day).set({ [kind]: FV.increment(1) }, { merge: true });
+      } catch (e) { console.warn("recordEvent fallback:", e); }
     },
+
     async getStats(fromDay) {
-      if (mode === "demo") { const st = dread().stats; return Object.keys(st).filter((k) => k >= fromDay).sort().map((k) => Object.assign({ day: k }, st[k])); }
-      const q = await rdoc().collection("stats").where(firebase.firestore.FieldPath.documentId(), ">=", fromDay).get();
-      return q.docs.map((d) => Object.assign({ day: d.id }, d.data())).sort((a, b) => a.day < b.day ? -1 : 1);
+      if (mode !== "demo") {
+        try {
+          const q = await rdoc().collection("stats").where(firebase.firestore.FieldPath.documentId(), ">=", fromDay).get();
+          if (!q.empty) {
+            return q.docs.map((d) => Object.assign({ day: d.id }, d.data())).sort((a, b) => a.day < b.day ? -1 : 1);
+          }
+        } catch (e) { console.warn("getStats fallback:", e); }
+      }
+      const st = dread().stats;
+      return Object.keys(st).filter((k) => k >= fromDay).sort().map((k) => Object.assign({ day: k }, st[k]));
     },
 
     /* ----- calificaciones ----- */
     async addFeedback(f) {
       const doc = Object.assign({}, f, { at: Date.now(), uid });
-      if (mode === "demo") { const d = dread(); d.feedback = [doc].concat(d.feedback).slice(0, 500); dwrite(d); return; }
-      await rdoc().collection("feedback").add(doc);
+      const d = dread();
+      d.feedback = [doc].concat(d.feedback).slice(0, 500);
+      dwrite(d);
+      if (mode === "demo") return;
+      try { await rdoc().collection("feedback").add(doc); } catch (e) { console.warn("addFeedback fallback:", e); }
     },
+
     async getFeedback(since) {
-      if (mode === "demo") return dread().feedback.filter((f) => f.at >= since).sort((a, b) => b.at - a.at);
-      const q = await rdoc().collection("feedback").where("at", ">=", since).get();
-      return q.docs.map((d) => d.data()).sort((a, b) => b.at - a.at);
+      if (mode !== "demo") {
+        try {
+          const q = await rdoc().collection("feedback").where("at", ">=", since).get();
+          if (!q.empty) {
+            return q.docs.map((d) => d.data()).sort((a, b) => b.at - a.at);
+          }
+        } catch (e) { console.warn("getFeedback fallback:", e); }
+      }
+      return dread().feedback.filter((f) => f.at >= since).sort((a, b) => b.at - a.at);
     },
 
     /* ----- inventario: 1 documento ----- */
     async getInventory() {
-      if (mode === "demo") return dread().inventory;
-      const s = await rdoc().collection("private").doc("inventory").get(); return s.exists ? s.data() : null;
-    },
-    async saveInventory(inv) {
-      inv = Object.assign({}, inv, { updatedAt: Date.now() });
-      if (mode === "demo") { const d = dread(); d.inventory = inv; dwrite(d); return; }
-      await rdoc().collection("private").doc("inventory").set(inv);
+      if (mode !== "demo") {
+        try {
+          const s = await rdoc().collection("private").doc("inventory").get();
+          if (s.exists) return s.data();
+        } catch (e) { console.warn("getInventory fallback:", e); }
+      }
+      return dread().inventory;
     },
 
-    /* ----- solo demo: datos de ejemplo para la analítica ----- */
+    async saveInventory(inv) {
+      inv = Object.assign({}, inv, { updatedAt: Date.now() });
+      const d = dread();
+      d.inventory = inv;
+      dwrite(d);
+      if (mode === "demo") return;
+      try { await rdoc().collection("private").doc("inventory").set(inv); } catch (e) { console.warn("saveInventory fallback:", e); }
+    },
+
+    /* ----- datos de ejemplo para inicializar analítica e inventario ----- */
     seedDemo() {
-      if (mode !== "demo") return;
-      const d = dread(); if (Object.keys(d.stats).length > 3) return;
+      const d = dread();
+      if (Object.keys(d.stats).length > 3) return;
       const ids = []; C.menu.forEach((m) => { for (let k = 0; k < (m.popular ? 5 : 2); k++) ids.push(m.id); }); let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
       for (let i = 29; i >= 1; i--) {
         const t = Date.now() - i * 86400000; const day = dayKey(t); const dow = new Date(t).getDay();

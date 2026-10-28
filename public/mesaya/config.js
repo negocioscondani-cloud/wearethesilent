@@ -6,21 +6,22 @@
 window.MESAYA = {
 
   /* --- Firebase ---------------------------------------------
-     Déjalo en null para usar el MODO DEMO (todo funciona en un
-     mismo navegador, sin servidor). Para producción pega aquí el
-     bloque firebaseConfig de tu proyecto (ver README.md).      */
-  firebase: null,
-  // firebase: {
-  //   apiKey: "...",
-  //   authDomain: "...firebaseapp.com",
-  //   projectId: "...",
-  //   storageBucket: "...appspot.com",
-  //   messagingSenderId: "...",
-  //   appId: "..."
-  // },
+     Conectado al proyecto Firebase mesaya-e9644 (Firestore + Auth + Analytics).
+     Deja firebase en null solo si deseas volver al modo local sin servidor. */
+  firebase: {
+    apiKey: "AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c",
+    authDomain: "mesaya-e9644.firebaseapp.com",
+    projectId: "mesaya-e9644",
+    storageBucket: "mesaya-e9644.firebasestorage.app",
+    messagingSenderId: "344830279673",
+    appId: "1:344830279673:web:de66a4c71ce3ecabbc4728",
+    measurementId: "G-4BMR30G9PR"
+  },
 
-  /* Correos que pueden entrar a los paneles (modo Firebase).
-     Deben coincidir con los de firestore.rules.               */
+  /* Si strictEmails es false, cualquier cuenta autenticada con Google o
+     Correo/Contraseña puede entrar a los paneles. Si lo pasas a true, solo
+     podrán entrar los correos listados en staffEmails y ownerEmails. */
+  strictEmails: false,
   staffEmails: ["salon@sodalaceiba.com"],
   ownerEmails: ["dueno@sodalaceiba.com"],
 

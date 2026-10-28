@@ -58,11 +58,15 @@
 .log{display:grid;gap:6px;font-size:13px;max-height:240px;overflow-y:auto}
 .log div{display:flex;gap:8px}
 .log time{color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
-.login{max-width:380px;margin:12vh auto 0;display:grid;gap:14px}
-.login h1{font-size:30px}
+.login{max-width:410px;margin:8vh auto 0;display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.login h1{font-size:28px}
+.or-sep{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.08em}
+.or-sep::before,.or-sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1F1F1F;border:1px solid #DADCE0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;width:100%}
+.btn-google:hover{background:#F8FAFD}
 .demo-tip{font-size:13px;border:1px dashed var(--mango);border-radius:12px;padding:10px 12px;display:grid;gap:6px}
 .demo-tip a{color:var(--brand);font-weight:700}
-.err{color:var(--alert);margin:0;font-size:14px}
+.err{color:var(--alert);margin:0;font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
@@ -87,21 +91,48 @@ let today = (() => { try { return JSON.parse(localStorage.getItem(TKEY)) || { co
 const saveToday = () => { try { localStorage.setItem(TKEY, JSON.stringify(today)); } catch (e) {} };
 const log = t => { today.log.unshift({ at: Date.now(), t }); today.log = today.log.slice(0, 80); saveToday(); };
 
-/* ---------- acceso ---------- */
+/* ---------- acceso (Google o Correo y Contraseña) ---------- */
 function showLogin(err){
   const demo = Store.mode() === "demo";
+  const gIcon = `<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
   $("#app").innerHTML = `<form class="login" id="lf">
-    <span class="eyebrow">${esc(R.name)}</span><h1>Panel del salón</h1>
-    ${demo ? "" : `<label class="f">Correo<input id="le" type="email" autocomplete="username" required></label>`}
-    <label class="f">${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" ${demo ? 'inputmode="numeric"' : ""} autocomplete="current-password" required></label>
+    <div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del salón</h1></div>
+    ${demo ? "" : `<button class="btn-google" type="button" id="gbtn">${gIcon}<span>Continuar con Google</span></button><div class="or-sep">o con correo y contraseña</div>`}
+    ${demo ? "" : `<label class="f">Correo electrónico<input id="le" type="email" autocomplete="username" placeholder="correo@restaurante.com" required></label>`}
+    <label class="f">${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" ${demo ? 'inputmode="numeric"' : 'placeholder="Mínimo 6 caracteres"'} autocomplete="current-password" required></label>
     ${err ? `<p class="err">${esc(err)}</p>` : ""}
-    <button class="btn brand block" type="submit">Entrar</button>
-    ${demo ? `<div class="demo-tip"><b>Modo demo</b><span>PIN del salón: ${esc(C.demoStaffPin)}</span><span>Abre el menú de la mesa 7 en otra pestaña de este navegador: <a href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">abrir Mesa 7</a></span><span>Pantalla de cocina (mismo PIN): <a href="cocina.html" target="_blank" rel="noopener">abrir cocina</a></span></div>` : ""}
+    <div style="display:grid;gap:8px">
+      <button class="btn brand block" type="submit">Entrar con correo</button>
+      ${demo ? "" : `<button class="btn line block" type="button" id="regbtn">Crear cuenta nueva con este correo</button>`}
+    </div>
+    <div class="demo-tip">
+      <b>Accesos directos conectados (Firestore en vivo):</b>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px">
+        <a href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">📱 Menú Mesa 7</a>
+        <a href="cocina.html">👨‍🍳 Cocina</a>
+        <a href="admin.html">📊 Dueño</a>
+        <a href="mesas.html">🖨️ QR Mesas</a>
+      </div>
+    </div>
   </form>`;
+  if ($("#gbtn")) {
+    $("#gbtn").onclick = async () => {
+      try { await Store.loginWithGoogle("staff"); start(); }
+      catch (x) { showLogin(Store.humanAuthError(x)); }
+    };
+  }
+  if ($("#regbtn")) {
+    $("#regbtn").onclick = async () => {
+      const email = ($("#le").value || "").trim(), pass = $("#lp").value || "";
+      if (!email || !pass) { showLogin("Escribe tu correo y una contraseña de al menos 6 caracteres para crear la cuenta."); return; }
+      try { await Store.register("staff", email, pass); toast("Cuenta creada y conectada"); start(); }
+      catch (x) { showLogin(Store.humanAuthError(x)); }
+    };
+  }
   $("#lf").onsubmit = async e => {
     e.preventDefault();
     try { await Store.login("staff", demo ? "" : $("#le").value.trim(), $("#lp").value); start(); }
-    catch (x) { showLogin(x.message && x.message.includes("auth/") ? "Correo o contraseña incorrectos" : (x.message || "No se pudo entrar")); }
+    catch (x) { showLogin(Store.humanAuthError(x)); }
   };
   setTimeout(() => { const i = $("#le") || $("#lp"); if (i) i.focus(); }, 50);
 }
@@ -119,10 +150,18 @@ function beep(){
 /* ---------- panel ---------- */
 function start(){
   if (started) return; started = true;
+  const u = Store.user();
   $("#app").innerHTML = `
-  <div class="top"><div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del salón</h1></div>
-    <div class="r"><span class="chip ${Store.mode() === "demo" ? "mango" : "ok"}" id="conn">${Store.mode() === "demo" ? "Modo demo" : "En vivo"}</span>
-      <a class="btn line sm" href="cocina.html" target="_blank" rel="noopener">Pantalla de cocina</a><button class="btn line sm" id="snd">Activar sonido</button><button class="btn ghost sm" id="out">Salir</button></div></div>
+  <div class="top"><div><span class="eyebrow">${esc(R.name)}${u && u.email ? " · " + esc(u.email) : ""}</span><h1>Panel del salón</h1></div>
+    <div class="r">
+      <span class="chip ok" id="conn">${Store.mode() === "demo" ? "Modo demo" : "Firestore en vivo"}</span>
+      <a class="btn line sm" href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">Menú Mesa 7</a>
+      <a class="btn line sm" href="cocina.html">Pantalla de cocina</a>
+      <a class="btn line sm" href="admin.html">Panel del dueño</a>
+      <a class="btn line sm" href="mesas.html">QR de mesas</a>
+      <button class="btn line sm" id="snd">Activar sonido</button>
+      <button class="btn ghost sm" id="out">Salir</button>
+    </div></div>
   <div class="grid">
     <section class="box" aria-label="Solicitudes"><h2>Solicitudes <span class="count" id="cnt" hidden></span></h2><div id="queue" style="display:grid;gap:10px"></div></section>
     <div style="display:grid;gap:18px;min-width:0">
@@ -136,7 +175,7 @@ function start(){
   if (unsub) unsub();
   unsub = Store.watchActive((l, err) => {
     if (err) { $("#conn").textContent = "Sin conexión"; $("#conn").className = "chip alert"; $("#queue").innerHTML = `<div class="empty">No se pudo leer las solicitudes. Revisa la conexión y que este correo tenga acceso en las reglas de Firestore.</div>`; return; }
-    $("#conn").textContent = Store.mode() === "demo" ? "Modo demo" : "En vivo"; $("#conn").className = "chip " + (Store.mode() === "demo" ? "mango" : "ok");
+    $("#conn").textContent = Store.mode() === "demo" ? "Modo demo" : "Firestore en vivo"; $("#conn").className = "chip " + (Store.mode() === "demo" ? "mango" : "ok");
     const ids = new Set(l.map(r => r.id + ":" + r.status));
     if (known) { let ping = false; l.forEach(r => { const k = r.id + ":" + r.status; if (!known.has(k) && (r.status === "pending" || r.status === "reported_paid" || r.status === "ready")) { fresh.add(r.id); ping = true; } }); if (ping) beep(); }
     known = ids; list = l; renderQueue(); renderSide();
