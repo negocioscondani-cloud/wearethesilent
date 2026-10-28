@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QR de mesas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="mesaya.css">
+<style>
+/* Layout: controles arriba, cuadrícula de tarjetas imprimibles (una por mesa) */
+.wrap{max-width:1100px;margin:0 auto;padding-block:calc(16px + env(safe-area-inset-top,0px)) 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) 140px auto;gap:10px;align-items:end;margin:14px 0 20px}
+@media (max-width:640px){.ctl{grid-template-columns:minmax(0,1fr)}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.qcard{background:#fff;color:#16241C;border:1px solid #D6DFD7;border-radius:18px;padding:18px 16px;display:grid;justify-items:center;gap:8px;text-align:center;break-inside:avoid}
+.qcard .r{font-family:var(--display);font-weight:800;font-size:18px}
+.qcard .m{font-family:var(--display);font-weight:800;font-size:40px;line-height:1;color:#0F5B3E}
+.qcard .qr{padding:8px;background:#fff;border-radius:10px}
+.qcard p{margin:0;font-size:12.5px;color:#5B6B61;max-width:24ch}
+.qcard code{font-size:10px;color:#8A978F;word-break:break-all}
+@media print{
+  body{background:#fff}.no-print{display:none!important}
+  .wrap{padding:0;max-width:none}.cards{grid-template-columns:repeat(3,1fr);gap:8mm}
+  .qcard{border:1px dashed #999}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="no-print">
+    <span class="eyebrow" id="rname"></span><h1 style="font-size:28px">QR de las mesas</h1>
+    <p class="muted" style="max-width:62ch">Cada mesa tiene su propio código. Imprime las tarjetas y ponlas en las mesas. Si cambias el <b>tableSalt</b> en config.js, los QR viejos dejan de funcionar y hay que imprimir de nuevo.</p>
+    <div class="ctl">
+      <label class="f">Dirección pública del menú (index.html)<input id="base"></label>
+      <label class="f">Mesas<input id="n" inputmode="numeric"></label>
+      <div style="display:flex;gap:8px"><button class="btn brand" id="gen">Generar</button><button class="btn main" id="pr">Imprimir</button></div>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+</div>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script src="qrcode.js"></script>
+<script>
+const C = window.MESAYA, R = C.restaurant;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+document.getElementById("rname").textContent = R.name;
+const base = document.getElementById("base"), n = document.getElementById("n");
+base.value = location.href.replace(/mesas\.html.*$/, "index.html"); n.value = R.tables;
+function gen(){
+  const box = document.getElementById("cards"); box.innerHTML = "";
+  const total = Math.min(200, Math.max(1, parseInt(n.value, 10) || R.tables));
+  for (let m = 1; m <= total; m++) {
+    const url = base.value.trim() + "?m=" + m + "&k=" + Store.tableKey(m);
+    const c = document.createElement("div"); c.className = "qcard";
+    c.innerHTML = `<span class="r">${esc(R.name)}</span><span class="m">Mesa ${m}</span><div class="qr"></div><p>Escanea para ver el menú, llamar al mesero, pagar con SINPE y ganar puntos</p><code>${esc(url)}</code>`;
+    box.appendChild(c);
+    const q = qrcode(0, "M"); q.addData(url); q.make();
+    c.querySelector(".qr").innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    const svg = c.querySelector(".qr svg"); svg.style.width = "150px"; svg.style.height = "150px";
+  }
+}
+document.getElementById("gen").onclick = gen;
+document.getElementById("pr").onclick = () => window.print();
+gen();
+</script>
+</body>
+</html>

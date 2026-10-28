@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F5B3E">
+<title>Menú</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="mesaya.css">
+<style>
+/* Layout: app móvil de una columna (máx. 520px) con barra superior fija y 5 pestañas abajo; Menú al centro */
+body{min-height:100vh}
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:var(--surface);position:relative;box-shadow:0 0 0 1px var(--line)}
+.bar{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.brand-name{font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-r{display:flex;align-items:center;gap:8px;flex:none}
+.mesa-chip{font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;background:var(--chip);white-space:nowrap}
+.mesa-chip.on{background:color-mix(in srgb,var(--ok) 16%,var(--surface));color:var(--ok)}
+.bell{width:42px;height:42px;border-radius:50%;border:0;background:var(--mango);color:var(--mango-ink);display:grid;place-items:center;cursor:pointer}
+.bell svg{width:22px;height:22px}
+.banner{display:flex;align-items:center;gap:10px;padding:11px 16px;background:color-mix(in srgb,var(--mango) 18%,var(--surface));border-bottom:1px solid var(--line);font-size:14px;font-weight:600;cursor:pointer;width:100%;border-left:0;border-right:0;border-top:0;text-align:left}
+.banner.ok{background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.banner .go{margin-left:auto;font-size:13px;color:var(--muted);font-weight:500}
+main{padding:0 0 calc(96px + env(safe-area-inset-bottom,0px))}
+body.has-cart .toast{bottom:calc(156px + env(safe-area-inset-bottom,0px))}
+body.has-cart main{padding-bottom:calc(166px + env(safe-area-inset-bottom,0px))}
+/* Carrito */
+.cartbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));width:calc(100% - 24px);max-width:496px;z-index:39;
+  display:flex;align-items:center;gap:12px;border:0;border-radius:18px;padding:12px 14px;background:var(--fg);color:var(--bg);cursor:pointer;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);text-align:left}
+.cartbar .n{min-width:30px;height:30px;border-radius:50%;background:var(--mango);color:var(--mango-ink);display:grid;place-items:center;font-weight:800;font-variant-numeric:tabular-nums}
+.cartbar .t{flex:1;font-weight:700}
+.cartbar .tot{font-weight:800;font-variant-numeric:tabular-nums}
+.add{border:0;background:var(--brand);color:var(--brand-ink);border-radius:12px;padding:8px 14px;font-weight:700;cursor:pointer;min-height:38px}
+.add:disabled{background:var(--chip);color:var(--muted);cursor:not-allowed}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.step button{border:0;background:none;width:38px;height:38px;font-size:20px;font-weight:700;cursor:pointer;color:var(--brand)}
+.step span{min-width:26px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+.citem{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.citem .ph{width:52px;height:52px;border-radius:12px;background-size:cover;background-position:center}
+.citem .note{font-size:12.5px;color:var(--muted)}
+.ctot{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
+.ctot b{font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.sent{border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:grid;gap:4px;font-size:13.5px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sec{padding-block:18px 6px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.sec-h h2{font-size:20px}
+.link{background:none;border:0;color:var(--brand);font-weight:600;cursor:pointer;padding:4px 0}
+
+/* Barra de pestañas */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;z-index:40;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,1fr);align-items:end;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.tab{background:none;border:0;display:grid;justify-items:center;gap:3px;padding:6px 0;cursor:pointer;color:var(--muted);font-size:11px;font-weight:600}
+.tab svg{width:25px;height:25px}
+.tab[aria-current="page"]{color:var(--fg)}
+.tab[aria-current="page"] svg{stroke-width:2.3}
+.tab.center .ring{width:58px;height:58px;margin-top:-26px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;box-shadow:0 8px 18px -8px rgba(15,91,62,.7);border:4px solid var(--surface)}
+.tab.center .ring svg{width:27px;height:27px}
+.tab.center[aria-current="page"] .ring{background:var(--mango);color:var(--mango-ink)}
+
+/* Historias (platos populares) */
+.stories{display:flex;gap:14px;overflow-x:auto;padding:16px max(16px,env(safe-area-inset-left,0px)) 6px;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{flex:none;display:grid;justify-items:center;gap:6px;width:72px;background:none;border:0;cursor:pointer;padding:0}
+.story .ring{width:70px;height:70px;border-radius:50%;padding:3px;background:conic-gradient(var(--mango),var(--brand),var(--mango))}
+.story .ph{width:100%;height:100%;border-radius:50%;border:3px solid var(--surface);background-size:cover;background-position:center}
+.story span{font-size:11.5px;text-align:center;line-height:1.2;max-width:72px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+/* Portada del restaurante */
+.hero{margin:12px max(16px,env(safe-area-inset-left,0px)) 0;border-radius:22px;overflow:hidden;background:var(--brand);color:var(--brand-ink);position:relative}
+.hero-in{padding:20px 18px 18px;display:grid;gap:10px;position:relative;z-index:1}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:var(--mango);opacity:.28}
+.hero h1{font-size:30px;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:0;opacity:.9}
+.hero .row{display:flex;flex-wrap:wrap;gap:8px}
+.hero .chip{background:rgba(255,255,255,.18);color:inherit}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px max(16px,env(safe-area-inset-left,0px)) 0}
+.quick a,.quick button{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:12px 8px;display:grid;justify-items:center;gap:5px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--fg);text-decoration:none}
+.quick svg{width:22px;height:22px;color:var(--brand)}
+
+/* Tarjetas de platos */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left;padding:0;cursor:pointer;display:grid}
+.pcard .ph{aspect-ratio:1/1;background-size:cover;background-position:center;position:relative}
+.pcard .meta{padding:9px 10px 11px;display:grid;gap:2px}
+.pcard b{font-size:14px;line-height:1.25}
+.pcard .num{font-size:13.5px;color:var(--muted)}
+.ph .tag{position:absolute;left:8px;top:8px;font-size:11px;font-weight:700;background:rgba(0,0,0,.5);color:#fff;padding:3px 8px;border-radius:999px}
+.ph .soldout{position:absolute;inset:0;display:grid;place-items:center;background:rgba(10,20,15,.55);color:#fff;font-weight:700;font-size:14px}
+.promo{display:flex;align-items:center;gap:14px;border-radius:18px;padding:14px 16px;background:color-mix(in srgb,var(--mango) 20%,var(--surface));border:1px solid color-mix(in srgb,var(--mango) 40%,var(--line));width:100%;text-align:left;cursor:pointer}
+.promo .big{font-family:var(--display);font-size:30px;font-weight:800;line-height:1;color:var(--fg)}
+.info{display:grid;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.info .r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.info .r:last-child{border-bottom:0}
+.info .k{font-size:12.5px;color:var(--muted)}
+.info .v{font-weight:600}
+.copy{border:1px solid var(--line);background:transparent;color:var(--brand);border-radius:10px;padding:6px 10px;font-size:12.5px;font-weight:700;cursor:pointer;flex:none}
+.demo{border:1px dashed var(--mango);border-radius:14px;padding:12px 14px;display:grid;gap:8px;font-size:13.5px}
+
+/* Menú */
+.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cat{position:relative;border:0;border-radius:20px;min-height:132px;padding:16px;text-align:left;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.cat::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.55))}
+.cat b{position:relative;font-family:var(--display);font-size:21px;line-height:1.1}
+.cat span{position:relative;font-size:12.5px;opacity:.9;margin-top:4px}
+.cat.wide{grid-column:1/-1;min-height:110px}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:6px 0}
+.post{border-bottom:1px solid var(--line);padding:14px 0}
+.post .ph{aspect-ratio:4/3;border-radius:16px;background-size:cover;background-position:center;position:relative;cursor:pointer;border:0;width:100%;display:block}
+.post .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:10px}
+.post h3{font-size:18px}
+.post p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.price{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.like{background:none;border:0;cursor:pointer;padding:4px;color:var(--fg);display:flex;align-items:center;gap:4px;font-size:13px}
+.like svg{width:24px;height:24px}
+.like[aria-pressed="true"] svg{fill:var(--alert);stroke:var(--alert)}
+
+/* Puntos */
+.loyal{border-radius:22px;padding:20px 18px;background:linear-gradient(135deg,var(--brand),color-mix(in srgb,var(--brand) 60%,#000));color:var(--brand-ink);display:grid;gap:12px;position:relative;overflow:hidden}
+.loyal::after{content:"";position:absolute;right:-30px;bottom:-60px;width:170px;height:170px;border-radius:50%;border:26px solid var(--mango);opacity:.35}
+.loyal .pts{font-family:var(--display);font-size:52px;font-weight:800;line-height:1}
+.bar-p{height:8px;border-radius:8px;background:rgba(255,255,255,.22);overflow:hidden}
+.bar-p i{display:block;height:100%;background:var(--mango);border-radius:8px}
+.reward{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.reward .ph{width:56px;height:56px;border-radius:14px}
+.how{display:grid;gap:10px}
+.how .r{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;font-size:14px}
+.how .ic{width:36px;height:36px;border-radius:12px;background:var(--chip);display:grid;place-items:center;color:var(--brand)}
+.how .ic svg{width:20px;height:20px}
+
+/* Juegos */
+.game{border:1px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:12px}
+.scratch{position:relative;width:100%;max-width:340px;aspect-ratio:17/10;border-radius:16px;overflow:hidden;justify-self:center;background:linear-gradient(135deg,var(--mango),color-mix(in srgb,var(--mango) 55%,var(--brand)))}
+.scratch .prize{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--mango-ink);padding:12px}
+.scratch .prize b{font-family:var(--display);font-size:44px;display:block;line-height:1}
+.scratch canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.q{display:grid;gap:8px}
+.q button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px;text-align:left;cursor:pointer}
+.q button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--surface))}
+.q button.wrong{border-color:var(--alert);background:color-mix(in srgb,var(--alert) 10%,var(--surface))}
+.locked{display:flex;gap:10px;align-items:center;background:var(--chip);border-radius:12px;padding:10px 12px;font-size:13.5px}
+
+/* Perfil */
+.prof{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.avatar{width:84px;height:84px;border-radius:50%;padding:3px;background:conic-gradient(var(--mango),var(--brand),var(--mango))}
+.avatar div{width:100%;height:100%;border-radius:50%;background:var(--chip);border:3px solid var(--surface);display:grid;place-items:center;font-family:var(--display);font-size:28px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.stats b{font-family:var(--display);font-size:22px;display:block}
+.stats span{font-size:12.5px;color:var(--muted)}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.mini-grid button{aspect-ratio:1/1;border:0;background-size:cover;cursor:pointer;padding:0}
+.hist{display:grid}
+.hist .r{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+form.stack{display:grid;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted)}
+.check input{width:18px;height:18px;margin-top:2px;flex:none}
+
+/* Hoja de pago */
+.opts{display:grid;gap:8px}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px;text-align:left;cursor:pointer;width:100%}
+.opt:hover{border-color:var(--brand)}
+.opt .ic{width:42px;height:42px;border-radius:12px;background:var(--chip);display:grid;place-items:center;color:var(--brand);flex:none}
+.opt .ic svg{width:22px;height:22px}
+.opt .t{flex:1;min-width:0}
+.opt small{display:block;color:var(--muted);font-size:12.5px}
+.sinpe{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.sinpe .r{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.sinpe .r:last-child{border-bottom:0}
+.sinpe .v{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums}
+.stars{display:flex;gap:6px;justify-content:center}
+.stars button{background:none;border:0;font-size:36px;color:var(--line);cursor:pointer;padding:2px;line-height:1}
+.stars button.on{color:var(--mango)}
+.dish-ph{aspect-ratio:4/3;border-radius:18px;background-size:cover;background-position:center}
+.earn{font-family:var(--display);font-size:40px;font-weight:800;color:var(--brand);text-align:center;line-height:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="brand-name" id="brandName"></div>
+    <div class="bar-r">
+      <span class="mesa-chip" id="mesaChip">Sin mesa</span>
+      <button class="bell" id="bellBtn" aria-label="Llamar al mesero o pedir la cuenta"></button>
+    </div>
+  </header>
+  <button class="banner" id="banner" hidden></button>
+  <main id="view"></main>
+  <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
+</div>
+<div class="sheet" id="sheet" hidden><div class="sheet-in" id="sheetIn" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+const C = window.MESAYA, R = C.restaurant, RULES = C.rules;
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+const fmt = n => "₡" + Math.round(n || 0).toLocaleString("es-CR");
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ls = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const SKEY = "mesaya_session_" + R.id, MEKEY = "mesaya_me_" + R.id, LKEY = "mesaya_likes_" + R.id, CKEY = "mesaya_cart_" + R.id;
+
+/* ---------- íconos ---------- */
+const sv = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I = {
+  home: sv('<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'),
+  star: sv('<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'),
+  menu: sv('<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 21V3c-2 1-3 4-3 8h3"/>'),
+  game: sv('<rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7.5 10.5v4M5.5 12.5h4M15.5 11.5h.01M18 13.5h.01"/>'),
+  user: sv('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'),
+  bell: sv('<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
+  heart: sv('<path d="M12 20s-7-4.4-9-9a4.8 4.8 0 0 1 9-3 4.8 4.8 0 0 1 9 3c-2 4.6-9 9-9 9z"/>'),
+  back: sv('<path d="M15 5l-7 7 7 7"/>'),
+  pin: sv('<path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>'),
+  ig: sv('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>'),
+  phone: sv('<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/>'),
+  waiter: sv('<circle cx="12" cy="6" r="3"/><path d="M5 21v-4a7 7 0 0 1 14 0v4M9 13l3 3 3-3"/>'),
+  bill: sv('<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>'),
+  sinpe: sv('<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4M9.5 9.5l2 2 3-3.5"/>'),
+  card: sv('<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6 15h4"/>'),
+  cash: sv('<rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/>'),
+  gift: sv('<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S9 3 7 4.5 8 8 12 8zm0 0s3-5 5-3.5S16 8 12 8z"/>'),
+  plus: sv('<path d="M12 5v14M5 12h14"/>')
+};
+
+/* ---------- estado ---------- */
+const S = {
+  tab: "inicio", cat: null, session: null, me: null,
+  likes: new Set(ls.get(LKEY, [])), pub: { soldOut: [], prices: {} }, cart: ls.get(CKEY, []),
+  req: {}, watch: {}, presence: null, sheet: null, billStage: null, ready: false
+};
+const sessionValid = s => !!(s && !s.closed && Date.now() - s.start < RULES.sessionHours * 3600e3);
+const saveSession = () => { if (S.session) ls.set(SKEY, S.session); };
+const saveMe = () => { if (S.me) ls.set(MEKEY, S.me); else ls.del(MEKEY); };
+const dish = id => C.menu.find(m => m.id === id);
+const priceOf = d => (S.pub.prices && S.pub.prices[d.id]) || d.price;
+const isSoldOut = d => (S.pub.soldOut || []).includes(d.id);
+const bg = d => `background-image:${d.img ? `url('${esc(d.img)}'),` : ""}linear-gradient(135deg,${d.g[0]},${d.g[1]})`;
+const bonusTotal = () => { const b = (S.session && S.session.bonus) || {}; return (b.scratch || 0) + (b.trivia || 0); };
+
+/* ---------- utilidades de UI ---------- */
+function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+function copyText(btn, v){
+  const done = () => { const o = btn.textContent; btn.textContent = "Copiado"; setTimeout(() => btn.textContent = o, 1400); };
+  try { navigator.clipboard.writeText(v).then(done, () => toast(v)); } catch(e){ toast(v); }
+}
+function wireCopy(root){ $$("[data-copy]", root).forEach(b => b.onclick = e => { e.stopPropagation(); copyText(b, b.dataset.copy); }); }
+function openSheet(html, kind){ S.sheet = kind || "static"; $("#sheetIn").innerHTML = html; $("#sheet").hidden = false; wireCopy($("#sheetIn")); const f = $("#sheetIn button, #sheetIn input"); }
+function closeSheet(){ $("#sheet").hidden = true; S.sheet = null; }
+$("#sheet").addEventListener("click", e => { if (e.target.id === "sheet" && S.sheet !== "gate") closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#sheet").hidden && S.sheet !== "gate") closeSheet(); });
+
+function openNow(){
+  const now = new Date(), d = now.getDay(), mins = now.getHours() * 60 + now.getMinutes();
+  const toM = s => { const [h, m] = s.split(":").map(Number); return h * 60 + m; };
+  const today = R.hours.find(h => h.days.includes(d));
+  if (today && mins >= toM(today.open) && mins < toM(today.close)) return { open: true, text: "Abierto · cierra " + today.close };
+  if (today && mins < toM(today.open)) return { open: false, text: "Cerrado · abre " + today.open };
+  return { open: false, text: "Cerrado ahora" };
+}
+
+/* ---------- ubicación: ¿está el cliente en el restaurante? ---------- */
+function distM(a, b, c, d){ const r = x => x * Math.PI / 180, R0 = 6371000; const dl = r(c - a), dg = r(d - b); const h = Math.sin(dl/2)**2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dg/2)**2; return 2 * R0 * Math.asin(Math.sqrt(h)); }
+function locate(){
+  return new Promise(resolve => {
+    if (!navigator.geolocation) return resolve({ state: "unknown", why: "Este navegador no comparte la ubicación." });
+    navigator.geolocation.getCurrentPosition(p => {
+      const dist = distM(p.coords.latitude, p.coords.longitude, R.lat, R.lng), acc = p.coords.accuracy || 0;
+      resolve({ state: dist - Math.min(acc, 150) <= R.radiusM ? "in" : "out", dist: Math.round(dist), acc: Math.round(acc) });
+    }, err => resolve({ state: "unknown", why: err.code === 1 ? "No diste permiso de ubicación." : "No pudimos obtener tu ubicación." }),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+  });
+}
+/* Devuelve la verificación o null si no se puede continuar */
+function gate(){
+  if (S.presence && S.presence.state === "in" && Date.now() - S.presence.at < 10 * 60e3) return Promise.resolve(S.presence);
+  return new Promise(resolve => {
+    openSheet(`<h3>Confirmando que estás en ${esc(R.name)}</h3>
+      <div class="status"><span class="dot"></span>Revisando tu ubicación…</div>
+      <p class="muted" style="margin:0;font-size:13px">Solo la usamos para confirmar que estás en el restaurante. No guardamos tu ubicación exacta.</p>`, "gate");
+    locate().then(p => {
+      p.at = Date.now();
+      const finish = v => { if (v) S.presence = v; closeSheet(); resolve(v); };
+      if (p.state === "in") return finish(p);
+      const demoBtn = Store.mode() === "demo" ? `<button class="btn line block" id="gSim">Simular que estoy en el restaurante (solo demo)</button>` : "";
+      if (p.state === "out") {
+        openSheet(`<h3>Parece que no estás en el restaurante</h3>
+          <div class="status" style="background:color-mix(in srgb,var(--alert) 12%,var(--surface))"><span class="dot alert"></span>Tu ubicación está a unos ${p.dist >= 1000 ? (p.dist/1000).toFixed(1) + " km" : p.dist + " m"} de ${esc(R.name)}.</div>
+          <p class="muted" style="margin:0">Para llamar al mesero, pedir la cuenta o canjear puntos tienes que estar en tu mesa. Si ya estás aquí, activa el GPS y vuelve a intentarlo.</p>
+          <button class="btn brand block" id="gRetry">Volver a intentar</button>${demoBtn}<button class="btn ghost block" id="gNo">Cerrar</button>`, "gate");
+      } else {
+        const strict = RULES.requireLocation === "strict";
+        openSheet(`<h3>No pudimos ver tu ubicación</h3>
+          <div class="status"><span class="dot"></span>${esc(p.why)}</div>
+          <p class="muted" style="margin:0">${strict ? "Activa la ubicación del navegador para usar las funciones de mesa." : "Puedes seguir, pero el salón verá que tu solicitud no tiene ubicación confirmada."}</p>
+          <button class="btn brand block" id="gRetry">Volver a intentar</button>
+          ${strict ? demoBtn : `<button class="btn line block" id="gGo">Seguir sin ubicación</button>`}
+          <button class="btn ghost block" id="gNo">Cerrar</button>`, "gate");
+      }
+      const b = id => $("#" + id);
+      if (b("gRetry")) b("gRetry").onclick = () => { S.presence = null; gate().then(resolve); };
+      if (b("gSim")) b("gSim").onclick = () => finish({ state: "in", simulated: true, at: Date.now() });
+      if (b("gGo")) b("gGo").onclick = () => { closeSheet(); resolve(p); };
+      if (b("gNo")) b("gNo").onclick = () => finish(null);
+    });
+  });
+}
+const presenceTag = p => p ? { state: p.state, dist: p.dist == null ? null : p.dist, simulated: !!p.simulated } : null;
+
+function needTable(){
+  if (sessionValid(S.session)) return true;
+  const closed = S.session && S.session.closed;
+  openSheet(`<h3>${closed ? "Tu visita terminó" : "Escanea el QR de tu mesa"}</h3>
+    <p class="muted" style="margin:0">${closed ? "Gracias por visitarnos. Si sigues en el restaurante, escanea de nuevo el código de tu mesa." : "Para llamar al mesero, pedir la cuenta o jugar por puntos, escanea el código QR que está en tu mesa. Así sabemos a qué mesa ir."}</p>
+    <button class="btn ghost block" id="x">Entendido</button>`);
+  $("#x").onclick = closeSheet;
+  return false;
+}
+
+/* ---------- encabezado, banner y pestañas ---------- */
+function renderTop(){
+  $("#brandName").textContent = R.name;
+  const chip = $("#mesaChip");
+  if (sessionValid(S.session)) { chip.textContent = "Mesa " + S.session.mesa; chip.className = "mesa-chip on"; }
+  else { chip.textContent = S.session && S.session.closed ? "Visita cerrada" : "Sin mesa"; chip.className = "mesa-chip"; }
+  renderBanner();
+}
+function renderBanner(){
+  const b = $("#banner"); const bill = S.req.bill, call = S.req.call, red = S.req.redeem;
+  let html = null, cls = "", open = null;
+  if (bill) {
+    const t = { pending: "Pediste la cuenta · preparando el total", amount_sent: bill.method === "sinpe" ? "Tu cuenta: " + fmt(bill.amount) + " · toca para pagar" : "Tu mesero va con la cuenta · " + fmt(bill.amount), reported_paid: "Verificando tu SINPE…", confirmed: "Pago confirmado · ¡gracias!" }[bill.status];
+    if (t) { html = t; open = "bill"; cls = bill.status === "confirmed" ? "ok" : ""; }
+  }
+  if (!html && call) { html = call.status === "done" ? "Tu mesero va en camino" : "Llamamos a tu mesero · esperando"; cls = call.status === "done" ? "ok" : ""; open = "call"; }
+  if (!html && red && red.status === "pending") { html = "Canje pendiente: " + red.reward.name; open = "redeem"; }
+  const ord = S.req.order;
+  if (!html && ord && ord.status === "pending") { html = "Pedido enviado · esperando confirmación"; open = "order"; }
+  if (!html) { b.hidden = true; return; }
+  b.className = "banner " + cls; b.hidden = false;
+  b.innerHTML = `<span class="dot ${cls === "ok" ? "ok" : ""}"></span>${esc(html)}<span class="go">Ver</span>`;
+  b.onclick = () => { if (open === "bill") renderBillSheet(); else if (open === "call") renderCallSheet(); else if (open === "order") renderOrderSheet(); else toast("Tu mesero aplicará el canje en la mesa"); };
+}
+const TABS = [["inicio", "Inicio", I.home], ["puntos", "Puntos", I.star], ["menu", "Menú", I.menu], ["juegos", "Juegos", I.game], ["perfil", "Perfil", I.user]];
+function renderTabs(){
+  $("#tabs").innerHTML = TABS.map(([id, label, ic]) => id === "menu"
+    ? `<button class="tab center" data-t="${id}" ${S.tab === id ? 'aria-current="page"' : ""}><span class="ring">${ic}</span>${label}</button>`
+    : `<button class="tab" data-t="${id}" ${S.tab === id ? 'aria-current="page"' : ""}>${ic}${label}</button>`).join("");
+  $$(".tab").forEach(b => b.onclick = () => go(b.dataset.t));
+}
+function go(tab, opts){
+  if (tab === "menu" && S.tab === "menu" && !opts) S.cat = null;
+  S.tab = tab; if (opts && "cat" in opts) S.cat = opts.cat;
+  renderTabs(); render(); window.scrollTo(0, 0);
+}
+
+/* ---------- vistas ---------- */
+function render(){
+  const v = $("#view");
+  v.innerHTML = { inicio: vInicio, puntos: vPuntos, menu: vMenu, juegos: vJuegos, perfil: vPerfil }[S.tab]();
+  wireCopy(v);
+  ({ inicio: wInicio, puntos: wPuntos, menu: wMenu, juegos: wJuegos, perfil: wPerfil }[S.tab])();
+}
+function dishCard(d){
+  return `<button class="pcard" data-dish="${d.id}"><div class="ph" style="${bg(d)}">${d.tags[0] ? `<span class="tag">${esc(d.tags[0])}</span>` : ""}${isSoldOut(d) ? '<span class="soldout">Agotado</span>' : ""}</div>
+    <div class="meta"><b>${esc(d.name)}</b><span class="num">${fmt(priceOf(d))}</span></div></button>`;
+}
+function wireDishes(root){ $$("[data-dish]", root || document).forEach(b => b.onclick = () => openDish(b.dataset.dish)); }
+
+/* Inicio */
+function vInicio(){
+  const pop = C.menu.filter(m => m.popular), o = openNow();
+  const demo = Store.mode() === "demo" && !sessionValid(S.session)
+    ? `<div class="pad sec"><div class="demo"><b>Modo demo</b><span class="muted">En producción el cliente entra escaneando el QR de su mesa. Para probar:</span><a class="btn main sm" href="?m=7&k=${Store.tableKey(7)}">Entrar como Mesa 7</a></div></div>` : "";
+  return `
+  <div class="stories" aria-label="Lo más pedido">${pop.map(d => `<button class="story" data-dish="${d.id}"><span class="ring"><span class="ph" style="${bg(d)}"></span></span><span>${esc(d.name)}</span></button>`).join("")}</div>
+  <section class="hero"><div class="hero-in">
+    <h1>${esc(R.name)}</h1><p>${esc(R.tagline)}</p>
+    <div class="row"><span class="chip">${o.open ? "● " : ""}${esc(o.text)}</span>${sessionValid(S.session) ? `<span class="chip">Estás en la mesa ${S.session.mesa}</span>` : ""}</div>
+  </div></section>
+  <div class="quick">
+    <button data-go="menu">${I.menu}Ver menú</button>
+    <a href="https://www.google.com/maps/search/?api=1&query=${R.lat},${R.lng}" target="_blank" rel="noopener">${I.pin}Cómo llegar</a>
+    <a href="https://instagram.com/${esc(R.instagram)}" target="_blank" rel="noopener">${I.ig}Instagram</a>
+  </div>
+  ${demo}
+  <section class="pad sec"><div class="sec-h"><h2>Lo más pedido</h2><button class="link" data-go="menu">Ver todo</button></div>
+    <div class="grid2">${pop.map(dishCard).join("")}</div></section>
+  <section class="pad sec"><button class="promo" data-go="puntos"><span class="big">1 pt</span><span><b>por cada ${fmt(RULES.colonesPerPoint)}</b><br><span class="muted" style="font-size:13.5px">Junta puntos y cámbialos por café, postres o un casado.</span></span></button></section>
+  <section class="pad sec"><div class="sec-h"><h2>Información</h2></div>
+    <div class="info">
+      ${R.hours.map(h => `<div class="r"><div><div class="k">${esc(h.label)}</div><div class="v num">${h.open} – ${h.close}</div></div></div>`).join("")}
+      <div class="r"><div style="min-width:0"><div class="k">Dirección</div><div class="v">${esc(R.address)}</div></div></div>
+      <div class="r"><div><div class="k">Teléfono</div><div class="v num">${esc(R.phone)}</div></div><button class="copy" data-copy="${esc(R.phone.replace(/\D/g, ""))}">Copiar</button></div>
+      ${R.wifi ? `<div class="r"><div style="min-width:0"><div class="k">WiFi · ${esc(R.wifi.name)}</div><div class="v">${esc(R.wifi.pass)}</div></div><button class="copy" data-copy="${esc(R.wifi.pass)}">Copiar clave</button></div>` : ""}
+    </div></section>`;
+}
+function wInicio(){ wireDishes($("#view")); $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go)); }
+
+/* Menú */
+function vMenu(){
+  if (!S.cat) {
+    return `<section class="pad sec"><div class="sec-h"><h2 style="font-size:26px">Menú</h2><span class="muted" style="font-size:13px">${C.menu.length} platos</span></div>
+      <div class="cats">${C.categories.map((c, i) => { const items = C.menu.filter(m => m.cat === c.id); const lead = items.find(m => m.popular) || items[0] || { g: ["#0F5B3E", "#3FB57F"], img: "" };
+        const wide = C.categories.length % 2 === 1 && i === 0;
+        return `<button class="cat ${wide ? "wide" : ""}" data-cat="${c.id}" style="${bg(lead)};background-size:cover;background-position:center"><b>${esc(c.name)}</b><span>${items.length} ${items.length === 1 ? "plato" : "platos"}</span></button>`; }).join("")}</div></section>`;
+  }
+  const c = C.categories.find(x => x.id === S.cat), items = C.menu.filter(m => m.cat === S.cat);
+  return `<section class="pad sec"><button class="back" id="backCats">${I.back.replace("<svg", '<svg width="20" height="20"')}Categorías</button>
+    <h2 style="font-size:26px;margin:6px 0 4px">${esc(c.name)}</h2>
+    ${items.map(d => `<article class="post">
+      <button class="ph" data-dish="${d.id}" style="${bg(d)}" aria-label="Ver ${esc(d.name)}">${d.tags[0] ? `<span class="tag">${esc(d.tags[0])}</span>` : ""}${isSoldOut(d) ? '<span class="soldout">Agotado por hoy</span>' : ""}</button>
+      <div class="row"><div style="min-width:0"><h3>${esc(d.name)}</h3><p>${esc(d.desc)}</p></div>
+        <div style="display:grid;justify-items:end;gap:4px"><span class="price">${fmt(priceOf(d))}</span><button class="like" data-like="${d.id}" aria-pressed="${S.likes.has(d.id)}" aria-label="Me gusta">${I.heart}</button></div></div>
+      <div class="row" style="margin-top:8px;align-items:center"><span class="muted" style="font-size:13px">${cartQty(d.id) ? cartQty(d.id) + " en tu pedido" : ""}</span>${addCtl(d)}</div>
+    </article>`).join("")}</section>`;
+}
+function wMenu(){
+  $$("[data-cat]").forEach(b => b.onclick = () => { S.cat = b.dataset.cat; render(); window.scrollTo(0, 0); });
+  if ($("#backCats")) $("#backCats").onclick = () => { S.cat = null; render(); };
+  wireDishes($("#view"));
+  $$("[data-like]").forEach(b => b.onclick = () => toggleLike(b.dataset.like, b));
+  wireAdd($("#view"));
+}
+function toggleLike(id, btn){
+  if (S.likes.has(id)) S.likes.delete(id); else S.likes.add(id);
+  ls.set(LKEY, Array.from(S.likes)); if (btn) btn.setAttribute("aria-pressed", S.likes.has(id));
+}
+function openDish(id){
+  const d = dish(id); if (!d) return;
+  if (S.session) { S.session.views = S.session.views || {}; S.session.views[id] = (S.session.views[id] || 0) + 1; saveSession(); }
+  openSheet(`<div class="dish-ph" style="${bg(d)}"></div>
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><h3>${esc(d.name)}</h3><p class="muted" style="margin:6px 0 0">${esc(d.desc)}</p></div><span class="price" style="font-size:18px">${fmt(priceOf(d))}</span></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${d.tags.map(t => `<span class="chip">${esc(t)}</span>`).join("")}${isSoldOut(d) ? '<span class="chip alert">Agotado por hoy</span>' : ""}</div>
+    ${isSoldOut(d) ? "" : `<label class="f">Nota para la cocina (opcional)<input id="dNote" maxlength="80" placeholder="Ej. sin cebolla, término medio"></label>`}
+    <div style="display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:center">
+      <button class="btn line like" id="dLike" aria-pressed="${S.likes.has(id)}" aria-label="Me gusta">${I.heart}</button>
+      ${isSoldOut(d) ? `<span></span><button class="btn line" id="dCall">Preguntar al mesero</button>` :
+      `<span class="step"><button id="dMinus" aria-label="Menos">−</button><span id="dQty">1</span><button id="dPlus" aria-label="Más">+</button></span>
+      <button class="btn main" id="dAdd">Agregar · ${fmt(priceOf(d))}</button>`}</div>`, "dish");
+  $("#dLike").onclick = () => toggleLike(id, $("#dLike"));
+  if ($("#dCall")) $("#dCall").onclick = () => { closeSheet(); startCall(d.name); };
+  if ($("#dAdd")) {
+    let q = 1; const upd = () => { $("#dQty").textContent = q; $("#dAdd").textContent = "Agregar · " + fmt(priceOf(d) * q); };
+    $("#dMinus").onclick = () => { q = Math.max(1, q - 1); upd(); };
+    $("#dPlus").onclick = () => { q = Math.min(20, q + 1); upd(); };
+    $("#dAdd").onclick = () => { addToCart(id, q, $("#dNote").value.trim()); closeSheet(); };
+  }
+}
+
+/* ---------- carrito ---------- */
+const cartQty = id => S.cart.filter(i => i.id === id).reduce((a, i) => a + i.qty, 0);
+const cartCount = () => S.cart.reduce((a, i) => a + i.qty, 0);
+const cartTotal = () => S.cart.reduce((a, i) => { const d = dish(i.id); return a + (d ? priceOf(d) * i.qty : 0); }, 0);
+const sentTotal = () => ((S.session && S.session.sent) || []).reduce((a, o) => a + o.total, 0);
+function saveCart(){ ls.set(CKEY, S.cart); renderCartBar(); }
+function addCtl(d){
+  if (isSoldOut(d)) return `<button class="add" disabled>Agotado</button>`;
+  const q = S.cart.find(i => i.id === d.id && !i.note);
+  return q ? `<span class="step"><button data-dec="${d.id}" aria-label="Quitar uno">−</button><span>${q.qty}</span><button data-inc="${d.id}" aria-label="Agregar otro">+</button></span>`
+           : `<button class="add" data-add="${d.id}">+ Agregar</button>`;
+}
+function wireAdd(root){
+  $$("[data-add]", root).forEach(b => b.onclick = () => addToCart(b.dataset.add, 1, ""));
+  $$("[data-inc]", root).forEach(b => b.onclick = () => addToCart(b.dataset.inc, 1, ""));
+  $$("[data-dec]", root).forEach(b => b.onclick = () => changeQty(S.cart.findIndex(i => i.id === b.dataset.dec && !i.note), -1));
+}
+function addToCart(id, qty, note){
+  const d = dish(id); if (!d || isSoldOut(d)) return;
+  const ex = S.cart.find(i => i.id === id && (i.note || "") === (note || ""));
+  if (ex) ex.qty = Math.min(20, ex.qty + qty); else S.cart.push({ id, qty, note: note || "" });
+  saveCart(); toast(qty + " × " + d.name + " agregado"); if (S.tab === "menu") render();
+}
+function changeQty(idx, delta){
+  if (idx < 0 || !S.cart[idx]) return;
+  S.cart[idx].qty += delta; if (S.cart[idx].qty <= 0) S.cart.splice(idx, 1);
+  saveCart(); if (S.tab === "menu") render(); if (S.sheet === "cart") openCart();
+}
+function renderCartBar(){
+  let bar = $("#cartbar");
+  if (!bar) { bar = document.createElement("button"); bar.id = "cartbar"; bar.className = "cartbar"; bar.onclick = openCart; document.querySelector(".app").appendChild(bar); }
+  const n = cartCount(); bar.hidden = !n; document.body.classList.toggle("has-cart", !!n);
+  if (n) bar.innerHTML = `<span class="n">${n}</span><span class="t">Ver pedido</span><span class="tot">${fmt(cartTotal())}</span>`;
+}
+function openCart(){
+  const sent = (S.session && S.session.sent) || [];
+  const items = S.cart.map((i, k) => { const d = dish(i.id); return d ? `<div class="citem"><div class="ph" style="${bg(d)}"></div>
+      <div style="min-width:0"><b>${esc(d.name)}</b><div class="muted num" style="font-size:13px">${fmt(priceOf(d) * i.qty)}</div>${i.note ? `<div class="note">“${esc(i.note)}”</div>` : ""}</div>
+      <span class="step"><button data-ci="${k}" data-dl="-1" aria-label="Menos">−</button><span>${i.qty}</span><button data-ci="${k}" data-dl="1" aria-label="Más">+</button></span></div>` : ""; }).join("");
+  openSheet(`<h3>Tu pedido</h3>${sessionValid(S.session) ? `<p class="muted" style="margin:-6px 0 0">Mesa ${S.session.mesa}</p>` : ""}
+    ${S.cart.length ? `<div>${items}</div>
+      <div class="ctot"><span>Total de este pedido</span><b>${fmt(cartTotal())}</b></div>
+      <label class="f">Nota general (opcional)<input id="cNote" maxlength="120" placeholder="Ej. traer todo junto, somos 4"></label>
+      <button class="btn main block" id="cSend">Enviar pedido a cocina</button>
+      <button class="btn ghost block" id="cMore">Seguir viendo el menú</button>`
+    : `<p class="muted" style="margin:0">Tu pedido está vacío. Agrega platos desde el menú.</p><button class="btn brand block" id="cMore">Ir al menú</button>`}
+    ${sent.length ? `<div class="sent"><span class="eyebrow">Ya pedido en esta visita</span>${sent.map(o => `<span>${o.items.map(i => i.qty + "× " + esc(i.name)).join(", ")} · <b class="num">${fmt(o.total)}</b></span>`).join("")}<span class="muted">Llevas <b class="num" style="color:var(--fg)">${fmt(sentTotal())}</b></span></div>` : ""}`, "cart");
+  $$("[data-ci]", $("#sheetIn")).forEach(b => b.onclick = () => changeQty(+b.dataset.ci, +b.dataset.dl));
+  $("#cMore").onclick = () => { closeSheet(); if (S.tab !== "menu") go("menu"); };
+  if ($("#cSend")) $("#cSend").onclick = () => confirmOrder($("#cNote").value.trim());
+}
+function confirmOrder(note){
+  if (!needTable()) return;
+  if (S.req.order && S.req.order.status === "pending") { toast("Espera a que el salón confirme tu pedido anterior"); return; }
+  const n = cartCount(), tot = cartTotal();
+  openSheet(`<h3>¿Enviamos tu pedido?</h3>
+    <div class="status"><span class="ic" style="color:var(--brand)">${I.menu.replace("<svg", '<svg width="24" height="24"')}</span>${n} ${n === 1 ? "plato" : "platos"} · ${fmt(tot)} · mesa ${S.session.mesa}</div>
+    <button class="btn main block" id="yes">Sí, enviar a cocina</button><button class="btn ghost block" id="no">Revisar pedido</button>`);
+  $("#no").onclick = openCart;
+  $("#yes").onclick = async () => {
+    const p = await gate(); if (!p) return;
+    const items = S.cart.map(i => { const d = dish(i.id); return { id: i.id, name: d.name, qty: i.qty, price: priceOf(d), note: i.note || "" }; });
+    $("#yes") && ($("#yes").disabled = true);
+    try {
+      const id = await Store.createRequest({ type: "order", mesa: S.session.mesa, items, total: tot, note: note || "", presence: presenceTag(p), customer: S.me ? { phone: S.me.phone, name: S.me.name } : null });
+      S.session.reqs = S.session.reqs || {}; S.session.reqs.order = id; S.session.pendingCart = S.cart; saveSession();
+      S.cart = []; saveCart(); if (S.tab === "menu") render(); watch("order", id); renderOrderSheet();
+    } catch (e) { console.error(e); toast("No se pudo enviar. Revisa tu conexión."); }
+  };
+}
+function renderOrderSheet(){
+  const r = S.req.order;
+  const st = !r || r.status === "pending" ? ["Pedido enviado", "Esperando que el salón lo confirme…", ""] : r.status === "done" ? ["¡Tu pedido está en cocina!", "Te lo llevamos a la mesa " + r.mesa + ".", "ok"] : ["No pudimos tomar tu pedido", r.reason || "Tu mesero se acerca para ayudarte.", "alert"];
+  openSheet(`<h3>${st[0]}</h3><div class="status"><span class="dot ${st[2]}"></span>${esc(st[1])}</div>
+    ${r && r.items ? `<div class="sent">${r.items.map(i => `<span>${i.qty}× ${esc(i.name)}${i.note ? ` <span class="muted">(${esc(i.note)})</span>` : ""}</span>`).join("")}<b class="num">${fmt(r.total)}</b></div>` : ""}
+    <button class="btn ghost block" id="x">Cerrar</button>`, "order");
+  $("#x").onclick = closeSheet;
+}
+
+/* Puntos */
+function vPuntos(){
+  const me = S.me, pts = me ? me.points || 0 : 0;
+  const next = C.rewards.find(r => r.pts > pts), prev = [...C.rewards].reverse().find(r => r.pts <= pts);
+  const pct = next ? Math.round(pts / next.pts * 100) : 100;
+  const card = me ? `<div class="loyal"><span class="eyebrow" style="color:inherit;opacity:.85">Tus puntos en ${esc(R.name)}</span>
+      <div class="pts num">${pts}</div>
+      ${next ? `<div class="bar-p"><i style="width:${pct}%"></i></div><span style="font-size:13.5px;opacity:.9">Te faltan ${next.pts - pts} para ${esc(next.name)}</span>` : `<span>¡Puedes canjear cualquier premio!</span>`}
+      ${bonusTotal() ? `<span class="chip" style="background:rgba(255,255,255,.18);color:inherit;justify-self:start">+${bonusTotal()} pts de juegos al pagar</span>` : ""}</div>`
+    : `<div class="loyal"><span class="eyebrow" style="color:inherit;opacity:.85">Club ${esc(R.name)}</span><div style="font-family:var(--display);font-size:26px;font-weight:800;line-height:1.1">Gana puntos cada vez que nos visitas</div>
+       <button class="btn main" id="joinBtn" style="justify-self:start;position:relative;z-index:1">Crear mi cuenta gratis</button></div>`;
+  return `<section class="pad sec">${card}</section>
+  <section class="pad sec"><div class="sec-h"><h2>Canjea tus puntos</h2></div>
+    ${C.rewards.map(r => `<div class="reward"><div class="ph" style="${bg(r)};background-size:cover;background-position:center"></div>
+      <div><b>${esc(r.name)}</b><div class="muted num" style="font-size:13px">${r.pts} puntos</div></div>
+      <button class="btn sm ${me && pts >= r.pts ? "main" : "ghost"}" data-redeem="${r.id}" ${me && pts >= r.pts ? "" : "disabled"}>Canjear</button></div>`).join("")}</section>
+  <section class="pad sec"><div class="sec-h"><h2>Cómo ganar puntos</h2></div><div class="how">
+    <div class="r"><span class="ic">${I.bill}</span><div><b>1 punto por cada ${fmt(RULES.colonesPerPoint)}</b><br><span class="muted">Se suman cuando el salón confirma tu pago.</span></div></div>
+    <div class="r"><span class="ic">${I.game}</span><div><b>Raspa y Gana y Trivia</b><br><span class="muted">Puntos extra en cada visita, desde tu mesa y con tu cuenta.</span></div></div>
+    <div class="r"><span class="ic">${I.gift}</span><div><b>Regalo de cumpleaños</b><br><span class="muted">Guarda tu fecha en el perfil.</span></div></div></div></section>`;
+}
+function wPuntos(){
+  if ($("#joinBtn")) $("#joinBtn").onclick = () => go("perfil");
+  $$("[data-redeem]").forEach(b => b.onclick = () => startRedeem(C.rewards.find(r => r.id === b.dataset.redeem)));
+}
+
+/* Juegos */
+function vJuegos(){
+  if (!S.me) return `<section class="pad sec">
+    <div class="loyal"><span class="eyebrow" style="color:inherit;opacity:.85">Juegos de ${esc(R.name)}</span>
+      <div style="font-family:var(--display);font-size:26px;font-weight:800;line-height:1.1">Raspa y Gana y Trivia tica</div>
+      <span style="opacity:.9;font-size:14px">Gana hasta ${Math.max(...RULES.scratchPrizes.map(p => p.pts)) + RULES.triviaBonus} puntos extra en cada visita. Solo para clientes registrados.</span></div></section>
+    <section class="pad sec"><h2 style="font-size:20px;margin-bottom:6px">Crea tu cuenta para jugar</h2>
+    <p class="muted" style="margin:0 0 12px">Toma 20 segundos. Si ya tienes cuenta, pon el mismo teléfono y recuperas tus puntos.</p>${profileForm({})}</section>`;
+  const on = sessionValid(S.session), b = (S.session && S.session.bonus) || {};
+  const lockMsg = on ? "" : `<div class="locked">${I.pin.replace("<svg", '<svg width="20" height="20"')}<span>Escanea el QR de tu mesa para jugar por puntos.</span></div>`;
+  const tDone = S.session && S.session.trivia && S.session.trivia.done;
+  return `<section class="pad sec"><div class="sec-h"><h2 style="font-size:26px">Juegos</h2><span class="chip mango num" id="bonusChip">+${bonusTotal()} pts hoy</span></div>${lockMsg}</section>
+  <section class="pad sec"><div class="game"><div><h3 style="font-size:20px">Raspa y Gana</h3><p class="muted" style="margin:4px 0 0">Una tarjeta por visita. Raspa con el dedo.</p></div>
+    ${on ? `<div class="scratch" id="scratch"><div class="prize" id="prize"></div>${b.scratch == null ? '<canvas id="scr" aria-label="Tarjeta para raspar"></canvas>' : ""}</div>
+      <p class="muted" id="scrMsg" style="margin:0;text-align:center;font-size:13.5px">${b.scratch == null ? "Raspa al menos la mitad para descubrir tu premio" : b.scratch ? "Se suman cuando pagues tu cuenta" : "Esta vez no hubo premio. ¡Suerte en tu próxima visita!"}</p>`
+      : `<div class="scratch" style="opacity:.45"><div class="prize"><span><b>?</b>Disponible en tu mesa</span></div></div>`}
+  </div></section>
+  <section class="pad sec"><div class="game"><div><h3 style="font-size:20px">Trivia tica</h3><p class="muted" style="margin:4px 0 0">Acierta las ${C.trivia.length} y gana ${RULES.triviaBonus} puntos${on ? "" : " (desde tu mesa)"}.</p></div>
+    <div id="trivia">${tDone ? triviaResult() : `<button class="btn brand" id="tStart">Empezar trivia</button>`}</div></div></section>`;
+}
+function triviaResult(){ const t = S.session.trivia; return `<div class="status"><span class="dot ${t.score === C.trivia.length ? "ok" : ""}"></span>Acertaste ${t.score} de ${C.trivia.length}${t.score === C.trivia.length && sessionValid(S.session) ? ` · +${RULES.triviaBonus} pts` : ""}</div>`; }
+function wJuegos(){
+  if (!S.me) { wireForm(() => { render(); toast("¡Listo! Ya puedes jugar"); }); return; }
+  if ($("#scr")) setupScratch(); else if ($("#prize") && S.session) showPrize(S.session.bonus.scratch);
+  if ($("#tStart")) $("#tStart").onclick = () => runTrivia(0, 0);
+}
+function pickPrize(){ const tot = RULES.scratchPrizes.reduce((a, p) => a + p.weight, 0); let r = Math.random() * tot; for (const p of RULES.scratchPrizes) { if ((r -= p.weight) < 0) return p.pts; } return 0; }
+function showPrize(p){ $("#prize").innerHTML = p ? `<span><b>+${p}</b>puntos extra</span>` : `<span><b style="font-size:30px">Casi</b>Sin premio esta vez</span>`; }
+function setupScratch(){
+  const s = S.session; s.bonus = s.bonus || {}; if (s.prize == null) { s.prize = pickPrize(); saveSession(); }
+  showPrize(s.prize);
+  const cv = $("#scr"), box = $("#scratch"), r = box.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = r.width * dpr; cv.height = r.height * dpr; const x = cv.getContext("2d"); x.scale(dpr, dpr);
+  const gr = x.createLinearGradient(0, 0, r.width, r.height); gr.addColorStop(0, "#B9C2BC"); gr.addColorStop(.5, "#E4E9E5"); gr.addColorStop(1, "#AEB8B1");
+  x.fillStyle = gr; x.fillRect(0, 0, r.width, r.height);
+  x.fillStyle = "#4A5850"; x.font = "700 20px Figtree, sans-serif"; x.textAlign = "center"; x.fillText("RASPA AQUÍ", r.width / 2, r.height / 2 + 7);
+  x.globalCompositeOperation = "destination-out"; x.lineCap = "round"; x.lineJoin = "round"; x.lineWidth = 34;
+  let down = false, last = null, n = 0;
+  const pos = e => { const b = cv.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+  cv.onpointerdown = e => { down = true; last = pos(e); cv.setPointerCapture(e.pointerId); };
+  cv.onpointermove = e => { if (!down) return; const p = pos(e); x.beginPath(); x.moveTo(last[0], last[1]); x.lineTo(p[0], p[1]); x.stroke(); last = p; if (++n % 12 === 0) check(); };
+  cv.onpointerup = () => { down = false; check(); };
+  function check(){
+    const d = x.getImageData(0, 0, cv.width, cv.height).data; let clear = 0, tot = 0;
+    for (let i = 3; i < d.length; i += 64) { tot++; if (d[i] === 0) clear++; }
+    if (clear / tot > 0.5 && S.session.bonus.scratch == null) {
+      S.session.bonus.scratch = S.session.prize; saveSession(); cv.style.transition = "opacity .4s"; cv.style.opacity = 0; setTimeout(() => cv.remove(), 450);
+      $("#scrMsg").textContent = S.session.prize ? `¡Ganaste ${S.session.prize} puntos! Se suman cuando pagues tu cuenta.` : "Esta vez no hubo premio. ¡Suerte en tu próxima visita!";
+      if (S.session.prize) toast("+" + S.session.prize + " puntos guardados para tu cuenta");
+      if ($("#bonusChip")) $("#bonusChip").textContent = "+" + bonusTotal() + " pts hoy";
+    }
+  }
+}
+function runTrivia(i, score){
+  const box = $("#trivia");
+  if (i >= C.trivia.length) {
+    if (S.session) { S.session.trivia = { done: true, score }; if (score === C.trivia.length && sessionValid(S.session)) { S.session.bonus = S.session.bonus || {}; S.session.bonus.trivia = RULES.triviaBonus; } saveSession(); box.innerHTML = triviaResult(); if ($("#bonusChip")) $("#bonusChip").textContent = "+" + bonusTotal() + " pts hoy"; }
+    else box.innerHTML = `<div class="status"><span class="dot ${score === C.trivia.length ? "ok" : ""}"></span>Acertaste ${score} de ${C.trivia.length}</div>`;
+    return;
+  }
+  const q = C.trivia[i];
+  box.innerHTML = `<div class="q"><span class="eyebrow">Pregunta ${i + 1} de ${C.trivia.length}</span><b>${esc(q.q)}</b>${q.a.map((a, k) => `<button data-k="${k}">${esc(a)}</button>`).join("")}</div>`;
+  $$("[data-k]", box).forEach(b => b.onclick = () => {
+    const k = +b.dataset.k; $$("[data-k]", box).forEach(x => { x.disabled = true; if (+x.dataset.k === q.ok) x.classList.add("right"); });
+    if (k !== q.ok) b.classList.add("wrong");
+    setTimeout(() => runTrivia(i + 1, score + (k === q.ok ? 1 : 0)), 900);
+  });
+}
+
+/* Perfil */
+function vPerfil(){
+  const me = S.me;
+  if (!me) return `<section class="pad sec"><h2 style="font-size:26px">Crea tu cuenta</h2>
+    <p class="muted">Junta puntos en cada visita y cámbialos por premios. Solo te pedimos lo necesario.</p>
+    ${profileForm({})}</section>`;
+  const initials = me.name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  const liked = C.menu.filter(m => S.likes.has(m.id));
+  const s = S.session;
+  return `<section class="pad sec">
+    <div class="prof"><div class="avatar"><div>${esc(initials)}</div></div>
+      <div class="stats"><div><b class="num">${me.points || 0}</b><span>Puntos</span></div><div><b class="num">${me.visits || 0}</b><span>Visitas</span></div><div><b class="num">${me.redeems || 0}</b><span>Canjes</span></div></div></div>
+    <div style="margin-top:12px"><b style="font-size:17px">${esc(me.name)}</b><div class="muted num">${esc(me.phone.replace(/(\d{4})(\d{4})/, "$1-$2"))}${me.email ? " · " + esc(me.email) : ""}</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px"><button class="btn ghost sm" id="editMe">Editar datos</button><button class="btn ghost sm" id="logout">Cerrar sesión</button></div>
+  </section>
+  <section class="pad sec"><div class="sec-h"><h2>Tu visita</h2></div>
+    <div class="info"><div class="r"><div><div class="k">Mesa</div><div class="v">${sessionValid(s) ? "Mesa " + s.mesa : (s && s.closed ? "Visita cerrada" : "Sin mesa activa")}</div></div>${sessionValid(s) ? `<span class="chip ok">Activa</span>` : ""}</div>
+    ${sessionValid(s) ? `<div class="r"><div><div class="k">Válida hasta</div><div class="v num">${new Date(s.start + RULES.sessionHours * 3600e3).toLocaleTimeString("es-CR", { hour: "numeric", minute: "2-digit" })}</div></div></div>
+    <div class="r"><div><div class="k">Puntos de juegos por sumar</div><div class="v num">+${bonusTotal()}</div></div></div>` : ""}</div></section>
+  ${liked.length ? `<section class="pad sec"><div class="sec-h"><h2>Te gustaron</h2></div><div class="mini-grid">${liked.map(d => `<button data-dish="${d.id}" style="${bg(d)}" aria-label="${esc(d.name)}"></button>`).join("")}</div></section>` : ""}
+  <section class="pad sec"><div class="sec-h"><h2>Historial</h2></div>
+    ${(me.history || []).length ? `<div class="hist">${me.history.slice(0, 15).map(h => `<div class="r"><span>${h.type === "redeem" ? "Canje · " + esc(h.reward) : "Visita · " + fmt(h.amount)}<br><span class="muted num" style="font-size:12.5px">${new Date(h.date).toLocaleDateString("es-CR", { day: "numeric", month: "short" })}</span></span><b class="num" style="color:${h.pts < 0 ? "var(--alert)" : "var(--ok)"}">${h.pts > 0 ? "+" : ""}${h.pts}</b></div>`).join("")}</div>`
+      : `<p class="muted">Aquí verás tus visitas y canjes.</p>`}</section>`;
+}
+function profileForm(v){
+  return `<form class="stack" id="meForm" novalidate>
+    <label class="f">Nombre<input id="fName" required autocomplete="name" value="${esc(v.name || "")}"></label>
+    <label class="f">Teléfono (8 dígitos)<input id="fPhone" inputmode="numeric" autocomplete="tel" maxlength="9" value="${esc(v.phone || "")}" ${v.phone ? "readonly" : ""}></label>
+    <label class="f">Correo (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(v.email || "")}"></label>
+    <label class="f">Cumpleaños (opcional, para tu regalo)<input id="fBday" type="date" value="${esc(v.birthday || "")}"></label>
+    <label class="check"><input type="checkbox" id="fPromos" ${v.promos ? "checked" : ""}> Quiero recibir promociones de ${esc(R.name)}</label>
+    <p class="muted" id="fErr" style="margin:0;color:var(--alert)" hidden></p>
+    <button class="btn brand block" type="submit">${v.phone ? "Guardar cambios" : "Crear cuenta"}</button>
+    ${v.phone ? `<button class="btn ghost block" type="button" id="fCancel">Cancelar</button>` : `<p class="muted" style="margin:0;font-size:12.5px">Si ya tienes cuenta, ingresa el mismo teléfono y recuperamos tus puntos.</p>`}
+  </form>`;
+}
+function wireForm(onDone){
+  const f = $("#meForm"); if (!f) return;
+  if ($("#fCancel")) $("#fCancel").onclick = () => render();
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const name = $("#fName").value.trim(), phone = $("#fPhone").value.replace(/\D/g, ""), email = $("#fEmail").value.trim();
+    const err = m => { $("#fErr").textContent = m; $("#fErr").hidden = false; };
+    if (name.length < 2) return err("Escribe tu nombre.");
+    if (phone.length !== 8) return err("El teléfono debe tener 8 dígitos.");
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) return err("Revisa el correo.");
+    const data = { name, phone, email, birthday: $("#fBday").value, promos: $("#fPromos").checked };
+    const btn = $("button[type=submit]", f); btn.disabled = true; btn.textContent = "Guardando…";
+    try {
+      if (S.me && S.me.phone === phone) { await Store.updateCustomerInfo(phone, data); Object.assign(S.me, data); toast("Datos guardados"); }
+      else {
+        const found = await Store.getCustomer(phone);
+        if (found) { S.me = found; if (found.name !== name) { /* conserva el nombre registrado */ } toast("¡Hola de nuevo, " + found.name.split(" ")[0] + "! Recuperamos tus puntos"); }
+        else { S.me = await Store.createCustomer(data); toast("Cuenta creada. ¡Bienvenido al club!"); }
+      }
+      saveMe(); onDone ? onDone() : render();
+    } catch (x) { console.error(x); err("No pudimos guardar. Revisa tu conexión e intenta de nuevo."); btn.disabled = false; btn.textContent = "Intentar de nuevo"; }
+  };
+}
+function wPerfil(){
+  wireForm(); wireDishes($("#view"));
+  if ($("#editMe")) $("#editMe").onclick = () => { $("#view").innerHTML = `<section class="pad sec"><h2 style="font-size:24px;margin-bottom:14px">Editar datos</h2>${profileForm(S.me)}</section>`; wireForm(); };
+  if ($("#logout")) $("#logout").onclick = () => { S.me = null; saveMe(); render(); toast("Sesión cerrada en este teléfono"); };
+}
+
+/* ---------- llamar al mesero (con confirmación) ---------- */
+$("#bellBtn").innerHTML = I.bell;
+$("#bellBtn").onclick = () => {
+  if (!needTable()) return;
+  openSheet(`<h3>¿En qué te ayudamos?</h3><p class="muted" style="margin:-6px 0 0">Mesa ${S.session.mesa}</p>
+    <div class="opts">
+      <button class="opt" id="oCall"><span class="ic">${I.waiter}</span><span class="t"><b>Llamar al mesero</b><small>Para ordenar o pedir algo</small></span>›</button>
+      <button class="opt" id="oBill"><span class="ic">${I.bill}</span><span class="t"><b>Pedir la cuenta</b><small>SINPE Móvil, tarjeta o efectivo</small></span>›</button>
+    </div><button class="btn ghost block" id="x">Cancelar</button>`);
+  $("#oCall").onclick = () => startCall();
+  $("#oBill").onclick = () => startBill();
+  $("#x").onclick = closeSheet;
+};
+function startCall(about){
+  if (!needTable()) return;
+  if (S.req.call && S.req.call.status === "pending") { renderCallSheet(); return; }
+  openSheet(`<h3>¿Llamamos al mesero?</h3>
+    <div class="status"><span class="ic" style="color:var(--brand)">${I.waiter.replace("<svg", '<svg width="24" height="24"')}</span>Le avisaremos que vaya a la mesa ${S.session.mesa}${about ? " por: " + esc(about) : ""}.</div>
+    <button class="btn main block" id="yes">Sí, llamar al mesero</button><button class="btn ghost block" id="no">No, cancelar</button>`);
+  $("#no").onclick = closeSheet;
+  $("#yes").onclick = async () => {
+    const p = await gate(); if (!p) return;
+    try {
+      const id = await Store.createRequest({ type: "call", mesa: S.session.mesa, about: about || "", presence: presenceTag(p), customer: S.me ? { phone: S.me.phone, name: S.me.name } : null });
+      S.session.reqs = S.session.reqs || {}; S.session.reqs.call = id; saveSession(); watch("call", id); renderCallSheet();
+    } catch (e) { console.error(e); toast("No se pudo enviar. Revisa tu conexión."); }
+  };
+}
+function renderCallSheet(){
+  const r = S.req.call;
+  openSheet(`<h3>${r && r.status === "done" ? "Tu mesero va en camino" : "Llamamos a tu mesero"}</h3>
+    <div class="status"><span class="dot ${r && r.status === "done" ? "ok" : ""}"></span>${r && r.status === "done" ? "Ya vio tu solicitud y va para la mesa " + r.mesa + "." : "Esperando que lo vea en el panel del salón…"}</div>
+    <button class="btn ghost block" id="x">Cerrar</button>`, "call");
+  $("#x").onclick = closeSheet;
+}
+
+/* ---------- pedir la cuenta ---------- */
+function startBill(){
+  if (!needTable()) return;
+  if (S.cart.length && !startBill.warned) { startBill.warned = true; openSheet(`<h3>Tienes platos sin enviar</h3><p class="muted" style="margin:0">Hay ${cartCount()} en tu pedido que todavía no llegaron a cocina.</p><button class="btn main block" id="see">Ver mi pedido</button><button class="btn ghost block" id="go">Pedir la cuenta igual</button>`); $("#see").onclick = openCart; $("#go").onclick = startBill; return; }
+  if (S.req.bill && S.req.bill.status !== "confirmed") { renderBillSheet(); return; }
+  openSheet(`<h3>Pedir la cuenta</h3><p class="muted" style="margin:-6px 0 0">¿Cómo quieres pagar?</p>
+    <div class="opts">
+      <button class="opt" data-m="sinpe"><span class="ic">${I.sinpe}</span><span class="t"><b>SINPE Móvil</b><small>Pagas desde la app de tu banco</small></span>›</button>
+      <button class="opt" data-m="tarjeta"><span class="ic">${I.card}</span><span class="t"><b>Tarjeta</b><small>Te llevamos el datáfono</small></span>›</button>
+      <button class="opt" data-m="efectivo"><span class="ic">${I.cash}</span><span class="t"><b>Efectivo</b><small>Tu mesero pasa a cobrar</small></span>›</button>
+    </div><button class="btn ghost block" id="x">Cancelar</button>`);
+  $("#x").onclick = closeSheet;
+  $$("[data-m]", $("#sheetIn")).forEach(b => b.onclick = () => askPoints(b.dataset.m));
+}
+const METHOD = { sinpe: "SINPE Móvil", tarjeta: "tarjeta", efectivo: "efectivo" };
+function askPoints(method){
+  if (S.me) return confirmBill(method);
+  openSheet(`<h3>¿Sumas puntos con esta cuenta?</h3><p class="muted" style="margin:-4px 0 0">Ganas 1 punto por cada ${fmt(RULES.colonesPerPoint)}${bonusTotal() ? ` más ${bonusTotal()} de tus juegos` : ""}.</p>
+    ${profileForm({})}<button class="btn ghost block" id="skip">Seguir sin puntos</button>`);
+  wireForm(() => confirmBill(method)); $("#skip").onclick = () => confirmBill(method);
+}
+function confirmBill(method){
+  openSheet(`<h3>¿Pedimos la cuenta?</h3>
+    <div class="status"><span class="ic" style="color:var(--brand)">${I.bill.replace("<svg", '<svg width="24" height="24"')}</span>Mesa ${S.session.mesa} · pago con ${METHOD[method]}${S.me ? "<br>Puntos para " + esc(S.me.name.split(" ")[0]) : ""}</div>
+    <button class="btn main block" id="yes">Sí, pedir la cuenta</button><button class="btn ghost block" id="no">Cancelar</button>`);
+  $("#no").onclick = closeSheet;
+  $("#yes").onclick = async () => {
+    const p = await gate(); if (!p) return;
+    const ref = "M" + S.session.mesa + "-" + Math.random().toString(36).slice(2, 5).toUpperCase();
+    try {
+      const id = await Store.createRequest({ type: "bill", method, mesa: S.session.mesa, ref, presence: presenceTag(p),
+        customer: S.me ? { phone: S.me.phone, name: S.me.name } : null, bonus: S.me ? bonusTotal() : 0, views: S.session.views || {}, ordersTotal: sentTotal(), orders: (S.session.sent || []).flatMap(o => o.items.map(i => ({ id: i.id, qty: i.qty }))) });
+      S.session.reqs = S.session.reqs || {}; S.session.reqs.bill = id; saveSession(); S.billStage = null; watch("bill", id); renderBillSheet();
+    } catch (e) { console.error(e); toast("No se pudo enviar. Revisa tu conexión."); }
+  };
+}
+function renderBillSheet(){
+  const r = S.req.bill; if (!r) return;
+  if (S.billStage === "rate" || S.billStage === "fb") return; // no interrumpir la calificación
+  let body = "";
+  if (r.status === "pending") body = `<h3>Pediste la cuenta</h3><div class="status"><span class="dot"></span>Tu mesero está preparando el total de la mesa ${r.mesa}.</div><p class="muted" style="margin:0">Te aparece aquí en cuanto lo envíe.</p>`;
+  else if (r.status === "amount_sent" && r.method === "sinpe") body = `<h3>Paga con SINPE Móvil</h3>
+    ${r.rejected ? `<div class="status" style="background:color-mix(in srgb,var(--alert) 12%,var(--surface))"><span class="dot alert"></span>No encontramos tu SINPE. Revisa el monto y la referencia y vuelve a avisar.</div>` : ""}
+    <div class="sinpe">
+      <div class="r"><div><div class="eyebrow">Número</div><div class="v">${esc(R.sinpe.number)}</div></div><button class="copy" data-copy="${esc(R.sinpe.number.replace(/\D/g, ""))}">Copiar</button></div>
+      <div class="r"><div><div class="eyebrow">Monto exacto</div><div class="v">${fmt(r.amount)}</div></div><button class="copy" data-copy="${Math.round(r.amount)}">Copiar</button></div>
+      <div class="r"><div><div class="eyebrow">Detalle del SINPE</div><div class="v">${esc(r.ref)}</div></div><button class="copy" data-copy="${esc(r.ref)}">Copiar</button></div>
+      <div class="r"><div><div class="eyebrow">A nombre de</div><div class="v" style="font-size:15px">${esc(R.sinpe.name)}</div></div></div>
+    </div>
+    <p class="muted" style="margin:0;font-size:13px">Escribe <b>${esc(r.ref)}</b> en el detalle para que el salón ubique tu pago.</p>
+    <button class="btn main block" id="paid">Ya hice el SINPE</button>`;
+  else if (r.status === "amount_sent") body = `<h3>Tu cuenta: ${fmt(r.amount)}</h3><div class="status"><span class="dot"></span>${r.method === "tarjeta" ? "Tu mesero va con el datáfono." : "Tu mesero pasa a cobrar en efectivo."}</div>`;
+  else if (r.status === "reported_paid") body = `<h3>Verificando tu pago</h3><div class="status"><span class="dot"></span>El salón está confirmando el SINPE con referencia <b>${esc(r.ref)}</b>.</div><p class="muted" style="margin:0">Puedes cerrar esta ventana; te avisamos arriba cuando quede listo.</p>`;
+  else if (r.status === "confirmed") { S.billStage = "rate"; return renderRate(r); }
+  else if (r.status === "cancelled") body = `<h3>Solicitud cancelada</h3><p class="muted" style="margin:0">Pide ayuda a tu mesero si todavía necesitas la cuenta.</p>`;
+  openSheet(body + `<button class="btn ghost block" id="x">Cerrar</button>`, "bill");
+  $("#x").onclick = closeSheet;
+  if ($("#paid")) $("#paid").onclick = async () => { $("#paid").disabled = true; try { await Store.updateRequest(r.id, { status: "reported_paid", rejected: false, reportedAt: Date.now() }); } catch (e) { toast("No se pudo avisar. Intenta de nuevo."); $("#paid").disabled = false; } };
+}
+function renderRate(r){
+  openSheet(`<h3>¡Pago confirmado!</h3>
+    ${r.pointsAwarded ? `<div class="earn num">+${r.pointsAwarded} pts</div><p class="muted" style="margin:-6px 0 0;text-align:center">Ya están en tu cuenta.</p>` : `<div class="status"><span class="dot ok"></span>Gracias por visitarnos.</div>`}
+    <b style="text-align:center">¿Qué tal estuvo todo?</b>
+    <div class="stars" role="group" aria-label="Calificación">${[1, 2, 3, 4, 5].map(n => `<button data-s="${n}" aria-label="${n} de 5">★</button>`).join("")}</div>
+    <button class="btn ghost block" id="x">Ahora no</button>`, "rate");
+  $("#x").onclick = finishVisit;
+  $$("[data-s]").forEach(b => {
+    b.onmouseenter = () => $$("[data-s]").forEach(x => x.classList.toggle("on", +x.dataset.s <= +b.dataset.s));
+    b.onclick = () => rated(+b.dataset.s, r);
+  });
+}
+function rated(n, r){
+  S.billStage = "fb";
+  if (n >= 4) {
+    Store.addFeedback({ rating: n, text: "", mesa: r.mesa }).catch(() => {});
+    openSheet(`<h3>¡Gracias!</h3><p class="muted" style="margin:0">Nos ayudas muchísimo contando tu experiencia en Google. Toma 20 segundos.</p>
+      <a class="btn main block" href="${esc(R.googleReviewUrl)}" target="_blank" rel="noopener" id="g">Dejar reseña en Google</a><button class="btn ghost block" id="x">Ahora no</button>`, "rate");
+    $("#g").addEventListener("click", () => setTimeout(finishVisit, 300)); $("#x").onclick = finishVisit;
+  } else {
+    openSheet(`<h3>Gracias por decirnos</h3><p class="muted" style="margin:0">Tu comentario le llega directo al encargado, no se publica.</p>
+      <label class="f">¿Qué podemos mejorar?<textarea id="fb" rows="3"></textarea></label>
+      <button class="btn main block" id="send">Enviar al encargado</button><button class="btn ghost block" id="x">Omitir</button>`, "rate");
+    $("#x").onclick = () => { Store.addFeedback({ rating: n, text: "", mesa: r.mesa }).catch(() => {}); finishVisit(); };
+    $("#send").onclick = () => { Store.addFeedback({ rating: n, text: $("#fb").value.trim().slice(0, 500), mesa: r.mesa }).catch(() => {}); toast("Comentario enviado"); finishVisit(); };
+  }
+}
+function finishVisit(){
+  closeSheet(); S.billStage = null;
+  if (S.watch.bill) { S.watch.bill(); delete S.watch.bill; }
+  delete S.req.bill; if (S.session && S.session.reqs) delete S.session.reqs.bill;
+  saveSession(); renderTop(); render();
+}
+
+/* ---------- canjear puntos ---------- */
+function startRedeem(rw){
+  if (!S.me) return go("perfil");
+  if (!needTable()) return;
+  if ((S.me.points || 0) < rw.pts) return toast("Aún no tienes puntos suficientes");
+  if (S.req.redeem && S.req.redeem.status === "pending") return toast("Ya tienes un canje pendiente");
+  openSheet(`<h3>¿Canjear ${esc(rw.name)}?</h3>
+    <div class="status">Se descuentan <b>${rw.pts} puntos</b> cuando tu mesero lo aplique en la mesa ${S.session.mesa}.</div>
+    <button class="btn main block" id="yes">Sí, canjear</button><button class="btn ghost block" id="no">Cancelar</button>`);
+  $("#no").onclick = closeSheet;
+  $("#yes").onclick = async () => {
+    const p = await gate(); if (!p) return;
+    try {
+      const id = await Store.createRequest({ type: "redeem", mesa: S.session.mesa, presence: presenceTag(p), reward: { id: rw.id, name: rw.name, pts: rw.pts }, customer: { phone: S.me.phone, name: S.me.name, points: S.me.points } });
+      S.session.reqs = S.session.reqs || {}; S.session.reqs.redeem = id; saveSession(); watch("redeem", id);
+      openSheet(`<h3>Canje enviado</h3><div class="status"><span class="dot"></span>Tu mesero llevará ${esc(rw.name)} a la mesa.</div><button class="btn ghost block" id="x">Cerrar</button>`); $("#x").onclick = closeSheet;
+    } catch (e) { console.error(e); toast("No se pudo enviar. Revisa tu conexión."); }
+  };
+}
+
+/* ---------- escuchar solicitudes propias (solo mientras están activas) ---------- */
+function watch(type, id){
+  if (S.watch[type]) S.watch[type]();
+  S.watch[type] = Store.watchRequest(id, r => onReq(type, r));
+}
+function stopWatch(type, keepReq){
+  if (S.watch[type]) { S.watch[type](); delete S.watch[type]; }
+  if (!keepReq) delete S.req[type];
+  if (S.session && S.session.reqs) delete S.session.reqs[type];
+  saveSession(); renderBanner();
+}
+function onReq(type, r){
+  const prev = S.req[type]; S.req[type] = r;
+  if (!r) return stopWatch(type);
+  S.session.applied = S.session.applied || {};
+  if (type === "call") {
+    if (r.status === "done" && (!prev || prev.status !== "done")) { toast("Tu mesero va en camino"); if (S.sheet === "call") renderCallSheet(); setTimeout(() => stopWatch("call"), 12000); }
+  }
+  if (type === "redeem") {
+    if (r.status === "done" && !S.session.applied[r.id]) {
+      S.session.applied[r.id] = 1;
+      if (S.me) { S.me.points = Math.max(0, (S.me.points || 0) - r.reward.pts); S.me.redeems = (S.me.redeems || 0) + 1; S.me.history = [{ type: "redeem", date: Date.now(), reward: r.reward.name, pts: -r.reward.pts }].concat(S.me.history || []); saveMe(); }
+      toast("Canje aplicado: " + r.reward.name); stopWatch("redeem");
+    } else if (r.status === "cancelled") { toast("El canje no se aplicó. Habla con tu mesero."); stopWatch("redeem"); }
+  }
+  if (type === "order") {
+    if (r.status === "done" && !S.session.applied[r.id]) {
+      S.session.applied[r.id] = 1; S.session.sent = (S.session.sent || []).concat([{ items: r.items, total: r.total, at: Date.now() }]); delete S.session.pendingCart;
+      if (navigator.vibrate) navigator.vibrate(80); toast("Tu pedido está en cocina"); if (S.sheet === "order") renderOrderSheet(); saveSession(); stopWatch("order", true); setTimeout(() => { delete S.req.order; renderBanner(); }, 100); return;
+    }
+    if (r.status === "cancelled") {
+      if (S.session.pendingCart) { S.cart = S.session.pendingCart.concat(S.cart); delete S.session.pendingCart; saveCart(); }
+      toast("No se pudo tomar tu pedido. Lo devolvimos a tu carrito."); if (S.sheet === "order") renderOrderSheet(); saveSession(); stopWatch("order", true); setTimeout(() => { delete S.req.order; renderBanner(); }, 100); return;
+    }
+  }
+  if (type === "bill") {
+    if (r.status === "amount_sent" && (!prev || prev.status !== "amount_sent")) { if (navigator.vibrate) navigator.vibrate(120); if (S.sheet !== "bill") toast("Tu cuenta llegó: " + fmt(r.amount)); }
+    if (r.status === "confirmed" && !S.session.applied[r.id]) {
+      S.session.applied[r.id] = 1;
+      if (S.me && r.customer && r.customer.phone === S.me.phone && r.pointsAwarded) {
+        S.me.points = (S.me.points || 0) + r.pointsAwarded; S.me.visits = (S.me.visits || 0) + 1;
+        S.me.history = [{ type: "visit", date: Date.now(), amount: r.amount, pts: r.pointsAwarded }].concat(S.me.history || []); saveMe();
+      }
+      S.session.closed = true; S.session.bonus = {}; // la visita termina al pagar
+      if (S.watch.call) stopWatch("call");
+      renderTop(); if (["puntos", "juegos", "perfil", "inicio"].includes(S.tab)) render();
+      S.billStage = null; renderBillSheet(); saveSession(); return;
+    }
+    if (r.status === "cancelled") { if (S.sheet === "bill") renderBillSheet(); stopWatch("bill", true); }
+    else if (S.sheet === "bill") renderBillSheet();
+  }
+  saveSession(); renderBanner();
+}
+
+/* ---------- arranque ---------- */
+async function boot(){
+  document.title = R.name + " · Menú";
+  const p = new URLSearchParams(location.search), m = parseInt(p.get("m"), 10), k = p.get("k");
+  let s = ls.get(SKEY, null), welcome = null;
+  if (s && s.closed && Date.now() - s.start > 12 * 3600e3) s = null;
+  if (s && !s.closed && !sessionValid(s)) s = null;
+  if (p.has("m")) {
+    if (m >= 1 && m <= R.tables && k === Store.tableKey(m)) {
+      if (!(sessionValid(s) && s.mesa === m)) s = { mesa: m, start: Date.now(), closed: false, bonus: {}, reqs: {}, views: {}, applied: {} };
+      welcome = "Bienvenido · Mesa " + m;
+    } else welcome = "Este código QR no es válido. Pide ayuda a tu mesero.";
+    history.replaceState(null, "", location.pathname);
+  }
+  S.session = s; saveSession();
+  S.me = ls.get(MEKEY, null);
+  renderTop(); renderTabs(); render(); renderCartBar();
+  if (welcome) toast(welcome);
+  try { await Store.init("client"); } catch (e) { console.error(e); toast("Sin conexión con el servidor. Puedes ver el menú."); return; }
+  if (Store.mode() === "demo") $("#mesaChip").title = "Modo demo";
+  // agotados y precios: 1 lectura por visita
+  try {
+    if (S.session && S.session.pub && Date.now() - S.session.pub.at < 30 * 60e3) S.pub = S.session.pub;
+    else { S.pub = Object.assign({ soldOut: [], prices: {} }, await Store.getPublic()); if (S.session) { S.session.pub = Object.assign({ at: Date.now() }, S.pub); saveSession(); } }
+    render();
+  } catch (e) { console.error(e); }
+  // retomar solicitudes activas
+  if (S.session && S.session.reqs) Object.entries(S.session.reqs).forEach(([t, id]) => id && watch(t, id));
+  // refrescar puntos 1 vez por visita
+  if (S.me && sessionValid(S.session) && !S.session.meSync) {
+    try { const fresh = await Store.getCustomer(S.me.phone); if (fresh) { S.me = fresh; saveMe(); } S.session.meSync = true; saveSession(); if (S.tab !== "menu") render(); } catch (e) {}
+  }
+}
+boot();
+})();
+</script>
+</body>
+</html>

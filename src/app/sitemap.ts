@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/domingo', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/blog', priority: 0.9, changeFrequency: 'daily' as const },
     { route: '/galeria', priority: 0.85, changeFrequency: 'weekly' as const },
+    { route: '/mesaya', priority: 0.85, changeFrequency: 'weekly' as const },
   ];
 
   const secondaryRoutes = [

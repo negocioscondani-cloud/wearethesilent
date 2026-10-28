@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel del dueño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="mesaya.css">
+<style>
+/* Layout: escritorio — pestañas Resumen / Inventario / Menú; resumen arriba con indicadores y luego gráficos en dos columnas */
+.wrap{max-width:1200px;margin:0 auto;padding-block:calc(14px + env(safe-area-inset-top,0px)) 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.top h1{font-size:26px}
+.nav{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:18px}
+.nav button{background:none;border:0;padding:10px 14px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.nav button[aria-current="page"]{color:var(--fg);border-color:var(--mango)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;background:var(--chip);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;padding:7px 12px;border-radius:9px;font-weight:600;cursor:pointer;font-size:13.5px}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 18px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.kpi b{font-family:var(--display);font-size:26px;display:block;line-height:1.1}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpi small{display:block;margin-top:4px;font-size:12px;font-weight:600}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px;min-width:0;align-content:start}
+.box.full{grid-column:1/-1}
+.box h2{font-size:17px}
+.box .sub{font-size:12.5px;color:var(--muted);margin-top:-8px}
+.chart{overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{fill:var(--muted);font-family:var(--body)}
+.hbars{display:grid;gap:8px}
+.hb{display:grid;grid-template-columns:minmax(90px,150px) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13.5px}
+.hb .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .track{height:12px;border-radius:6px;background:var(--chip);overflow:hidden}
+.hb .track i{display:block;height:100%;border-radius:6px;background:var(--brand)}
+.hb .val{font-variant-numeric:tabular-nums;font-weight:600;min-width:52px;text-align:right}
+.fb{display:grid;gap:8px;max-height:320px;overflow-y:auto}
+.fb .r{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:3px;font-size:14px}
+.fb .stars{color:var(--mango);letter-spacing:2px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tr.low td:first-child{box-shadow:inset 4px 0 0 var(--alert)}
+.mv{display:flex;gap:6px;align-items:center}
+.mv input{width:76px;padding:7px 8px;border-radius:9px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;align-items:end}
+.moves{display:grid;gap:6px;font-size:13.5px;max-height:300px;overflow-y:auto}
+.moves .r{display:grid;grid-template-columns:minmax(0,1fr) 70px 150px;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:7px 0}
+.moves .r>span:nth-child(2),.moves .r>span:nth-child(3){text-align:right}
+.dish-row{display:grid;grid-template-columns:44px minmax(0,1fr) 140px auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.dish-row .ph{width:44px;height:44px;border-radius:10px}
+.dish-row .amt{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.dish-row .amt span{padding:0 8px;color:var(--muted);font-weight:700}
+.dish-row .amt input{border:0;border-radius:0;padding:8px 8px 8px 0;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.dish-row{grid-template-columns:44px minmax(0,1fr);}.dish-row .amt,.dish-row .sw{grid-column:2}}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;cursor:pointer}
+.sw input{width:40px;height:22px;appearance:none;border-radius:999px;background:var(--line);position:relative;cursor:pointer;padding:0;border:0;flex:none}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.sw input:checked{background:var(--alert)}
+.sw input:checked::after{left:21px}
+.save-bar{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.login{max-width:380px;margin:12vh auto 0;display:grid;gap:14px}
+.login h1{font-size:30px}
+.demo-tip{font-size:13px;border:1px dashed var(--mango);border-radius:12px;padding:10px 12px}
+.err{color:var(--alert);margin:0;font-size:14px}
+.note{font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+const C = window.MESAYA, R = C.restaurant;
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+const fmt = n => "₡" + Math.round(n || 0).toLocaleString("es-CR");
+const fmtK = n => n >= 1e6 ? "₡" + (+(n / 1e6).toFixed(1)) + "M" : n >= 1000 ? "₡" + Math.round(n / 1000) + "k" : "₡" + Math.round(n);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num = v => { const n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : 0; };
+function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2400); }
+
+let tab = "resumen", range = 30, started = false, inv = null, pub = null, cache = {};
+
+/* ---------- acceso ---------- */
+function showLogin(err){
+  const demo = Store.mode() === "demo";
+  $("#app").innerHTML = `<form class="login" id="lf"><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1>
+    ${demo ? "" : `<label class="f">Correo<input id="le" type="email" autocomplete="username" required></label>`}
+    <label class="f">${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" autocomplete="current-password" required></label>
+    ${err ? `<p class="err">${esc(err)}</p>` : ""}<button class="btn brand block" type="submit">Entrar</button>
+    ${demo ? `<div class="demo-tip"><b>Modo demo</b> · PIN del dueño: ${esc(C.demoOwnerPin)}. Se cargan 30 días de datos de ejemplo para ver la analítica.</div>` : ""}</form>`;
+  $("#lf").onsubmit = async e => {
+    e.preventDefault();
+    try { await Store.login("owner", demo ? "" : $("#le").value.trim(), $("#lp").value); start(); }
+    catch (x) { showLogin(x.message && x.message.includes("auth/") ? "Correo o contraseña incorrectos" : (x.message || "No se pudo entrar")); }
+  };
+}
+function start(){
+  if (started) return; started = true;
+  if (Store.mode() === "demo") Store.seedDemo();
+  $("#app").innerHTML = `<div class="top"><div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1></div>
+    <div class="row"><a class="btn line sm" href="salon.html">Panel del salón</a><a class="btn line sm" href="mesas.html">QR de mesas</a><button class="btn ghost sm" id="out">Salir</button></div></div>
+    <nav class="nav" aria-label="Secciones"><button data-t="resumen">Resumen</button><button data-t="inventario">Inventario</button><button data-t="menu">Menú y precios</button></nav>
+    <div id="view"></div>`;
+  $$(".nav button").forEach(b => b.onclick = () => { tab = b.dataset.t; show(); });
+  $("#out").onclick = async () => { started = false; await Store.logout(); showLogin(); };
+  show();
+}
+function show(){ $$(".nav button").forEach(b => { if (b.dataset.t === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }); ({ resumen: vResumen, inventario: vInventario, menu: vMenu })[tab](); }
+
+/* ---------- gráficos SVG ---------- */
+function niceScale(v){ if (v <= 0) return { max: 4, ticks: 4 }; const p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p;
+  if (f <= 1) return { max: p, ticks: 4 }; if (f <= 2) return { max: 2 * p, ticks: 4 }; if (f <= 3) return { max: 3 * p, ticks: 3 }; if (f <= 4) return { max: 4 * p, ticks: 4 }; if (f <= 5) return { max: 5 * p, ticks: 5 }; if (f <= 6) return { max: 6 * p, ticks: 3 }; if (f <= 8) return { max: 8 * p, ticks: 4 }; return { max: 10 * p, ticks: 5 }; }
+function barChart(vals, labels, opts){
+  const W = Math.max(520, vals.length * 26), H = 230, L = 52, Rm = 10, T = 14, B = 30, iw = W - L - Rm, ih = H - T - B;
+  const sc = niceScale(Math.max(...vals, 0)), max = sc.max, bw = iw / vals.length, step = opts.every || 1;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title)}">`;
+  for (let i = 0; i <= sc.ticks; i++) { const v = max * i / sc.ticks, y = T + ih - ih * i / sc.ticks;
+    s += `<line x1="${L}" x2="${W - Rm}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" font-size="11" text-anchor="end">${opts.fmt(v)}</text>`; }
+  vals.forEach((v, i) => { const h = ih * v / max, x = L + i * bw + bw * 0.16, w = bw * 0.68, hi = opts.hi === i;
+    s += `<rect x="${x.toFixed(1)}" y="${(T + ih - h).toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h, v ? 1 : 0).toFixed(1)}" rx="3" fill="${hi ? "var(--mango)" : "var(--brand)"}"><title>${esc(labels[i])}: ${opts.fmt(v, true)}</title></rect>`;
+    if (i % step === 0) s += `<text x="${(L + i * bw + bw / 2).toFixed(1)}" y="${H - 10}" font-size="11" text-anchor="middle">${esc(labels[i])}</text>`; });
+  return s + `</svg>`;
+}
+function hbars(rows, f, color){
+  const max = Math.max(...rows.map(r => r[1]), 1);
+  return `<div class="hbars">${rows.map(([l, v, c]) => `<div class="hb"><span class="lbl" title="${esc(l)}">${esc(l)}</span><span class="track"><i style="width:${(v / max * 100).toFixed(1)}%${c || color ? ";background:" + (c || color) : ""}"></i></span><span class="val">${f(v)}</span></div>`).join("")}</div>`;
+}
+
+/* ---------- Resumen / analítica ---------- */
+async function vResumen(){
+  const v = $("#view");
+  v.innerHTML = `<div class="row" style="justify-content:space-between"><div class="seg" role="group" aria-label="Periodo">${[7, 30].map(d => `<button data-r="${d}" aria-pressed="${range === d}">Últimos ${d} días</button>`).join("")}</div>
+    <span class="note">Lecturas en Firebase: 1 por día del periodo + comentarios</span></div><div id="res"><p class="muted">Cargando…</p></div>`;
+  $$("[data-r]").forEach(b => b.onclick = () => { range = +b.dataset.r; vResumen(); });
+  const from = Store.dayKey(Date.now() - (range - 1) * 86400000);
+  let stats, fb;
+  try {
+    const key = from + "|" + range;
+    if (!cache[key] || Date.now() - cache[key].at > 5 * 60e3) cache[key] = { at: Date.now(), stats: await Store.getStats(from), fb: await Store.getFeedback(Date.now() - range * 86400000) };
+    ({ stats, fb } = cache[key]);
+  } catch (e) { console.error(e); $("#res").innerHTML = `<p class="err">No se pudo cargar la analítica. Revisa la conexión y los permisos.</p>`; return; }
+  if (!stats.length) { $("#res").innerHTML = `<div class="box" style="margin-top:14px"><h2>Todavía no hay ventas registradas</h2><p class="muted" style="margin:0">Cada vez que el salón confirma un pago, se suma aquí: ventas, horas pico, métodos de pago y platos más vistos.</p></div>`; return; }
+  const sum = (k) => stats.reduce((a, s) => a + (s[k] || 0), 0), merge = k => { const o = {}; stats.forEach(s => Object.entries(s[k] || {}).forEach(([a, n]) => o[a] = (o[a] || 0) + n)); return o; };
+  const sales = sum("sales"), bills = sum("bills"), members = sum("members"), calls = sum("calls"), redeems = sum("redeems"), pts = sum("points");
+  const ratings = fb.filter(f => f.rating), avg = ratings.length ? ratings.reduce((a, f) => a + f.rating, 0) / ratings.length : 0;
+  // por día (rellena días sin datos)
+  const days = [], byDay = {}; stats.forEach(s => byDay[s.day] = s.sales || 0);
+  for (let i = range - 1; i >= 0; i--) { const k = Store.dayKey(Date.now() - i * 86400000); days.push(k); }
+  const dayVals = days.map(k => byDay[k] || 0), dayLbl = days.map(k => { const [y, m, d] = k.split("-"); return d + "/" + m; });
+  const best = dayVals.indexOf(Math.max(...dayVals));
+  const byHour = merge("byHour"), hours = []; for (let h = 6; h <= 22; h++) hours.push(h);
+  const hourVals = hours.map(h => byHour[h] || 0), peak = hourVals.indexOf(Math.max(...hourVals));
+  const methods = merge("byMethod"), mTot = Object.values(methods).reduce((a, b) => a + b, 0) || 1;
+  const views = merge("views"), topViews = Object.entries(views).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => [(C.menu.find(m => m.id === id) || { name: id }).name, n]);
+  const sold = merge("sold"), topSold = Object.entries(sold).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => [(C.menu.find(m => m.id === id) || { name: id }).name, n]);
+  const orders = sum("orders");
+  const tables = merge("tables"), topTables = Object.entries(tables).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([t, n]) => ["Mesa " + t, n]);
+  const hourLbl = h => (h % 12 || 12) + (h < 12 ? "am" : "pm");
+  $("#res").innerHTML = `
+  <div class="kpis">
+    <div class="kpi"><b class="num">${fmt(sales)}</b><span>Ventas por la app</span></div>
+    <div class="kpi"><b class="num">${bills}</b><span>Cuentas cobradas</span></div>
+    <div class="kpi"><b class="num">${fmt(bills ? sales / bills : 0)}</b><span>Ticket promedio</span></div>
+    <div class="kpi"><b class="num">${bills ? Math.round(members / bills * 100) : 0}%</b><span>Cuentas con cliente del club</span></div>
+    <div class="kpi"><b class="num">${avg ? avg.toFixed(1) : "—"}<span style="font-size:15px;color:var(--mango)"> ★</span></b><span>${ratings.length} calificaciones</span></div>
+    <div class="kpi"><b class="num">${calls}</b><span>Llamadas al mesero · ${redeems} canjes</span></div>
+  </div>
+  <div class="cols">
+    <section class="box full"><h2>Ventas por día</h2><p class="sub">Mejor día: ${dayLbl[best]} con ${fmt(dayVals[best])}</p><div class="chart">${barChart(dayVals, dayLbl, { title: "Ventas por día", fmt: (v, full) => full ? fmt(v) : fmtK(v), every: range > 14 ? 3 : 1, hi: best })}</div></section>
+    <section class="box"><h2>Horas pico</h2><p class="sub">Más ventas a las ${hourLbl(hours[peak])}. Refuerza personal en esa franja.</p><div class="chart">${barChart(hourVals, hours.map(hourLbl), { title: "Ventas por hora", fmt: (v, full) => full ? fmt(v) : fmtK(v), every: 2, hi: peak })}</div></section>
+    <section class="box"><h2>Métodos de pago</h2><p class="sub">Porcentaje de lo vendido</p>${hbars([["SINPE Móvil", methods.sinpe || 0, "var(--brand)"], ["Tarjeta", methods.tarjeta || 0, "var(--mango)"], ["Efectivo", methods.efectivo || 0, "var(--muted)"]], v => Math.round(v / mTot * 100) + "%")}
+      <p class="note" style="margin:0">SINPE no paga comisión; la tarjeta sí. Cada punto que pasa de tarjeta a SINPE es margen.</p></section>
+    <section class="box"><h2>Platos más vendidos</h2><p class="sub">Unidades pedidas por la app · ${orders} pedidos</p>${topSold.length ? hbars(topSold, v => v, "var(--mango)") : `<p class="muted">Aparecen cuando los clientes empiecen a pedir desde el menú.</p>`}</section>
+    <section class="box"><h2>Platos más vistos</h2><p class="sub">Veces que abrieron el plato en el menú</p>${topViews.length ? hbars(topViews, v => v) : `<p class="muted">Aún sin datos.</p>`}</section>
+    <section class="box"><h2>Mesas que más venden</h2><p class="sub">Total cobrado por mesa</p>${hbars(topTables, fmtK)}</section>
+    <section class="box"><h2>Club de puntos</h2><div class="kpis" style="margin:0;grid-template-columns:1fr 1fr"><div class="kpi"><b class="num">${pts}</b><span>Puntos entregados</span></div><div class="kpi"><b class="num">${redeems}</b><span>Canjes</span></div></div>
+      <p class="note" style="margin:0">Cada cliente del club deja su teléfono: es tu base para promociones y cumpleaños.</p></section>
+    <section class="box"><h2>Comentarios de clientes</h2><p class="sub">Las calificaciones de 1 a 3 llegan solo aquí, no a Google</p>
+      <div class="fb">${fb.filter(f => f.rating < 4 || f.text).slice(0, 30).map(f => `<div class="r"><span class="stars">${"★".repeat(f.rating)}<span style="color:var(--line)">${"★".repeat(5 - f.rating)}</span></span><span>${f.text ? esc(f.text) : '<span class="muted">Sin comentario</span>'}</span><span class="note">Mesa ${f.mesa} · ${new Date(f.at).toLocaleDateString("es-CR", { day: "numeric", month: "short" })}</span></div>`).join("") || `<p class="muted">Sin comentarios en este periodo.</p>`}</div></section>
+  </div>`;
+}
+
+/* ---------- Inventario ---------- */
+async function vInventario(){
+  const v = $("#view"); v.innerHTML = `<p class="muted">Cargando inventario…</p>`;
+  try { if (!inv) inv = (await Store.getInventory()) || { items: [], moves: [] }; } catch (e) { v.innerHTML = `<p class="err">No se pudo cargar el inventario.</p>`; return; }
+  inv.items = inv.items || []; inv.moves = inv.moves || [];
+  const low = inv.items.filter(i => i.stock <= i.min), value = inv.items.reduce((a, i) => a + i.stock * (i.cost || 0), 0);
+  v.innerHTML = `
+  <div class="kpis" style="margin-top:0">
+    <div class="kpi"><b class="num">${inv.items.length}</b><span>Insumos registrados</span></div>
+    <div class="kpi"><b class="num" style="color:${low.length ? "var(--alert)" : "var(--ok)"}">${low.length}</b><span>Por debajo del mínimo</span></div>
+    <div class="kpi"><b class="num">${fmt(value)}</b><span>Valor del inventario</span></div>
+  </div>
+  ${low.length ? `<div class="box" style="margin-bottom:14px;border-color:var(--alert)"><h2>Hay que comprar</h2><p style="margin:0">${low.map(i => `<b>${esc(i.name)}</b> (quedan ${i.stock} ${esc(i.unit)}, mínimo ${i.min})`).join(" · ")}</p></div>` : ""}
+  <section class="box full">
+    <h2>Insumos</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Insumo</th><th class="n">Stock</th><th class="n">Mínimo</th><th>Unidad</th><th class="n">Costo unit.</th><th class="n">Valor</th><th>Estado</th><th>Registrar movimiento</th><th></th></tr></thead>
+      <tbody>${inv.items.map(i => `<tr class="${i.stock <= i.min ? "low" : ""}">
+        <td><b>${esc(i.name)}</b></td><td class="n">${i.stock}</td><td class="n">${i.min}</td><td>${esc(i.unit)}</td><td class="n">${fmt(i.cost)}</td><td class="n">${fmt(i.stock * (i.cost || 0))}</td>
+        <td>${i.stock <= i.min ? '<span class="chip alert">Bajo</span>' : '<span class="chip ok">OK</span>'}</td>
+        <td><div class="mv"><input id="q-${i.id}" inputmode="decimal" placeholder="Cant." aria-label="Cantidad de ${esc(i.name)}"><button class="btn brand sm" data-in="${i.id}" title="Entrada">+ Entrada</button><button class="btn ghost sm" data-out="${i.id}" title="Salida">− Salida</button></div></td>
+        <td><button class="btn ghost sm" data-del="${i.id}" aria-label="Eliminar ${esc(i.name)}">Eliminar</button></td></tr>`).join("") || `<tr><td colspan="9" class="muted">Agrega tu primer insumo abajo.</td></tr>`}</tbody>
+    </table></div>
+    <form id="addF" class="form-grid" novalidate>
+      <label class="f">Nuevo insumo<input id="nName" placeholder="Ej. Plátano maduro" required></label>
+      <label class="f">Unidad<input id="nUnit" placeholder="kg, unid, litro" value="kg"></label>
+      <label class="f">Stock actual<input id="nStock" inputmode="decimal" value="0"></label>
+      <label class="f">Mínimo<input id="nMin" inputmode="decimal" value="0"></label>
+      <label class="f">Costo unitario ₡<input id="nCost" inputmode="numeric" value="0"></label>
+      <button class="btn main" type="submit">Agregar insumo</button>
+    </form>
+  </section>
+  <section class="box full" style="margin-top:14px"><h2>Últimos movimientos</h2>
+    <div class="moves">${inv.moves.slice(0, 40).map(m => `<div class="r"><span>${m.type === "in" ? "Entrada" : "Salida"} · <b>${esc(m.name)}</b>${m.note ? " · " + esc(m.note) : ""}</span><span class="num" style="color:${m.qty < 0 ? "var(--alert)" : "var(--ok)"};font-weight:700">${m.qty > 0 ? "+" : ""}${m.qty}</span><span class="note num">${new Date(m.at).toLocaleString("es-CR", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</span></div>`).join("") || `<p class="muted">Sin movimientos.</p>`}</div>
+    <p class="note" style="margin:0">Todo el inventario vive en un solo documento: 1 lectura al abrir esta pestaña y 1 escritura por cambio.</p></section>`;
+  const save = async (msg) => { try { await Store.saveInventory(inv); toast(msg); vInventario(); } catch (e) { console.error(e); toast("No se pudo guardar"); } };
+  const move = (id, sign) => {
+    const it = inv.items.find(i => i.id === id), q = Math.abs(num($("#q-" + id).value));
+    if (!q) { toast("Escribe la cantidad"); $("#q-" + id).focus(); return; }
+    it.stock = Math.max(0, Math.round((it.stock + sign * q) * 100) / 100);
+    inv.moves.unshift({ at: Date.now(), itemId: id, name: it.name, qty: sign * q, type: sign > 0 ? "in" : "out", note: "" }); inv.moves = inv.moves.slice(0, 200);
+    save((sign > 0 ? "Entrada" : "Salida") + " registrada: " + it.name);
+  };
+  $$("[data-in]").forEach(b => b.onclick = () => move(b.dataset.in, 1));
+  $$("[data-out]").forEach(b => b.onclick = () => move(b.dataset.out, -1));
+  $$("[data-del]").forEach(b => b.onclick = () => {
+    if (b.dataset.sure) { inv.items = inv.items.filter(i => i.id !== b.dataset.del); save("Insumo eliminado"); }
+    else { b.dataset.sure = 1; b.textContent = "¿Seguro?"; b.className = "btn danger sm"; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = "Eliminar"; b.className = "btn ghost sm"; } }, 3000); }
+  });
+  $("#addF").onsubmit = e => {
+    e.preventDefault(); const name = $("#nName").value.trim(); if (!name) { toast("Escribe el nombre del insumo"); return; }
+    inv.items.push({ id: "i" + Date.now().toString(36), name, unit: $("#nUnit").value.trim() || "unid", stock: num($("#nStock").value), min: num($("#nMin").value), cost: Math.round(num($("#nCost").value)) });
+    save("Insumo agregado: " + name);
+  };
+}
+
+/* ---------- Menú: agotados y precios ---------- */
+async function vMenu(){
+  const v = $("#view"); v.innerHTML = `<p class="muted">Cargando…</p>`;
+  try { if (!pub) pub = Object.assign({ soldOut: [], prices: {} }, await Store.getPublic()); } catch (e) { v.innerHTML = `<p class="err">No se pudo cargar.</p>`; return; }
+  const draft = { soldOut: new Set(pub.soldOut || []), prices: Object.assign({}, pub.prices || {}) };
+  v.innerHTML = `<p class="muted" style="margin-top:0">Marca lo que se acabó hoy y ajusta precios. Los clientes lo ven en su próxima visita. Platos nuevos, fotos y descripciones se cambian en <b>config.js</b>.</p>
+  ${C.categories.map(c => `<section class="box" style="margin-bottom:12px"><h2>${esc(c.name)}</h2>
+    ${C.menu.filter(m => m.cat === c.id).map(m => `<div class="dish-row"><div class="ph" style="background-image:${m.img ? `url('${m.img}'),` : ""}linear-gradient(135deg,${m.g[0]},${m.g[1]});background-size:cover;background-position:center"></div>
+      <div style="min-width:0"><b>${esc(m.name)}</b><div class="note">Precio base ${fmt(m.price)}</div></div>
+      <label class="amt"><span>₡</span><input id="p-${m.id}" inputmode="numeric" value="${draft.prices[m.id] || m.price}" aria-label="Precio de ${esc(m.name)}"></label>
+      <label class="sw"><input type="checkbox" id="s-${m.id}" ${draft.soldOut.has(m.id) ? "checked" : ""}> Agotado</label></div>`).join("")}</section>`).join("")}
+  <div class="save-bar"><button class="btn ghost" id="reset">Reactivar todo</button><button class="btn main" id="savePub">Guardar cambios</button></div>`;
+  $("#reset").onclick = () => $$("input[id^=s-]").forEach(i => i.checked = false);
+  $("#savePub").onclick = async () => {
+    const out = { soldOut: [], prices: {} };
+    C.menu.forEach(m => { if ($("#s-" + m.id).checked) out.soldOut.push(m.id); const p = Math.round(num($("#p-" + m.id).value)); if (p && p !== m.price) out.prices[m.id] = p; });
+    $("#savePub").disabled = true;
+    try { await Store.setPublic(out); pub = out; toast("Menú actualizado"); } catch (e) { console.error(e); toast("No se pudo guardar"); }
+    $("#savePub").disabled = false;
+  };
+}
+
+Store.init("owner").then(() => Store.onRole(role => role === "owner" ? start() : showLogin(role === "staff" ? "Este usuario es del salón, no del dueño." : null)))
+  .catch(e => { console.error(e); $("#app").innerHTML = `<div class="login"><h1>Sin conexión</h1><p class="muted">No se pudo conectar con Firebase. Revisa config.js y tu internet.</p></div>`; });
+})();
+</script>
+</body>
+</html>

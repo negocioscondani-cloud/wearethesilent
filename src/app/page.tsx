@@ -523,6 +523,9 @@ export default function Home() {
           <Link href="/vivianne-wolski" className="hover:text-[#D8B982] transition">
             Vivienne Wolski
           </Link>
+          <Link href="/mesaya" className="hover:text-[#D8B982] transition">
+            Menú QR · MesaYa
+          </Link>
           <Link href="/galeria" className="hover:text-[#D8B982] transition">
             {language === 'es' ? 'Galería' : 'Gallery'}
           </Link>

@@ -1,0 +1,65 @@
+rules_version = '2';
+// MesaYa · Reglas de Firestore
+// Cambia los correos por los del salón y del dueño de cada restaurante
+// (deben coincidir con staffEmails / ownerEmails en config.js).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner()  { return signedIn() && request.auth.token.email in ['dueno@sodalaceiba.com']; }
+    function isStaff()  { return isOwner() || (signedIn() && request.auth.token.email in ['salon@sodalaceiba.com']); }
+
+    match /restaurants/{rid} {
+
+      // Solicitudes: llamar mesero, cuenta, canje
+      match /requests/{id} {
+        allow create: if signedIn()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.status == 'pending'
+          && request.resource.data.type in ['call', 'bill', 'redeem', 'order'];
+        allow read: if isStaff() || (signedIn() && resource.data.uid == request.auth.uid);
+        // El cliente solo puede avisar "ya hice el SINPE"; todo lo demás lo hace el salón
+        allow update: if isStaff() || (signedIn()
+          && resource.data.uid == request.auth.uid
+          && resource.data.status == 'amount_sent'
+          && request.resource.data.status == 'reported_paid'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'rejected', 'reportedAt', 'updatedAt']));
+        allow delete: if false;
+      }
+
+      // Clientes del club de puntos (id = teléfono)
+      match /customers/{phone} {
+        allow read: if signedIn();
+        allow create: if signedIn() && request.resource.data.points == 0 && request.resource.data.phone == phone;
+        allow update: if isStaff() || (signedIn()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'email', 'birthday', 'promos']));
+        allow delete: if isOwner();
+      }
+
+      // Agotados y precios: lo lee cualquiera, lo cambia el dueño
+      match /public/{doc} {
+        allow read: if true;
+        allow write: if isOwner();
+      }
+
+      // Analítica diaria: la escribe el salón al confirmar pagos, la lee el dueño
+      match /stats/{day} {
+        allow read: if isOwner();
+        allow write: if isStaff();
+      }
+
+      // Calificaciones privadas
+      match /feedback/{id} {
+        allow create: if signedIn() && request.resource.data.rating is int
+          && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+          && request.resource.data.text is string && request.resource.data.text.size() <= 500;
+        allow read: if isOwner();
+      }
+
+      // Inventario
+      match /private/{doc} {
+        allow read, write: if isOwner();
+      }
+    }
+  }
+}
