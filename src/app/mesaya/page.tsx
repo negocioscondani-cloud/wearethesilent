@@ -33,7 +33,11 @@ type ViewMode = 'split' | 'client' | 'salon' | 'admin' | 'qr';
 
 export default function MesaYaShowcasePage() {
   const [viewMode, setViewMode] = useState<ViewMode>('split');
-  const mesa7Url = useMemo(() => `/mesaya/index.html?m=7&k=${computeMesaKey(7)}`, []);
+  const [activeMesa, setActiveMesa] = useState<number>(7);
+  const activeMesaUrl = useMemo(
+    () => `/mesaya/index.html?m=${activeMesa}&k=${computeMesaKey(activeMesa)}`,
+    [activeMesa]
+  );
 
   const whatsappOfferUrl = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
     '¡Hola! Vi la demo interactiva de MesaYa (Menú QR, Panel de Salón, SINPE Móvil, Puntos y Panel del Dueño) y me interesa cotizarlo para mi restaurante.'
@@ -102,7 +106,7 @@ export default function MesaYaShowcasePage() {
               </p>
             </div>
 
-            {/* Credentials Pill */}
+            {/* Credentials Pill & Table Switcher */}
             <div className="p-3.5 rounded-xl bg-[#12161A] border border-[#C5A059]/40 flex flex-wrap items-center gap-4 text-xs font-mono shrink-0">
               <div>
                 <span className="text-zinc-400 block text-[10px] uppercase">PIN Salón / Meseros</span>
@@ -115,8 +119,19 @@ export default function MesaYaShowcasePage() {
               </div>
               <span className="text-white/10">|</span>
               <div>
-                <span className="text-zinc-400 block text-[10px] uppercase">Mesa Activa</span>
-                <strong className="text-emerald-400 text-sm">Mesa 7</strong>
+                <span className="text-zinc-400 block text-[10px] uppercase">Mesa Simulada</span>
+                <select
+                  value={activeMesa}
+                  onChange={(e) => setActiveMesa(Number(e.target.value))}
+                  aria-label="Seleccionar Mesa Activa"
+                  className="bg-emerald-950/70 text-emerald-400 font-bold text-xs px-2 py-0.5 rounded border border-emerald-500/40 focus:outline-none cursor-pointer"
+                >
+                  {Array.from({ length: 14 }, (_, idx) => idx + 1).map((m) => (
+                    <option key={m} value={m} className="bg-[#12161A] text-white">
+                      Mesa {m}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
@@ -147,7 +162,7 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <Smartphone className="w-4 h-4" />
-                <span>1. Menú Cliente (Mesa 7)</span>
+                <span>1. Menú Cliente (Mesa {activeMesa})</span>
               </button>
 
               <button
@@ -186,19 +201,19 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <QrCode className="w-4 h-4" />
-                <span>4. QR de Mesas</span>
+                <span>4. Generador QR de Mesas</span>
               </button>
             </div>
 
             {/* Direct Fullscreen Links */}
             <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono">
               <a
-                href={mesa7Url}
+                href={activeMesaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#D8B982] border border-white/10 transition"
               >
-                <span>Abrir Menú</span>
+                <span>Abrir Menú (M{activeMesa})</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a
@@ -219,6 +234,15 @@ export default function MesaYaShowcasePage() {
                 <span>Abrir Admin</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
+              <a
+                href="/mesaya/mesas.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#C5A059]/15 hover:bg-[#C5A059]/25 text-[#E5C88D] border border-[#C5A059]/40 transition"
+              >
+                <span>Abrir Generador QR</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
           </div>
 
@@ -228,12 +252,12 @@ export default function MesaYaShowcasePage() {
               {/* Left: Mobile Client Menu */}
               <div className="lg:col-span-5 flex flex-col items-center bg-[#111518] border border-white/10 rounded-2xl p-4 shadow-2xl">
                 <div className="w-full flex items-center justify-between px-2 pb-3 mb-2 border-b border-white/10 text-xs font-mono">
-                  <span className="text-emerald-400 font-bold">📱 Cliente · Mesa 7</span>
+                  <span className="text-emerald-400 font-bold">📱 Cliente · Mesa {activeMesa}</span>
                   <span className="text-zinc-400">Pide o toca la campana 🔔</span>
                 </div>
                 <iframe
-                  src={mesa7Url}
-                  title="MesaYa Menú del Cliente Mesa 7"
+                  src={activeMesaUrl}
+                  title={`MesaYa Menú del Cliente Mesa ${activeMesa}`}
                   className="w-full max-w-[440px] h-[740px] rounded-xl border border-white/10 bg-white"
                 />
               </div>
@@ -258,9 +282,9 @@ export default function MesaYaShowcasePage() {
           {viewMode === 'client' && (
             <div className="flex flex-col items-center bg-[#111518] border border-white/10 rounded-2xl p-6 shadow-2xl">
               <div className="w-full max-w-[460px] flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-xs font-mono">
-                <span className="text-emerald-400 font-bold">📱 Vista Cliente · Mesa 7</span>
+                <span className="text-emerald-400 font-bold">📱 Vista Cliente · Mesa {activeMesa}</span>
                 <a
-                  href={mesa7Url}
+                  href={activeMesaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#D8B982] hover:underline flex items-center gap-1"
@@ -270,7 +294,7 @@ export default function MesaYaShowcasePage() {
                 </a>
               </div>
               <iframe
-                src={mesa7Url}
+                src={activeMesaUrl}
                 title="MesaYa Menú Cliente"
                 className="w-full max-w-[460px] h-[780px] rounded-xl border border-white/10 bg-white"
               />
