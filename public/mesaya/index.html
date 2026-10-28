@@ -287,32 +287,45 @@ function locate(){
 function gate(){
   if (S.presence && S.presence.state === "in" && Date.now() - S.presence.at < 10 * 60e3) return Promise.resolve(S.presence);
   return new Promise(resolve => {
+    let resolved = false;
+    const finish = v => {
+      if (resolved) return;
+      resolved = true;
+      if (v) S.presence = v;
+      closeSheet();
+      resolve(v);
+    };
+    const demoBtn = `<button class="btn main block" id="gSim">📍 Simular que estoy en el restaurante (Modo Demo)</button>`;
     openSheet(`<h3>Confirmando que estás en ${esc(R.name)}</h3>
       <div class="status"><span class="dot"></span>Revisando tu ubicación…</div>
-      <p class="muted" style="margin:0;font-size:13px">Solo la usamos para confirmar que estás en el restaurante. No guardamos tu ubicación exacta.</p>`, "gate");
+      <p class="muted" style="margin:0;font-size:13px">Solo la usamos para confirmar que estás en el restaurante. No guardamos tu ubicación exacta.</p>
+      ${demoBtn}`, "gate");
+    if ($("#gSim")) $("#gSim").onclick = () => finish({ state: "in", simulated: true, at: Date.now() });
     locate().then(p => {
+      if (resolved) return;
       p.at = Date.now();
-      const finish = v => { if (v) S.presence = v; closeSheet(); resolve(v); };
       if (p.state === "in") return finish(p);
-      const demoBtn = Store.mode() === "demo" ? `<button class="btn line block" id="gSim">Simular que estoy en el restaurante (solo demo)</button>` : "";
       if (p.state === "out") {
         openSheet(`<h3>Parece que no estás en el restaurante</h3>
           <div class="status" style="background:color-mix(in srgb,var(--alert) 12%,var(--surface))"><span class="dot alert"></span>Tu ubicación está a unos ${p.dist >= 1000 ? (p.dist/1000).toFixed(1) + " km" : p.dist + " m"} de ${esc(R.name)}.</div>
-          <p class="muted" style="margin:0">Para llamar al mesero, pedir la cuenta o canjear puntos tienes que estar en tu mesa. Si ya estás aquí, activa el GPS y vuelve a intentarlo.</p>
-          <button class="btn brand block" id="gRetry">Volver a intentar</button>${demoBtn}<button class="btn ghost block" id="gNo">Cerrar</button>`, "gate");
+          <p class="muted" style="margin:0">Para hacer pedidos, llamar al mesero, pedir la cuenta o canjear puntos tienes que estar en tu mesa (o usar el botón de simulación demo).</p>
+          ${demoBtn}
+          <button class="btn line block" id="gRetry">Volver a intentar con GPS</button>
+          <button class="btn ghost block" id="gNo">Cerrar</button>`, "gate");
       } else {
         const strict = RULES.requireLocation === "strict";
         openSheet(`<h3>No pudimos ver tu ubicación</h3>
           <div class="status"><span class="dot"></span>${esc(p.why)}</div>
-          <p class="muted" style="margin:0">${strict ? "Activa la ubicación del navegador para usar las funciones de mesa." : "Puedes seguir, pero el salón verá que tu solicitud no tiene ubicación confirmada."}</p>
-          <button class="btn brand block" id="gRetry">Volver a intentar</button>
-          ${strict ? demoBtn : `<button class="btn line block" id="gGo">Seguir sin ubicación</button>`}
+          <p class="muted" style="margin:0">${strict ? "Activa la ubicación del navegador o simula tu ubicación demo para usar las funciones de mesa." : "Puedes seguir, pero el salón verá que tu solicitud no tiene ubicación confirmada."}</p>
+          ${demoBtn}
+          <button class="btn line block" id="gRetry">Volver a intentar con GPS</button>
+          ${!strict ? `<button class="btn line block" id="gGo">Seguir sin ubicación</button>` : ""}
           <button class="btn ghost block" id="gNo">Cerrar</button>`, "gate");
       }
       const b = id => $("#" + id);
       if (b("gRetry")) b("gRetry").onclick = () => { S.presence = null; gate().then(resolve); };
       if (b("gSim")) b("gSim").onclick = () => finish({ state: "in", simulated: true, at: Date.now() });
-      if (b("gGo")) b("gGo").onclick = () => { closeSheet(); resolve(p); };
+      if (b("gGo")) b("gGo").onclick = () => { if (!resolved) { resolved = true; closeSheet(); resolve(p); } };
       if (b("gNo")) b("gNo").onclick = () => finish(null);
     });
   });
@@ -323,7 +336,8 @@ function needTable(){
   if (sessionValid(S.session)) return true;
   const closed = S.session && S.session.closed;
   openSheet(`<h3>${closed ? "Tu visita terminó" : "Escanea el QR de tu mesa"}</h3>
-    <p class="muted" style="margin:0">${closed ? "Gracias por visitarnos. Si sigues en el restaurante, escanea de nuevo el código de tu mesa." : "Para llamar al mesero, pedir la cuenta o jugar por puntos, escanea el código QR que está en tu mesa. Así sabemos a qué mesa ir."}</p>
+    <p class="muted" style="margin:0">${closed ? "Gracias por visitarnos. Si sigues en el restaurante, escanea de nuevo el código de tu mesa." : "Para hacer pedidos, llamar al mesero, pedir la cuenta o jugar por puntos, escanea el código QR que está en tu mesa. Así sabemos a qué mesa ir."}</p>
+    <a class="btn main block" href="?m=7&k=${Store.tableKey(7)}" style="text-align:center;text-decoration:none">🪑 Entrar como Mesa 7 (Modo Demo)</a>
     <button class="btn ghost block" id="x">Entendido</button>`);
   $("#x").onclick = closeSheet;
   return false;
@@ -385,8 +399,8 @@ function wireDishes(root){ $$("[data-dish]", root || document).forEach(b => b.on
 /* Inicio */
 function vInicio(){
   const pop = C.menu.filter(m => m.popular), o = openNow();
-  const demo = Store.mode() === "demo" && !sessionValid(S.session)
-    ? `<div class="pad sec"><div class="demo"><b>Modo demo</b><span class="muted">En producción el cliente entra escaneando el QR de su mesa. Para probar:</span><a class="btn main sm" href="?m=7&k=${Store.tableKey(7)}">Entrar como Mesa 7</a></div></div>` : "";
+  const demo = !sessionValid(S.session)
+    ? `<div class="pad sec"><div class="demo"><b>Modo demo</b><span class="muted">En producción el cliente entra escaneando el QR de su mesa. Para probar pedidos y llamados:</span><a class="btn main sm" href="?m=7&k=${Store.tableKey(7)}">Entrar como Mesa 7</a></div></div>` : "";
   return `
   <div class="stories" aria-label="Lo más pedido">${pop.map(d => `<button class="story" data-dish="${d.id}"><span class="ring"><span class="ph" style="${bg(d)}"></span></span><span>${esc(d.name)}</span></button>`).join("")}</div>
   <section class="hero"><div class="hero-in">
