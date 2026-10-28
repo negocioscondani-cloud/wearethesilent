@@ -187,13 +187,96 @@ function start(){
       <a class="btn line sm" href="mesas.html">QR de mesas</a>
       <button class="btn ghost sm" id="out">Salir</button>
     </div></div>
-    <nav class="nav" aria-label="Secciones"><button data-t="resumen">Estadísticas (Resumen)</button><button data-t="menu">Menú, Productos y Fotos</button><button data-t="inventario">Inventario</button></nav>
+    <nav class="nav" aria-label="Secciones"><button data-t="resumen">Estadísticas (Resumen)</button><button data-t="menu">Menú, Productos y Fotos</button><button data-t="clientes">Clientes y Puntos</button><button data-t="inventario">Inventario</button></nav>
     <div id="view"></div>`;
   $$(".nav button").forEach(b => b.onclick = () => { tab = b.dataset.t; show(); });
   $("#out").onclick = async () => { started = false; await Store.logout(); showLogin(); };
   show();
 }
-function show(){ $$(".nav button").forEach(b => { if (b.dataset.t === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }); ({ resumen: vResumen, inventario: vInventario, menu: vMenu })[tab](); }
+function show(){ $$(".nav button").forEach(b => { if (b.dataset.t === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); }); ({ resumen: vResumen, inventario: vInventario, menu: vMenu, clientes: vClientes })[tab](); }
+
+/* ---------- Clientes y Club de Puntos (CRM) ---------- */
+async function vClientes(){
+  const v = $("#view");
+  v.innerHTML = `<p class="muted">Cargando clientes del Club de Puntos…</p>`;
+  let custs = [];
+  try { custs = await Store.listCustomers(); } catch (e) { console.error(e); }
+  const totalPts = custs.reduce((a, c) => a + (c.points || 0), 0);
+  const withEmail = custs.filter(c => c.email).length;
+
+  v.innerHTML = `
+  <div class="kpis" style="margin-top:0">
+    <div class="kpi"><b class="num">${custs.length}</b><span>Clientes registrados</span></div>
+    <div class="kpi"><b class="num">${withEmail}</b><span>Con correo verificado</span></div>
+    <div class="kpi"><b class="num">${totalPts}</b><span>Puntos activos en el club</span></div>
+  </div>
+  <section class="box full">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <h2>Base de datos de clientes y puntos</h2>
+        <p class="sub" style="margin:2px 0 0">Se registran desde el Menú QR con Google o con su correo y teléfono.</p>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Correo electrónico</th>
+            <th>Teléfono</th>
+            <th>Cumpleaños</th>
+            <th class="n">Visitas</th>
+            <th class="n">Puntos</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${custs.map(c => {
+            const shownPhone = c.displayPhone || (String(c.phone || "").startsWith("g_") ? "—" : c.phone);
+            return `<tr>
+              <td><b>${esc(c.name || "Cliente")}</b> ${c.provider === "google" ? '<span class="chip" style="font-size:10px">Google</span>' : ""}</td>
+              <td>${c.email ? esc(c.email) : '<span class="muted">Sin correo</span>'}</td>
+              <td class="num">${esc(shownPhone)}</td>
+              <td class="num">${c.birthday ? esc(c.birthday) : "—"}</td>
+              <td class="n">${c.visits || 0}</td>
+              <td class="n"><b style="color:var(--brand);font-size:16px">${c.points || 0} pts</b></td>
+              <td>
+                <div class="mv">
+                  <button class="btn brand sm" type="button" data-gift="${esc(c.phone)}" title="Regalar +10 puntos">+10 pts</button>
+                  ${c.email ? `<button class="btn line sm" type="button" data-mail="${esc(c.phone)}" title="Enviar correo de confirmación y puntos">📩 Enviar correo</button>` : ""}
+                </div>
+              </td>
+            </tr>`;
+          }).join("") || `<tr><td colspan="7" class="muted" style="text-align:center;padding:24px">Todavía no hay clientes registrados. Regístrate en el Menú del Cliente (sección Puntos o Perfil) con Google o correo para verlo aparecer aquí en tiempo real.</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  </section>`;
+
+  $$("[data-gift]").forEach(btn => {
+    btn.onclick = async () => {
+      const key = btn.dataset.gift;
+      btn.disabled = true;
+      await Store.addPoints(key, 10, { type: "visit", date: Date.now(), amount: 0, pts: 10, reward: "Bono de cortesía" });
+      toast("+10 puntos acreditados al cliente");
+      vClientes();
+    };
+  });
+
+  $$("[data-mail]").forEach(btn => {
+    btn.onclick = async () => {
+      const key = btn.dataset.mail;
+      const c = custs.find(x => x.phone === key);
+      if (!c || !c.email) return;
+      btn.disabled = true;
+      btn.textContent = "Enviando…";
+      await Store.sendWelcomeEmail(c);
+      toast("Correo de confirmación y puntos enviado a " + c.email);
+      btn.disabled = false;
+      btn.textContent = "📩 Enviar correo";
+    };
+  });
+}
 
 /* ---------- gráficos SVG ---------- */
 function niceScale(v){ if (v <= 0) return { max: 4, ticks: 4 }; const p = Math.pow(10, Math.floor(Math.log10(v))), f = v / p;

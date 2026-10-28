@@ -401,49 +401,256 @@
       return () => { unsubLocal(); unsubFb(); };
     },
 
-    /* ----- clientes y puntos ----- */
-    async getCustomer(phone) {
-      if (mode === "demo") return dread().customers[phone] || null;
-      try {
-        const s = await custs().doc(phone).get();
-        if (s.exists) return s.data();
-      } catch (e) { console.warn("getCustomer fallback:", e); }
-      return dread().customers[phone] || null;
+    /* ----- clientes, puntos, login con Google y correo de bienvenida ----- */
+    async getCustomer(key) {
+      if (!key) return null;
+      const cleanKey = String(key).trim();
+      if (mode !== "demo") {
+        try {
+          const s = await custs().doc(cleanKey).get();
+          if (s.exists) {
+            const data = Object.assign({ phone: cleanKey }, s.data());
+            const d = dread();
+            d.customers[cleanKey] = data;
+            lsSet(DKEY, d);
+            return data;
+          }
+        } catch (e) { console.warn("getCustomer fallback:", e); }
+      }
+      return dread().customers[cleanKey] || null;
+    },
+
+    async findCustomer({ phone, email }) {
+      const pClean = (phone || "").replace(/\D/g, "");
+      const eClean = (email || "").trim().toLowerCase();
+
+      if (pClean) {
+        const byPhone = await this.getCustomer(pClean);
+        if (byPhone) return byPhone;
+      }
+
+      if (eClean) {
+        const emailKey = "g_" + eClean.replace(/[^a-z0-9]/g, "_");
+        const byEmailKey = await this.getCustomer(emailKey);
+        if (byEmailKey) return byEmailKey;
+
+        if (mode !== "demo") {
+          try {
+            const q = await custs().where("emailLower", "==", eClean).limit(1).get();
+            if (!q.empty) {
+              const doc = q.docs[0];
+              const data = Object.assign({ phone: doc.id }, doc.data());
+              const d = dread();
+              d.customers[doc.id] = data;
+              lsSet(DKEY, d);
+              return data;
+            }
+          } catch (e) { console.warn("findCustomer by email query fallback:", e); }
+        }
+
+        const localAll = Object.values(dread().customers || {});
+        const foundLocal = localAll.find((c) => c && (c.email || "").toLowerCase() === eClean);
+        if (foundLocal) return foundLocal;
+      }
+      return null;
     },
 
     async createCustomer(c) {
-      const doc = Object.assign({}, c, { points: 0, visits: 0, redeems: 0, history: [], createdAt: Date.now() });
+      const eClean = (c.email || "").trim().toLowerCase();
+      const key = (c.phone && String(c.phone).replace(/\D/g, "")) || (eClean ? "g_" + eClean.replace(/[^a-z0-9]/g, "_") : "c_" + newId());
+      const doc = Object.assign(
+        {
+          phone: key,
+          displayPhone: c.displayPhone || (key.startsWith("g_") ? "" : key),
+          name: c.name || "Cliente",
+          email: (c.email || "").trim(),
+          emailLower: eClean,
+          birthday: c.birthday || "",
+          promos: c.promos !== undefined ? !!c.promos : true,
+          photoURL: c.photoURL || "",
+          provider: c.provider || "form",
+          likes: Array.isArray(c.likes) ? c.likes : [],
+          points: c.points || 0,
+          visits: c.visits || 0,
+          redeems: c.redeems || 0,
+          history: Array.isArray(c.history) ? c.history : [],
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        },
+        c,
+        { phone: key, emailLower: eClean }
+      );
       const d = dread();
-      d.customers[c.phone] = doc;
+      d.customers[key] = doc;
       dwrite(d);
-      if (mode === "demo") return doc;
-      try { await custs().doc(c.phone).set(doc); } catch (e) { console.warn("createCustomer fallback:", e); }
+      if (mode !== "demo") {
+        try { await custs().doc(key).set(doc, { merge: true }); } catch (e) { console.warn("createCustomer fallback:", e); }
+      }
       return doc;
     },
 
-    async updateCustomerInfo(phone, patch) {
-      const p = { name: patch.name, email: patch.email || "", birthday: patch.birthday || "", promos: !!patch.promos };
+    async updateCustomerInfo(phoneKey, patch) {
+      const eClean = (patch.email || "").trim().toLowerCase();
+      const p = {
+        name: patch.name,
+        email: (patch.email || "").trim(),
+        emailLower: eClean,
+        birthday: patch.birthday || "",
+        promos: !!patch.promos,
+        updatedAt: Date.now()
+      };
+      if (patch.displayPhone !== undefined) p.displayPhone = patch.displayPhone;
+      if (Array.isArray(patch.likes)) p.likes = patch.likes;
       const d = dread();
-      if (d.customers[phone]) { Object.assign(d.customers[phone], p); dwrite(d); }
+      if (d.customers[phoneKey]) { Object.assign(d.customers[phoneKey], p); dwrite(d); }
       if (mode === "demo") return;
-      try { await custs().doc(phone).set(p, { merge: true }); } catch (e) { console.warn("updateCustomerInfo fallback:", e); }
+      try { await custs().doc(phoneKey).set(p, { merge: true }); } catch (e) { console.warn("updateCustomerInfo fallback:", e); }
     },
 
-    async addPoints(phone, delta, entry) {
+    async updateCustomerLikes(phoneKey, likesArr) {
+      if (!phoneKey) return;
       const d = dread();
-      const c = d.customers[phone];
-      if (c) {
-        c.points = Math.max(0, (c.points || 0) + delta);
-        if (entry) {
-          c.history = [entry].concat(c.history || []).slice(0, 30);
-          if (entry.type === "visit") c.visits = (c.visits || 0) + 1;
-          if (entry.type === "redeem") c.redeems = (c.redeems || 0) + 1;
-        }
+      if (d.customers[phoneKey]) {
+        d.customers[phoneKey].likes = likesArr;
         dwrite(d);
       }
       if (mode === "demo") return;
+      try { await custs().doc(phoneKey).set({ likes: likesArr, updatedAt: Date.now() }, { merge: true }); } catch (e) {}
+    },
+
+    watchCustomer(phoneKey, cb) {
+      if (!phoneKey) return () => {};
+      let last = "";
+      const emit = (c) => {
+        if (!c) return;
+        const s = JSON.stringify(c);
+        if (s !== last) { last = s; cb(c); }
+      };
+      const unsubLocal = dwatch(() => emit(dread().customers[phoneKey]));
+      if (mode === "demo") return unsubLocal;
+      const unsubFb = custs().doc(phoneKey).onSnapshot(
+        (s) => {
+          if (s.exists) {
+            const data = Object.assign({ phone: s.id }, s.data());
+            const d = dread();
+            d.customers[phoneKey] = data;
+            lsSet(DKEY, d);
+            emit(data);
+          }
+        },
+        (e) => console.warn("watchCustomer warning:", e)
+      );
+      return () => { unsubLocal(); unsubFb(); };
+    },
+
+    async clientLoginWithGoogle(currentLikes = []) {
+      if (mode === "demo") {
+        throw new Error("Conecta Firebase para usar Google Sign-In");
+      }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const cred = await auth.signInWithPopup(provider);
+      const u = cred.user;
+      if (!u) throw new Error("No se pudo obtener el perfil de Google");
+      uid = u.uid;
+
+      const email = (u.email || "").trim();
+      const name = (u.displayName || email.split("@")[0] || "Cliente").trim();
+      const existing = await this.findCustomer({ email });
+      if (existing) {
+        const mergedLikes = Array.from(new Set([...(existing.likes || []), ...currentLikes]));
+        existing.name = existing.name || name;
+        existing.email = existing.email || email;
+        existing.photoURL = u.photoURL || existing.photoURL || "";
+        existing.likes = mergedLikes;
+        await this.updateCustomerInfo(existing.phone, existing);
+        return { customer: existing, isNew: false };
+      }
+
+      const created = await this.createCustomer({
+        name,
+        email,
+        photoURL: u.photoURL || "",
+        provider: "google",
+        promos: true,
+        likes: currentLikes
+      });
+      return { customer: created, isNew: true };
+    },
+
+    async sendWelcomeEmail(customer) {
+      if (!customer || !customer.email) return { ok: false };
+      const payload = {
+        email: customer.email,
+        name: customer.name || "Cliente",
+        phone: customer.displayPhone || (String(customer.phone || "").startsWith("g_") ? "" : customer.phone),
+        points: customer.points || 0,
+        restaurantName: C.restaurant.name,
+        restaurantPhone: C.restaurant.phone,
+        restaurantAddress: C.restaurant.address
+      };
+      let apiRes = { ok: true, email: customer.email, sentAt: Date.now() };
       try {
-        const upd = { points: FV.increment(delta) };
+        const res = await fetch("/api/mesaya-welcome", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) apiRes = await res.json();
+      } catch (e) {
+        console.warn("sendWelcomeEmail API warning:", e);
+      }
+      if (mode !== "demo" && db) {
+        try {
+          await rdoc().collection("mail").add({
+            to: [customer.email],
+            customerKey: customer.phone,
+            customerName: customer.name,
+            createdAt: Date.now(),
+            message: {
+              subject: apiRes.subject || `¡Bienvenido al Club de Puntos de ${C.restaurant.name}!`,
+              html: apiRes.html || `<p>Hola ${customer.name}, gracias por registrarte en ${C.restaurant.name}. Tu saldo actual es de ${customer.points || 0} puntos.</p>`
+            }
+          });
+        } catch (e) { console.warn("Firestore mail collection log warning:", e); }
+      }
+      return apiRes;
+    },
+
+    async listCustomers() {
+      const d = dread();
+      const map = Object.assign({}, d.customers || {});
+      if (mode !== "demo") {
+        try {
+          const q = await custs().get();
+          q.docs.forEach((doc) => {
+            map[doc.id] = Object.assign({ phone: doc.id }, doc.data());
+          });
+          d.customers = map;
+          lsSet(DKEY, d);
+        } catch (e) { console.warn("listCustomers fallback:", e); }
+      }
+      return Object.values(map).sort((a, b) => (b.points || 0) - (a.points || 0) || (b.createdAt || 0) - (a.createdAt || 0));
+    },
+
+    async addPoints(phone, delta, entry) {
+      if (!phone) return;
+      const d = dread();
+      let c = d.customers[phone];
+      if (!c) {
+        c = { phone, name: "Cliente", points: 0, visits: 0, redeems: 0, history: [], createdAt: Date.now() };
+        d.customers[phone] = c;
+      }
+      c.points = Math.max(0, (c.points || 0) + delta);
+      if (entry) {
+        c.history = [entry].concat(c.history || []).slice(0, 30);
+        if (entry.type === "visit") c.visits = (c.visits || 0) + 1;
+        if (entry.type === "redeem") c.redeems = (c.redeems || 0) + 1;
+      }
+      dwrite(d);
+      if (mode === "demo") return;
+      try {
+        const upd = { points: FV.increment(delta), updatedAt: Date.now() };
         if (entry) {
           upd.history = FV.arrayUnion(entry);
           if (entry.type === "visit") upd.visits = FV.increment(1);

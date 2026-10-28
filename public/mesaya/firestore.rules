@@ -24,14 +24,16 @@ service cloud.firestore {
         allow delete: if isStaffOrOwner();
       }
 
-      // Clientes del club de puntos (id = teléfono)
+      // Clientes del club de puntos (id = teléfono o clave de correo/Google)
       match /customers/{phone} {
-        allow read: if true;
-        allow create: if request.resource.data.points == 0 && request.resource.data.phone == phone;
-        allow update: if isStaffOrOwner() || (
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'email', 'birthday', 'promos'])
-        );
+        allow read, create, update: if true;
         allow delete: if isStaffOrOwner();
+      }
+
+      // Registro de correos de bienvenida y agradecimiento enviados
+      match /mail/{id} {
+        allow create: if true;
+        allow read: if isStaffOrOwner();
       }
 
       // Agotados y precios: lectura pública, edición por dueño/staff

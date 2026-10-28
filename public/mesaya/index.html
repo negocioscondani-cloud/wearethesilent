@@ -439,7 +439,14 @@ function wMenu(){
 }
 function toggleLike(id, btn){
   if (S.likes.has(id)) S.likes.delete(id); else S.likes.add(id);
-  ls.set(LKEY, Array.from(S.likes)); if (btn) btn.setAttribute("aria-pressed", S.likes.has(id));
+  const arr = Array.from(S.likes);
+  ls.set(LKEY, arr);
+  if (S.me && S.me.phone && Store.updateCustomerLikes) {
+    S.me.likes = arr;
+    saveMe();
+    Store.updateCustomerLikes(S.me.phone, arr);
+  }
+  if (btn) btn.setAttribute("aria-pressed", S.likes.has(id));
 }
 function openDish(id){
   const d = dish(id); if (!d) return;
@@ -620,8 +627,16 @@ function setupScratch(){
     for (let i = 3; i < d.length; i += 64) { tot++; if (d[i] === 0) clear++; }
     if (clear / tot > 0.5 && S.session.bonus.scratch == null) {
       S.session.bonus.scratch = S.session.prize; saveSession(); cv.style.transition = "opacity .4s"; cv.style.opacity = 0; setTimeout(() => cv.remove(), 450);
-      $("#scrMsg").textContent = S.session.prize ? `¡Ganaste ${S.session.prize} puntos! Se suman cuando pagues tu cuenta.` : "Esta vez no hubo premio. ¡Suerte en tu próxima visita!";
-      if (S.session.prize) toast("+" + S.session.prize + " puntos guardados para tu cuenta");
+      if (S.session.prize && S.me && S.me.phone && !S.session.bonusScratchApplied) {
+        S.session.bonusScratchApplied = true;
+        saveSession();
+        Store.addPoints(S.me.phone, S.session.prize, { type: "visit", date: Date.now(), amount: 0, pts: S.session.prize, reward: "Raspa y Gana" }).then(async () => {
+          const fresh = await Store.getCustomer(S.me.phone);
+          if (fresh) { S.me = fresh; saveMe(); }
+        }).catch(() => {});
+      }
+      $("#scrMsg").textContent = S.session.prize ? `¡Ganaste +${S.session.prize} puntos! Ya se sumaron a tu cuenta.` : "Esta vez no hubo premio. ¡Suerte en tu próxima visita!";
+      if (S.session.prize) toast("+" + S.session.prize + " puntos guardados en tu cuenta");
       if ($("#bonusChip")) $("#bonusChip").textContent = "+" + bonusTotal() + " pts hoy";
     }
   }
@@ -629,7 +644,21 @@ function setupScratch(){
 function runTrivia(i, score){
   const box = $("#trivia");
   if (i >= C.trivia.length) {
-    if (S.session) { S.session.trivia = { done: true, score }; if (score === C.trivia.length && sessionValid(S.session)) { S.session.bonus = S.session.bonus || {}; S.session.bonus.trivia = RULES.triviaBonus; } saveSession(); box.innerHTML = triviaResult(); if ($("#bonusChip")) $("#bonusChip").textContent = "+" + bonusTotal() + " pts hoy"; }
+    if (S.session) {
+      S.session.trivia = { done: true, score };
+      if (score === C.trivia.length && sessionValid(S.session)) {
+        S.session.bonus = S.session.bonus || {};
+        S.session.bonus.trivia = RULES.triviaBonus;
+        if (S.me && S.me.phone && !S.session.bonusTriviaApplied) {
+          S.session.bonusTriviaApplied = true;
+          Store.addPoints(S.me.phone, RULES.triviaBonus, { type: "visit", date: Date.now(), amount: 0, pts: RULES.triviaBonus, reward: "Trivia tica" }).then(async () => {
+            const fresh = await Store.getCustomer(S.me.phone);
+            if (fresh) { S.me = fresh; saveMe(); }
+          }).catch(() => {});
+        }
+      }
+      saveSession(); box.innerHTML = triviaResult(); if ($("#bonusChip")) $("#bonusChip").textContent = "+" + bonusTotal() + " pts hoy";
+    }
     else box.innerHTML = `<div class="status"><span class="dot ${score === C.trivia.length ? "ok" : ""}"></span>Acertaste ${score} de ${C.trivia.length}</div>`;
     return;
   }
@@ -642,69 +671,235 @@ function runTrivia(i, score){
   });
 }
 
+/* ---------- suscripción en tiempo real a los puntos y datos del cliente ---------- */
+let unsubMe = null;
+function bindCustomerWatch(){
+  if (unsubMe) { unsubMe(); unsubMe = null; }
+  if (!S.me || !S.me.phone || !Store.watchCustomer) return;
+  unsubMe = Store.watchCustomer(S.me.phone, (fresh) => {
+    if (!fresh) return;
+    S.me = fresh;
+    if (Array.isArray(fresh.likes) && fresh.likes.length) {
+      fresh.likes.forEach(id => S.likes.add(id));
+      ls.set(LKEY, Array.from(S.likes));
+    }
+    saveMe();
+    if (["puntos", "perfil"].includes(S.tab)) render();
+  });
+}
+
+function showWelcomeEmailSheet(customer, isResend = false){
+  if (!customer || !customer.email) return;
+  openSheet(`
+    <div style="text-align:center;display:grid;gap:10px">
+      <div style="width:52px;height:52px;border-radius:50%;background:color-mix(in srgb,var(--ok) 18%,var(--surface));color:var(--ok);display:grid;place-items:center;margin:0 auto;font-size:24px;font-weight:800">✓</div>
+      <h3 style="margin:0">${isResend ? "Correo de puntos enviado" : "¡Bienvenido al Club de " + esc(R.name) + "!"}</h3>
+      <p class="muted" style="margin:0;font-size:13.5px">Enviamos un correo de confirmación y agradecimiento a <b style="color:var(--fg)">${esc(customer.email)}</b></p>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface-2);font-size:13.5px">
+      <div style="background:var(--brand);color:var(--brand-ink);padding:12px 14px;text-align:center">
+        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;opacity:.85">Vista previa del correo enviado</span>
+        <div style="font-family:var(--display);font-weight:800;font-size:18px;margin-top:2px">¡Gracias por registrarte, ${esc((customer.name || "Cliente").split(" ")[0])}!</div>
+      </div>
+      <div style="padding:14px;display:grid;gap:8px">
+        <div>Hola <b>${esc(customer.name)}</b>, tu cuenta del Club de Puntos de <b>${esc(R.name)}</b> está activa y sincronizada en la nube.</div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center">
+          <span class="muted" style="font-size:11px;display:block">SALDO ACTUAL GUARDADO</span>
+          <b style="font-family:var(--display);font-size:28px;color:var(--brand)">${customer.points || 0} puntos</b>
+        </div>
+        <div class="muted" style="font-size:12px">Puedes acceder siempre a tus puntos entrando con Google o con tu correo <b>${esc(customer.email)}</b>.</div>
+      </div>
+    </div>
+    <button class="btn main block" id="wOk">Ver mis puntos y beneficios</button>
+  `, "welcome");
+  if ($("#wOk")) $("#wOk").onclick = () => { closeSheet(); render(); };
+}
+
 /* Perfil */
 function vPerfil(){
   const me = S.me;
-  if (!me) return `<section class="pad sec"><h2 style="font-size:26px">Crea tu cuenta</h2>
-    <p class="muted">Junta puntos en cada visita y cámbialos por premios. Solo te pedimos lo necesario.</p>
+  if (!me) return `<section class="pad sec"><h2 style="font-size:26px">Tu cuenta y puntos</h2>
+    <p class="muted">Regístrate o entra con Google o tu correo para guardar tus puntos, platos favoritos y recibir confirmación en tu correo.</p>
     ${profileForm({})}</section>`;
-  const initials = me.name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  const initials = (me.name || "C").split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
   const liked = C.menu.filter(m => S.likes.has(m.id));
   const s = S.session;
+  const shownPhone = me.displayPhone || (String(me.phone || "").startsWith("g_") ? "" : me.phone);
   return `<section class="pad sec">
-    <div class="prof"><div class="avatar"><div>${esc(initials)}</div></div>
-      <div class="stats"><div><b class="num">${me.points || 0}</b><span>Puntos</span></div><div><b class="num">${me.visits || 0}</b><span>Visitas</span></div><div><b class="num">${me.redeems || 0}</b><span>Canjes</span></div></div></div>
-    <div style="margin-top:12px"><b style="font-size:17px">${esc(me.name)}</b><div class="muted num">${esc(me.phone.replace(/(\d{4})(\d{4})/, "$1-$2"))}${me.email ? " · " + esc(me.email) : ""}</div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px"><button class="btn ghost sm" id="editMe">Editar datos</button><button class="btn ghost sm" id="logout">Cerrar sesión</button></div>
+    <div class="prof">
+      <div class="avatar"><div style="${me.photoURL ? `background-image:url('${esc(me.photoURL)}');background-size:cover;background-position:center;color:transparent` : ""}">${esc(initials)}</div></div>
+      <div class="stats"><div><b class="num">${me.points || 0}</b><span>Puntos</span></div><div><b class="num">${me.visits || 0}</b><span>Visitas</span></div><div><b class="num">${me.redeems || 0}</b><span>Canjes</span></div></div>
+    </div>
+    <div style="margin-top:12px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <b style="font-size:17px">${esc(me.name)}</b>
+        <span class="chip ok" style="font-size:11px">Puntos sincronizados</span>
+      </div>
+      <div class="muted num" style="margin-top:2px">
+        ${shownPhone ? esc(shownPhone.replace(/(\d{4})(\d{4})/, "$1-$2")) : ""}${shownPhone && me.email ? " · " : ""}${me.email ? esc(me.email) : ""}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+      <button class="btn ghost sm" id="editMe">Editar datos</button>
+      <button class="btn ghost sm" id="logout">Cerrar sesión</button>
+    </div>
+    ${me.email ? `<button class="btn line block sm" id="resendMail" style="margin-top:8px">📩 Enviar confirmación y resumen de puntos a mi correo</button>` : ""}
   </section>
   <section class="pad sec"><div class="sec-h"><h2>Tu visita</h2></div>
     <div class="info"><div class="r"><div><div class="k">Mesa</div><div class="v">${sessionValid(s) ? "Mesa " + s.mesa : (s && s.closed ? "Visita cerrada" : "Sin mesa activa")}</div></div>${sessionValid(s) ? `<span class="chip ok">Activa</span>` : ""}</div>
     ${sessionValid(s) ? `<div class="r"><div><div class="k">Válida hasta</div><div class="v num">${new Date(s.start + RULES.sessionHours * 3600e3).toLocaleTimeString("es-CR", { hour: "numeric", minute: "2-digit" })}</div></div></div>
-    <div class="r"><div><div class="k">Puntos de juegos por sumar</div><div class="v num">+${bonusTotal()}</div></div></div>` : ""}</div></section>
-  ${liked.length ? `<section class="pad sec"><div class="sec-h"><h2>Te gustaron</h2></div><div class="mini-grid">${liked.map(d => `<button data-dish="${d.id}" style="${bg(d)}" aria-label="${esc(d.name)}"></button>`).join("")}</div></section>` : ""}
-  <section class="pad sec"><div class="sec-h"><h2>Historial</h2></div>
-    ${(me.history || []).length ? `<div class="hist">${me.history.slice(0, 15).map(h => `<div class="r"><span>${h.type === "redeem" ? "Canje · " + esc(h.reward) : "Visita · " + fmt(h.amount)}<br><span class="muted num" style="font-size:12.5px">${new Date(h.date).toLocaleDateString("es-CR", { day: "numeric", month: "short" })}</span></span><b class="num" style="color:${h.pts < 0 ? "var(--alert)" : "var(--ok)"}">${h.pts > 0 ? "+" : ""}${h.pts}</b></div>`).join("")}</div>`
-      : `<p class="muted">Aquí verás tus visitas y canjes.</p>`}</section>`;
+    <div class="r"><div><div class="k">Puntos de juegos hoy</div><div class="v num">+${bonusTotal()}</div></div></div>` : ""}</div></section>
+  ${liked.length ? `<section class="pad sec"><div class="sec-h"><h2>Te gustaron (${liked.length})</h2></div><div class="mini-grid">${liked.map(d => `<button data-dish="${d.id}" style="${bg(d)}" aria-label="${esc(d.name)}"></button>`).join("")}</div></section>` : ""}
+  <section class="pad sec"><div class="sec-h"><h2>Historial de puntos</h2></div>
+    ${(me.history || []).length ? `<div class="hist">${me.history.slice(0, 15).map(h => `<div class="r"><span>${h.type === "redeem" ? "Canje · " + esc(h.reward) : (h.reward ? esc(h.reward) : "Visita · " + fmt(h.amount))}<br><span class="muted num" style="font-size:12.5px">${new Date(h.date).toLocaleDateString("es-CR", { day: "numeric", month: "short" })}</span></span><b class="num" style="color:${h.pts < 0 ? "var(--alert)" : "var(--ok)"}">${h.pts > 0 ? "+" : ""}${h.pts}</b></div>`).join("")}</div>`
+      : `<p class="muted">Aquí verás tus visitas, puntos de juegos y canjes.</p>`}</section>`;
 }
 function profileForm(v){
-  return `<form class="stack" id="meForm" novalidate>
-    <label class="f">Nombre<input id="fName" required autocomplete="name" value="${esc(v.name || "")}"></label>
-    <label class="f">Teléfono (8 dígitos)<input id="fPhone" inputmode="numeric" autocomplete="tel" maxlength="9" value="${esc(v.phone || "")}" ${v.phone ? "readonly" : ""}></label>
-    <label class="f">Correo (opcional)<input id="fEmail" type="email" autocomplete="email" value="${esc(v.email || "")}"></label>
-    <label class="f">Cumpleaños (opcional, para tu regalo)<input id="fBday" type="date" value="${esc(v.birthday || "")}"></label>
-    <label class="check"><input type="checkbox" id="fPromos" ${v.promos ? "checked" : ""}> Quiero recibir promociones de ${esc(R.name)}</label>
-    <p class="muted" id="fErr" style="margin:0;color:var(--alert)" hidden></p>
-    <button class="btn brand block" type="submit">${v.phone ? "Guardar cambios" : "Crear cuenta"}</button>
-    ${v.phone ? `<button class="btn ghost block" type="button" id="fCancel">Cancelar</button>` : `<p class="muted" style="margin:0;font-size:12.5px">Si ya tienes cuenta, ingresa el mismo teléfono y recuperamos tus puntos.</p>`}
-  </form>`;
+  const isEditing = !!(v && v.phone);
+  const shownPhone = v.displayPhone !== undefined ? v.displayPhone : (String(v.phone || "").startsWith("g_") ? "" : (v.phone || ""));
+  const gIcon = `<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
+  return `<div class="stack">
+    ${isEditing ? "" : `
+      <button type="button" id="gClientBtn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1F1F1F;border:1px solid #DADCE0;border-radius:14px;padding:13px 16px;font-weight:700;cursor:pointer;width:100%;box-shadow:0 2px 6px rgba(0,0,0,.06)">
+        ${gIcon}<span>Registrarse o entrar con Google</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em">
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span>o con tus datos</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+      </div>
+    `}
+    <form class="stack" id="meForm" novalidate>
+      <label class="f">Nombre completo<input id="fName" required autocomplete="name" placeholder="Ej. María Rodríguez" value="${esc(v.name || "")}"></label>
+      <label class="f">Correo electrónico (para guardar puntos y enviarte confirmación)<input id="fEmail" type="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com" value="${esc(v.email || "")}"></label>
+      <label class="f">Teléfono (8 dígitos)<input id="fPhone" inputmode="numeric" autocomplete="tel" maxlength="9" placeholder="8888-8888" value="${esc(shownPhone)}"></label>
+      <label class="f">Cumpleaños (opcional, para tu regalo)<input id="fBday" type="date" value="${esc(v.birthday || "")}"></label>
+      <label class="check"><input type="checkbox" id="fPromos" ${v.promos !== false ? "checked" : ""}> Quiero recibir confirmación de puntos y promociones de ${esc(R.name)}</label>
+      <p class="muted" id="fErr" style="margin:0;color:var(--alert);font-weight:600" hidden></p>
+      <button class="btn brand block" type="submit">${isEditing ? "Guardar cambios" : "Guardar mi cuenta y acceder a mis puntos"}</button>
+      ${isEditing ? `<button class="btn ghost block" type="button" id="fCancel">Cancelar</button>` : `<p class="muted" style="margin:0;font-size:12.5px;text-align:center">¿Ya tienes cuenta? Escribe tu correo o teléfono registrado (o toca Google) y recuperamos todos tus puntos al instante.</p>`}
+    </form>
+  </div>`;
 }
 function wireForm(onDone){
+  const gBtn = $("#gClientBtn");
+  if (gBtn) {
+    gBtn.onclick = async () => {
+      gBtn.disabled = true;
+      const origHtml = gBtn.innerHTML;
+      gBtn.textContent = "Conectando con Google…";
+      try {
+        const { customer, isNew } = await Store.clientLoginWithGoogle(Array.from(S.likes));
+        S.me = customer;
+        if (Array.isArray(customer.likes)) {
+          customer.likes.forEach(id => S.likes.add(id));
+          ls.set(LKEY, Array.from(S.likes));
+        }
+        saveMe();
+        bindCustomerWatch();
+        if (isNew && customer.email) {
+          await Store.sendWelcomeEmail(customer);
+          showWelcomeEmailSheet(customer, false);
+        } else {
+          toast("¡Hola de nuevo, " + (customer.name || "Cliente").split(" ")[0] + "! Tus puntos están listos.");
+          onDone ? onDone() : render();
+        }
+      } catch (err) {
+        console.error(err);
+        toast(Store.humanAuthError ? Store.humanAuthError(err) : "No se pudo conectar con Google");
+        gBtn.disabled = false;
+        gBtn.innerHTML = origHtml;
+      }
+    };
+  }
+
   const f = $("#meForm"); if (!f) return;
   if ($("#fCancel")) $("#fCancel").onclick = () => render();
   f.onsubmit = async e => {
     e.preventDefault();
     const name = $("#fName").value.trim(), phone = $("#fPhone").value.replace(/\D/g, ""), email = $("#fEmail").value.trim();
     const err = m => { $("#fErr").textContent = m; $("#fErr").hidden = false; };
-    if (name.length < 2) return err("Escribe tu nombre.");
-    if (phone.length !== 8) return err("El teléfono debe tener 8 dígitos.");
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) return err("Revisa el correo.");
-    const data = { name, phone, email, birthday: $("#fBday").value, promos: $("#fPromos").checked };
-    const btn = $("button[type=submit]", f); btn.disabled = true; btn.textContent = "Guardando…";
+    if (!email && phone.length !== 8) return err("Ingresa tu correo electrónico o tu teléfono de 8 dígitos.");
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) return err("Escribe un correo electrónico válido.");
+    if (phone && phone.length !== 8) return err("El teléfono debe tener 8 dígitos.");
+
+    const btn = $("button[type=submit]", f); btn.disabled = true; btn.textContent = "Guardando y sincronizando…";
     try {
-      if (S.me && S.me.phone === phone) { await Store.updateCustomerInfo(phone, data); Object.assign(S.me, data); toast("Datos guardados"); }
-      else {
-        const found = await Store.getCustomer(phone);
-        if (found) { S.me = found; if (found.name !== name) { /* conserva el nombre registrado */ } toast("¡Hola de nuevo, " + found.name.split(" ")[0] + "! Recuperamos tus puntos"); }
-        else { S.me = await Store.createCustomer(data); toast("Cuenta creada. ¡Bienvenido al club!"); }
+      // Si está editando su propio perfil
+      if (S.me && S.me.phone) {
+        if (name.length < 2) { btn.disabled = false; btn.textContent = "Guardar cambios"; return err("Escribe tu nombre."); }
+        const patch = { name, email, displayPhone: phone, birthday: $("#fBday").value, promos: $("#fPromos").checked, likes: Array.from(S.likes) };
+        await Store.updateCustomerInfo(S.me.phone, patch);
+        Object.assign(S.me, patch);
+        saveMe();
+        bindCustomerWatch();
+        toast("Datos y secciones guardados");
+        onDone ? onDone() : render();
+        return;
       }
-      saveMe(); onDone ? onDone() : render();
-    } catch (x) { console.error(x); err("No pudimos guardar. Revisa tu conexión e intenta de nuevo."); btn.disabled = false; btn.textContent = "Intentar de nuevo"; }
+
+      // Buscar si ya existe por teléfono o por correo para recuperar sus puntos
+      const found = await Store.findCustomer({ phone, email });
+      if (found) {
+        const updatedPatch = {
+          name: name.length >= 2 ? name : found.name,
+          email: email || found.email || "",
+          displayPhone: phone || found.displayPhone || "",
+          birthday: $("#fBday").value || found.birthday || "",
+          promos: $("#fPromos").checked,
+          likes: Array.from(new Set([...(found.likes || []), ...Array.from(S.likes)]))
+        };
+        await Store.updateCustomerInfo(found.phone, updatedPatch);
+        S.me = Object.assign({}, found, updatedPatch);
+        S.me.likes.forEach(id => S.likes.add(id));
+        ls.set(LKEY, Array.from(S.likes));
+        saveMe();
+        bindCustomerWatch();
+        toast("¡Hola de nuevo, " + S.me.name.split(" ")[0] + "! Recuperamos tus " + (S.me.points || 0) + " puntos");
+        onDone ? onDone() : render();
+      } else {
+        if (name.length < 2) { btn.disabled = false; btn.textContent = "Guardar mi cuenta y acceder a mis puntos"; return err("Escribe tu nombre para crear tu cuenta."); }
+        const data = {
+          name,
+          phone: phone || "",
+          displayPhone: phone || "",
+          email,
+          birthday: $("#fBday").value,
+          promos: $("#fPromos").checked,
+          likes: Array.from(S.likes),
+          provider: "email"
+        };
+        S.me = await Store.createCustomer(data);
+        saveMe();
+        bindCustomerWatch();
+        if (email) {
+          await Store.sendWelcomeEmail(S.me);
+          showWelcomeEmailSheet(S.me, false);
+        } else {
+          toast("Cuenta creada. ¡Bienvenido al club!");
+          onDone ? onDone() : render();
+        }
+      }
+    } catch (x) {
+      console.error(x);
+      err("No pudimos guardar. Revisa tu conexión e intenta de nuevo.");
+      btn.disabled = false;
+      btn.textContent = "Intentar de nuevo";
+    }
   };
 }
 function wPerfil(){
   wireForm(); wireDishes($("#view"));
-  if ($("#editMe")) $("#editMe").onclick = () => { $("#view").innerHTML = `<section class="pad sec"><h2 style="font-size:24px;margin-bottom:14px">Editar datos</h2>${profileForm(S.me)}</section>`; wireForm(); };
-  if ($("#logout")) $("#logout").onclick = () => { S.me = null; saveMe(); render(); toast("Sesión cerrada en este teléfono"); };
+  if ($("#editMe")) $("#editMe").onclick = () => { $("#view").innerHTML = `<section class="pad sec"><h2 style="font-size:24px;margin-bottom:14px">Editar mis datos</h2>${profileForm(S.me)}</section>`; wireForm(); };
+  if ($("#resendMail")) $("#resendMail").onclick = async () => {
+    if (!S.me || !S.me.email) return;
+    $("#resendMail").disabled = true;
+    $("#resendMail").textContent = "Enviando correo…";
+    await Store.sendWelcomeEmail(S.me);
+    showWelcomeEmailSheet(S.me, true);
+    if ($("#resendMail")) { $("#resendMail").disabled = false; $("#resendMail").textContent = "📩 Enviar confirmación y resumen de puntos a mi correo"; }
+  };
+  if ($("#logout")) $("#logout").onclick = () => { if (unsubMe) { unsubMe(); unsubMe = null; } S.me = null; saveMe(); render(); toast("Sesión cerrada en este teléfono"); };
 }
 
 /* ---------- llamar al mesero (con confirmación) ---------- */
@@ -947,9 +1142,14 @@ async function boot(){
   } catch (e) { console.error(e); }
   // retomar solicitudes activas
   if (S.session && S.session.reqs) Object.entries(S.session.reqs).forEach(([t, id]) => id && watch(t, id));
-  // refrescar puntos 1 vez por visita
-  if (S.me && sessionValid(S.session) && !S.session.meSync) {
-    try { const fresh = await Store.getCustomer(S.me.phone); if (fresh) { S.me = fresh; saveMe(); } S.session.meSync = true; saveSession(); if (S.tab !== "menu") render(); } catch (e) {}
+  // sincronizar puntos y secciones del cliente en tiempo real
+  if (S.me && S.me.phone) {
+    try {
+      const fresh = await Store.getCustomer(S.me.phone);
+      if (fresh) { S.me = fresh; saveMe(); }
+      bindCustomerWatch();
+      if (S.tab !== "menu") render();
+    } catch (e) {}
   }
 }
 boot();
