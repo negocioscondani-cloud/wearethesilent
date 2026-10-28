@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101512">
+<title>Cocina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: pantalla de cocina (tablet o TV) a pantalla completa, tema oscuro fijo.
+   Barra superior con conteos y reloj; cuadrícula de mesas grandes; al tocar una mesa se abre su pedido a pantalla completa. */
+:root{
+  --bg:#101512; --tile:#1B231E; --tile-2:#232D27; --line:#2E3A32; --fg:#F2F5F1; --muted:#9DAEA3;
+  --red:#E5432F; --red-ink:#FFFFFF; --amber:#F2A93B; --amber-ink:#231500; --green:#3FBF7F; --green-ink:#05170D; --note:#FFE08A; --note-ink:#2A1E00;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.35;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid var(--note);outline-offset:3px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* barra superior */
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-block:calc(12px + env(safe-area-inset-top,0px)) 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:10}
+.brand h1{font-family:var(--display);font-size:30px;font-weight:800;margin:0;line-height:1}
+.brand span{color:var(--muted);font-size:15px}
+.counts{display:flex;gap:10px;flex-wrap:wrap}
+.pill{border-radius:999px;padding:9px 18px;font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;background:var(--tile);color:var(--muted)}
+.pill.red{background:var(--red);color:var(--red-ink)}
+.pill.amber{background:var(--amber);color:var(--amber-ink)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.clock{font-family:var(--display);font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;margin-right:6px}
+.tbtn{background:var(--tile);border:2px solid var(--line);border-radius:14px;padding:10px 16px;font-weight:700;font-size:16px;min-height:52px}
+.tbtn.on{background:var(--green);border-color:var(--green);color:var(--green-ink)}
+.tbtn.warn{border-color:var(--amber);color:var(--amber)}
+
+/* cuadrícula de mesas */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding-block:16px calc(20px + env(safe-area-inset-bottom,0px))}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.tile{border:3px solid var(--line);background:var(--tile);border-radius:24px;min-height:200px;padding:18px;text-align:left;display:flex;flex-direction:column;gap:6px;position:relative;transition:transform .08s}
+.tile:active{transform:scale(.98)}
+.tile .lbl{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+.tile .n{font-family:var(--display);font-size:64px;font-weight:800;line-height:.95}
+.tile .st{font-size:22px;font-weight:800;margin-top:auto;letter-spacing:.02em}
+.tile .meta{font-size:16px;font-weight:600;opacity:.92;font-variant-numeric:tabular-nums}
+.tile.idle{opacity:.45;cursor:default}
+.tile.idle .st{font-weight:600;color:var(--muted)}
+.tile.new{background:var(--red);border-color:var(--red);color:var(--red-ink);animation:alarm 1.2s ease-in-out infinite}
+.tile.new .lbl{color:rgba(255,255,255,.85)}
+.tile.cook{background:color-mix(in srgb,var(--amber) 20%,var(--tile));border-color:var(--amber)}
+.tile.cook .st{color:var(--amber)}
+.tile .late{position:absolute;top:14px;right:14px;background:var(--fg);color:var(--bg);font-weight:800;font-size:14px;padding:5px 10px;border-radius:999px}
+@keyframes alarm{0%,100%{box-shadow:0 0 0 0 rgba(229,67,47,.55)}50%{box-shadow:0 0 0 10px rgba(229,67,47,0)}}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 16px;font-size:22px;font-weight:600}
+
+/* pedido de una mesa a pantalla completa */
+.ov{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;flex-direction:column}
+.ov-head{display:flex;align-items:center;gap:18px;padding-block:calc(12px + env(safe-area-inset-top,0px)) 12px;border-bottom:1px solid var(--line)}
+.ov-head .mesa{font-family:var(--display);font-weight:800;font-size:64px;line-height:.9}
+.ov-head .mesa small{display:block;font-family:var(--body);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ov-head .sum{flex:1;min-width:0;font-size:20px;font-weight:700}
+.ov-body{flex:1;overflow-y:auto;padding-block:16px;display:grid;gap:18px;align-content:start}
+.order{border:3px solid var(--line);border-radius:24px;padding:20px;display:grid;gap:16px;background:var(--tile)}
+.order.new{border-color:var(--red)}
+.order.cook{border-color:var(--amber)}
+.oh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.badge{font-weight:800;font-size:18px;padding:7px 14px;border-radius:999px}
+.badge.new{background:var(--red);color:var(--red-ink)}
+.badge.cook{background:var(--amber);color:var(--amber-ink)}
+.oh .when{color:var(--muted);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.oh .when b{color:var(--fg)}
+.items{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.it{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:16px;row-gap:6px;align-items:baseline}
+.it .q{font-family:var(--display);font-size:40px;font-weight:800;color:var(--amber);min-width:70px;line-height:1}
+.it .name{font-size:32px;font-weight:800;line-height:1.15}
+.note{grid-column:2;justify-self:start;background:var(--note);color:var(--note-ink);border-radius:12px;padding:8px 14px;font-size:22px;font-weight:800}
+.gnote{background:var(--note);color:var(--note-ink);border-radius:16px;padding:14px 18px;font-size:22px;font-weight:800}
+.gnote span{display:block;font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.big{border:0;border-radius:20px;min-height:84px;font-size:26px;font-weight:800;padding:16px 22px;width:100%;letter-spacing:.01em}
+.big.amber{background:var(--amber);color:var(--amber-ink)}
+.big.green{background:var(--green);color:var(--green-ink)}
+.big.ghost{background:var(--tile-2);border:2px solid var(--line);color:var(--fg);min-height:72px;font-size:22px}
+.big:disabled{opacity:.5}
+.ov-foot{padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+
+/* acceso */
+.login{max-width:420px;margin:12vh auto 0;display:grid;gap:16px}
+.login h1{font-family:var(--display);font-size:40px;margin:0}
+.login label{display:grid;gap:6px;font-weight:700;color:var(--muted)}
+.login input{background:var(--tile);border:2px solid var(--line);border-radius:14px;padding:16px;font-size:24px;letter-spacing:.2em}
+.tip{border:2px dashed var(--amber);border-radius:14px;padding:12px 14px;font-size:15px;color:var(--muted)}
+.err{color:var(--red);font-weight:700;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:14px 22px;border-radius:14px;font-size:19px;font-weight:700;z-index:90;max-width:calc(100% - 32px);text-align:center}
+@media (prefers-reduced-motion:reduce){.tile.new{animation:none}.tile{transition:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+const C = window.MESAYA, R = C.restaurant;
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mins = t => Math.max(0, Math.floor((Date.now() - t) / 60000));
+const hm = t => new Date(t).toLocaleTimeString("es-CR", { hour: "numeric", minute: "2-digit" });
+const LATE = 20; // minutos para marcar un pedido como atrasado
+function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+
+let started = false, orders = [], known = null, openMesa = null, sound = false, audio = null, onlyActive = false, wake = null, unsub = null;
+const stage = o => o.kitchen === "cooking" ? "cook" : "new";
+const plates = os => os.reduce((a, o) => a + o.items.reduce((b, i) => b + i.qty, 0), 0);
+
+/* ---------- acceso (usa la cuenta o el PIN del salón) ---------- */
+function showLogin(err){
+  const demo = Store.mode() === "demo";
+  $("#app").innerHTML = `<form class="login gut" id="lf"><span style="color:var(--muted);font-weight:700">${esc(R.name)}</span><h1>Cocina</h1>
+    ${demo ? "" : `<label>Correo<input id="le" type="email" autocomplete="username" required style="letter-spacing:0;font-size:20px"></label>`}
+    <label>${demo ? "PIN" : "Contraseña"}<input id="lp" type="password" ${demo ? 'inputmode="numeric"' : ""} autocomplete="current-password" required></label>
+    ${err ? `<p class="err">${esc(err)}</p>` : ""}
+    <button class="big green" type="submit">Entrar</button>
+    ${demo ? `<div class="tip"><b style="color:var(--fg)">Modo demo</b> · usa el PIN del salón: ${esc(C.demoStaffPin)}. Los pedidos llegan aquí cuando el salón los acepta.</div>` : `<div class="tip">Usa la misma cuenta del salón.</div>`}
+  </form>`;
+  $("#lf").onsubmit = async e => {
+    e.preventDefault();
+    try { await Store.login("staff", demo ? "" : $("#le").value.trim(), $("#lp").value); start(); }
+    catch (x) { showLogin(x.message && x.message.includes("auth/") ? "Correo o contraseña incorrectos" : (x.message || "No se pudo entrar")); }
+  };
+  setTimeout(() => { const i = $("#le") || $("#lp"); if (i) i.focus(); }, 50);
+}
+
+/* ---------- sonido y pantalla encendida ---------- */
+function beep(){
+  if (!sound) return;
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    [988, 1319, 988].forEach((f, i) => { const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+      const t = audio.currentTime + i * 0.2; g.gain.setValueAtTime(0.25, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.18); o.start(t); o.stop(t + 0.2); });
+  } catch (e) {}
+}
+async function keepAwake(){ try { if ("wakeLock" in navigator) { wake = await navigator.wakeLock.request("screen"); } } catch (e) {} }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && sound) keepAwake(); });
+
+/* ---------- pantalla principal ---------- */
+function start(){
+  if (started) return; started = true;
+  $("#app").innerHTML = `
+  <header class="top gut">
+    <div class="brand"><h1>Cocina</h1><span>${esc(R.name)}</span></div>
+    <div class="counts" id="counts"></div>
+    <div class="tools"><span class="clock" id="clock"></span>
+      <button class="tbtn warn" id="snd">Activar sonido</button>
+      <button class="tbtn" id="flt">Solo mesas con pedido</button>
+      <button class="tbtn" id="fs">Pantalla completa</button>
+      <button class="tbtn" id="out">Salir</button></div>
+  </header>
+  <main class="grid gut" id="grid" aria-label="Mesas"></main>`;
+  $("#snd").onclick = () => { sound = !sound; $("#snd").textContent = sound ? "Sonido activado" : "Activar sonido"; $("#snd").className = "tbtn " + (sound ? "on" : "warn"); if (sound) { beep(); keepAwake(); } };
+  $("#flt").onclick = () => { onlyActive = !onlyActive; $("#flt").className = "tbtn" + (onlyActive ? " on" : ""); renderGrid(); };
+  $("#fs").onclick = () => { const d = document.documentElement; try { if (document.fullscreenElement) document.exitFullscreen(); else if (d.requestFullscreen) d.requestFullscreen().catch(() => toast("Este dispositivo no permite pantalla completa")); } catch (e) {} };
+  $("#out").onclick = async () => { if (unsub) unsub(); unsub = null; started = false; known = null; closeOrder(); await Store.logout(); showLogin(); };
+  tick();
+  unsub = Store.watchKitchen((l, err) => {
+    if (err) { $("#grid").innerHTML = `<div class="empty">No se pudo leer los pedidos. Revisa la conexión y que esta cuenta tenga acceso.</div>`; return; }
+    const ids = new Set(l.map(o => o.id));
+    if (known) { const fresh = l.filter(o => !known.has(o.id)); if (fresh.length) { beep(); toast("Nuevo pedido · mesa " + fresh.map(o => o.mesa).join(", ")); } }
+    known = ids; orders = l; renderGrid(); if (openMesa != null) renderOrder();
+  });
+}
+function byMesa(){ const m = {}; orders.forEach(o => (m[o.mesa] = m[o.mesa] || []).push(o)); return m; }
+function renderGrid(){
+  const m = byMesa(), nNew = orders.filter(o => stage(o) === "new").length, nCook = orders.length - nNew;
+  $("#counts").innerHTML = `<span class="pill ${nNew ? "red" : ""}">${nNew} ${nNew === 1 ? "nuevo" : "nuevos"}</span><span class="pill ${nCook ? "amber" : ""}">${nCook} preparando</span>`;
+  document.title = (nNew ? "(" + nNew + ") " : "") + "Cocina";
+  let tables = Array.from({ length: R.tables }, (_, i) => i + 1);
+  Object.keys(m).map(Number).forEach(n => { if (!tables.includes(n)) tables.push(n); });
+  if (onlyActive) tables = tables.filter(n => m[n]);
+  if (!tables.length) { $("#grid").innerHTML = `<div class="empty">No hay pedidos en cocina.<br><span style="font-size:17px">Cuando el salón acepte un pedido, la mesa se pone roja aquí.</span></div>`; return; }
+  $("#grid").innerHTML = tables.map(n => {
+    const os = m[n];
+    if (!os) return `<div class="tile idle" aria-label="Mesa ${n} sin pedidos"><span class="lbl">Mesa</span><span class="n">${n}</span><span class="st">Sin pedidos</span></div>`;
+    const isNew = os.some(o => stage(o) === "new"), oldest = Math.min(...os.map(o => o.acceptedAt || o.createdAt)), late = mins(oldest) >= LATE;
+    return `<button class="tile ${isNew ? "new" : "cook"}" data-mesa="${n}" aria-label="Mesa ${n}, ${isNew ? "nuevo pedido" : "preparando"}">
+      ${late ? `<span class="late">${mins(oldest)} min</span>` : ""}
+      <span class="lbl">Mesa</span><span class="n">${n}</span>
+      <span class="st">${isNew ? "NUEVO PEDIDO" : "PREPARANDO"}</span>
+      <span class="meta">${plates(os)} ${plates(os) === 1 ? "plato" : "platos"}${os.length > 1 ? " · " + os.length + " pedidos" : ""} · hace ${mins(oldest)} min</span></button>`;
+  }).join("");
+  $$("[data-mesa]").forEach(b => b.onclick = () => openOrder(+b.dataset.mesa));
+}
+
+/* ---------- pedido de una mesa ---------- */
+function openOrder(n){ openMesa = n; renderOrder(); $("#ov").hidden = false; document.body.style.overflow = "hidden"; const f = $("#ov .big"); if (f) f.focus(); }
+function closeOrder(){ openMesa = null; $("#ov").hidden = true; document.body.style.overflow = ""; }
+document.addEventListener("keydown", e => { if (e.key === "Escape" && openMesa != null) closeOrder(); });
+function renderOrder(){
+  const os = (byMesa()[openMesa] || []);
+  if (!os.length) { closeOrder(); return; }
+  $("#ov").innerHTML = `
+  <div class="ov-head gut"><div class="mesa"><small>Mesa</small>${openMesa}</div>
+    <div class="sum">${plates(os)} ${plates(os) === 1 ? "plato" : "platos"}${os.length > 1 ? " en " + os.length + " pedidos" : ""}</div>
+    <button class="tbtn" id="ovClose" aria-label="Cerrar">✕ Cerrar</button></div>
+  <div class="ov-body gut">${os.map((o, k) => {
+    const s = stage(o), t = o.acceptedAt || o.createdAt;
+    return `<section class="order ${s}">
+      <div class="oh"><span class="badge ${s}">${s === "new" ? "NUEVO" : "PREPARANDO"}${os.length > 1 ? " · pedido " + (k + 1) : ""}</span>
+        <span class="when">Llegó ${hm(t)} · <b>hace ${mins(t)} min</b>${o.customer && o.customer.name ? " · " + esc(o.customer.name.split(" ")[0]) : ""}</span></div>
+      <ul class="items">${o.items.map(i => `<li class="it"><span class="q">${i.qty}×</span><span class="name">${esc(i.name)}</span>${i.note ? `<span class="note">⚠ ${esc(i.note)}</span>` : ""}</li>`).join("")}</ul>
+      ${o.note ? `<div class="gnote"><span>Nota de la mesa</span>${esc(o.note)}</div>` : ""}
+      <div class="acts">
+        ${s === "new" ? `<button class="big amber" data-cook="${o.id}">Empezar a preparar</button>` : ""}
+        <button class="big green" data-ready="${o.id}">Listo · avisar al salón</button>
+      </div></section>`;
+  }).join("")}</div>
+  <div class="ov-foot gut"><button class="big ghost" id="ovBack">Volver a todas las mesas</button></div>`;
+  $("#ovClose").onclick = closeOrder; $("#ovBack").onclick = closeOrder;
+  $$("[data-cook]").forEach(b => b.onclick = () => act(b, b.dataset.cook, "cook"));
+  $$("[data-ready]").forEach(b => b.onclick = () => act(b, b.dataset.ready, "ready"));
+}
+async function act(btn, id, kind){
+  const o = orders.find(x => x.id === id); if (!o) return;
+  if (kind === "ready" && !btn.dataset.sure) {
+    btn.dataset.sure = 1; btn.textContent = "¿Todo listo? Toca otra vez";
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.sure; btn.textContent = "Listo · avisar al salón"; } }, 3500); return;
+  }
+  btn.disabled = true;
+  try {
+    if (kind === "cook") { await Store.updateRequest(id, { kitchen: "cooking", cookingAt: Date.now() }); toast("Mesa " + o.mesa + ": preparando"); }
+    if (kind === "ready") { await Store.updateRequest(id, { status: "ready", readyAt: Date.now() }); toast("Mesa " + o.mesa + ": listo, avisamos al salón"); }
+  } catch (e) { console.error(e); toast("No se pudo guardar. Revisa la conexión."); btn.disabled = false; }
+}
+
+/* ---------- reloj, tiempos y recordatorio ---------- */
+let lastNag = 0;
+function tick(){
+  const c = $("#clock"); if (c) c.textContent = new Date().toLocaleTimeString("es-CR", { hour: "numeric", minute: "2-digit" });
+}
+setInterval(() => {
+  if (!started) return; tick(); renderGrid(); if (openMesa != null) { const y = $(".ov-body") ? $(".ov-body").scrollTop : 0; renderOrder(); if ($(".ov-body")) $(".ov-body").scrollTop = y; }
+  if (sound && orders.some(o => stage(o) === "new") && Date.now() - lastNag > 20000) { lastNag = Date.now(); beep(); }
+}, 30000);
+
+Store.init("staff").then(() => Store.onRole(role => role ? start() : showLogin()))
+  .catch(e => { console.error(e); $("#app").innerHTML = `<div class="login gut"><h1>Sin conexión</h1><p style="color:var(--muted)">No se pudo conectar con Firebase. Revisa config.js y el internet.</p></div>`; });
+})();
+</script>
+</body>
+</html>

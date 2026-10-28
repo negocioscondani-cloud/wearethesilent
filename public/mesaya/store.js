@@ -14,7 +14,7 @@
   const C = window.MESAYA;
   const RID = C.restaurant.id;
   const FB = "https://www.gstatic.com/firebasejs/10.12.2/";
-  const ACTIVE = ["pending", "amount_sent", "reported_paid"];
+  const ACTIVE = ["pending", "amount_sent", "reported_paid", "ready"];
   let mode = C.firebase && C.firebase.apiKey ? "firebase" : "demo";
   let db = null, auth = null, uid = null, FV = null;
 
@@ -120,6 +120,13 @@
       const sort = (l) => l.sort((a, b) => a.createdAt - b.createdAt);
       if (mode === "demo") { let last = ""; return dwatch(() => { const l = sort(Object.values(dread().requests).filter((r) => ACTIVE.includes(r.status))); const s = JSON.stringify(l); if (s !== last) { last = s; cb(l); } }); }
       return reqs().where("status", "in", ACTIVE).onSnapshot((q) => cb(sort(q.docs.map((d) => Object.assign({ id: d.id }, d.data())))), (e) => { console.error(e); cb(null, e); });
+    },
+
+    /* cocina: solo pedidos aprobados por el salón que aún no están listos */
+    watchKitchen(cb) {
+      const sort = (l) => l.sort((a, b) => (a.acceptedAt || a.createdAt) - (b.acceptedAt || b.createdAt));
+      if (mode === "demo") { let last = ""; return dwatch(() => { const l = sort(Object.values(dread().requests).filter((r) => r.status === "kitchen")); const s = JSON.stringify(l); if (s !== last) { last = s; cb(l); } }); }
+      return reqs().where("status", "==", "kitchen").onSnapshot((q) => cb(sort(q.docs.map((d) => Object.assign({ id: d.id }, d.data())))), (e) => { console.error(e); cb(null, e); });
     },
 
     /* ----- clientes y puntos ----- */

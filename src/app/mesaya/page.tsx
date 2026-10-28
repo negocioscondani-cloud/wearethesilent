@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Gift,
   UtensilsCrossed,
+  ChefHat,
   ExternalLink,
 } from 'lucide-react';
 
@@ -29,10 +30,11 @@ function computeMesaKey(mesa: number): string {
   return (h >>> 0).toString(36).slice(0, 6);
 }
 
-type ViewMode = 'split' | 'client' | 'salon' | 'admin' | 'qr';
+type ViewMode = 'split' | 'client' | 'salon' | 'kitchen' | 'admin' | 'qr';
 
 export default function MesaYaShowcasePage() {
   const [viewMode, setViewMode] = useState<ViewMode>('split');
+  const [splitRightPanel, setSplitRightPanel] = useState<'salon' | 'kitchen'>('salon');
   const [activeMesa, setActiveMesa] = useState<number>(7);
   const activeMesaUrl = useMemo(
     () => `/mesaya/index.html?m=${activeMesa}&k=${computeMesaKey(activeMesa)}`,
@@ -40,7 +42,7 @@ export default function MesaYaShowcasePage() {
   );
 
   const whatsappOfferUrl = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(
-    '¡Hola! Vi la demo interactiva de MesaYa (Menú QR, Panel de Salón, SINPE Móvil, Puntos y Panel del Dueño) y me interesa cotizarlo para mi restaurante.'
+    '¡Hola! Vi la demo interactiva de MesaYa (Menú QR, Panel de Salón, Pantalla de Cocina, SINPE Móvil, Puntos y Panel del Dueño) y me interesa cotizarlo para mi restaurante.'
   )}`;
 
   return (
@@ -97,19 +99,20 @@ export default function MesaYaShowcasePage() {
                 SISTEMA GASTRONÓMICO INTERACTIVO · 0% COMISIONES
               </span>
               <h1 className="font-fraunces text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1]">
-                Menú QR, Salón en Tiempo Real, SINPE, Puntos y Analítica.
+                Menú QR, Salón, Pantalla de Cocina, SINPE, Puntos y Analítica.
               </h1>
               <p className="text-[#C8C0B3] text-sm sm:text-base font-light leading-relaxed">
-                Prueba el sistema completo ahora mismo: haz un pedido o toca la campana en la{' '}
-                <strong className="text-white">Mesa 7</strong> y mira cómo suena al instante en el{' '}
-                <strong className="text-white">Panel del Salón</strong>.
+                Prueba el flujo completo en vivo: pide desde la{' '}
+                <strong className="text-white">Mesa {activeMesa}</strong>, acéptalo en el{' '}
+                <strong className="text-white">Panel del Salón</strong> y prepáralo en la{' '}
+                <strong className="text-white">Pantalla de Cocina</strong>.
               </p>
             </div>
 
             {/* Credentials Pill & Table Switcher */}
             <div className="p-3.5 rounded-xl bg-[#12161A] border border-[#C5A059]/40 flex flex-wrap items-center gap-4 text-xs font-mono shrink-0">
               <div>
-                <span className="text-zinc-400 block text-[10px] uppercase">PIN Salón / Meseros</span>
+                <span className="text-zinc-400 block text-[10px] uppercase">PIN Salón y Cocina</span>
                 <strong className="text-[#E5C88D] text-sm">1234</strong>
               </div>
               <span className="text-white/10">|</span>
@@ -149,59 +152,72 @@ export default function MesaYaShowcasePage() {
                 }`}
               >
                 <Columns className="w-4 h-4" />
-                <span>Vista Simultánea (Cliente + Salón)</span>
+                <span>Vista Simultánea</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setViewMode('client')}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
                   viewMode === 'client'
                     ? 'bg-[#C5A059] text-black'
                     : 'bg-[#12161A] text-[#C8C0B3] border border-white/10 hover:border-[#C5A059]/50'
                 }`}
               >
                 <Smartphone className="w-4 h-4" />
-                <span>1. Menú Cliente (Mesa {activeMesa})</span>
+                <span>1. Cliente (M{activeMesa})</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setViewMode('salon')}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
                   viewMode === 'salon'
                     ? 'bg-[#C5A059] text-black'
                     : 'bg-[#12161A] text-[#C8C0B3] border border-white/10 hover:border-[#C5A059]/50'
                 }`}
               >
                 <Bell className="w-4 h-4" />
-                <span>2. Panel Salón (PIN 1234)</span>
+                <span>2. Salón (PIN 1234)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('kitchen')}
+                className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
+                  viewMode === 'kitchen'
+                    ? 'bg-[#C5A059] text-black'
+                    : 'bg-[#12161A] text-[#C8C0B3] border border-white/10 hover:border-[#C5A059]/50'
+                }`}
+              >
+                <ChefHat className="w-4 h-4" />
+                <span>3. Cocina (PIN 1234)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setViewMode('admin')}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
                   viewMode === 'admin'
                     ? 'bg-[#C5A059] text-black'
                     : 'bg-[#12161A] text-[#C8C0B3] border border-white/10 hover:border-[#C5A059]/50'
                 }`}
               >
                 <BarChart3 className="w-4 h-4" />
-                <span>3. Panel Dueño (PIN 4321)</span>
+                <span>4. Dueño (PIN 4321)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setViewMode('qr')}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
+                className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition cursor-pointer ${
                   viewMode === 'qr'
                     ? 'bg-[#C5A059] text-black'
                     : 'bg-[#12161A] text-[#C8C0B3] border border-white/10 hover:border-[#C5A059]/50'
                 }`}
               >
                 <QrCode className="w-4 h-4" />
-                <span>4. Generador QR de Mesas</span>
+                <span>5. QR Mesas</span>
               </button>
             </div>
 
@@ -223,6 +239,15 @@ export default function MesaYaShowcasePage() {
                 className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#D8B982] border border-white/10 transition"
               >
                 <span>Abrir Salón</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+              <a
+                href="/mesaya/cocina.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#D8B982] border border-white/10 transition"
+              >
+                <span>Abrir Cocina</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a
@@ -262,17 +287,46 @@ export default function MesaYaShowcasePage() {
                 />
               </div>
 
-              {/* Right: Salon Live Panel */}
+              {/* Right: Switchable Salon or Kitchen Live Panel */}
               <div className="lg:col-span-7 flex flex-col bg-[#111518] border border-white/10 rounded-2xl p-4 shadow-2xl">
-                <div className="w-full flex items-center justify-between px-2 pb-3 mb-2 border-b border-white/10 text-xs font-mono">
-                  <span className="text-[#E5C88D] font-bold">
-                    🛎️ Panel del Salón / Caja (Ingresa el PIN: 1234)
+                <div className="w-full flex flex-wrap items-center justify-between gap-2 px-2 pb-3 mb-2 border-b border-white/10 text-xs font-mono">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSplitRightPanel('salon')}
+                      className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer ${
+                        splitRightPanel === 'salon'
+                          ? 'bg-[#C5A059] text-black'
+                          : 'bg-white/5 text-zinc-300 hover:bg-white/10'
+                      }`}
+                    >
+                      🛎️ Panel Salón (PIN 1234)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSplitRightPanel('kitchen')}
+                      className={`px-3 py-1 rounded-lg font-bold transition cursor-pointer ${
+                        splitRightPanel === 'kitchen'
+                          ? 'bg-[#C5A059] text-black'
+                          : 'bg-white/5 text-zinc-300 hover:bg-white/10'
+                      }`}
+                    >
+                      👨‍🍳 Pantalla Cocina (PIN 1234)
+                    </button>
+                  </div>
+                  <span className="text-zinc-400">
+                    {splitRightPanel === 'salon'
+                      ? 'Acepta el pedido para enviarlo a Cocina'
+                      : 'Recibe pedidos aceptados y avisa cuando están listos'}
                   </span>
-                  <span className="text-zinc-400">Recibe pedidos y pagos SINPE en vivo</span>
                 </div>
                 <iframe
-                  src="/mesaya/salon.html"
-                  title="MesaYa Panel del Salón"
+                  src={splitRightPanel === 'salon' ? '/mesaya/salon.html' : '/mesaya/cocina.html'}
+                  title={
+                    splitRightPanel === 'salon'
+                      ? 'MesaYa Panel del Salón'
+                      : 'MesaYa Pantalla de Cocina'
+                  }
                   className="w-full h-[740px] rounded-xl border border-white/10 bg-white"
                 />
               </div>
@@ -321,6 +375,30 @@ export default function MesaYaShowcasePage() {
                 src="/mesaya/salon.html"
                 title="MesaYa Panel del Salón"
                 className="w-full h-[780px] rounded-xl border border-white/10 bg-white"
+              />
+            </div>
+          )}
+
+          {viewMode === 'kitchen' && (
+            <div className="bg-[#111518] border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-xs font-mono">
+                <span className="text-[#E5C88D] font-bold">
+                  👨‍🍳 Pantalla de Cocina (KDS en vivo para Tablet o TV) · PIN de acceso: 1234
+                </span>
+                <a
+                  href="/mesaya/cocina.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#D8B982] hover:underline flex items-center gap-1"
+                >
+                  <span>Abrir en nueva pestaña</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <iframe
+                src="/mesaya/cocina.html"
+                title="MesaYa Pantalla de Cocina"
+                className="w-full h-[780px] rounded-xl border border-white/10 bg-[#101512]"
               />
             </div>
           )}
@@ -420,12 +498,12 @@ export default function MesaYaShowcasePage() {
             </div>
 
             <div className="p-6 rounded-2xl bg-[#111518] border border-white/10 space-y-3">
-              <Columns className="w-6 h-6 text-[#D8B982]" />
+              <ChefHat className="w-6 h-6 text-[#D8B982]" />
               <h3 className="font-fraunces text-xl font-bold text-white">
-                4. Panel del Salón en Tiempo Real
+                4. Salón + Pantalla de Cocina (KDS)
               </h3>
               <p className="text-xs sm:text-sm text-[#C8C0B3] font-light leading-relaxed">
-                Alertas sonoras y visuales para meseros y caja: muestra qué mesa pide orden, cuál solicita la cuenta, cuál llamó al mesero y el historial de cobros del día.
+                Cuando el salón acepta un pedido, la mesa se ilumina en rojo con alarma en la Pantalla de Cocina (`cocina.html`). El cocinero marca "Empezar a preparar" y "Listo · avisar al salón" para que el mesero lleve el plato caliente.
               </p>
             </div>
 

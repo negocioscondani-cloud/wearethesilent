@@ -111,7 +111,7 @@ function start(){
   if (started) return; started = true;
   if (Store.mode() === "demo") Store.seedDemo();
   $("#app").innerHTML = `<div class="top"><div><span class="eyebrow">${esc(R.name)}</span><h1>Panel del dueño</h1></div>
-    <div class="row"><a class="btn line sm" href="salon.html">Panel del salón</a><a class="btn line sm" href="mesas.html">QR de mesas</a><button class="btn ghost sm" id="out">Salir</button></div></div>
+    <div class="row"><a class="btn line sm" href="salon.html">Panel del salón</a><a class="btn line sm" href="cocina.html">Cocina</a><a class="btn line sm" href="mesas.html">QR de mesas</a><button class="btn ghost sm" id="out">Salir</button></div></div>
     <nav class="nav" aria-label="Secciones"><button data-t="resumen">Resumen</button><button data-t="inventario">Inventario</button><button data-t="menu">Menú y precios</button></nav>
     <div id="view"></div>`;
   $$(".nav button").forEach(b => b.onclick = () => { tab = b.dataset.t; show(); });

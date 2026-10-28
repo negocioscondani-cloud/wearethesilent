@@ -43,6 +43,9 @@ body.has-cart main{padding-bottom:calc(166px + env(safe-area-inset-bottom,0px))}
 .citem .note{font-size:12.5px;color:var(--muted)}
 .ctot{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
 .ctot b{font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.track{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.track span{font-size:11.5px;font-weight:700;color:var(--muted);text-align:center;padding-top:8px;border-top:4px solid var(--line)}
+.track span.on{color:var(--fg);border-top-color:var(--brand)}
 .sent{border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:grid;gap:4px;font-size:13.5px}
 .pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .sec{padding-block:18px 6px}
@@ -344,7 +347,10 @@ function renderBanner(){
   if (!html && call) { html = call.status === "done" ? "Tu mesero va en camino" : "Llamamos a tu mesero · esperando"; cls = call.status === "done" ? "ok" : ""; open = "call"; }
   if (!html && red && red.status === "pending") { html = "Canje pendiente: " + red.reward.name; open = "redeem"; }
   const ord = S.req.order;
-  if (!html && ord && ord.status === "pending") { html = "Pedido enviado · esperando confirmación"; open = "order"; }
+  if (!html && ord) {
+    const t = { pending: "Pedido enviado · esperando confirmación", kitchen: ord.kitchen === "cooking" ? "Preparando tu pedido" : "Tu pedido está en cocina", ready: "¡Tu pedido está listo! Ya te lo llevan" }[ord.status];
+    if (t) { html = t; open = "order"; cls = ord.status === "ready" ? "ok" : ""; }
+  }
   if (!html) { b.hidden = true; return; }
   b.className = "banner " + cls; b.hidden = false;
   b.innerHTML = `<span class="dot ${cls === "ok" ? "ok" : ""}"></span>${esc(html)}<span class="go">Ver</span>`;
@@ -529,8 +535,13 @@ function confirmOrder(note){
 }
 function renderOrderSheet(){
   const r = S.req.order;
-  const st = !r || r.status === "pending" ? ["Pedido enviado", "Esperando que el salón lo confirme…", ""] : r.status === "done" ? ["¡Tu pedido está en cocina!", "Te lo llevamos a la mesa " + r.mesa + ".", "ok"] : ["No pudimos tomar tu pedido", r.reason || "Tu mesero se acerca para ayudarte.", "alert"];
-  openSheet(`<h3>${st[0]}</h3><div class="status"><span class="dot ${st[2]}"></span>${esc(st[1])}</div>
+  const s = !r ? "pending" : r.status === "kitchen" ? (r.kitchen === "cooking" ? "cooking" : "kitchen") : r.status;
+  const st = { pending: ["Pedido enviado", "Esperando que el salón lo confirme…", ""], kitchen: ["¡Tu pedido está en cocina!", "Está en la fila de la cocina.", ""],
+    cooking: ["Preparando tu pedido", "La cocina ya está trabajando en él.", ""], ready: ["¡Tu pedido está listo!", "Tu mesero ya lo lleva a la mesa " + (r ? r.mesa : "") + ".", "ok"],
+    done: ["Pedido entregado", "¡Buen provecho!", "ok"] }[s] || ["No pudimos tomar tu pedido", (r && r.reason) || "Tu mesero se acerca para ayudarte.", "alert"];
+  const steps = ["pending", "kitchen", "cooking", "ready"], at = steps.indexOf(s === "done" ? "ready" : s);
+  const track = at >= 0 ? `<div class="track">${["Enviado", "En cocina", "Preparando", "Listo"].map((l, i) => `<span class="${i <= at ? "on" : ""}">${l}</span>`).join("")}</div>` : "";
+  openSheet(`<h3>${st[0]}</h3>${track}<div class="status"><span class="dot ${st[2]}"></span>${esc(st[1])}</div>
     ${r && r.items ? `<div class="sent">${r.items.map(i => `<span>${i.qty}× ${esc(i.name)}${i.note ? ` <span class="muted">(${esc(i.note)})</span>` : ""}</span>`).join("")}<b class="num">${fmt(r.total)}</b></div>` : ""}
     <button class="btn ghost block" id="x">Cerrar</button>`, "order");
   $("#x").onclick = closeSheet;
@@ -871,10 +882,13 @@ function onReq(type, r){
     } else if (r.status === "cancelled") { toast("El canje no se aplicó. Habla con tu mesero."); stopWatch("redeem"); }
   }
   if (type === "order") {
-    if (r.status === "done" && !S.session.applied[r.id]) {
+    if (["kitchen", "ready", "done"].includes(r.status) && !S.session.applied[r.id]) {
       S.session.applied[r.id] = 1; S.session.sent = (S.session.sent || []).concat([{ items: r.items, total: r.total, at: Date.now() }]); delete S.session.pendingCart;
-      if (navigator.vibrate) navigator.vibrate(80); toast("Tu pedido está en cocina"); if (S.sheet === "order") renderOrderSheet(); saveSession(); stopWatch("order", true); setTimeout(() => { delete S.req.order; renderBanner(); }, 100); return;
-    }
+      if (navigator.vibrate) navigator.vibrate(80); toast("Tu pedido está en cocina");
+    } else if (r.status === "kitchen" && r.kitchen === "cooking" && prev && prev.kitchen !== "cooking") toast("La cocina está preparando tu pedido");
+    if (r.status === "ready" && (!prev || prev.status !== "ready")) { if (navigator.vibrate) navigator.vibrate([100, 60, 100]); toast("¡Tu pedido está listo! Ya te lo llevan"); }
+    if (S.sheet === "order") renderOrderSheet();
+    if (r.status === "done") { saveSession(); stopWatch("order", true); setTimeout(() => { delete S.req.order; renderBanner(); }, 100); return; }
     if (r.status === "cancelled") {
       if (S.session.pendingCart) { S.cart = S.session.pendingCart.concat(S.cart); delete S.session.pendingCart; saveCart(); }
       toast("No se pudo tomar tu pedido. Lo devolvimos a tu carrito."); if (S.sheet === "order") renderOrderSheet(); saveSession(); stopWatch("order", true); setTimeout(() => { delete S.req.order; renderBanner(); }, 100); return;
