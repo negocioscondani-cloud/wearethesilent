@@ -933,11 +933,17 @@ async function boot(){
   if (welcome) toast(welcome);
   try { await Store.init("client"); } catch (e) { console.error(e); toast("Sin conexión con el servidor. Puedes ver el menú."); return; }
   if (Store.mode() === "demo") $("#mesaChip").title = "Modo demo";
-  // agotados y precios: 1 lectura por visita
+  // agotados, precios y productos nuevos en tiempo real
   try {
-    if (S.session && S.session.pub && Date.now() - S.session.pub.at < 30 * 60e3) S.pub = S.session.pub;
-    else { S.pub = Object.assign({ soldOut: [], prices: {} }, await Store.getPublic()); if (S.session) { S.session.pub = Object.assign({ at: Date.now() }, S.pub); saveSession(); } }
+    S.pub = Object.assign({ soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, await Store.getPublic());
     render();
+    if (Store.watchPublic) {
+      Store.watchPublic((freshPub) => {
+        S.pub = Object.assign({ soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, freshPub);
+        render();
+        renderCartBar();
+      });
+    }
   } catch (e) { console.error(e); }
   // retomar solicitudes activas
   if (S.session && S.session.reqs) Object.entries(S.session.reqs).forEach(([t, id]) => id && watch(t, id));

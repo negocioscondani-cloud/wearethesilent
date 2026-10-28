@@ -155,6 +155,7 @@ function start(){
   <div class="top"><div><span class="eyebrow">${esc(R.name)}${u && u.email ? " · " + esc(u.email) : ""}</span><h1>Panel del salón</h1></div>
     <div class="r">
       <span class="chip ok" id="conn">${Store.mode() === "demo" ? "Modo demo" : "Firestore en vivo"}</span>
+      <a class="btn line sm" href="/mesaya">🏠 Home Vendedor</a>
       <a class="btn line sm" href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">Menú Mesa 7</a>
       <a class="btn line sm" href="cocina.html">Pantalla de cocina</a>
       <a class="btn line sm" href="admin.html">Panel del dueño</a>

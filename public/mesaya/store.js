@@ -34,8 +34,20 @@
 
   /* ---------- espejo local y modo demo ---------- */
   const DKEY = "mesaya_demo_db_" + RID;
-  const emptyDb = () => ({ requests: {}, customers: {}, stats: {}, feedback: [], public: { soldOut: [], prices: {} }, inventory: null });
+  const BASE_MENU = (C.menu || []).map((m) => Object.assign({}, m));
+  const emptyDb = () => ({ requests: {}, customers: {}, stats: {}, feedback: [], public: { soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, inventory: { items: [], moves: [] } });
   const dread = () => Object.assign(emptyDb(), lsGet(DKEY, {}));
+  // Asegurar que los contadores arranquen en cero listos para demostración comercial
+  try {
+    if (!localStorage.getItem("mesaya_zero_init_v2")) {
+      const cur = dread();
+      cur.stats = {};
+      cur.feedback = [];
+      cur.requests = {};
+      lsSet(DKEY, cur);
+      localStorage.setItem("mesaya_zero_init_v2", "1");
+    }
+  } catch (e) {}
   const listeners = new Set();
   let bc = null;
   try { bc = new BroadcastChannel("mesaya_" + RID); bc.onmessage = () => fire(); } catch (e) {}
@@ -44,6 +56,30 @@
   function dwrite(d) { lsSet(DKEY, d); if (bc) { try { bc.postMessage(1); } catch (e) {} } fire(); }
   function dwatch(fn) { listeners.add(fn); fn(); return () => listeners.delete(fn); }
   function inc(obj, path, n) { const ks = path.split("."); let o = obj; for (let i = 0; i < ks.length - 1; i++) { o[ks[i]] = o[ks[i]] || {}; o = o[ks[i]]; } o[ks[ks.length - 1]] = (o[ks[ks.length - 1]] || 0) + n; }
+
+  function applyPublicToMenu(pub) {
+    if (!pub) return;
+    const deleted = new Set(pub.deletedDishes || []);
+    const imgs = pub.customImages || {};
+    const custom = Array.isArray(pub.customDishes) ? pub.customDishes : [];
+    const nextMenu = [];
+    BASE_MENU.forEach((item) => {
+      if (deleted.has(item.id)) return;
+      const copy = Object.assign({}, item);
+      if (imgs[copy.id] !== undefined) copy.img = imgs[copy.id];
+      nextMenu.push(copy);
+    });
+    custom.forEach((item) => {
+      if (!item || !item.id || deleted.has(item.id)) return;
+      const copy = Object.assign({ g: ["#7A4B2A", "#E3B04B"], tags: [], popular: false }, item);
+      if (imgs[copy.id] !== undefined) copy.img = imgs[copy.id];
+      const idx = nextMenu.findIndex((x) => x.id === copy.id);
+      if (idx >= 0) nextMenu[idx] = copy;
+      else nextMenu.push(copy);
+    });
+    C.menu.length = 0;
+    nextMenu.forEach((m) => C.menu.push(m));
+  }
 
   /* ---------- rutas Firestore ---------- */
   const rdoc = () => db.collection("restaurants").doc(RID);
@@ -417,23 +453,96 @@
       } catch (e) { console.warn("addPoints fallback:", e); }
     },
 
-    /* ----- agotados y precios (1 documento público) ----- */
+    /* ----- agotados, precios y platos nuevos (1 documento público) ----- */
+    applyPublicToMenu,
+
     async getPublic() {
-      if (mode === "demo") return dread().public;
-      try {
-        const s = await rdoc().collection("public").doc("menu").get();
-        if (s.exists) return s.data();
-      } catch (e) { console.warn("getPublic fallback:", e); }
-      return dread().public || { soldOut: [], prices: {} };
+      let pub = dread().public || { soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} };
+      if (mode !== "demo") {
+        try {
+          const s = await rdoc().collection("public").doc("menu").get();
+          if (s.exists) {
+            pub = Object.assign({ soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, s.data());
+            const d = dread();
+            d.public = pub;
+            lsSet(DKEY, d);
+          }
+        } catch (e) { console.warn("getPublic fallback:", e); }
+      }
+      applyPublicToMenu(pub);
+      return pub;
     },
 
     async setPublic(p) {
-      const doc = { soldOut: p.soldOut || [], prices: p.prices || {}, updatedAt: Date.now() };
+      const cur = dread().public || {};
+      const doc = {
+        soldOut: p.soldOut !== undefined ? p.soldOut : (cur.soldOut || []),
+        prices: p.prices !== undefined ? p.prices : (cur.prices || {}),
+        customDishes: p.customDishes !== undefined ? p.customDishes : (cur.customDishes || []),
+        deletedDishes: p.deletedDishes !== undefined ? p.deletedDishes : (cur.deletedDishes || []),
+        customImages: p.customImages !== undefined ? p.customImages : (cur.customImages || {}),
+        updatedAt: Date.now()
+      };
       const d = dread();
       d.public = doc;
+      applyPublicToMenu(doc);
       dwrite(d);
-      if (mode === "demo") return;
+      if (mode === "demo") return doc;
       try { await rdoc().collection("public").doc("menu").set(doc); } catch (e) { console.warn("setPublic fallback:", e); }
+      return doc;
+    },
+
+    watchPublic(cb) {
+      let last = "";
+      const emit = (pub) => {
+        if (!pub) return;
+        const s = JSON.stringify(pub);
+        if (s !== last) {
+          last = s;
+          applyPublicToMenu(pub);
+          cb(pub);
+        }
+      };
+      const unsubLocal = dwatch(() => emit(dread().public));
+      if (mode === "demo") return unsubLocal;
+      const unsubFb = rdoc().collection("public").doc("menu").onSnapshot(
+        (s) => {
+          if (s.exists) {
+            const pub = Object.assign({ soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, s.data());
+            const d = dread();
+            d.public = pub;
+            lsSet(DKEY, d);
+            emit(pub);
+          }
+        },
+        (e) => console.warn("watchPublic warning:", e)
+      );
+      return () => { unsubLocal(); unsubFb(); };
+    },
+
+    async resetStatsToZero() {
+      const d = dread();
+      d.stats = {};
+      d.feedback = [];
+      d.requests = {};
+      dwrite(d);
+      try {
+        Object.keys(localStorage).forEach((k) => {
+          if (k.startsWith("mesaya_salon_today_")) localStorage.removeItem(k);
+        });
+      } catch (e) {}
+      if (mode !== "demo") {
+        try {
+          const q = await rdoc().collection("stats").get();
+          for (const doc of q.docs) {
+            await doc.ref.delete();
+          }
+          const fq = await rdoc().collection("feedback").get();
+          for (const doc of fq.docs) {
+            await doc.ref.delete();
+          }
+        } catch (e) { console.warn("resetStatsToZero Firestore warning:", e); }
+      }
     },
 
     /* ----- analítica: 1 documento por día con contadores ----- */

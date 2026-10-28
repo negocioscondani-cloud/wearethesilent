@@ -56,12 +56,17 @@ tr.low td:first-child{box-shadow:inset 4px 0 0 var(--alert)}
 .moves{display:grid;gap:6px;font-size:13.5px;max-height:300px;overflow-y:auto}
 .moves .r{display:grid;grid-template-columns:minmax(0,1fr) 70px 150px;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:7px 0}
 .moves .r>span:nth-child(2),.moves .r>span:nth-child(3){text-align:right}
-.dish-row{display:grid;grid-template-columns:44px minmax(0,1fr) 140px auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.dish-row .ph{width:44px;height:44px;border-radius:10px}
+.dish-row{display:grid;grid-template-columns:56px minmax(0,1fr) 130px auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.dish-row .ph{width:56px;height:56px;border-radius:12px;position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--line)}
+.dish-row .ph span{position:absolute;inset:auto 0 0 0;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:700;text-align:center;padding:2px 0}
 .dish-row .amt{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .dish-row .amt span{padding:0 8px;color:var(--muted);font-weight:700}
 .dish-row .amt input{border:0;border-radius:0;padding:8px 8px 8px 0;font-variant-numeric:tabular-nums}
-@media (max-width:560px){.dish-row{grid-template-columns:44px minmax(0,1fr);}.dish-row .amt,.dish-row .sw{grid-column:2}}
+@media (max-width:680px){.dish-row{grid-template-columns:56px minmax(0,1fr);}.dish-row .amt,.dish-row .sw,.dish-row .del-d{grid-column:2}}
+.add-dish-box{background:var(--surface);border:2px solid var(--brand);border-radius:18px;padding:18px;margin-bottom:18px;display:grid;gap:14px}
+.add-dish-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end}
+.photo-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:1px dashed var(--line);border-radius:12px;background:var(--surface-2)}
+.photo-preview{width:64px;height:64px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line);flex:none;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center}
 .sw{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;cursor:pointer}
 .sw input{width:40px;height:22px;appearance:none;border-radius:999px;background:var(--line);position:relative;cursor:pointer;padding:0;border:0;flex:none}
 .sw input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
@@ -96,7 +101,33 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp
 const num = v => { const n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : 0; };
 function toast(t){ const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2400); }
 
-let tab = "resumen", range = 30, started = false, inv = null, pub = null, cache = {};
+let tab = "resumen", range = "today", started = false, inv = null, pub = null, cache = {};
+
+function compressImageFile(file, maxSize = 620, quality = 0.78) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("No se pudo leer la imagen"));
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Formato de imagen inválido"));
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > maxSize || h > maxSize) {
+          if (w > h) { h = Math.round((h * maxSize) / w); w = maxSize; }
+          else { w = Math.round((w * maxSize) / h); h = maxSize; }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 /* ---------- acceso (Google o Correo y Contraseña) ---------- */
 function showLogin(err){
@@ -115,6 +146,7 @@ function showLogin(err){
     <div class="demo-tip">
       <b>Accesos directos conectados (Firestore en vivo):</b>
       <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px">
+        <a href="/mesaya">🏠 Home Vendedor</a>
         <a href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">📱 Menú Mesa 7</a>
         <a href="salon.html">🛎️ Salón</a>
         <a href="cocina.html">👨‍🍳 Cocina</a>
@@ -144,18 +176,18 @@ function showLogin(err){
 }
 function start(){
   if (started) return; started = true;
-  Store.seedDemo();
   const u = Store.user();
   $("#app").innerHTML = `<div class="top"><div><span class="eyebrow">${esc(R.name)}${u && u.email ? " · " + esc(u.email) : ""}</span><h1>Panel del dueño</h1></div>
     <div class="row">
       <span class="chip ok">${Store.mode() === "demo" ? "Modo demo" : "Firestore en vivo"}</span>
+      <a class="btn line sm" href="/mesaya">🏠 Home Vendedor</a>
       <a class="btn line sm" href="index.html?m=7&k=${Store.tableKey(7)}" target="_blank" rel="noopener">Menú Mesa 7</a>
       <a class="btn line sm" href="salon.html">Panel del salón</a>
       <a class="btn line sm" href="cocina.html">Cocina</a>
       <a class="btn line sm" href="mesas.html">QR de mesas</a>
       <button class="btn ghost sm" id="out">Salir</button>
     </div></div>
-    <nav class="nav" aria-label="Secciones"><button data-t="resumen">Resumen</button><button data-t="inventario">Inventario</button><button data-t="menu">Menú y precios</button></nav>
+    <nav class="nav" aria-label="Secciones"><button data-t="resumen">Estadísticas (Resumen)</button><button data-t="menu">Menú, Productos y Fotos</button><button data-t="inventario">Inventario</button></nav>
     <div id="view"></div>`;
   $$(".nav button").forEach(b => b.onclick = () => { tab = b.dataset.t; show(); });
   $("#out").onclick = async () => { started = false; await Store.logout(); showLogin(); };
@@ -172,7 +204,7 @@ function barChart(vals, labels, opts){
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title)}">`;
   for (let i = 0; i <= sc.ticks; i++) { const v = max * i / sc.ticks, y = T + ih - ih * i / sc.ticks;
     s += `<line x1="${L}" x2="${W - Rm}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" font-size="11" text-anchor="end">${opts.fmt(v)}</text>`; }
-  vals.forEach((v, i) => { const h = ih * v / max, x = L + i * bw + bw * 0.16, w = bw * 0.68, hi = opts.hi === i;
+  vals.forEach((v, i) => { const h = ih * v / max, x = L + i * bw + bw * 0.16, w = bw * 0.68, hi = opts.hi === i && v > 0;
     s += `<rect x="${x.toFixed(1)}" y="${(T + ih - h).toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h, v ? 1 : 0).toFixed(1)}" rx="3" fill="${hi ? "var(--mango)" : "var(--brand)"}"><title>${esc(labels[i])}: ${opts.fmt(v, true)}</title></rect>`;
     if (i % step === 0) s += `<text x="${(L + i * bw + bw / 2).toFixed(1)}" y="${H - 10}" font-size="11" text-anchor="middle">${esc(labels[i])}</text>`; });
   return s + `</svg>`;
@@ -182,53 +214,144 @@ function hbars(rows, f, color){
   return `<div class="hbars">${rows.map(([l, v, c]) => `<div class="hb"><span class="lbl" title="${esc(l)}">${esc(l)}</span><span class="track"><i style="width:${(v / max * 100).toFixed(1)}%${c || color ? ";background:" + (c || color) : ""}"></i></span><span class="val">${f(v)}</span></div>`).join("")}</div>`;
 }
 
-/* ---------- Resumen / analítica ---------- */
+/* ---------- Resumen / analítica (Hoy, Ayer, 7 días, 1 mes, 1 año — iniciando en 0) ---------- */
 async function vResumen(){
   const v = $("#view");
-  v.innerHTML = `<div class="row" style="justify-content:space-between"><div class="seg" role="group" aria-label="Periodo">${[7, 30].map(d => `<button data-r="${d}" aria-pressed="${range === d}">Últimos ${d} días</button>`).join("")}</div>
-    <span class="note">Lecturas en Firebase: 1 por día del periodo + comentarios</span></div><div id="res"><p class="muted">Cargando…</p></div>`;
-  $$("[data-r]").forEach(b => b.onclick = () => { range = +b.dataset.r; vResumen(); });
-  const from = Store.dayKey(Date.now() - (range - 1) * 86400000);
-  let stats, fb;
+  const periods = [
+    { id: "today", label: "Hoy" },
+    { id: "yesterday", label: "Ayer" },
+    { id: 7, label: "7 días" },
+    { id: 30, label: "1 mes" },
+    { id: 365, label: "1 año" }
+  ];
+  v.innerHTML = `<div class="row" style="justify-content:space-between;gap:10px">
+    <div class="seg" role="group" aria-label="Periodo" style="flex-wrap:wrap">
+      ${periods.map(p => `<button data-r="${p.id}" aria-pressed="${String(range) === String(p.id)}">${p.label}</button>`).join("")}
+    </div>
+    <div class="row">
+      <button class="btn line sm" id="btnZero" type="button" title="Dejar todos los contadores en 0 para nueva demostración">🔄 Reiniciar contadores a cero</button>
+    </div>
+  </div><div id="res"><p class="muted">Cargando estadísticas…</p></div>`;
+
+  $$("[data-r]").forEach(b => b.onclick = () => {
+    const val = b.dataset.r;
+    range = (val === "today" || val === "yesterday") ? val : +val;
+    vResumen();
+  });
+
+  $("#btnZero").onclick = async () => {
+    if (!$("#btnZero").dataset.sure) {
+      $("#btnZero").dataset.sure = "1";
+      $("#btnZero").textContent = "¿Confirmar poner todo en 0?";
+      setTimeout(() => { if ($("#btnZero")) { delete $("#btnZero").dataset.sure; $("#btnZero").textContent = "🔄 Reiniciar contadores a cero"; } }, 3000);
+      return;
+    }
+    await Store.resetStatsToZero();
+    cache = {};
+    toast("Contadores reiniciados en 0");
+    vResumen();
+  };
+
+  await Store.getPublic();
+
+  const todayKey = Store.dayKey(Date.now());
+  const yesterdayKey = Store.dayKey(Date.now() - 86400000);
+  let numDays = 1, fromKey = todayKey, sinceMs = Date.now() - 86400000;
+  if (range === "today") { numDays = 1; fromKey = todayKey; sinceMs = new Date().setHours(0, 0, 0, 0); }
+  else if (range === "yesterday") { numDays = 1; fromKey = yesterdayKey; sinceMs = new Date().setHours(0, 0, 0, 0) - 86400000; }
+  else { numDays = Number(range) || 30; fromKey = Store.dayKey(Date.now() - (numDays - 1) * 86400000); sinceMs = Date.now() - numDays * 86400000; }
+
+  let allStats = [], fb = [];
   try {
-    const key = from + "|" + range;
-    if (!cache[key] || Date.now() - cache[key].at > 5 * 60e3) cache[key] = { at: Date.now(), stats: await Store.getStats(from), fb: await Store.getFeedback(Date.now() - range * 86400000) };
-    ({ stats, fb } = cache[key]);
-  } catch (e) { console.error(e); $("#res").innerHTML = `<p class="err">No se pudo cargar la analítica. Revisa la conexión y los permisos.</p>`; return; }
-  if (!stats.length) { $("#res").innerHTML = `<div class="box" style="margin-top:14px"><h2>Todavía no hay ventas registradas</h2><p class="muted" style="margin:0">Cada vez que el salón confirma un pago, se suma aquí: ventas, horas pico, métodos de pago y platos más vistos.</p></div>`; return; }
-  const sum = (k) => stats.reduce((a, s) => a + (s[k] || 0), 0), merge = k => { const o = {}; stats.forEach(s => Object.entries(s[k] || {}).forEach(([a, n]) => o[a] = (o[a] || 0) + n)); return o; };
+    allStats = await Store.getStats(fromKey);
+    fb = await Store.getFeedback(sinceMs);
+  } catch (e) { console.error(e); }
+
+  let stats = allStats;
+  if (range === "today") stats = allStats.filter(s => s.day === todayKey);
+  else if (range === "yesterday") stats = allStats.filter(s => s.day === yesterdayKey);
+
+  const sum = (k) => stats.reduce((a, s) => a + (s[k] || 0), 0);
+  const merge = k => { const o = {}; stats.forEach(s => Object.entries(s[k] || {}).forEach(([a, n]) => o[a] = (o[a] || 0) + n)); return o; };
   const sales = sum("sales"), bills = sum("bills"), members = sum("members"), calls = sum("calls"), redeems = sum("redeems"), pts = sum("points");
   const ratings = fb.filter(f => f.rating), avg = ratings.length ? ratings.reduce((a, f) => a + f.rating, 0) / ratings.length : 0;
-  // por día (rellena días sin datos)
-  const days = [], byDay = {}; stats.forEach(s => byDay[s.day] = s.sales || 0);
-  for (let i = range - 1; i >= 0; i--) { const k = Store.dayKey(Date.now() - i * 86400000); days.push(k); }
-  const dayVals = days.map(k => byDay[k] || 0), dayLbl = days.map(k => { const [y, m, d] = k.split("-"); return d + "/" + m; });
-  const best = dayVals.indexOf(Math.max(...dayVals));
-  const byHour = merge("byHour"), hours = []; for (let h = 6; h <= 22; h++) hours.push(h);
-  const hourVals = hours.map(h => byHour[h] || 0), peak = hourVals.indexOf(Math.max(...hourVals));
+
+  const byDay = {};
+  stats.forEach(s => byDay[s.day] = s.sales || 0);
+
+  let chartVals = [], chartLabels = [], chartTitle = "Ventas del periodo", chartSub = "", chartEvery = 1;
+  const hourLbl = h => (h % 12 || 12) + (h < 12 ? "am" : "pm");
+  const byHour = merge("byHour"), hours = [];
+  for (let h = 6; h <= 22; h++) hours.push(h);
+  const hourVals = hours.map(h => byHour[h] || 0);
+  const maxHourVal = Math.max(...hourVals, 0);
+  const peak = maxHourVal > 0 ? hourVals.indexOf(maxHourVal) : 0;
+
+  if (range === "today" || range === "yesterday") {
+    const lblDay = range === "today" ? "Hoy" : "Ayer";
+    chartVals = hourVals;
+    chartLabels = hours.map(hourLbl);
+    chartTitle = `Ventas por hora (${lblDay})`;
+    chartSub = sales > 0 ? `Total ${lblDay.toLowerCase()}: ${fmt(sales)}` : `Total ${lblDay.toLowerCase()}: ₡0 · Listo para registrar pedidos en vivo`;
+    chartEvery = 2;
+  } else if (range === 365) {
+    const monthNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const nowD = new Date();
+    const mMap = {};
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(nowD.getFullYear(), nowD.getMonth() - i, 1);
+      const ym = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+      mMap[ym] = { label: monthNames[d.getMonth()], val: 0 };
+    }
+    stats.forEach(s => {
+      const ym = (s.day || "").slice(0, 7);
+      if (mMap[ym]) mMap[ym].val += (s.sales || 0);
+    });
+    chartVals = Object.values(mMap).map(x => x.val);
+    chartLabels = Object.values(mMap).map(x => x.label);
+    chartTitle = "Ventas por mes (Último año)";
+    const maxM = Math.max(...chartVals, 0);
+    const bestM = maxM > 0 ? chartVals.indexOf(maxM) : 0;
+    chartSub = maxM > 0 ? `Mejor mes: ${chartLabels[bestM]} con ${fmt(chartVals[bestM])}` : "Acumulado anual en ₡0 · Listo para registrar ventas";
+    chartEvery = 1;
+  } else {
+    const days = [];
+    for (let i = numDays - 1; i >= 0; i--) {
+      days.push(Store.dayKey(Date.now() - i * 86400000));
+    }
+    chartVals = days.map(k => byDay[k] || 0);
+    chartLabels = days.map(k => { const [y, m, d] = k.split("-"); return d + "/" + m; });
+    const maxD = Math.max(...chartVals, 0);
+    const bestD = maxD > 0 ? chartVals.indexOf(maxD) : 0;
+    chartTitle = `Ventas por día (${numDays === 7 ? "Últimos 7 días" : "Último mes"})`;
+    chartSub = maxD > 0 ? `Mejor día: ${chartLabels[bestD]} con ${fmt(chartVals[bestD])}` : "Total en ₡0 · Se actualiza en vivo cuando el salón confirma cobros";
+    chartEvery = numDays > 14 ? 3 : 1;
+  }
+
+  const bestIdx = Math.max(...chartVals, 0) > 0 ? chartVals.indexOf(Math.max(...chartVals)) : -1;
   const methods = merge("byMethod"), mTot = Object.values(methods).reduce((a, b) => a + b, 0) || 1;
   const views = merge("views"), topViews = Object.entries(views).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => [(C.menu.find(m => m.id === id) || { name: id }).name, n]);
   const sold = merge("sold"), topSold = Object.entries(sold).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([id, n]) => [(C.menu.find(m => m.id === id) || { name: id }).name, n]);
   const orders = sum("orders");
   const tables = merge("tables"), topTables = Object.entries(tables).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([t, n]) => ["Mesa " + t, n]);
-  const hourLbl = h => (h % 12 || 12) + (h < 12 ? "am" : "pm");
+
   $("#res").innerHTML = `
   <div class="kpis">
     <div class="kpi"><b class="num">${fmt(sales)}</b><span>Ventas por la app</span></div>
     <div class="kpi"><b class="num">${bills}</b><span>Cuentas cobradas</span></div>
     <div class="kpi"><b class="num">${fmt(bills ? sales / bills : 0)}</b><span>Ticket promedio</span></div>
     <div class="kpi"><b class="num">${bills ? Math.round(members / bills * 100) : 0}%</b><span>Cuentas con cliente del club</span></div>
-    <div class="kpi"><b class="num">${avg ? avg.toFixed(1) : "—"}<span style="font-size:15px;color:var(--mango)"> ★</span></b><span>${ratings.length} calificaciones</span></div>
+    <div class="kpi"><b class="num">${avg ? avg.toFixed(1) : "0.0"}<span style="font-size:15px;color:var(--mango)"> ★</span></b><span>${ratings.length} calificaciones</span></div>
     <div class="kpi"><b class="num">${calls}</b><span>Llamadas al mesero · ${redeems} canjes</span></div>
   </div>
   <div class="cols">
-    <section class="box full"><h2>Ventas por día</h2><p class="sub">Mejor día: ${dayLbl[best]} con ${fmt(dayVals[best])}</p><div class="chart">${barChart(dayVals, dayLbl, { title: "Ventas por día", fmt: (v, full) => full ? fmt(v) : fmtK(v), every: range > 14 ? 3 : 1, hi: best })}</div></section>
-    <section class="box"><h2>Horas pico</h2><p class="sub">Más ventas a las ${hourLbl(hours[peak])}. Refuerza personal en esa franja.</p><div class="chart">${barChart(hourVals, hours.map(hourLbl), { title: "Ventas por hora", fmt: (v, full) => full ? fmt(v) : fmtK(v), every: 2, hi: peak })}</div></section>
-    <section class="box"><h2>Métodos de pago</h2><p class="sub">Porcentaje de lo vendido</p>${hbars([["SINPE Móvil", methods.sinpe || 0, "var(--brand)"], ["Tarjeta", methods.tarjeta || 0, "var(--mango)"], ["Efectivo", methods.efectivo || 0, "var(--muted)"]], v => Math.round(v / mTot * 100) + "%")}
+    <section class="box full"><h2>${esc(chartTitle)}</h2><p class="sub">${esc(chartSub)}</p><div class="chart">${barChart(chartVals, chartLabels, { title: chartTitle, fmt: (v, full) => full ? fmt(v) : fmtK(v), every: chartEvery, hi: bestIdx })}</div></section>
+    <section class="box"><h2>Horas pico</h2><p class="sub">${maxHourVal > 0 ? `Más ventas a las ${hourLbl(hours[peak])}.` : "En 0 · Muestra las horas con mayor movimiento del restaurante."}</p><div class="chart">${barChart(hourVals, hours.map(hourLbl), { title: "Ventas por hora", fmt: (v, full) => full ? fmt(v) : fmtK(v), every: 2, hi: maxHourVal > 0 ? peak : -1 })}</div></section>
+    <section class="box"><h2>Métodos de pago</h2><p class="sub">Porcentaje de lo vendido</p>${hbars([["SINPE Móvil", methods.sinpe || 0, "var(--brand)"], ["Tarjeta", methods.tarjeta || 0, "var(--mango)"], ["Efectivo", methods.efectivo || 0, "var(--muted)"]], v => (sales > 0 ? Math.round(v / mTot * 100) : 0) + "%")}
       <p class="note" style="margin:0">SINPE no paga comisión; la tarjeta sí. Cada punto que pasa de tarjeta a SINPE es margen.</p></section>
-    <section class="box"><h2>Platos más vendidos</h2><p class="sub">Unidades pedidas por la app · ${orders} pedidos</p>${topSold.length ? hbars(topSold, v => v, "var(--mango)") : `<p class="muted">Aparecen cuando los clientes empiecen a pedir desde el menú.</p>`}</section>
-    <section class="box"><h2>Platos más vistos</h2><p class="sub">Veces que abrieron el plato en el menú</p>${topViews.length ? hbars(topViews, v => v) : `<p class="muted">Aún sin datos.</p>`}</section>
-    <section class="box"><h2>Mesas que más venden</h2><p class="sub">Total cobrado por mesa</p>${hbars(topTables, fmtK)}</section>
+    <section class="box"><h2>Platos más vendidos</h2><p class="sub">Unidades pedidas por la app · ${orders} pedidos</p>${topSold.length ? hbars(topSold, v => v, "var(--mango)") : `<p class="muted">En 0 · Aparecen conforme los clientes piden desde el menú.</p>`}</section>
+    <section class="box"><h2>Platos más vistos</h2><p class="sub">Veces que abrieron el plato en el menú</p>${topViews.length ? hbars(topViews, v => v) : `<p class="muted">En 0 · Se suman cuando los clientes tocan los platos.</p>`}</section>
+    <section class="box"><h2>Mesas que más venden</h2><p class="sub">Total cobrado por mesa</p>${topTables.length ? hbars(topTables, fmtK) : `<p class="muted">En 0 · Se actualiza al confirmar cobros en Salón.</p>`}</section>
     <section class="box"><h2>Club de puntos</h2><div class="kpis" style="margin:0;grid-template-columns:1fr 1fr"><div class="kpi"><b class="num">${pts}</b><span>Puntos entregados</span></div><div class="kpi"><b class="num">${redeems}</b><span>Canjes</span></div></div>
       <p class="note" style="margin:0">Cada cliente del club deja su teléfono: es tu base para promociones y cumpleaños.</p></section>
     <section class="box"><h2>Comentarios de clientes</h2><p class="sub">Las calificaciones de 1 a 3 llegan solo aquí, no a Google</p>
@@ -292,24 +415,203 @@ async function vInventario(){
   };
 }
 
-/* ---------- Menú: agotados y precios ---------- */
+/* ---------- Menú: agregar nuevos productos, subir fotografía, agotados y precios ---------- */
 async function vMenu(){
-  const v = $("#view"); v.innerHTML = `<p class="muted">Cargando…</p>`;
-  try { if (!pub) pub = Object.assign({ soldOut: [], prices: {} }, await Store.getPublic()); } catch (e) { v.innerHTML = `<p class="err">No se pudo cargar.</p>`; return; }
-  const draft = { soldOut: new Set(pub.soldOut || []), prices: Object.assign({}, pub.prices || {}) };
-  v.innerHTML = `<p class="muted" style="margin-top:0">Marca lo que se acabó hoy y ajusta precios. Los clientes lo ven en su próxima visita. Platos nuevos, fotos y descripciones se cambian en <b>config.js</b>.</p>
+  const v = $("#view"); v.innerHTML = `<p class="muted">Cargando menú…</p>`;
+  try { pub = Object.assign({ soldOut: [], prices: {}, customDishes: [], deletedDishes: [], customImages: {} }, await Store.getPublic()); } catch (e) { v.innerHTML = `<p class="err">No se pudo cargar.</p>`; return; }
+  const draft = {
+    soldOut: new Set(pub.soldOut || []),
+    prices: Object.assign({}, pub.prices || {}),
+    customDishes: Array.isArray(pub.customDishes) ? pub.customDishes.slice() : [],
+    deletedDishes: new Set(pub.deletedDishes || []),
+    customImages: Object.assign({}, pub.customImages || {})
+  };
+  let newPhotoData = "";
+
+  v.innerHTML = `
+  <form class="add-dish-box" id="addDishForm" novalidate>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <span class="eyebrow">Catálogo en vivo</span>
+        <h2 style="font-size:20px;margin:2px 0 0">➕ Agregar nuevo producto al menú</h2>
+      </div>
+      <span class="note">Se publica al instante en el menú QR de todas las mesas</span>
+    </div>
+    <div class="add-dish-grid">
+      <label class="f">Nombre del producto<input id="ndName" placeholder="Ej. Hamburguesa Especial" required></label>
+      <label class="f">Categoría
+        <select id="ndCat" style="padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:inherit">
+          ${C.categories.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("")}
+        </select>
+      </label>
+      <label class="f">Precio ₡<input id="ndPrice" inputmode="numeric" placeholder="Ej. 4500" required></label>
+      <label class="f">Etiqueta (opcional)<input id="ndTag" placeholder="Ej. Nuevo, Chef, 2x1"></label>
+    </div>
+    <label class="f">Descripción / acompañamientos<input id="ndDesc" placeholder="Ej. Carne angus 200g, queso cheddar, tocineta y papas fritas"></label>
+    <div class="photo-picker">
+      <div class="photo-preview" id="ndPreview">Sin foto</div>
+      <div style="display:grid;gap:6px;flex:1;min-width:220px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <label class="btn line sm" style="cursor:pointer;margin:0">
+            📷 Subir fotografía desde dispositivo
+            <input type="file" id="ndFile" accept="image/*" hidden>
+          </label>
+          <span class="note">o pega URL de imagen:</span>
+        </div>
+        <input id="ndUrl" placeholder="https://... o img/casado.jpg" style="padding:8px 10px;font-size:13.5px">
+      </div>
+      <label class="sw" style="margin-left:auto"><input type="checkbox" id="ndPop" checked> Destacar en Historias</label>
+      <button class="btn brand" type="submit">Agregar producto al menú</button>
+    </div>
+  </form>
+
+  <input type="file" id="changeDishPhotoInput" accept="image/*" hidden>
+
+  <p class="muted" style="margin-top:0">Toca la foto de cualquier plato para cambiar su fotografía, ajusta precios o marca lo que se agotó hoy.</p>
   ${C.categories.map(c => `<section class="box" style="margin-bottom:12px"><h2>${esc(c.name)}</h2>
-    ${C.menu.filter(m => m.cat === c.id).map(m => `<div class="dish-row"><div class="ph" style="background-image:${m.img ? `url('${m.img}'),` : ""}linear-gradient(135deg,${m.g[0]},${m.g[1]});background-size:cover;background-position:center"></div>
-      <div style="min-width:0"><b>${esc(m.name)}</b><div class="note">Precio base ${fmt(m.price)}</div></div>
+    ${C.menu.filter(m => m.cat === c.id).map(m => `<div class="dish-row">
+      <div class="ph" data-photo="${esc(m.id)}" title="Toca para cambiar la fotografía de ${esc(m.name)}" style="background-image:${m.img ? `url('${esc(m.img)}'),` : ""}linear-gradient(135deg,${m.g[0]},${m.g[1]});background-size:cover;background-position:center"><span>📷 Foto</span></div>
+      <div style="min-width:0"><b>${esc(m.name)}</b><div class="note">${esc(m.desc || "")} · Base ${fmt(m.price)}</div></div>
       <label class="amt"><span>₡</span><input id="p-${m.id}" inputmode="numeric" value="${draft.prices[m.id] || m.price}" aria-label="Precio de ${esc(m.name)}"></label>
-      <label class="sw"><input type="checkbox" id="s-${m.id}" ${draft.soldOut.has(m.id) ? "checked" : ""}> Agotado</label></div>`).join("")}</section>`).join("")}
-  <div class="save-bar"><button class="btn ghost" id="reset">Reactivar todo</button><button class="btn main" id="savePub">Guardar cambios</button></div>`;
+      <label class="sw"><input type="checkbox" id="s-${m.id}" ${draft.soldOut.has(m.id) ? "checked" : ""}> Agotado</label>
+      <button class="btn ghost sm del-d" type="button" data-del-dish="${esc(m.id)}" title="Eliminar plato">Eliminar</button>
+    </div>`).join("") || `<p class="muted" style="margin:0">No hay productos en esta categoría.</p>`}</section>`).join("")}
+  <div class="save-bar"><button class="btn ghost" id="reset">Reactivar todos</button><button class="btn main" id="savePub">Guardar cambios de precios y agotados</button></div>`;
+
+  // Subir foto para nuevo plato
+  $("#ndFile").onchange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      newPhotoData = await compressImageFile(file);
+      $("#ndPreview").style.backgroundImage = `url('${newPhotoData}')`;
+      $("#ndPreview").textContent = "";
+      toast("Fotografía cargada lista para agregar");
+    } catch (err) { toast(err.message || "Error al procesar foto"); }
+  };
+  $("#ndUrl").oninput = () => {
+    const u = $("#ndUrl").value.trim();
+    if (u) {
+      newPhotoData = u;
+      $("#ndPreview").style.backgroundImage = `url('${esc(u)}')`;
+      $("#ndPreview").textContent = "";
+    }
+  };
+
+  // Agregar nuevo producto
+  $("#addDishForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const name = $("#ndName").value.trim();
+    const cat = $("#ndCat").value;
+    const price = Math.round(num($("#ndPrice").value));
+    const desc = $("#ndDesc").value.trim();
+    const tag = $("#ndTag").value.trim();
+    const popular = $("#ndPop").checked;
+    if (!name || price <= 0) { toast("Escribe el nombre y el precio del producto"); return; }
+
+    const id = "d_" + Date.now().toString(36);
+    const newDish = {
+      id,
+      cat,
+      name,
+      desc: desc || "Preparado al momento",
+      price,
+      popular,
+      tags: tag ? [tag] : ["Nuevo"],
+      img: newPhotoData || "",
+      g: ["#8B5A2B", "#D9A15B"]
+    };
+    draft.customDishes.push(newDish);
+    if (newPhotoData) draft.customImages[id] = newPhotoData;
+
+    try {
+      pub = await Store.setPublic({
+        soldOut: Array.from(draft.soldOut),
+        prices: draft.prices,
+        customDishes: draft.customDishes,
+        deletedDishes: Array.from(draft.deletedDishes),
+        customImages: draft.customImages
+      });
+      toast("Producto agregado al menú en vivo: " + name);
+      vMenu();
+    } catch (err) { console.error(err); toast("No se pudo guardar el producto"); }
+  };
+
+  // Cambiar foto de plato existente
+  let photoTargetId = null;
+  const photoInput = $("#changeDishPhotoInput");
+  $$("[data-photo]").forEach(el => {
+    el.onclick = () => {
+      photoTargetId = el.dataset.photo;
+      photoInput.value = "";
+      photoInput.click();
+    };
+  });
+  photoInput.onchange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file || !photoTargetId) return;
+    try {
+      const dataUrl = await compressImageFile(file);
+      draft.customImages[photoTargetId] = dataUrl;
+      pub = await Store.setPublic({
+        soldOut: Array.from(draft.soldOut),
+        prices: draft.prices,
+        customDishes: draft.customDishes,
+        deletedDishes: Array.from(draft.deletedDishes),
+        customImages: draft.customImages
+      });
+      toast("Fotografía actualizada");
+      vMenu();
+    } catch (err) { toast("No se pudo cambiar la foto"); }
+  };
+
+  // Eliminar plato
+  $$("[data-del-dish]").forEach(btn => {
+    btn.onclick = async () => {
+      const id = btn.dataset.delDish;
+      if (!btn.dataset.sure) {
+        btn.dataset.sure = "1";
+        btn.textContent = "¿Confirmar?";
+        btn.className = "btn danger sm del-d";
+        setTimeout(() => { if (btn.isConnected) { delete btn.dataset.sure; btn.textContent = "Eliminar"; btn.className = "btn ghost sm del-d"; } }, 3000);
+        return;
+      }
+      draft.deletedDishes.add(id);
+      draft.customDishes = draft.customDishes.filter(d => d.id !== id);
+      pub = await Store.setPublic({
+        soldOut: Array.from(draft.soldOut),
+        prices: draft.prices,
+        customDishes: draft.customDishes,
+        deletedDishes: Array.from(draft.deletedDishes),
+        customImages: draft.customImages
+      });
+      toast("Producto eliminado del menú");
+      vMenu();
+    };
+  });
+
   $("#reset").onclick = () => $$("input[id^=s-]").forEach(i => i.checked = false);
   $("#savePub").onclick = async () => {
-    const out = { soldOut: [], prices: {} };
-    C.menu.forEach(m => { if ($("#s-" + m.id).checked) out.soldOut.push(m.id); const p = Math.round(num($("#p-" + m.id).value)); if (p && p !== m.price) out.prices[m.id] = p; });
+    const outSold = [], outPrices = {};
+    C.menu.forEach(m => {
+      const sEl = $("#s-" + m.id), pEl = $("#p-" + m.id);
+      if (sEl && sEl.checked) outSold.push(m.id);
+      if (pEl) {
+        const p = Math.round(num(pEl.value));
+        if (p && p !== m.price) outPrices[m.id] = p;
+      }
+    });
     $("#savePub").disabled = true;
-    try { await Store.setPublic(out); pub = out; toast("Menú actualizado"); } catch (e) { console.error(e); toast("No se pudo guardar"); }
+    try {
+      pub = await Store.setPublic({
+        soldOut: outSold,
+        prices: outPrices,
+        customDishes: draft.customDishes,
+        deletedDishes: Array.from(draft.deletedDishes),
+        customImages: draft.customImages
+      });
+      toast("Menú actualizado en vivo");
+    } catch (e) { console.error(e); toast("No se pudo guardar"); }
     $("#savePub").disabled = false;
   };
 }
