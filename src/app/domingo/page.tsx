@@ -308,7 +308,7 @@ export default function DomingoPage() {
         <div className="max-w-[760px] mx-auto px-4 sm:px-6 flex items-center justify-between gap-3">
           <div className="flex items-center gap-4">
             <Link
-              href="/vivianne-wolski"
+              href="/"
               className="inline-flex items-center gap-1.5 font-sans-ui text-[11px] uppercase tracking-wider text-[#7C8B6B] hover:text-[#6E1B2C] transition"
               title="Volver a Vivienne"
             >
@@ -321,7 +321,7 @@ export default function DomingoPage() {
             <div>
               <div className="font-pinyon text-2xl text-[#6E1B2C] leading-none">Vivienne</div>
               <div className="font-sans-ui text-[8px] uppercase tracking-[0.08em] text-[#7C8B6B] leading-none mt-0.5">
-                The Silent Studio
+                Universo Privado
               </div>
             </div>
           </div>
@@ -1293,11 +1293,15 @@ export default function DomingoPage() {
 
         {/* FOOTER */}
         <footer className="text-center font-sans-ui text-[10.5px] text-[#A9842C] tracking-[0.1em] uppercase mt-12 pt-6 border-t border-[#E8DCC0] space-y-3">
-          <div>THE SILENT STUDIO · VIVIENNE WOLSKI</div>
+          <div>VIVIENNE WOLSKI · UNIVERSO PRIVADO</div>
           
           <div className="flex flex-wrap items-center justify-center gap-3 text-[10px] text-[#7C8B6B] lowercase">
-            <Link href="/vivianne-wolski" className="hover:text-[#6E1B2C] transition">
-              boutique
+            <Link href="/" className="hover:text-[#6E1B2C] transition">
+              inicio
+            </Link>
+            <span>·</span>
+            <Link href="/vivianne-wolski/armario" className="hover:text-[#6E1B2C] transition">
+              el armario
             </Link>
             <span>·</span>
             <a href="https://www.instagram.com/vivianne_wolski/" target="_blank" rel="noopener noreferrer" className="hover:text-[#6E1B2C] transition">

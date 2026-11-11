@@ -28,31 +28,28 @@ export default function Footer() {
   return (
     <footer className="border-t border-border py-12 text-xs text-muted-foreground bg-black/40">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 px-5 md:flex-row md:px-8">
-        <p className="uppercase tracking-wider">{t('header.brand')}</p>
+        <p className="uppercase tracking-wider">VIVIENNE WOLSKI</p>
         <div className="flex flex-wrap items-center justify-center gap-6">
           <Link
-            href="/the-silent-studio"
+            href="/vivianne-wolski/armario"
             className="transition hover:text-foreground"
           >
-            {t('header.studio')}
+            El Armario
           </Link>
           <Link
-            href="/blog"
+            href="/vivianne-wolski/club"
             className="transition hover:text-foreground"
           >
-            {t('header.blog')}
+            Club Vivi
           </Link>
           <Link
-            href="/editorial-resources"
+            href="/domingo"
             className="transition hover:text-foreground"
           >
-            {t('footer.links.resources')}
-          </Link>
-          <Link href="/contact" className="transition hover:text-foreground">
-            {t('footer.links.contact')}
+            Honestidad Financiera
           </Link>
         </div>
-        <p>{currentYear ? t('footer.copyright', { year: currentYear }) : ' '}</p>
+        <p>{currentYear ? `© ${currentYear} Vivienne Wolski` : ' '}</p>
       </div>
 
       {/* LEGAL ROW */}

@@ -41,15 +41,13 @@ export default function Header() {
   const isBlogPost = pathname.startsWith('/blog/') && pathname !== '/blog';
 
   const mainNavLinks = [
-    { href: '/oferta', label: language === 'es' ? 'Servicios Video IA' : 'AI Video Services' },
-    { href: '/influencer-ia', label: language === 'es' ? 'Guía $47' : '$47 Guide' },
-    { href: '/blog', label: t('header.blog') },
-    { href: '/vivianne-wolski', label: 'Vivienne Wolski' },
-    { href: '/contact', label: t('header.contact') },
+    { href: '/vivianne-wolski/armario', label: language === 'es' ? 'El Armario' : 'The Closet' },
+    { href: '/vivianne-wolski/club', label: 'Club Vivi' },
+    { href: '/domingo', label: language === 'es' ? 'Honestidad Financiera' : 'Financial Honesty' },
   ];
 
   const mobileNavLinks = [
-    { href: '/', label: language === 'es' ? 'Inicio' : 'Home' },
+    { href: '/', label: language === 'es' ? 'Vivienne Wolski' : 'Vivienne Wolski' },
     ...mainNavLinks,
   ];
 
@@ -72,7 +70,7 @@ export default function Header() {
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-[#C5A059] text-[#E5DEC9] hover:text-black border border-[#C5A059]/40 font-mono text-[11px] uppercase tracking-wider font-semibold transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>{language === 'es' ? 'Volver al Inicio' : 'Back to Home'}</span>
+              <span>{language === 'es' ? 'Volver a Vivienne' : 'Back to Vivienne'}</span>
             </Link>
           )}
 
@@ -80,7 +78,7 @@ export default function Header() {
             href="/"
             className="font-fraunces font-bold text-lg sm:text-2xl tracking-tight text-[#F7F4ED] hover:opacity-90 transition hidden sm:inline-block"
           >
-            The Silent<span className="text-[#D4AF6A]">.</span>
+            Vivienne <span className="text-[#D4AF6A] italic font-normal">Wolski</span>
           </Link>
         </div>
 

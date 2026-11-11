@@ -14,7 +14,7 @@ export default function ClubViviPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
             <Link
-              href="/vivianne-wolski"
+              href="/"
               className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[#2B1D14] hover:text-[#6B1F2A] border border-[#B08D57]/40 hover:border-[#6B1F2A] bg-[#FAF5EC] px-3.5 py-2 rounded-xs transition"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-[#6B1F2A]" />
@@ -22,7 +22,7 @@ export default function ClubViviPage() {
             </Link>
 
             <div className="text-center">
-              <Link href="/vivianne-wolski" className="inline-block">
+              <Link href="/" className="inline-block">
                 <span className="font-serif font-light text-xl sm:text-3xl tracking-tight text-[#2B1D14] block">
                   Club Vivi
                 </span>
@@ -127,7 +127,7 @@ export default function ClubViviPage() {
       {/* Footer */}
       <footer className="bg-[#FAF5EC] border-t border-[#B08D57]/30 py-8 text-center text-xs text-[#7C6E65] space-y-2 px-4">
         <div className="flex flex-wrap items-center justify-center gap-6 font-serif uppercase tracking-[0.18em]">
-          <Link href="/vivianne-wolski" className="text-[#2B1D14] hover:text-[#6B1F2A]">
+          <Link href="/" className="text-[#2B1D14] hover:text-[#6B1F2A]">
             ← Volver a Vivienne
           </Link>
           <span>·</span>
@@ -140,7 +140,7 @@ export default function ClubViviPage() {
           </Link>
         </div>
         <p className="text-[10px] text-[#9C8F85]">
-          Vivienne Wolski es un personaje creado con inteligencia artificial · The Silent Studio
+          © {new Date().getFullYear()} Vivienne Wolski · Universo Privado
         </p>
       </footer>
     </div>

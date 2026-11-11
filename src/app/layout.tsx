@@ -13,46 +13,48 @@ import { ThemeProvider } from '@/context/theme-provider';
 import { CookieConsentBanner } from '@/components/legal/cookie-consent-banner';
 
 const BASE_URL = 'https://wearethesilent.com';
+const VIVIENNE_HERO_IMAGE = `${BASE_URL}/images/vivianne-wolski-hero.jpg`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default:
-      'The Silent Studio | Agencia de Influencers IA, Videos Publicitarios UGC y Anuncios con IA',
-    template: '%s | The Silent Studio',
+      'Vivienne Wolski | Universo Privado · El Armario, Club Vivi & Honestidad Financiera',
+    template: '%s | Vivienne Wolski',
   },
   description:
-    'Creamos Influencers con Inteligencia Artificial hiperrealistas y videos publicitarios UGC 9:16 que detienen el scroll y convierten en Meta Ads, TikTok e Instagram. Cotiza tus videos desde $50 USD (Pack 4 por $170 y Pack 8 por $300) o aprende nuestro método paso a paso.',
+    'El universo privado y salón editorial de Vivienne Wolski. El Armario (piezas de inversión y lujo silencioso), Club Vivi (33 audios de criterio, carácter y estilo) y El Domingo de los Números (ritual de honestidad financiera).',
   keywords: [
-    'Influencers IA',
-    'Crear videos con inteligencia artificial',
-    'IA para crear videos publicitarios',
-    'Publicidad con inteligencia artificial',
-    'Anuncios UGC con IA',
-    'Videos para Meta Ads Costa Rica',
-    'Crear anuncios publicitarios con IA',
-    'Agencia de contenido con IA',
-    'The Silent Studio',
+    'Vivienne Wolski',
+    'Vivianne Wolski',
+    'El Armario de Vivienne',
+    'Club Vivi',
+    'Wolski Club',
+    'El Domingo de los Números',
+    'Honestidad Financiera',
+    'Quiet Luxury',
+    'Lujo Silencioso',
+    'Moda Clásica',
   ],
   alternates: {
     canonical: BASE_URL,
   },
   icons: {
-    icon: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
+    icon: '/images/vivianne-wolski-hero.jpg',
   },
   openGraph: {
     title:
-      'The Silent Studio | Influencers IA y Videos Publicitarios de Alto Impacto',
+      'Vivienne Wolski | Universo Privado · Silencio, Orden y Criterio',
     description:
-      'Agencia de dirección creativa e Inteligencia Artificial: producción de videos comerciales UGC 9:16 listos para Meta Ads, creación de Influencers IA y formación práctica.',
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. El Armario, Club Vivi y Honestidad Financiera.',
     url: BASE_URL,
-    siteName: 'The Silent Studio',
+    siteName: 'Vivienne Wolski',
     images: [
       {
-        url: 'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif',
+        url: VIVIENNE_HERO_IMAGE,
         width: 1200,
-        height: 630,
-        alt: 'The Silent Studio · Agencia de Influencers IA y Videos Publicitarios',
+        height: 1500,
+        alt: 'Vivienne Wolski · Universo Privado',
       },
     ],
     locale: 'es_ES',
@@ -72,12 +74,10 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title:
-      'The Silent Studio | Influencers IA y Videos Publicitarios con Inteligencia Artificial',
+      'Vivienne Wolski | Universo Privado · El Armario, Club Vivi & Honestidad Financiera',
     description:
-      'Producimos anuncios UGC con Influencers IA hiperrealistas para Meta Ads, TikTok y Reels desde $50 USD y guías paso a paso.',
-    images: [
-      'http://studioboom.online/wp-content/uploads/2025/09/calde11th_Luxury_editorial_photo_minimalist_fashion_studio_de_6e25e721-d392-4f9c-9ce2-bdd0b210b71d_0.avif',
-    ],
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Piezas de inversión curadas, fonoteca de Club Vivi y ritual de Honestidad Financiera.',
+    images: [VIVIENNE_HERO_IMAGE],
   },
 };
 
@@ -91,26 +91,25 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Organization',
-        '@id': `${BASE_URL}/#organization`,
-        name: 'The Silent Studio',
+        '@type': 'Person',
+        '@id': `${BASE_URL}/#person`,
+        name: 'Vivienne Wolski',
         url: BASE_URL,
-        logo: 'http://studioboom.online/wp-content/uploads/2025/09/gallery-wall-papers.avif',
+        image: VIVIENNE_HERO_IMAGE,
         description:
-          'Agencia de Dirección Creativa e Inteligencia Artificial Generativa especializada en Influencers IA, videos publicitarios UGC 9:16 para Meta Ads y formación estratégica.',
+          'Aristócrata hecha a sí misma de 82 años y referente editorial de estilo, carácter y finanzas personales.',
         sameAs: [
           'https://www.instagram.com/vivianne_wolski/',
-          'https://www.skool.com/we-are-the-silent-ia-8224/about',
         ],
       },
       {
         '@type': 'WebSite',
         '@id': `${BASE_URL}/#website`,
         url: BASE_URL,
-        name: 'The Silent Studio',
+        name: 'Vivienne Wolski',
         inLanguage: 'es',
         publisher: {
-          '@id': `${BASE_URL}/#organization`,
+          '@id': `${BASE_URL}/#person`,
         },
       },
     ],
