@@ -497,13 +497,13 @@ export default function AudiosWaitlistPage() {
                   <div className="space-y-4 text-center sm:text-left">
                     <div className="inline-flex items-center gap-2 text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.2em]">
                       <CheckCircle2 className="w-5 h-5 text-[#6B1F2A]" />
-                      <span>Lugar reservado en la lista privada</span>
+                      <span>Lugar reservado · Correo de confirmación enviado</span>
                     </div>
                     <h2 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
                       Gracias, <span className="italic text-[#6B1F2A]">{submittedUser.name}</span>.
                     </h2>
                     <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                      Hemos guardado tu correo (<strong>{submittedUser.email}</strong>). Serás de las primeras personas en recibir el <strong>Episodio 01: Mentalidad</strong> y tu hoja de práctica semanal apenas abramos el acceso.
+                      Acabamos de enviarte un <strong>correo de confirmación</strong> a <strong>{submittedUser.email}</strong> (revisa también tu bandeja de Promociones o No deseados). Serás de las primeras personas en recibir el <strong>Episodio 01: Mentalidad</strong> apenas abramos el acceso.
                     </p>
                     <div className="pt-2 flex flex-wrap items-center gap-3">
                       <button

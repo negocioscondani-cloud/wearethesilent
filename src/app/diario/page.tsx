@@ -431,9 +431,9 @@ export default function DiarioViviPage() {
               </h3>
 
               {submitted ? (
-                <div className="flex items-center gap-2 text-xs text-[#6B1F2A] font-medium py-2">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>¡Anotada en la lista privada! Te escribiremos pronto.</span>
+                <div className="flex items-start gap-2 text-xs text-[#6B1F2A] font-medium py-2 leading-relaxed">
+                  <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>¡Anotada en la lista privada! Te acabamos de enviar un correo de confirmación a tu bandeja de entrada.</span>
                 </div>
               ) : (
                 <form onSubmit={handleWaitlistSubmit} className="space-y-2.5">

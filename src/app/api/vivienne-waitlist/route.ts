@@ -70,8 +70,10 @@ export async function POST(req: Request) {
       }
     }
 
-    // Actualizar displayName con el Nombre y el Episodio elegido
+    let confirmationEmailSent = false;
+
     if (idToken) {
+      // Actualizar displayName con el Nombre y el Episodio elegido
       await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${FIREBASE_API_KEY}`,
         {
@@ -84,9 +86,85 @@ export async function POST(req: Request) {
           }),
         }
       ).catch(() => {});
+
+      // 2. Enviar correo de confirmación real desde Firebase Authentication (en Español)
+      try {
+        const verifyRes = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${FIREBASE_API_KEY}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Firebase-Locale': 'es',
+            },
+            body: JSON.stringify({
+              requestType: 'VERIFY_EMAIL',
+              idToken,
+            }),
+          }
+        );
+        if (verifyRes.ok) {
+          confirmationEmailSent = true;
+        }
+      } catch {
+        // ignore
+      }
     }
 
-    // 2. Intentar guardar también en Firestore Database (si las reglas están abiertas)
+    // 3. Si además existe RESEND_API_KEY configurada, enviar carta editorial personalizada de Vivienne
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      try {
+        const html = `
+          <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; background: #F7F1E6; color: #2B1D14; padding: 36px 28px; border: 1px solid #D8CBB8; border-radius: 12px;">
+            <p style="font-family: monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #6B1F2A; margin: 0 0 12px;">
+              Vivienne Wolski · Lista de Espera Privada
+            </p>
+            <h1 style="font-size: 26px; font-weight: normal; margin: 0 0 16px; color: #2B1D14;">
+              Hola, ${name}, cariño.
+            </h1>
+            <p style="font-size: 15px; line-height: 1.7; color: #2B1D14; margin: 0 0 16px;">
+              Tu lugar en la lista de espera para <strong>Audios de Vivienne: Dominio del Dinero y Libertad Financiera</strong> ya quedó confirmado.
+            </p>
+            <div style="background: #FAF5EC; border-left: 3px solid #6B1F2A; padding: 14px 18px; margin: 20px 0;">
+              <p style="font-style: italic; font-size: 14px; color: #6B1F2A; margin: 0;">
+                “El dinero no es para presumir. El dinero es una forma de comprar tiempo: tiempo para dormir tranquila, tiempo para tu familia y tiempo para decir que sí o que no con total libertad.”
+              </p>
+            </div>
+            <p style="font-size: 14px; line-height: 1.6; color: #5C4A3E; margin: 0 0 20px;">
+              Capítulo prioritario anotado: <strong>${favoriteEp}</strong>. Te avisaré personalmente a este correo en cuanto liberemos el primer episodio semanal.
+            </p>
+            <a href="https://wearethesilent.com/diario" style="display: inline-block; background: #6B1F2A; color: #F7F1E6; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-family: monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;">
+              Leer El Blog de Vivi →
+            </a>
+            <p style="font-size: 11px; color: #8A7665; margin-top: 28px; border-top: 1px solid #D8CBB8; padding-top: 14px;">
+              © Vivienne Wolski · Maison Wolski · Silencio, Orden y Criterio
+            </p>
+          </div>
+        `;
+
+        const rRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: process.env.RESEND_FROM_EMAIL || 'Vivienne Wolski <onboarding@resend.dev>',
+            to: [email],
+            subject: `Bienvenida a la lista privada de Vivienne, ${name}`,
+            html,
+          }),
+        });
+        if (rRes.ok) {
+          confirmationEmailSent = true;
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    // 4. Intentar guardar también en Firestore Database (si las reglas están abiertas)
     const docId = email.replace(/[^a-z0-9@._-]/g, '_');
     const createdAtIso = new Date().toISOString();
     const firestoreFields = {
@@ -124,6 +202,7 @@ export async function POST(req: Request) {
       uid: localId || docId,
       savedInAuth: true,
       savedInFirestore,
+      confirmationEmailSent,
       lead: {
         id: docId,
         name,
