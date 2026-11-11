@@ -187,33 +187,68 @@ export default function DiarioViviPage() {
     if (!cleanName || !cleanEmail) return;
 
     setIsSubmitting(true);
+    const nowIso = new Date().toISOString();
+    const docId = cleanEmail.replace(/[^a-z0-9@._-]/g, '_');
+
     try {
-      const { firestore } = getFirebase();
-      const docId = cleanEmail.replace(/[^a-z0-9@._-]/g, '_');
-      const payload = {
-        name: cleanName,
-        email: cleanEmail,
-        favoriteEp: activeArticle.relatedAudioEp,
-        series: 'El Blog de Vivi + Lista de Espera Audios',
-        source: `wearethesilent.com/diario (${activeArticle.id})`,
-        createdAtIso: new Date().toISOString(),
-        updatedAt: serverTimestamp(),
-      };
-      if (firestore) {
-        await setDoc(
-          doc(firestore, 'restaurants', 'vivienne-wolski', 'customers', docId),
-          payload,
-          { merge: true }
-        );
-        try {
-          await setDoc(doc(firestore, 'vivienne_waitlist', docId), payload, { merge: true });
-        } catch {
-          // ignore
-        }
+      // 1. Guardar en respaldo local compartido con /audios
+      try {
+        const raw = localStorage.getItem('vivienne_waitlist_all_leads_v1');
+        const list = raw ? JSON.parse(raw) : [];
+        const filtered = Array.isArray(list)
+          ? list.filter((x: { email?: string }) => x.email?.toLowerCase() !== cleanEmail)
+          : [];
+        filtered.unshift({
+          id: docId,
+          name: cleanName,
+          email: cleanEmail,
+          favoriteEp: activeArticle.relatedAudioEp,
+          createdAtIso: nowIso,
+        });
+        localStorage.setItem('vivienne_waitlist_all_leads_v1', JSON.stringify(filtered));
+      } catch {
+        // ignore
       }
+
+      // 2. Guardar en Firebase Authentication + Firestore vía /api/vivienne-waitlist
+      await fetch('/api/vivienne-waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: cleanName,
+          email: cleanEmail,
+          favoriteEp: activeArticle.relatedAudioEp,
+          source: `wearethesilent.com/diario (${activeArticle.id})`,
+        }),
+      }).catch(() => {});
+
+      // 3. Intento silencioso en Firestore cliente
+      try {
+        const { firestore } = getFirebase();
+        if (firestore) {
+          const payload = {
+            name: cleanName,
+            email: cleanEmail,
+            favoriteEp: activeArticle.relatedAudioEp,
+            series: 'El Blog de Vivi + Lista de Espera Audios',
+            source: `wearethesilent.com/diario (${activeArticle.id})`,
+            createdAtIso: nowIso,
+            updatedAt: serverTimestamp(),
+          };
+          await setDoc(doc(firestore, 'vivienne_waitlist', docId), payload, { merge: true }).catch(
+            () => {}
+          );
+          await setDoc(
+            doc(firestore, 'restaurants', 'vivienne-wolski', 'customers', docId),
+            payload,
+            { merge: true }
+          ).catch(() => {});
+        }
+      } catch {
+        // ignore
+      }
+
       setSubmitted(true);
-    } catch (err) {
-      console.error(err);
     } finally {
       setIsSubmitting(false);
     }

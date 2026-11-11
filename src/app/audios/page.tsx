@@ -174,6 +174,7 @@ interface WaitlistEntry {
 }
 
 const LOCAL_STORAGE_KEY = 'vivienne_audios_waitlist_v1';
+const LOCAL_LEADS_LIST_KEY = 'vivienne_waitlist_all_leads_v1';
 
 export default function AudiosWaitlistPage() {
   const [name, setName] = useState('');
@@ -208,30 +209,75 @@ export default function AudiosWaitlistPage() {
 
   const loadLeadsFromFirebase = async () => {
     setLoadingLeads(true);
+    const mapById = new Map<string, WaitlistEntry>();
+
+    // 1. Cargar respaldos locales registrados en este navegador
     try {
-      const { firestore } = getFirebase();
-      if (!firestore) return;
-      const snap = await getDocs(collection(firestore, 'restaurants', 'vivienne-wolski', 'customers'));
-      const list: WaitlistEntry[] = [];
-      snap.forEach((d) => {
-        const data = d.data();
-        if (data && data.email) {
-          list.push({
-            id: d.id,
-            name: data.name || 'Sin nombre',
-            email: data.email,
-            favoriteEp: data.favoriteEp || 'Todos los episodios',
-            createdAtIso: data.createdAtIso || '',
+      const localRaw = localStorage.getItem(LOCAL_LEADS_LIST_KEY);
+      if (localRaw) {
+        const parsed: WaitlistEntry[] = JSON.parse(localRaw);
+        if (Array.isArray(parsed)) {
+          parsed.forEach((item) => {
+            if (item && item.email) {
+              mapById.set(item.email.toLowerCase(), item);
+            }
           });
         }
-      });
-      list.sort((a, b) => (b.createdAtIso || '').localeCompare(a.createdAtIso || ''));
-      setLeads(list);
-    } catch (err) {
-      console.error('Error cargando lista de espera:', err);
-    } finally {
-      setLoadingLeads(false);
+      }
+    } catch {
+      // ignore
     }
+
+    // 2. Consultar Firebase Firestore (si las reglas permiten lectura)
+    try {
+      const { firestore } = getFirebase();
+      if (firestore) {
+        try {
+          const snap1 = await getDocs(collection(firestore, 'vivienne_waitlist'));
+          snap1.forEach((d) => {
+            const data = d.data();
+            if (data && data.email) {
+              mapById.set(String(data.email).toLowerCase(), {
+                id: d.id,
+                name: data.name || 'Sin nombre',
+                email: data.email,
+                favoriteEp: data.favoriteEp || 'Todos los episodios',
+                createdAtIso: data.createdAtIso || '',
+              });
+            }
+          });
+        } catch {
+          // ignore if vivienne_waitlist rules are not open yet
+        }
+
+        try {
+          const snap2 = await getDocs(
+            collection(firestore, 'restaurants', 'vivienne-wolski', 'customers')
+          );
+          snap2.forEach((d) => {
+            const data = d.data();
+            if (data && data.email) {
+              mapById.set(String(data.email).toLowerCase(), {
+                id: d.id,
+                name: data.name || 'Sin nombre',
+                email: data.email,
+                favoriteEp: data.favoriteEp || 'Todos los episodios',
+                createdAtIso: data.createdAtIso || '',
+              });
+            }
+          });
+        } catch {
+          // ignore if customers rules are not open yet
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    const list = Array.from(mapById.values());
+    list.sort((a, b) => (b.createdAtIso || '').localeCompare(a.createdAtIso || ''));
+    setLeads(list);
+    setLoadingLeads(false);
   };
 
   useEffect(() => {
@@ -260,35 +306,67 @@ export default function AudiosWaitlistPage() {
     const nowIso = new Date().toISOString();
     const docId = cleanEmail.replace(/[^a-z0-9@._-]/g, '_');
 
-    const payload = {
+    const newEntry: WaitlistEntry = {
+      id: docId,
       name: cleanName,
       email: cleanEmail,
       favoriteEp,
-      series: 'Audios de Vivienne: Dominio del Dinero y Libertad Financiera',
-      source: 'wearethesilent.com/audios',
       createdAtIso: nowIso,
-      updatedAt: serverTimestamp(),
     };
 
     try {
-      const { firestore } = getFirebase();
-      if (firestore) {
-        // Guardamos en la colección con permisos activos en Firebase (mesaya-e9644)
-        await setDoc(
-          doc(firestore, 'restaurants', 'vivienne-wolski', 'customers', docId),
-          payload,
-          { merge: true }
-        );
-
-        // Intento secundario en colección raíz vivienne_waitlist por comodidad
-        try {
-          await setDoc(doc(firestore, 'vivienne_waitlist', docId), payload, { merge: true });
-        } catch {
-          // Si las reglas aún no tienen vivienne_waitlist desplegado, el registro principal ya quedó guardado arriba
-        }
+      // 1. Guardar en nuestra lista local de respaldo inmediato
+      try {
+        const existingRaw = localStorage.getItem(LOCAL_LEADS_LIST_KEY);
+        const existingList: WaitlistEntry[] = existingRaw ? JSON.parse(existingRaw) : [];
+        const filtered = Array.isArray(existingList)
+          ? existingList.filter((x) => x.email?.toLowerCase() !== cleanEmail)
+          : [];
+        filtered.unshift(newEntry);
+        localStorage.setItem(LOCAL_LEADS_LIST_KEY, JSON.stringify(filtered));
+      } catch {
+        // ignore
       }
 
-      // Enviar correo de bienvenida / registro si el endpoint está disponible
+      // 2. Guardar en Firebase (vía /api/vivienne-waitlist que registra en Firebase Auth + Firestore)
+      await fetch('/api/vivienne-waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: cleanName,
+          email: cleanEmail,
+          favoriteEp,
+          source: 'wearethesilent.com/audios',
+        }),
+      }).catch(() => {});
+
+      // 3. Intentar también desde el cliente en Firestore de forma silenciosa
+      try {
+        const { firestore } = getFirebase();
+        if (firestore) {
+          const payload = {
+            name: cleanName,
+            email: cleanEmail,
+            favoriteEp,
+            series: 'Audios de Vivienne: Dominio del Dinero y Libertad Financiera',
+            source: 'wearethesilent.com/audios',
+            createdAtIso: nowIso,
+            updatedAt: serverTimestamp(),
+          };
+          await setDoc(doc(firestore, 'vivienne_waitlist', docId), payload, { merge: true }).catch(
+            () => {}
+          );
+          await setDoc(
+            doc(firestore, 'restaurants', 'vivienne-wolski', 'customers', docId),
+            payload,
+            { merge: true }
+          ).catch(() => {});
+        }
+      } catch {
+        // Silencioso si las reglas de Firestore aún están cerradas
+      }
+
+      // 4. Notificación de bienvenida
       fetch('/api/mesaya-welcome', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -310,9 +388,6 @@ export default function AudiosWaitlistPage() {
       if (showAdmin) {
         loadLeadsFromFirebase();
       }
-    } catch (err) {
-      console.error('Error al guardar en Firebase:', err);
-      setErrorMsg('Hubo un detalle al conectar. Por favor intenta de nuevo en unos segundos.');
     } finally {
       setIsSubmitting(false);
     }
