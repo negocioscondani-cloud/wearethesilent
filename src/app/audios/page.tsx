@@ -17,6 +17,12 @@ import {
 } from 'lucide-react';
 import { getFirebase } from '@/lib/firebase-client';
 import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from 'firebase/auth';
+import {
   collection,
   doc,
   setDoc,
@@ -328,7 +334,46 @@ export default function AudiosWaitlistPage() {
         // ignore
       }
 
-      // 2. Guardar en Firebase (vía /api/vivienne-waitlist que registra en Firebase Auth + Firestore)
+      // 2. Enviar verificación directa desde el navegador vía Firebase Client SDK (evita bloqueos de IP de servidor)
+      let clientVerificationSent = false;
+      try {
+        const { auth } = getFirebase();
+        if (auth) {
+          auth.languageCode = 'es';
+          const detPassword = `VwWaitlist2026!_${cleanEmail.slice(0, 24)}`;
+          let userObj = null;
+          try {
+            const cred = await createUserWithEmailAndPassword(auth, cleanEmail, detPassword);
+            userObj = cred.user;
+          } catch (authErr: any) {
+            if (authErr?.code === 'auth/email-already-in-use') {
+              try {
+                const cred = await signInWithEmailAndPassword(auth, cleanEmail, detPassword);
+                userObj = cred.user;
+              } catch {
+                // La cuenta ya existía con Google o con otra clave
+              }
+            }
+          }
+          if (userObj) {
+            await updateProfile(userObj, {
+              displayName: `${cleanName} | ${favoriteEp}`,
+            }).catch(() => {});
+            if (!userObj.emailVerified) {
+              await sendEmailVerification(userObj);
+              clientVerificationSent = true;
+            }
+          }
+        }
+      } catch {
+        // Continúa al respaldo de servidor
+      }
+
+      // 3. Guardar en Firebase y disparar correo desde el servidor (/api/vivienne-waitlist)
+      const savedWebhook =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('vivienne_gmail_webhook_url') || ''
+          : '';
       await fetch('/api/vivienne-waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -337,6 +382,8 @@ export default function AudiosWaitlistPage() {
           email: cleanEmail,
           favoriteEp,
           source: 'wearethesilent.com/audios',
+          skipFirebaseVerifyEmail: clientVerificationSent,
+          webhookUrl: savedWebhook,
         }),
       }).catch(() => {});
 
