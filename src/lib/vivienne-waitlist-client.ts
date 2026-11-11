@@ -6,6 +6,7 @@ export async function registerInMesayaFirebaseClient(params: {
   email: string;
   favoriteEp: string;
   source: string;
+  consentAccepted?: boolean;
 }) {
   const cleanName = params.name.trim();
   const cleanEmail = params.email.trim().toLowerCase();
@@ -26,6 +27,7 @@ export async function registerInMesayaFirebaseClient(params: {
             email: { stringValue: cleanEmail },
             favoriteEp: { stringValue: favoriteEp },
             source: { stringValue: params.source },
+            consentAccepted: { booleanValue: params.consentAccepted !== false },
             createdAtIso: { stringValue: createdAtIso },
           },
         }),

@@ -181,6 +181,8 @@ export default function AudiosWaitlistPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [favoriteEp, setFavoriteEp] = useState('Todos los episodios');
+  const [consentAccepted, setConsentAccepted] = useState(false);
+  const [showConsentModal, setShowConsentModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedUser, setSubmittedUser] = useState<{ name: string; email: string } | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -300,6 +302,12 @@ export default function AudiosWaitlistPage() {
     }
     if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
       setErrorMsg('Por favor ingresa un correo electrónico válido.');
+      return;
+    }
+    if (!consentAccepted) {
+      setErrorMsg(
+        'Por favor aprueba la casilla de consentimiento para guardar tus datos y recibir información del equipo de Vivienne.'
+      );
       return;
     }
 
@@ -512,13 +520,13 @@ export default function AudiosWaitlistPage() {
                   <div className="space-y-4 text-center sm:text-left">
                     <div className="inline-flex items-center gap-2 text-[#6B1F2A] font-mono text-xs uppercase tracking-[0.2em]">
                       <CheckCircle2 className="w-5 h-5 text-[#6B1F2A]" />
-                      <span>Lugar reservado · Correo de confirmación enviado</span>
+                      <span>Lugar reservado en la lista de espera</span>
                     </div>
                     <h2 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
                       Gracias, <span className="italic text-[#6B1F2A]">{submittedUser.name}</span>.
                     </h2>
                     <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                      Acabamos de enviarte un <strong>correo de confirmación</strong> a <strong>{submittedUser.email}</strong> (revisa también tu bandeja de Promociones o No deseados). Serás de las primeras personas en recibir el <strong>Episodio 01: Mentalidad</strong> apenas abramos el acceso.
+                      Tus datos han quedado guardados correctamente. Serás de las primeras personas en recibir el <strong>Episodio 01: Mentalidad</strong> e información por parte del equipo de Vivienne apenas abramos el acceso.
                     </p>
                     <div className="pt-2 flex flex-wrap items-center gap-3">
                       <button
@@ -527,18 +535,12 @@ export default function AudiosWaitlistPage() {
                           setSubmittedUser(null);
                           setName('');
                           setEmail('');
+                          setConsentAccepted(false);
                         }}
                         className="text-[11px] font-mono uppercase tracking-[0.18em] text-[#8A7665] hover:text-[#2B1D14] underline underline-offset-4 cursor-pointer"
                       >
                         Registrar otro correo
                       </button>
-                      <span className="text-[#D8CBB8]">·</span>
-                      <Link
-                        href="/domingo"
-                        className="text-[11px] font-mono uppercase tracking-[0.18em] text-[#6B1F2A] hover:underline underline-offset-4"
-                      >
-                        Ir a Honestidad Financiera →
-                      </Link>
                     </div>
                   </div>
                 ) : (
@@ -610,6 +612,31 @@ export default function AudiosWaitlistPage() {
                           </option>
                         ))}
                       </select>
+                    </div>
+
+                    {/* Casilla de aprobación de guardar datos + enlace de consentimiento */}
+                    <div className="p-3.5 rounded-xl bg-[#F7F1E6] border border-[#D8CBB8] space-y-1.5">
+                      <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={consentAccepted}
+                          onChange={(e) => {
+                            setConsentAccepted(e.target.checked);
+                            if (e.target.checked) setErrorMsg('');
+                          }}
+                          className="mt-0.5 w-4 h-4 accent-[#6B1F2A] rounded cursor-pointer shrink-0"
+                        />
+                        <span className="text-xs text-[#2B1D14] leading-relaxed">
+                          Apruebo guardar mis datos y acepto recibir los audios semanales e información por parte del equipo de Vivienne.{' '}
+                          <button
+                            type="button"
+                            onClick={() => setShowConsentModal(true)}
+                            className="text-[#6B1F2A] font-medium underline underline-offset-4 hover:text-[#2B1D14] cursor-pointer"
+                          >
+                            Confirmar el consentimiento de guardar datos y recibir información por parte del equipo de Vivienne
+                          </button>
+                        </span>
+                      </label>
                     </div>
 
                     {errorMsg && (
@@ -864,6 +891,53 @@ export default function AudiosWaitlistPage() {
           </button>
         </div>
       </footer>
+
+      {/* Modal de Confirmación de Consentimiento de Datos */}
+      {showConsentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E140E]/60 backdrop-blur-xs p-4">
+          <div className="max-w-lg w-full rounded-2xl bg-[#FAF5EC] border border-[#B08D57] p-6 sm:p-8 shadow-2xl space-y-4 text-[#2B1D14]">
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.22em] text-[#6B1F2A]">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Consentimiento de Datos Personales</span>
+            </div>
+            <h3 className="font-headline text-2xl text-[#2B1D14]">
+              Autorización para Guardar Datos y Recibir Información del Equipo de Vivienne
+            </h3>
+            <div className="space-y-2.5 text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
+              <p>
+                Al confirmar este consentimiento autorizas de forma expresa que tus datos (nombre, correo electrónico y episodio de interés) sean almacenados en la base de datos privada de <strong>Vivienne Wolski</strong> con la finalidad de:
+              </p>
+              <ul className="list-disc pl-5 space-y-1.5">
+                <li>Reservar tu lugar prioritario en la lista de espera de los Audios Semanales.</li>
+                <li>Enviarte los episodios semanales, crónicas e información por parte del equipo de Vivienne.</li>
+              </ul>
+              <p className="text-[11px] text-[#8A7665]">
+                Tus datos se mantienen confidenciales y nunca se comparten con terceros ajenos al equipo de Vivienne.
+              </p>
+            </div>
+            <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setConsentAccepted(true);
+                  setErrorMsg('');
+                  setShowConsentModal(false);
+                }}
+                className="flex-1 py-3 px-5 rounded-xl bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.18em] transition cursor-pointer"
+              >
+                Confirmar consentimiento y aprobar
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowConsentModal(false)}
+                className="py-3 px-4 rounded-xl border border-[#D8CBB8] hover:border-[#2B1D14] text-xs font-mono uppercase tracking-wider text-[#5C4A3E] cursor-pointer"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

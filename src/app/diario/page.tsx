@@ -169,6 +169,7 @@ export default function DiarioViviPage() {
   // Embedded waitlist capture state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [consentAccepted, setConsentAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -185,7 +186,7 @@ export default function DiarioViviPage() {
     e.preventDefault();
     const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
-    if (!cleanName || !cleanEmail) return;
+    if (!cleanName || !cleanEmail || !consentAccepted) return;
 
     setIsSubmitting(true);
     const nowIso = new Date().toISOString();
@@ -430,7 +431,7 @@ export default function DiarioViviPage() {
               {submitted ? (
                 <div className="flex items-start gap-2 text-xs text-[#6B1F2A] font-medium py-2 leading-relaxed">
                   <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>¡Anotada en la lista privada! Te acabamos de enviar un correo de confirmación a tu bandeja de entrada.</span>
+                  <span>¡Anotada en la lista privada! Tus datos han quedado guardados para enviarte los audios e información del equipo de Vivienne.</span>
                 </div>
               ) : (
                 <form onSubmit={handleWaitlistSubmit} className="space-y-2.5">
@@ -450,6 +451,24 @@ export default function DiarioViviPage() {
                     placeholder="Tu correo electrónico..."
                     className="w-full px-3.5 py-2.5 rounded-lg bg-[#FAF5EC] border border-[#D8CBB8] text-xs text-[#2B1D14] placeholder-[#9C8F85] focus:outline-none focus:border-[#6B1F2A]"
                   />
+                  <label className="flex items-start gap-2 text-[11px] text-[#5C4A3E] leading-snug cursor-pointer pt-0.5">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={consentAccepted}
+                      onChange={(e) => setConsentAccepted(e.target.checked)}
+                      className="mt-0.5 w-3.5 h-3.5 accent-[#6B1F2A] rounded shrink-0 cursor-pointer"
+                    />
+                    <span>
+                      Apruebo guardar mis datos.{' '}
+                      <Link
+                        href="/consentimiento"
+                        className="text-[#6B1F2A] underline underline-offset-2 hover:text-[#2B1D14]"
+                      >
+                        Confirmar el consentimiento de guardar datos y recibir información por parte del equipo de Vivienne
+                      </Link>
+                    </span>
+                  </label>
                   <button
                     type="submit"
                     disabled={isSubmitting}

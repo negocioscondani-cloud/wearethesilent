@@ -38,6 +38,7 @@ export async function POST(req: Request) {
               email: { stringValue: email },
               favoriteEp: { stringValue: favoriteEp },
               source: { stringValue: source },
+              consentAccepted: { booleanValue: true },
               createdAtIso: { stringValue: createdAtIso },
             },
           }),
