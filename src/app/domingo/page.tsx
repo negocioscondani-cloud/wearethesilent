@@ -335,16 +335,13 @@ export default function DomingoPage() {
               ✓ Guardado
             </span>
 
-            <a
-              href={GUMROAD_CLUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/audios"
               className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#6E1B2C] hover:bg-[#2B2420] text-[#FBF5EA] font-sans-ui text-[10.5px] uppercase tracking-wider rounded-full transition shadow-xs"
             >
               <Headphones className="w-3 h-3 text-[#A9842C]" />
-              <span className="hidden xs:inline">Wolski Club</span>
-              <span>$9 USD</span>
-            </a>
+              <span className="hidden xs:inline">Audios Semanales</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -1263,30 +1260,27 @@ export default function DomingoPage() {
         )}
 
         {/* ============================================================== */}
-        {/* BANNER INVITACIÓN AL WOLSKI CLUB */}
+        {/* BANNER INVITACIÓN A LOS AUDIOS SEMANALES */}
         {/* ============================================================== */}
         <div className="mt-14 pt-8 border-t border-[#E8DCC0]">
           <div className="p-6 bg-[#FAF5EC] border border-[#A9842C]/40 rounded-sm text-center space-y-3">
             <span className="font-sans-ui text-[10px] uppercase tracking-[0.25em] text-[#A9842C] font-semibold block">
-              CÍRCULO PRIVADO · FORMACIÓN EN AUDIOS
+              SERIE SONORA DE 10 SEMANAS · LISTA DE ESPERA
             </span>
             <h3 className="font-cormorant font-bold text-2xl sm:text-3xl text-[#6E1B2C]">
-              El Wolski Club de Vivienne
+              Audios de Vivienne: Dominio del Dinero
             </h3>
             <p className="font-serif italic text-xs sm:text-sm text-[#7C8B6B] max-w-md mx-auto leading-relaxed">
-              Carácter, finanzas y estilo en su oído. Acceda a las formaciones en audio de Vivienne por solo $9 USD.
+              Mentalidad, la regla 25-15-50-10, deuda inteligente, inversión indexada y la regla del 25 directo en tu oído.
             </p>
             <div className="pt-2">
-              <a
-                href={GUMROAD_CLUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/audios"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#6E1B2C] hover:bg-[#2B2420] text-[#FBF5EA] font-sans-ui text-xs uppercase tracking-[0.15em] rounded-sm transition shadow-md"
               >
                 <Headphones className="w-4 h-4 text-[#A9842C]" />
-                <span>Unirme al Wolski Club ($9 USD)</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+                <span>Unirme a la Lista de Espera</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -1301,7 +1295,15 @@ export default function DomingoPage() {
             </Link>
             <span>·</span>
             <Link href="/vivianne-wolski/armario" className="hover:text-[#6E1B2C] transition">
-              el armario
+              maison wolski
+            </Link>
+            <span>·</span>
+            <Link href="/diario" className="hover:text-[#6E1B2C] transition">
+              el blog de vivi
+            </Link>
+            <span>·</span>
+            <Link href="/audios" className="hover:text-[#6E1B2C] transition">
+              audios semanales
             </Link>
             <span>·</span>
             <a href="https://www.instagram.com/vivianne_wolski/" target="_blank" rel="noopener noreferrer" className="hover:text-[#6E1B2C] transition">
@@ -1311,10 +1313,6 @@ export default function DomingoPage() {
             <Link href="/domingo.html" className="hover:text-[#6E1B2C] transition">
               versión descargable
             </Link>
-            <span>·</span>
-            <a href={GUMROAD_CLUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-[#6E1B2C] transition">
-              wolski club
-            </a>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 text-[9.5px] text-[#9C8F85] uppercase tracking-wider pt-2 border-t border-[#E8DCC0]/40">

@@ -31,16 +31,22 @@ export default function Footer() {
         <p className="uppercase tracking-wider">VIVIENNE WOLSKI</p>
         <div className="flex flex-wrap items-center justify-center gap-6">
           <Link
+            href="/audios"
+            className="transition hover:text-foreground"
+          >
+            Audios Semanales
+          </Link>
+          <Link
             href="/vivianne-wolski/armario"
             className="transition hover:text-foreground"
           >
-            El Armario
+            Maison Wolski
           </Link>
           <Link
-            href="/vivianne-wolski/club"
+            href="/diario"
             className="transition hover:text-foreground"
           >
-            Club Vivi
+            El Blog de Vivi
           </Link>
           <Link
             href="/domingo"

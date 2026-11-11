@@ -3,16 +3,17 @@ import type { Metadata } from 'next';
 const HERO_IMAGE = 'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/10/descarga.png';
 
 export const metadata: Metadata = {
-  title: 'El Armario de Vivienne · Vivienne Wolski | Lo que Vivienne usa. Lo que Vivienne cuenta.',
+  title: 'Maison Wolski · Vivienne Wolski | Lo que Vivienne usa. Lo que Vivienne cuenta.',
   description:
-    'El salón editorial y armario curado de Vivienne Wolski. Piezas de inversión, bolsos icónicos, prendas de punto, el Wolski Club de audios y El Domingo de los Números.',
+    'El salón editorial y boutique curada de Vivienne Wolski. Piezas de inversión, bolsos icónicos, prendas de punto, Audios Semanales, El Blog de Vivi y El Domingo de los Números.',
   keywords: [
-    'El Armario de Vivienne',
+    'Maison Wolski',
     'Vivienne Wolski',
     'Vivianne Wolski',
-    'Wolski Club',
+    'El Blog de Vivi',
     'El Domingo de los Números',
     'Tory Burch',
+    'Prada',
     'Quiet Luxury',
     'Lujo Silencioso',
     'Moda Clásica',
@@ -22,16 +23,16 @@ export const metadata: Metadata = {
     canonical: 'https://wearethesilent.com/vivianne-wolski',
   },
   openGraph: {
-    title: 'El Armario de Vivienne · Vivienne Wolski',
+    title: 'Maison Wolski · Vivienne Wolski',
     description:
-      'Lo que Vivienne usa. Lo que Vivienne cuenta. Piezas de inversión curadas, notas manuscritas y fonoteca del Wolski Club.',
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Piezas de inversión curadas, Audios Semanales y El Blog de Vivi.',
     url: 'https://wearethesilent.com/vivianne-wolski',
     images: [
       {
         url: HERO_IMAGE,
         width: 1200,
         height: 1500,
-        alt: 'Vivienne Wolski · El Armario de Vivienne',
+        alt: 'Vivienne Wolski · Maison Wolski',
       },
     ],
     locale: 'es_ES',
@@ -39,9 +40,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'El Armario de Vivienne · Vivienne Wolski',
+    title: 'Maison Wolski · Vivienne Wolski',
     description:
-      'Lo que Vivienne usa. Lo que Vivienne cuenta. Boutique de lujo silencioso y archivo sonoro del Wolski Club.',
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Boutique de lujo silencioso y Audios Semanales.',
     images: [HERO_IMAGE],
   },
 };

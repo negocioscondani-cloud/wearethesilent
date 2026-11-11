@@ -19,17 +19,17 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default:
-      'Vivienne Wolski | Universo Privado · El Armario, Club Vivi & Honestidad Financiera',
+      'Vivienne Wolski | Universo Privado · Maison Wolski, Audios Semanales & El Blog de Vivi',
     template: '%s | Vivienne Wolski',
   },
   description:
-    'El universo privado y salón editorial de Vivienne Wolski. El Armario (piezas de inversión y lujo silencioso), Club Vivi (33 audios de criterio, carácter y estilo) y El Domingo de los Números (ritual de honestidad financiera).',
+    'El universo privado y salón editorial de Vivienne Wolski. Maison Wolski (piezas de inversión y lujo silencioso), Audios Semanales de Dominio del Dinero, El Blog de Vivi y El Domingo de los Números.',
   keywords: [
     'Vivienne Wolski',
     'Vivianne Wolski',
-    'El Armario de Vivienne',
-    'Club Vivi',
-    'Wolski Club',
+    'Maison Wolski',
+    'Audios de Vivienne',
+    'El Blog de Vivi',
     'El Domingo de los Números',
     'Honestidad Financiera',
     'Quiet Luxury',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title:
       'Vivienne Wolski | Universo Privado · Silencio, Orden y Criterio',
     description:
-      'Lo que Vivienne usa. Lo que Vivienne cuenta. El Armario, Club Vivi y Honestidad Financiera.',
+      'Lo que Vivienne usa. Lo que Vivienne cuenta. Maison Wolski, Audios Semanales, El Blog de Vivi y Honestidad Financiera.',
     url: BASE_URL,
     siteName: 'Vivienne Wolski',
     images: [

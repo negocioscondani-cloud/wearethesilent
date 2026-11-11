@@ -545,8 +545,12 @@ export default function ElArmarioPage() {
             ← Volver a Vivienne
           </Link>
           <span>·</span>
-          <Link href="/vivianne-wolski/club" className="hover:text-[#6B1F2A]">
-            Club Vivi
+          <Link href="/audios" className="hover:text-[#6B1F2A]">
+            Audios Semanales
+          </Link>
+          <span>·</span>
+          <Link href="/diario" className="hover:text-[#6B1F2A]">
+            El Blog de Vivi
           </Link>
           <span>·</span>
           <Link href="/domingo" className="hover:text-[#6B1F2A]">

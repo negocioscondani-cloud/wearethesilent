@@ -100,16 +100,6 @@ export default function VivianneHomePage() {
               </Link>
 
               <Link
-                href="/vivianne-wolski/club"
-                className="group flex items-center justify-between px-6 py-4 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8] hover:border-[#6B1F2A] hover:bg-[#6B1F2A] text-[#2B1D14] hover:text-[#F7F1E6] transition-all duration-300 shadow-sm"
-              >
-                <span className="text-xs uppercase tracking-[0.26em] font-medium">
-                  Club Vivi
-                </span>
-                <ArrowUpRight className="w-4 h-4 text-[#8A7665] group-hover:text-[#E6D5B8] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
-
-              <Link
                 href="/domingo"
                 className="group flex items-center justify-between px-6 py-4 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8] hover:border-[#2B1D14] hover:bg-[#2B1D14] text-[#2B1D14] hover:text-[#F7F1E6] transition-all duration-300 shadow-sm"
               >

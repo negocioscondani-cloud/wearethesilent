@@ -41,8 +41,9 @@ export default function Header() {
   const isBlogPost = pathname.startsWith('/blog/') && pathname !== '/blog';
 
   const mainNavLinks = [
-    { href: '/vivianne-wolski/armario', label: language === 'es' ? 'El Armario' : 'The Closet' },
-    { href: '/vivianne-wolski/club', label: 'Club Vivi' },
+    { href: '/audios', label: language === 'es' ? 'Audios Semanales' : 'Weekly Audios' },
+    { href: '/vivianne-wolski/armario', label: 'Maison Wolski' },
+    { href: '/diario', label: language === 'es' ? 'El Blog de Vivi' : "Vivi's Blog" },
     { href: '/domingo', label: language === 'es' ? 'Honestidad Financiera' : 'Financial Honesty' },
   ];
 
