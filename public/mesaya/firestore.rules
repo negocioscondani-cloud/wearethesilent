@@ -10,6 +10,12 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous';
     }
 
+    // Lista de espera de Audios de Vivienne Wolski
+    match /vivienne_waitlist/{id} {
+      allow read, create, update: if true;
+      allow delete: if isStaffOrOwner();
+    }
+
     match /restaurants/{rid} {
 
       // Solicitudes: llamar mesero, cuenta, canje, pedidos (Salón + Cocina + Cliente)

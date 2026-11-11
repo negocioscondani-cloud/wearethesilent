@@ -65,6 +65,21 @@ export default function VivianneHomePage() {
 
             <nav aria-label="Estancias de Vivienne Wolski" className="flex flex-col gap-3.5 max-w-sm mx-auto md:mx-0 w-full">
               <Link
+                href="/audios"
+                className="group flex items-center justify-between px-6 py-4 rounded-xl bg-[#6B1F2A] border border-[#6B1F2A] hover:bg-[#2B1D14] hover:border-[#2B1D14] text-[#F7F1E6] transition-all duration-300 shadow-md"
+              >
+                <div className="flex flex-col text-left">
+                  <span className="text-[9px] font-mono uppercase tracking-[0.26em] text-[#E6D5B8]">
+                    Lista de Espera · 10 Semanas
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.22em] font-medium mt-0.5">
+                    Audios: Dominio del Dinero
+                  </span>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-[#E6D5B8] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+
+              <Link
                 href="/vivianne-wolski/armario"
                 className="group flex items-center justify-between px-6 py-4 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8] hover:border-[#2B1D14] hover:bg-[#2B1D14] text-[#2B1D14] hover:text-[#F7F1E6] transition-all duration-300 shadow-sm"
               >
