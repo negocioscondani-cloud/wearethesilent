@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 
-const FIREBASE_API_KEY =
-  process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
-const FIREBASE_PROJECT_ID =
-  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mesaya-e9644';
+const FIREBASE_API_KEY = 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
+const FIREBASE_PROJECT_ID = 'mesaya-e9644';
 
 function buildDeterministicPassword(email: string): string {
   return `VwWaitlist2026!_${email.toLowerCase().trim().slice(0, 24)}`;

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { VIVIANNE_PRODUCTS } from '@/data/vivianne-products';
 import { getFirebase } from '@/lib/firebase-client';
+import { registerInMesayaFirebaseClient } from '@/lib/vivienne-waitlist-client';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 interface ViviArticle {
@@ -210,17 +211,13 @@ export default function DiarioViviPage() {
         // ignore
       }
 
-      // 2. Guardar en Firebase Authentication + Firestore vía /api/vivienne-waitlist
-      await fetch('/api/vivienne-waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: cleanName,
-          email: cleanEmail,
-          favoriteEp: activeArticle.relatedAudioEp,
-          source: `wearethesilent.com/diario (${activeArticle.id})`,
-        }),
-      }).catch(() => {});
+      // 2. Guardar directamente en mesaya-e9644 (Authentication -> Users + envío de correo)
+      await registerInMesayaFirebaseClient({
+        name: cleanName,
+        email: cleanEmail,
+        favoriteEp: activeArticle.relatedAudioEp,
+        source: `wearethesilent.com/diario (${activeArticle.id})`,
+      });
 
       // 3. Intento silencioso en Firestore cliente
       try {
