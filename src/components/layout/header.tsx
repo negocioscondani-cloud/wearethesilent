@@ -26,7 +26,7 @@ export default function Header() {
   const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
 
-  const hiddenRoutes = ['/', '/audios', '/oferta', '/influencer-ia', '/galeria', '/we-are-the-silent', '/menu-digital', '/mesaya', '/reels-ia', '/reels'];
+  const hiddenRoutes = ['/', '/audios', '/diario', '/maison-wolski', '/oferta', '/influencer-ia', '/galeria', '/we-are-the-silent', '/menu-digital', '/mesaya', '/reels-ia', '/reels'];
   if (
     pathname.startsWith('/the-silent-studio-guide') ||
     pathname.startsWith('/manual') ||

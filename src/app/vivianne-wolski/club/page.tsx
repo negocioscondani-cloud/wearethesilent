@@ -34,11 +34,17 @@ export default function ClubViviPage() {
                 href="/vivianne-wolski/armario"
                 className="hidden sm:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition"
               >
-                El Armario
+                Maison Wolski
+              </Link>
+              <Link
+                href="/diario"
+                className="hidden sm:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition"
+              >
+                El Blog de Vivi
               </Link>
               <Link
                 href="/domingo"
-                className="hidden sm:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition"
+                className="hidden md:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition"
               >
                 Honestidad Financiera
               </Link>
@@ -132,7 +138,11 @@ export default function ClubViviPage() {
           </Link>
           <span>·</span>
           <Link href="/vivianne-wolski/armario" className="hover:text-[#6B1F2A]">
-            El Armario
+            Maison Wolski
+          </Link>
+          <span>·</span>
+          <Link href="/diario" className="hover:text-[#6B1F2A]">
+            El Blog de Vivi
           </Link>
           <span>·</span>
           <Link href="/domingo" className="hover:text-[#6B1F2A]">

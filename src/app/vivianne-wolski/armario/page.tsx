@@ -143,7 +143,7 @@ export default function ElArmarioPage() {
             <div className="text-center">
               <Link href="/" className="inline-block">
                 <span className="font-serif font-light text-xl sm:text-3xl tracking-tight text-[#2B1D14] block">
-                  El Armario de Vivienne
+                  Maison Wolski
                 </span>
               </Link>
             </div>
@@ -151,14 +151,20 @@ export default function ElArmarioPage() {
             {/* Right: Quick Switchers & Saved Pieces */}
             <div className="flex items-center gap-2 sm:gap-3">
               <Link
-                href="/vivianne-wolski/club"
+                href="/diario"
                 className="hidden md:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition px-2"
               >
-                Club Vivi
+                El Blog de Vivi
+              </Link>
+              <Link
+                href="/audios"
+                className="hidden md:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition px-2"
+              >
+                Audios Semanales
               </Link>
               <Link
                 href="/domingo"
-                className="hidden md:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition px-2"
+                className="hidden lg:inline-block font-serif text-xs uppercase tracking-[0.18em] text-[#5A4D44] hover:text-[#6B1F2A] transition px-2"
               >
                 Honestidad Financiera
               </Link>
@@ -206,13 +212,13 @@ export default function ElArmarioPage() {
         <section id="catalogo" className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#B08D57] font-semibold block mb-2">
-              PIEZAS DE INVERSIÓN CURADAS
+              LA BOUTIQUE CURADA DE VIVIENNE · PIEZAS DE INVERSIÓN
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl text-[#2B1D14] font-light tracking-tight mb-3">
-              El Armario
+              Maison Wolski
             </h1>
             <p className="font-serif italic text-base sm:text-lg text-[#6B1F2A] leading-relaxed">
-              &ldquo;A los 82 años una ya no tiene tiempo para comprar dos veces la misma tontería. Se elige con rigor y se deja que la prenda hable.&rdquo;
+              &ldquo;A los 82 años una ya no tiene tiempo para comprar dos veces la misma tontería. Se elige con rigor y se deja que la pieza hable.&rdquo;
             </p>
           </div>
 

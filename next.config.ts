@@ -63,6 +63,24 @@ const nextConfig: NextConfig = {
         hostname: 'd3sxx0v5qcg9oj.cloudfront.net',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.prada.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'skims.imgix.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

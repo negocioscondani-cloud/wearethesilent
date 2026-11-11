@@ -29,7 +29,7 @@ interface EpisodeIndexItem {
   title: string;
   duration: string;
   summary: string;
-  practice: string;
+  topics: string[];
 }
 
 const EPISODES_INDEX: EpisodeIndexItem[] = [
@@ -39,7 +39,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:35',
     summary:
       'Por qué el dinero no es para presumir sino para comprar tiempo, y cómo salir de la trampa de cambiar horas por sueldo.',
-    practice: 'Escribir 3 problemas reales de otras personas que tú podrías resolver.',
+    topics: [
+      'El dinero como compra de tiempo',
+      'La trampa de cambiar horas por sueldo',
+      'Aportar valor escalable',
+      'Riqueza real vs. apariencia de lujo',
+    ],
   },
   {
     ep: '02',
@@ -47,7 +52,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:31',
     summary:
       'El sistema de cuatro números para repartir cada ingreso: 25% inversión, 15% colchón, 50% esencial y 10% disfrute sin culpa.',
-    practice: 'Tomar tu último ingreso y repartirlo en papel con los 4 porcentajes.',
+    topics: [
+      '25% Crecimiento e inversión',
+      '15% Colchón de emergencia (3 a 6 meses)',
+      '50% Gastos esenciales',
+      '10% Disfrute sin culpa',
+    ],
   },
   {
     ep: '03',
@@ -55,7 +65,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:24',
     summary:
       'Cómo distinguir el apalancamiento productivo de la deuda cara, y por qué liquidar tarjetas al 24% es el negocio más seguro.',
-    practice: 'Anotar todas tus deudas con su tasa de interés y atacar primero la más cara.',
+    topics: [
+      'Deuda destructiva vs. apalancamiento',
+      'La matemática real del 24% anual',
+      'Rentabilidad libre de riesgo al liquidar deudas',
+      'Activos que devuelven vs. pasivos que drenan',
+    ],
   },
   {
     ep: '04',
@@ -63,7 +78,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:24',
     summary:
       'Cómo atravesar la etapa más exigente del ahorro sin agotarte hasta que el interés compuesto empiece a acelerar por ti.',
-    practice: 'Definir tu primera meta financiera en una cifra concreta y ponerle fecha.',
+    topics: [
+      'La disciplina de los primeros $10,000',
+      'El valle de paciencia rumbo a los $100,000',
+      'El punto de inflexión del interés compuesto',
+      'Automatización y metas progresivas',
+    ],
   },
   {
     ep: '05',
@@ -71,7 +91,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:30',
     summary:
       'El método silencioso y diversificado para hacer crecer tu patrimonio a largo plazo sin adivinar acciones individuales.',
-    practice: 'Definir tu monto mensual de aporte automático a largo plazo.',
+    topics: [
+      'Fondos indexados y diversificación global',
+      'Bajas comisiones y horizonte de largo plazo',
+      'Aportes periódicos automáticos (DCA)',
+      'Tranquilidad frente a la especulación',
+    ],
   },
   {
     ep: '06',
@@ -79,7 +104,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:24',
     summary:
       'Las tres grandes fugas silenciosas: el auto nuevo financiado, las suscripciones fantasma y el costo de aparentar.',
-    practice: 'Auditoría de tus últimos 3 meses de banco/tarjetas y regla de las 48 horas.',
+    topics: [
+      'Depreciación del auto nuevo financiado',
+      'Suscripciones fantasma ($480/año invisibles)',
+      'El costo financiero de aparentar estatus',
+      'Auditoría de fugas y regla de las 48 horas',
+    ],
   },
   {
     ep: '07',
@@ -87,7 +117,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:28',
     summary:
       'Tres rutas reales (comercio digital, servicios remotos e IA) para sumar una segunda entrada validando antes de gastar.',
-    practice: 'Escribir una habilidad útil que ya tienes y ofrecérsela a 10 personas.',
+    topics: [
+      'Comercio y productos digitales',
+      'Servicios remotos de alto valor',
+      'Apalancamiento con Inteligencia Artificial',
+      'Validación previa antes de invertir capital',
+    ],
   },
   {
     ep: '08',
@@ -95,7 +130,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:17',
     summary:
       'Cómo evitar que tu efectivo parado pierda poder de compra cada año y cómo aprovechar cuentas con ventajas fiscales.',
-    practice: 'Investigar las cuentas de ahorro o inversión con beneficio fiscal en tu país.',
+    topics: [
+      'La erosión silenciosa del poder adquisitivo',
+      'Por qué el exceso de efectivo parado pierde valor',
+      'Cuentas con ventaja fiscal (ISA, Roth IRA, 401k, pensiones)',
+      'Crecimiento compuesto fiscalmente eficiente',
+    ],
   },
   {
     ep: '09',
@@ -103,7 +143,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:28',
     summary:
       'Por qué en las caídas el problema no es la matemática sino el miedo, y las 3 reglas para mantener la calma.',
-    practice: 'Escribir en una hoja tu protocolo de acción antes de que llegue una caída.',
+    topics: [
+      'Psicología e historia de las caídas bursátiles',
+      'Las correcciones como temporada de rebajas',
+      'Protección mediante el fondo de emergencia',
+      'Protocolo de serenidad a largo plazo',
+    ],
   },
   {
     ep: '10',
@@ -111,7 +156,12 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
     duration: '1:33',
     summary:
       'La fórmula sencilla (tus gastos anuales × 25, basada en la regla del 4%) para conocer tu cifra exacta de libertad financiera.',
-    practice: 'Calcular tus gastos anuales, multiplicarlos por 25 y trazar tu hoja de ruta.',
+    topics: [
+      'Cálculo de tu Número de Libertad (Gastos × 25)',
+      'La regla de retiro seguro del 4%',
+      'Impacto de reducir $1,000 anuales (-$25,000 en la meta)',
+      'Hoja de ruta anual hacia la soberanía del tiempo',
+    ],
   },
 ];
 
@@ -349,7 +399,7 @@ export default function AudiosWaitlistPage() {
                   </span>
                 </h1>
                 <p className="text-sm sm:text-base text-[#5C4A3E] leading-relaxed max-w-2xl">
-                  Un audio semanal íntimo, directo al grano y sin tecnicismos vacíos. Cada episodio dura menos de dos minutos y termina con <strong>una sola tarea en papel</strong> para poner tus cuentas en orden y comprar tu propio tiempo.
+                  Un audio semanal íntimo, directo al grano y sin tecnicismos vacíos. Diez capítulos esenciales sobre mentalidad, reglas de reparto, deuda inteligente, inversión indexada y la cifra exacta de tu libertad financiera.
                 </p>
               </div>
 
@@ -571,9 +621,19 @@ export default function AudiosWaitlistPage() {
                         {item.summary}
                       </p>
 
-                      <p className="text-[11px] font-mono text-[#6B1F2A] pt-0.5">
-                        <strong>Práctica semanal:</strong> {item.practice}
-                      </p>
+                      <div className="pt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#6B1F2A] font-semibold mr-1">
+                          Temas del capítulo:
+                        </span>
+                        {item.topics.map((topic, idx) => (
+                          <span
+                            key={idx}
+                            className="text-[10.5px] font-mono px-2.5 py-0.5 rounded-full bg-[#FAF5EC] border border-[#D8CBB8] text-[#2B1D14]"
+                          >
+                            {topic}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -684,13 +744,17 @@ export default function AudiosWaitlistPage() {
 
       {/* Footer */}
       <footer className="w-full px-6 md:px-12 py-6 border-t border-[#D8CBB8]/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] uppercase tracking-[0.22em] text-[#8A7665]">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Link href="/" className="hover:text-[#2B1D14] transition">
             ← Volver a Vivienne
           </Link>
           <span>·</span>
           <Link href="/vivianne-wolski/armario" className="hover:text-[#2B1D14] transition">
-            El Armario
+            Maison Wolski
+          </Link>
+          <span>·</span>
+          <Link href="/diario" className="hover:text-[#2B1D14] transition">
+            El Blog de Vivi
           </Link>
           <span>·</span>
           <Link href="/domingo" className="hover:text-[#2B1D14] transition">
