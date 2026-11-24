@@ -750,88 +750,6 @@ export default function AudiosWaitlistPage() {
             </div>
           </div>
         </section>
-
-        {/* ADMIN PANEL TO VIEW & DOWNLOAD FIREBASE WAITLIST LEADS */}
-        {showAdmin && (
-          <section className="max-w-5xl mx-auto px-5 sm:px-8 py-12 border-t border-[#D8CBB8]">
-            <div className="p-6 sm:p-8 rounded-2xl bg-[#FAF5EC] border border-[#B08D57] space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D8CBB8] pb-4">
-                <div>
-                  <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.22em] text-[#6B1F2A]">
-                    <Users className="w-3.5 h-3.5" />
-                    <span>Firebase Firestore · Registros en Vivo</span>
-                  </div>
-                  <h3 className="font-headline text-2xl text-[#2B1D14] mt-1">
-                    Inscritos en la Lista de Espera ({leads.length})
-                  </h3>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <button
-                    type="button"
-                    onClick={loadLeadsFromFirebase}
-                    className="px-3.5 py-2 rounded-lg border border-[#D8CBB8] hover:border-[#2B1D14] text-[11px] font-mono uppercase tracking-wider text-[#2B1D14] cursor-pointer"
-                  >
-                    {loadingLeads ? 'Actualizando...' : 'Actualizar'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCopyEmails}
-                    disabled={!leads.length}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#D8CBB8] hover:border-[#6B1F2A] text-[11px] font-mono uppercase tracking-wider text-[#2B1D14] disabled:opacity-50 cursor-pointer"
-                  >
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>{copiedEmails ? '¡Correos copiados!' : 'Copiar correos'}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleExportCsv}
-                    disabled={!leads.length}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] text-[11px] font-mono uppercase tracking-wider disabled:opacity-50 cursor-pointer"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Descargar CSV</span>
-                  </button>
-                </div>
-              </div>
-
-              {loadingLeads ? (
-                <p className="text-xs font-mono text-[#8A7665] py-6 text-center">
-                  Consultando Firebase Firestore...
-                </p>
-              ) : leads.length === 0 ? (
-                <p className="text-xs font-mono text-[#8A7665] py-6 text-center">
-                  Aún no hay registros en la lista de espera. Haz una prueba en el formulario de arriba.
-                </p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="border-b border-[#D8CBB8] text-[10px] font-mono uppercase tracking-wider text-[#8A7665]">
-                        <th className="py-2.5 pr-4">Nombre</th>
-                        <th className="py-2.5 pr-4">Correo Electrónico</th>
-                        <th className="py-2.5 pr-4">Capítulo de Interés</th>
-                        <th className="py-2.5">Fecha</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#D8CBB8]/50">
-                      {leads.map((lead) => (
-                        <tr key={lead.id} className="hover:bg-[#F7F1E6]/60">
-                          <td className="py-3 pr-4 font-medium text-[#2B1D14]">{lead.name}</td>
-                          <td className="py-3 pr-4 font-mono text-[#6B1F2A]">{lead.email}</td>
-                          <td className="py-3 pr-4 text-[#5C4A3E]">{lead.favoriteEp}</td>
-                          <td className="py-3 font-mono text-[11px] text-[#8A7665]">
-                            {lead.createdAtIso ? lead.createdAtIso.slice(0, 16).replace('T', ' ') : '—'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
       </main>
 
       {/* Footer */}
@@ -856,13 +774,6 @@ export default function AudiosWaitlistPage() {
 
         <div className="flex items-center gap-3">
           <span>© {new Date().getFullYear()} Vivienne Wolski</span>
-          <span>·</span>
-          <Link
-            href="/audios/admin"
-            className="hover:text-[#6B1F2A] underline underline-offset-4 cursor-pointer"
-          >
-            Panel Admin
-          </Link>
         </div>
       </footer>
 

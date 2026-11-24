@@ -13,6 +13,10 @@ import {
   ArrowLeft,
   Headphones,
   Check,
+  Lock,
+  LogOut,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import {
   fetchVivienneWaitlistLeads,
@@ -20,16 +24,39 @@ import {
 } from '@/lib/vivienne-waitlist-client';
 
 const LOCAL_LEADS_LIST_KEY = 'vivienne_waitlist_all_leads_v1';
+const ADMIN_SESSION_KEY = 'vivienne_audios_admin_unlocked_v1';
+
+// Contraseñas válidas para acceder al panel
+const VALID_PASSWORDS = ['Vivienne2026!', 'vivienne2026', 'Wolski2026!'];
 
 export default function AudiosAdminPage() {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState('');
+
   const [leads, setLeads] = useState<VivienneWaitlistLead[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [hideTestEmails, setHideTestEmails] = useState(true);
   const [copiedAllEmails, setCopiedAllEmails] = useState(false);
   const [copiedPairs, setCopiedPairs] = useState(false);
   const [copiedSingleId, setCopiedSingleId] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string>('');
+
+  useEffect(() => {
+    try {
+      const savedSession = sessionStorage.getItem(ADMIN_SESSION_KEY);
+      if (savedSession === 'true') {
+        setIsUnlocked(true);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setCheckingSession(false);
+    }
+  }, []);
 
   const loadLeads = async () => {
     setLoading(true);
@@ -70,13 +97,48 @@ export default function AudiosAdminPage() {
     const combined = Array.from(mapByEmail.values());
     combined.sort((a, b) => (b.createdAtIso || '').localeCompare(a.createdAtIso || ''));
     setLeads(combined);
-    setLastUpdated(new Date().toLocaleTimeString('es-CR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    setLastUpdated(
+      new Date().toLocaleTimeString('es-CR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+    );
     setLoading(false);
   };
 
   useEffect(() => {
-    loadLeads();
-  }, []);
+    if (isUnlocked) {
+      loadLeads();
+    }
+  }, [isUnlocked]);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+    const trimmed = passwordInput.trim();
+    if (VALID_PASSWORDS.includes(trimmed)) {
+      setIsUnlocked(true);
+      setPasswordInput('');
+      try {
+        sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+      } catch {
+        // ignore
+      }
+    } else {
+      setAuthError('Contraseña incorrecta. Verifica e intenta nuevamente.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsUnlocked(false);
+    setLeads([]);
+    try {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    } catch {
+      // ignore
+    }
+  };
 
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
@@ -172,8 +234,100 @@ export default function AudiosAdminPage() {
     }
   };
 
+  if (checkingSession) {
+    return <div className="min-h-screen bg-[#F7F1E6]" />;
+  }
+
+  // PANTALLA DE BLOQUEO CON CONTRASEÑA
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] flex flex-col justify-between font-body selection:bg-[#6B1F2A] selection:text-[#F7F1E6]">
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+
+        <header className="w-full px-6 md:px-12 py-5 border-b border-[#D8CBB8]/80 flex items-center justify-between">
+          <Link
+            href="/audios"
+            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.18em] text-[#6B1F2A] hover:text-[#2B1D14] transition"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Volver a /audios</span>
+          </Link>
+          <span className="font-headline text-lg text-[#2B1D14]">Vivienne Wolski</span>
+        </header>
+
+        <main className="flex-1 flex items-center justify-center px-5 py-12">
+          <div className="w-full max-w-md p-7 sm:p-9 rounded-2xl bg-[#FAF5EC] border border-[#B08D57]/60 shadow-[0_24px_60px_rgba(43,29,20,0.10)] space-y-6">
+            <div className="space-y-2 text-center">
+              <div className="w-12 h-12 rounded-2xl bg-[#6B1F2A]/10 border border-[#6B1F2A]/25 text-[#6B1F2A] flex items-center justify-center mx-auto">
+                <Lock className="w-5 h-5" />
+              </div>
+              <span className="block text-[10px] font-mono uppercase tracking-[0.25em] text-[#6B1F2A]">
+                Acceso Restringido
+              </span>
+              <h1 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
+                Admin · Audios de Vivienne
+              </h1>
+              <p className="text-xs text-[#5C4A3E]">
+                Ingresa la contraseña privada para consultar y descargar la lista de nombres y correos registrados.
+              </p>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="admin-pass"
+                  className="block text-[10px] font-mono uppercase tracking-[0.18em] text-[#5C4A3E] mb-1.5"
+                >
+                  Contraseña de Administrador
+                </label>
+                <div className="relative">
+                  <input
+                    id="admin-pass"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    autoFocus
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder="Ingresa tu contraseña..."
+                    className="w-full pl-4 pr-11 py-3 rounded-xl bg-[#F7F1E6] border border-[#D8CBB8] focus:border-[#6B1F2A] text-sm text-[#2B1D14] placeholder-[#9C8F85] focus:outline-none transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A7665] hover:text-[#2B1D14] cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {authError && (
+                <p className="text-xs text-[#6B1F2A] font-medium bg-[#6B1F2A]/10 px-3 py-2 rounded-lg text-center">
+                  {authError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full py-3.5 px-6 rounded-xl bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.22em] transition shadow-md cursor-pointer"
+              >
+                Desbloquear Panel
+              </button>
+            </form>
+          </div>
+        </main>
+
+        <footer className="w-full px-6 py-5 border-t border-[#D8CBB8]/70 text-center text-[10px] font-mono uppercase tracking-[0.22em] text-[#8A7665]">
+          Acceso Privado · No indexado en buscadores
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] flex flex-col justify-between font-body selection:bg-[#6B1F2A] selection:text-[#F7F1E6]">
+      <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+
       {/* Top Bar */}
       <header className="w-full px-6 md:px-12 py-5 border-b border-[#D8CBB8]/80 flex flex-wrap items-center justify-between gap-4 bg-[#F7F1E6]/95 sticky top-0 z-30 backdrop-blur-md">
         <div className="flex items-center gap-4">
@@ -193,7 +347,7 @@ export default function AudiosAdminPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {lastUpdated && (
             <span className="text-[10px] font-mono uppercase tracking-wider text-[#8A7665] hidden sm:inline">
               Actualizado: {lastUpdated}
@@ -207,6 +361,16 @@ export default function AudiosAdminPage() {
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>{loading ? 'Cargando...' : 'Actualizar'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            title="Bloquear panel"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#D8CBB8] hover:border-[#6B1F2A] bg-[#FAF5EC] text-xs font-mono uppercase tracking-wider text-[#6B1F2A] transition cursor-pointer"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Salir</span>
           </button>
         </div>
       </header>
@@ -406,7 +570,7 @@ export default function AudiosAdminPage() {
 
       {/* Footer */}
       <footer className="w-full px-6 md:px-12 py-6 border-t border-[#D8CBB8]/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] font-mono uppercase tracking-[0.22em] text-[#8A7665]">
-        <span>Panel Privado · Vivienne Wolski</span>
+        <span>Panel Privado · No indexado en Google</span>
         <div className="flex items-center gap-4">
           <Link href="/audios" className="hover:text-[#2B1D14] transition">
             Página de Audios

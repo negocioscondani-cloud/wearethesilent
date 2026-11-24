@@ -8,6 +8,10 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
+        '/admin',
+        '/admin/',
+        '/audios/admin',
+        '/audios/admin/',
         '/dashboard/',
         '/the-silent-studio-guide/',
         '/secret-access-portal/',
