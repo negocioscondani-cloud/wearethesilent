@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -10,28 +10,28 @@ import {
   CheckCircle2,
   BookOpen,
   Sparkles,
-  Download,
-  Copy,
-  Users,
   Lock,
+  Play,
+  Pause,
+  X,
+  Volume2,
+  Calendar,
+  Quote,
+  RotateCcw,
 } from 'lucide-react';
 import { getFirebase } from '@/lib/firebase-client';
-import {
-  registerInMesayaFirebaseClient,
-  fetchVivienneWaitlistLeads,
-} from '@/lib/vivienne-waitlist-client';
-import {
-  collection,
-  doc,
-  setDoc,
-  getDocs,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { registerInMesayaFirebaseClient } from '@/lib/vivienne-waitlist-client';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 interface EpisodeIndexItem {
   ep: string;
+  dayNumber: number;
+  unlockDateIso: string; // YYYY-MM-DD local date when it unlocks
+  unlockDateText: string;
   title: string;
   duration: string;
+  audioUrl: string;
+  powerQuote: string;
   summary: string;
   topics: string[];
 }
@@ -39,8 +39,15 @@ interface EpisodeIndexItem {
 const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '01',
+    dayNumber: 1,
+    unlockDateIso: '2026-11-23',
+    unlockDateText: '23 de noviembre',
     title: 'Mentalidad',
     duration: '1:35',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep01-Mentalidad.mp3',
+    powerQuote:
+      'El dinero es una forma de comprar tiempo. Tiempo para dormir tranquila. Tiempo para tu familia. Tiempo para decir que no.',
     summary:
       'Por qué el dinero no es para presumir sino para comprar tiempo, y cómo salir de la trampa de cambiar horas por sueldo.',
     topics: [
@@ -52,8 +59,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '02',
-    title: 'La regla 25-15-50-10',
+    dayNumber: 2,
+    unlockDateIso: '2026-11-24',
+    unlockDateText: '24 de noviembre',
+    title: 'Presupuesto 25-15-50-10',
     duration: '1:31',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep02-Presupuesto-25-15-50-10.mp3',
+    powerQuote:
+      'Un dinero que gastas en lo que te da alegría es parte del plan, no un pecado.',
     summary:
       'El sistema de cuatro números para repartir cada ingreso: 25% inversión, 15% colchón, 50% esencial y 10% disfrute sin culpa.',
     topics: [
@@ -65,8 +79,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '03',
-    title: 'Deuda que destruye, deuda que construye',
+    dayNumber: 3,
+    unlockDateIso: '2026-11-25',
+    unlockDateText: '25 de noviembre',
+    title: 'Deuda',
     duration: '1:24',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep03-Deuda.mp3',
+    powerQuote:
+      'Pagar una deuda cara es el mejor negocio seguro que existe.',
     summary:
       'Cómo distinguir el apalancamiento productivo de la deuda cara, y por qué liquidar tarjetas al 24% es el negocio más seguro.',
     topics: [
@@ -78,8 +99,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '04',
-    title: 'Los primeros $10,000 y $100,000',
+    dayNumber: 4,
+    unlockDateIso: '2026-11-26',
+    unlockDateText: '26 de noviembre',
+    title: 'Los primeros 10 mil',
     duration: '1:24',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep04-Los-primeros-10-mil.mp3',
+    powerQuote:
+      'Trabajas, ahorras, inviertes y sientes que no pasa nada. Es el momento en que muchos se cansan.',
     summary:
       'Cómo atravesar la etapa más exigente del ahorro sin agotarte hasta que el interés compuesto empiece a acelerar por ti.',
     topics: [
@@ -91,8 +119,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '05',
-    title: 'Inversión indexada',
+    dayNumber: 5,
+    unlockDateIso: '2026-11-27',
+    unlockDateText: '27 de noviembre',
+    title: 'Invertir sin ser experta',
     duration: '1:30',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep05-Invertir-sin-ser-experta.mp3',
+    powerQuote:
+      'Nadie sabe adivinar los ciclos, ni siquiera los expertos.',
     summary:
       'El método silencioso y diversificado para hacer crecer tu patrimonio a largo plazo sin adivinar acciones individuales.',
     topics: [
@@ -104,8 +139,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '06',
-    title: 'Compras trampa',
+    dayNumber: 6,
+    unlockDateIso: '2026-11-28',
+    unlockDateText: '28 de noviembre',
+    title: 'Lo que no debes comprar',
     duration: '1:24',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep06-Lo-que-no-debes-comprar.mp3',
+    powerQuote:
+      'Lo que ves en vitrina muchas veces es deuda con buen maquillaje.',
     summary:
       'Las tres grandes fugas silenciosas: el auto nuevo financiado, las suscripciones fantasma y el costo de aparentar.',
     topics: [
@@ -117,8 +159,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '07',
-    title: 'Ingresos extra',
+    dayNumber: 7,
+    unlockDateIso: '2026-11-29',
+    unlockDateText: '29 de noviembre',
+    title: 'Segunda entrada de dinero',
     duration: '1:28',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep07-Segunda-entrada-de-dinero.mp3',
+    powerQuote:
+      'Tu primera venta importa más que tu mejor idea.',
     summary:
       'Tres rutas reales (comercio digital, servicios remotos e IA) para sumar una segunda entrada validando antes de gastar.',
     topics: [
@@ -130,8 +179,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '08',
-    title: 'Inflación e impuestos',
+    dayNumber: 8,
+    unlockDateIso: '2026-11-30',
+    unlockDateText: '30 de noviembre',
+    title: 'Inflación',
     duration: '1:17',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep08-Inflacion.mp3',
+    powerQuote:
+      'No perdiste dinero en la cuenta, pero perdiste lo que ese dinero puede comprar.',
     summary:
       'Cómo evitar que tu efectivo parado pierda poder de compra cada año y cómo aprovechar cuentas con ventajas fiscales.',
     topics: [
@@ -143,8 +199,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '09',
+    dayNumber: 9,
+    unlockDateIso: '2026-12-01',
+    unlockDateText: '1 de diciembre',
     title: 'Cuando el mercado cae',
     duration: '1:28',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep09-Cuando-el-mercado-cae.mp3',
+    powerQuote:
+      'El problema no es la matemática, cariño. Es el miedo.',
     summary:
       'Por qué en las caídas el problema no es la matemática sino el miedo, y las 3 reglas para mantener la calma.',
     topics: [
@@ -156,8 +219,15 @@ const EPISODES_INDEX: EpisodeIndexItem[] = [
   },
   {
     ep: '10',
-    title: 'La regla del 25',
+    dayNumber: 10,
+    unlockDateIso: '2026-12-02',
+    unlockDateText: '2 de diciembre',
+    title: 'Libertad',
     duration: '1:33',
+    audioUrl:
+      'https://red-ibex-277532.hostingersite.com/wp-content/uploads/2026/11/Vivienne-Ep10-Libertad.mp3',
+    powerQuote:
+      'El dinero es tiempo, y el tiempo es lo único que no se recupera.',
     summary:
       'La fórmula sencilla (tus gastos anuales × 25, basada en la regla del 4%) para conocer tu cifra exacta de libertad financiera.',
     topics: [
@@ -180,6 +250,14 @@ interface WaitlistEntry {
 const LOCAL_STORAGE_KEY = 'vivienne_audios_waitlist_v1';
 const LOCAL_LEADS_LIST_KEY = 'vivienne_waitlist_all_leads_v1';
 
+function getLocalTodayIso(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export default function AudiosWaitlistPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -190,13 +268,20 @@ export default function AudiosWaitlistPage() {
   const [submittedUser, setSubmittedUser] = useState<{ name: string; email: string } | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Admin drawer state to view & export leads from Firebase
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [leads, setLeads] = useState<WaitlistEntry[]>([]);
-  const [loadingLeads, setLoadingLeads] = useState(false);
-  const [copiedEmails, setCopiedEmails] = useState(false);
+  // Fecha actual en formato YYYY-MM-DD para desbloqueo diario
+  const [todayIso, setTodayIso] = useState<string>('2026-11-23');
+
+  // Pop-up Audio Player state
+  const [activeEpisode, setActiveEpisode] = useState<EpisodeIndexItem | null>(null);
+  const [lockedPreviewEpisode, setLockedPreviewEpisode] = useState<EpisodeIndexItem | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [durationSec, setDurationSec] = useState(0);
+  const [playbackRate, setPlaybackRate] = useState<number>(1);
 
   useEffect(() => {
+    setTodayIso(getLocalTodayIso());
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
@@ -205,64 +290,84 @@ export default function AudiosWaitlistPage() {
           setSubmittedUser(parsed);
         }
       }
-      if (typeof window !== 'undefined' && window.location.search.includes('admin=1')) {
-        setShowAdmin(true);
-      }
     } catch {
       // ignore
     }
   }, []);
 
-  const loadLeadsFromFirebase = async () => {
-    setLoadingLeads(true);
-    const mapById = new Map<string, WaitlistEntry>();
-
-    // 1. Cargar respaldos locales registrados en este navegador
-    try {
-      const localRaw = localStorage.getItem(LOCAL_LEADS_LIST_KEY);
-      if (localRaw) {
-        const parsed: WaitlistEntry[] = JSON.parse(localRaw);
-        if (Array.isArray(parsed)) {
-          parsed.forEach((item) => {
-            if (item && item.email) {
-              mapById.set(item.email.toLowerCase(), item);
-            }
-          });
-        }
-      }
-    } catch {
-      // ignore
-    }
-
-    // 2. Consultar directamente desde Firestore REST API (mesaya-e9644 / vivienne_waitlist)
-    try {
-      const remoteLeads = await fetchVivienneWaitlistLeads();
-      remoteLeads.forEach((lead) => {
-        if (lead.email !== 'prueba@viviennewolski.com') {
-          mapById.set(lead.email.toLowerCase(), {
-            id: lead.id,
-            name: lead.name,
-            email: lead.email,
-            favoriteEp: lead.favoriteEp,
-            createdAtIso: lead.createdAtIso,
-          });
-        }
-      });
-    } catch {
-      // ignore
-    }
-
-    const list = Array.from(mapById.values());
-    list.sort((a, b) => (b.createdAtIso || '').localeCompare(a.createdAtIso || ''));
-    setLeads(list);
-    setLoadingLeads(false);
+  // Comprobar si un episodio ya está desbloqueado según la fecha actual
+  const isEpisodeUnlocked = (item: EpisodeIndexItem): boolean => {
+    if (item.dayNumber === 1) return true; // Episodio 1 siempre desbloqueado desde el Día 1
+    return todayIso >= item.unlockDateIso;
   };
 
-  useEffect(() => {
-    if (showAdmin) {
-      loadLeadsFromFirebase();
+  const unlockedCount = EPISODES_INDEX.filter((item) => isEpisodeUnlocked(item)).length;
+  const latestUnlockedEpisode =
+    [...EPISODES_INDEX].reverse().find((item) => isEpisodeUnlocked(item)) || EPISODES_INDEX[0];
+
+  const openAudioPopup = (item: EpisodeIndexItem) => {
+    if (!isEpisodeUnlocked(item)) {
+      setLockedPreviewEpisode(item);
+      return;
     }
-  }, [showAdmin]);
+    setActiveEpisode(item);
+    setCurrentTime(0);
+    setDurationSec(0);
+    setIsPlaying(true);
+    setPlaybackRate(1);
+  };
+
+  const closeAudioPopup = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsPlaying(false);
+    setActiveEpisode(null);
+  };
+
+  const togglePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number(e.target.value);
+    setCurrentTime(val);
+    if (audioRef.current) {
+      audioRef.current.currentTime = val;
+    }
+  };
+
+  const handleSkipSeconds = (delta: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const next = Math.max(0, Math.min(audio.duration || 100, audio.currentTime + delta));
+    audio.currentTime = next;
+    setCurrentTime(next);
+  };
+
+  const cyclePlaybackRate = () => {
+    const rates = [1, 1.25, 1.5];
+    const nextRate = rates[(rates.indexOf(playbackRate) + 1) % rates.length];
+    setPlaybackRate(nextRate);
+    if (audioRef.current) {
+      audioRef.current.playbackRate = nextRate;
+    }
+  };
+
+  const formatSeconds = (sec: number) => {
+    if (!sec || isNaN(sec)) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -312,12 +417,13 @@ export default function AudiosWaitlistPage() {
         // ignore
       }
 
-      // 2. Registrar directamente en el proyecto Firebase mesaya-e9644 (Authentication -> Users + envío de correo desde navegador)
+      // 2. Registrar directamente en Firestore Database (mesaya-e9644 / vivienne_waitlist)
       await registerInMesayaFirebaseClient({
         name: cleanName,
         email: cleanEmail,
         favoriteEp,
         source: 'wearethesilent.com/audios',
+        consentAccepted: true,
       });
 
       // 3. Respaldo en servidor (/api/vivienne-waitlist)
@@ -338,7 +444,7 @@ export default function AudiosWaitlistPage() {
         }),
       }).catch(() => {});
 
-      // 3. Intentar también desde el cliente en Firestore de forma silenciosa
+      // 4. Intentar también desde el cliente en Firestore SDK
       try {
         const { firestore } = getFirebase();
         if (firestore) {
@@ -346,6 +452,7 @@ export default function AudiosWaitlistPage() {
             name: cleanName,
             email: cleanEmail,
             favoriteEp,
+            consentAccepted: true,
             series: 'Audios de Vivienne: Dominio del Dinero y Libertad Financiera',
             source: 'wearethesilent.com/audios',
             createdAtIso: nowIso,
@@ -354,27 +461,10 @@ export default function AudiosWaitlistPage() {
           await setDoc(doc(firestore, 'vivienne_waitlist', docId), payload, { merge: true }).catch(
             () => {}
           );
-          await setDoc(
-            doc(firestore, 'restaurants', 'vivienne-wolski', 'customers', docId),
-            payload,
-            { merge: true }
-          ).catch(() => {});
         }
       } catch {
-        // Silencioso si las reglas de Firestore aún están cerradas
+        // ignore
       }
-
-      // 4. Notificación de bienvenida
-      fetch('/api/mesaya-welcome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: cleanName,
-          email: cleanEmail,
-          restaurantName: 'Vivienne Wolski · Audios Semanales',
-          points: 0,
-        }),
-      }).catch(() => {});
 
       const savedObj = { name: cleanName, email: cleanEmail };
       setSubmittedUser(savedObj);
@@ -382,9 +472,6 @@ export default function AudiosWaitlistPage() {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(savedObj));
       } catch {
         // ignore
-      }
-      if (showAdmin) {
-        loadLeadsFromFirebase();
       }
     } finally {
       setIsSubmitting(false);
@@ -401,90 +488,94 @@ export default function AudiosWaitlistPage() {
     }
   };
 
-  const handleExportCsv = () => {
-    if (!leads.length) return;
-    const header = ['Nombre', 'Correo Electronico', 'Episodio de Interes', 'Fecha ISO'];
-    const rows = leads.map((l) => [
-      `"${(l.name || '').replace(/"/g, '""')}"`,
-      `"${(l.email || '').replace(/"/g, '""')}"`,
-      `"${(l.favoriteEp || '').replace(/"/g, '""')}"`,
-      `"${l.createdAtIso || ''}"`,
-    ]);
-    const csv = [header.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `lista-espera-vivienne-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleCopyEmails = async () => {
-    if (!leads.length) return;
-    const allEmails = leads.map((l) => l.email).join(', ');
-    await navigator.clipboard.writeText(allEmails);
-    setCopiedEmails(true);
-    setTimeout(() => setCopiedEmails(false), 2500);
-  };
-
   return (
-    <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] flex flex-col justify-between selection:bg-[#6B1F2A] selection:text-[#F7F1E6]">
-      {/* Top Bar */}
-      <header className="sticky top-0 z-40 bg-[#F7F1E6]/95 backdrop-blur-md border-b border-[#D8CBB8]/70 px-5 sm:px-10 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-[#F7F1E6] text-[#2B1D14] flex flex-col justify-between selection:bg-[#6B1F2A] selection:text-[#F7F1E6] font-body">
+      {/* Top Editorial Navigation */}
+      <header className="w-full px-6 md:px-12 py-5 border-b border-[#D8CBB8]/80 flex items-center justify-between bg-[#F7F1E6]/95 sticky top-0 z-30 backdrop-blur-md">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.22em] text-[#5C4A3E] hover:text-[#6B1F2A] transition"
+          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-[#5C4A3E] hover:text-[#6B1F2A] transition"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#6B1F2A]" />
-          <span>Vivienne</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Vivienne Wolski</span>
         </Link>
 
-        <span className="font-headline text-xs sm:text-sm tracking-[0.3em] uppercase text-[#2B1D14]">
-          V · W — Audios Semanales
-        </span>
+        <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-[#6B1F2A]">
+          <Headphones className="w-3.5 h-3.5" />
+          <span>Serie Sonora Oficial · {unlockedCount}/10 Desbloqueados</span>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => scrollToForm()}
-          className="text-[10px] font-mono uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full bg-[#6B1F2A] text-[#F7F1E6] hover:bg-[#2B1D14] transition cursor-pointer"
+        <Link
+          href="/vivianne-wolski/armario"
+          className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#2B1D14] hover:text-[#6B1F2A] transition hidden sm:inline-block"
         >
-          Lista de espera
-        </button>
+          Maison Wolski →
+        </Link>
       </header>
 
-      <main className="flex-1">
-        {/* HERO + WAITLIST FORM */}
-        <section className="max-w-6xl mx-auto px-5 sm:px-8 pt-10 pb-16 md:py-20">
+      {/* Main Content */}
+      <main className="flex-1 w-full">
+        {/* HERO SECTION */}
+        <section className="max-w-6xl mx-auto px-5 sm:px-8 pt-10 pb-14 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            {/* Left Column: Editorial Pitch + Waitlist Form */}
+            {/* Left Column: Editorial Headline + Today's Featured Audio + Waitlist Form */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#B08D57]/40 text-[#6B1F2A] text-[10px] font-mono uppercase tracking-[0.22em]">
-                <Headphones className="w-3.5 h-3.5" />
-                <span>Serie Sonora de 10 Semanas · Lista de Espera</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#6B1F2A]/10 border border-[#6B1F2A]/25 text-[#6B1F2A] text-[10px] font-mono uppercase tracking-[0.24em]">
+                <Sparkles className="w-3 h-3" />
+                <span>1 Episodio Nuevo Desbloqueado Cada Día</span>
               </div>
 
               <div className="space-y-3">
-                <h1 className="font-headline text-3xl sm:text-5xl text-[#2B1D14] leading-[1.08] tracking-tight">
+                <h1 className="font-headline text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.06] tracking-tight text-[#2B1D14]">
                   Audios de Vivienne:{' '}
-                  <span className="italic font-light text-[#6B1F2A]">
-                    Dominio del Dinero y Libertad Financiera
+                  <span className="italic font-normal text-[#6B1F2A]">
+                    Dominio del Dinero y Libertad Financiera.
                   </span>
                 </h1>
                 <p className="text-sm sm:text-base text-[#5C4A3E] leading-relaxed max-w-2xl">
-                  Un audio semanal íntimo, directo al grano y sin tecnicismos vacíos. Diez capítulos esenciales sobre mentalidad, reglas de reparto, deuda inteligente, inversión indexada y la cifra exacta de tu libertad financiera.
+                  Diez episodios íntimos, directos al grano y sin tecnicismos vacíos. Cada día se desbloquea un nuevo capítulo en audio sobre mentalidad, presupuesto 25-15-50-10, deuda inteligente, inversión sin ser experta y libertad financiera.
                 </p>
               </div>
 
-              {/* Quote snippet from Episode 1 */}
-              <blockquote className="border-l-2 border-[#6B1F2A] pl-4 py-1.5 bg-[#FAF5EC]/80 rounded-r-lg">
-                <p className="font-serif italic text-sm sm:text-base text-[#2B1D14] leading-relaxed">
-                  &ldquo;Hola, cariño. El dinero no es para presumir ni para parecer rica. El dinero es una forma de comprar tiempo: tiempo para dormir tranquila, tiempo para tu familia y tiempo para decir que no.&rdquo;
-                </p>
-                <footer className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#8A7665] mt-1">
-                  — Extracto del Episodio 01 · Mentalidad
-                </footer>
-              </blockquote>
+              {/* DESTACADO DEL DÍA: Botón directo para abrir el Pop-up del episodio disponible hoy */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#2B1D14] text-[#F7F1E6] border border-[#B08D57]/60 shadow-lg space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#6B1F2A] text-[#F7F1E6] text-[10px] font-mono uppercase tracking-[0.2em]">
+                    <Volume2 className="w-3 h-3" />
+                    <span>Disponible Hoy · Día {latestUnlockedEpisode.dayNumber}</span>
+                  </span>
+                  <span className="text-[11px] font-mono text-[#E6D5B8]">
+                    Ep. {latestUnlockedEpisode.ep} · ~{latestUnlockedEpisode.duration} min
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="font-headline text-2xl sm:text-3xl text-[#F7F1E6]">
+                    Episodio {latestUnlockedEpisode.ep}: {latestUnlockedEpisode.title}
+                  </h2>
+                  <p className="font-serif italic text-sm sm:text-base text-[#E6D5B8] leading-relaxed">
+                    &ldquo;{latestUnlockedEpisode.powerQuote}&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-1 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => openAudioPopup(latestUnlockedEpisode)}
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#6B1F2A] hover:bg-[#8B2938] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] transition shadow-md cursor-pointer"
+                  >
+                    <Play className="w-4 h-4 fill-current" />
+                    <span>Reproducir Episodio {latestUnlockedEpisode.ep} Ahora</span>
+                  </button>
+
+                  <a
+                    href="#indice-audios"
+                    className="text-[11px] font-mono uppercase tracking-[0.18em] text-[#E6D5B8] hover:text-white underline underline-offset-4"
+                  >
+                    Ver los 10 episodios ↓
+                  </a>
+                </div>
+              </div>
 
               {/* WAITLIST CAPTURE CARD */}
               <div
@@ -501,9 +592,17 @@ export default function AudiosWaitlistPage() {
                       Gracias, <span className="italic text-[#6B1F2A]">{submittedUser.name}</span>.
                     </h2>
                     <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                      Tus datos han quedado guardados correctamente. Serás de las primeras personas en recibir el <strong>Episodio 01: Mentalidad</strong> e información por parte del equipo de Vivienne apenas abramos el acceso.
+                      Tus datos han quedado guardados correctamente. Recibirás las novedades y avisos de cada nuevo episodio desbloqueado por parte del equipo de Vivienne.
                     </p>
                     <div className="pt-2 flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => openAudioPopup(latestUnlockedEpisode)}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#6B1F2A] text-[#F7F1E6] text-[11px] font-mono uppercase tracking-[0.18em] cursor-pointer"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <span>Escuchar Episodio {latestUnlockedEpisode.ep}</span>
+                      </button>
                       <button
                         type="button"
                         onClick={() => {
@@ -522,10 +621,10 @@ export default function AudiosWaitlistPage() {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1">
                       <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#6B1F2A] font-semibold">
-                        Acceso Anticipado · Cupos Prioritarios
+                        Avisos Diarios · Club de Oyentes de Vivienne
                       </span>
                       <h2 className="font-headline text-xl sm:text-2xl text-[#2B1D14]">
-                        Anota tu nombre y correo para recibir los audios semanales
+                        Regístrate para recibir los episodios e información de Vivienne
                       </h2>
                     </div>
 
@@ -627,15 +726,11 @@ export default function AudiosWaitlistPage() {
                     >
                       <span>
                         {isSubmitting
-                          ? 'Guardando tu lugar...'
-                          : 'Unirme a la Lista de Espera'}
+                          ? 'Guardando tus datos...'
+                          : 'Guardar mis datos y recibir avisos'}
                       </span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
-
-                    <p className="text-[11px] text-[#8A7665] text-center">
-                      Cero spam. Solo la señal de Vivienne cuando cada audio semanal esté listo para escucharse.
-                    </p>
                   </form>
                 )}
               </div>
@@ -643,26 +738,35 @@ export default function AudiosWaitlistPage() {
 
             {/* Right Column: Editorial Portrait & Series Spec Card */}
             <div className="lg:col-span-5 flex flex-col items-center">
-              <div className="relative w-full max-w-[380px] aspect-[4/5] rounded-2xl overflow-hidden border border-[#D8CBB8] shadow-[0_24px_60px_rgba(43,29,20,0.12)] bg-[#EFE6D5]">
+              <div
+                onClick={() => openAudioPopup(latestUnlockedEpisode)}
+                className="group relative w-full max-w-[380px] aspect-[4/5] rounded-2xl overflow-hidden border border-[#D8CBB8] shadow-[0_24px_60px_rgba(43,29,20,0.12)] bg-[#EFE6D5] cursor-pointer"
+              >
                 <Image
                   src="/images/vivianne-wolski-hero.jpg"
                   alt="Vivienne Wolski · Audios de Dominio del Dinero"
                   fill
                   priority
                   sizes="(max-width: 1024px) 85vw, 380px"
-                  className="object-cover object-top"
+                  className="object-cover object-top group-hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1E140E]/75 via-[#1E140E]/15 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1E140E]/85 via-[#1E140E]/20 to-transparent" />
+
+                {/* Floating Play Button on Portrait */}
+                <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-[#6B1F2A] text-[#F7F1E6] flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                  <Play className="w-5 h-5 fill-current ml-0.5" />
+                </div>
+
                 <div className="absolute bottom-5 left-5 right-5 text-[#F7F1E6] space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#6B1F2A]/90 text-[#F7F1E6] text-[9px] font-mono uppercase tracking-[0.22em]">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#6B1F2A]/95 text-[#F7F1E6] text-[9px] font-mono uppercase tracking-[0.22em]">
                     <Sparkles className="w-2.5 h-2.5" />
-                    <span>10 Episodios Prácticos</span>
+                    <span>Toca para escuchar Ep. {latestUnlockedEpisode.ep}</span>
                   </div>
                   <p className="font-headline italic text-2xl leading-tight">
                     &ldquo;El dinero es tiempo, y el tiempo es lo único que no se recupera.&rdquo;
                   </p>
                   <p className="text-[10px] uppercase tracking-[0.26em] text-[#E6D5B8]">
-                    Vivienne Wolski · Edición 2026
+                    Vivienne Wolski · Serie Oficial de 10 Episodios
                   </p>
                 </div>
               </div>
@@ -670,71 +774,136 @@ export default function AudiosWaitlistPage() {
           </div>
         </section>
 
-        {/* BOOK-STYLE INDEX OF THE 10 WEEKLY AUDIOS */}
-        <section className="border-t border-[#D8CBB8]/80 bg-[#FAF5EC] py-16 sm:py-20">
+        {/* THE 10 DAILY UNLOCKING AUDIO CHAPTERS */}
+        <section id="indice-audios" className="border-t border-[#D8CBB8]/80 bg-[#FAF5EC] py-16 sm:py-20">
           <div className="max-w-5xl mx-auto px-5 sm:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
               <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.26em] text-[#6B1F2A]">
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>Índice de la Obra Sonora</span>
+                <span>Calendario de Desbloqueo Diario · {unlockedCount} de 10 Disponibles</span>
               </div>
               <h2 className="font-headline text-3xl sm:text-4xl text-[#2B1D14]">
-                Los 10 Capítulos Semanales
+                Los 10 Episodios Oficiales de Vivienne
               </h2>
               <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                Cada semana desbloquearemos un capítulo en audio junto con su ejercicio puntual. Toca cualquier episodio para priorizarlo en tu registro.
+                Cada día desbloqueamos un nuevo episodio en orden consecutivo. Haz clic en cualquier episodio desbloqueado para abrir el reproductor y escucharlo.
               </p>
             </div>
 
-            <div className="divide-y divide-[#D8CBB8]/70 border-y border-[#D8CBB8] bg-[#F7F1E6] rounded-2xl overflow-hidden shadow-sm">
-              {EPISODES_INDEX.map((item) => (
-                <div
-                  key={item.ep}
-                  onClick={() => scrollToForm(`Ep. ${item.ep} · ${item.title}`)}
-                  className="group p-5 sm:p-6 hover:bg-[#FAF5EC] transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-[#FAF5EC] group-hover:bg-[#6B1F2A] border border-[#D8CBB8] group-hover:border-[#6B1F2A] text-[#6B1F2A] group-hover:text-[#F7F1E6] font-mono text-xs font-bold flex flex-col items-center justify-center shrink-0 transition">
-                      <span className="text-[8px] uppercase tracking-wider opacity-75">Ep.</span>
-                      <span>{item.ep}</span>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <h3 className="font-headline text-lg sm:text-xl text-[#2B1D14] group-hover:text-[#6B1F2A] transition">
-                          {item.title}
-                        </h3>
-                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[#EFE6D5] text-[#5C4A3E]">
-                          ~{item.duration} min
+            <div className="space-y-4">
+              {EPISODES_INDEX.map((item) => {
+                const unlocked = isEpisodeUnlocked(item);
+                return (
+                  <div
+                    key={item.ep}
+                    onClick={() => openAudioPopup(item)}
+                    className={`group p-5 sm:p-7 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-6 ${
+                      unlocked
+                        ? 'bg-[#F7F1E6] border-[#B08D57] hover:border-[#6B1F2A] shadow-[0_10px_30px_rgba(43,29,20,0.06)]'
+                        : 'bg-[#F7F1E6]/60 border-[#D8CBB8]/80 hover:border-[#B08D57]'
+                    }`}
+                  >
+                    <div className="flex items-start gap-4 sm:gap-5 flex-1">
+                      {/* Episode Number / Play Icon Badge */}
+                      <div
+                        className={`w-13 h-13 rounded-2xl border font-mono text-xs font-bold flex flex-col items-center justify-center shrink-0 transition ${
+                          unlocked
+                            ? 'bg-[#6B1F2A] border-[#6B1F2A] text-[#F7F1E6] shadow-sm group-hover:bg-[#2B1D14]'
+                            : 'bg-[#FAF5EC] border-[#D8CBB8] text-[#8A7665]'
+                        }`}
+                      >
+                        <span className="text-[8px] uppercase tracking-wider opacity-80">
+                          Ep.
                         </span>
+                        <span className="text-sm">{item.ep}</span>
                       </div>
 
-                      <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                        {item.summary}
-                      </p>
-
-                      <div className="pt-1.5 flex flex-wrap items-center gap-1.5">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#6B1F2A] font-semibold mr-1">
-                          Temas del capítulo:
-                        </span>
-                        {item.topics.map((topic, idx) => (
-                          <span
-                            key={idx}
-                            className="text-[10.5px] font-mono px-2.5 py-0.5 rounded-full bg-[#FAF5EC] border border-[#D8CBB8] text-[#2B1D14]"
+                      <div className="space-y-2.5 flex-1">
+                        {/* Title & Unlock Status Pills */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3
+                            className={`font-headline text-xl sm:text-2xl transition ${
+                              unlocked
+                                ? 'text-[#2B1D14] group-hover:text-[#6B1F2A]'
+                                : 'text-[#5C4A3E]'
+                            }`}
                           >
-                            {topic}
+                            Ep{item.ep} · {item.title}
+                          </h3>
+
+                          <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#EFE6D5] text-[#5C4A3E]">
+                            ~{item.duration} min
                           </span>
-                        ))}
+
+                          {unlocked ? (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#6B1F2A]/15 text-[#6B1F2A] font-semibold">
+                              <Volume2 className="w-3 h-3" />
+                              <span>Desbloqueado · Día {item.dayNumber}</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#FAF5EC] border border-[#D8CBB8] text-[#8A7665]">
+                              <Calendar className="w-3 h-3" />
+                              <span>
+                                Día {item.dayNumber} · Se desbloquea el {item.unlockDateText}
+                              </span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Word-for-word Power Quote from Vivienne */}
+                        <blockquote className="border-l-2 border-[#6B1F2A] pl-3.5 py-1 bg-[#FAF5EC]/90 rounded-r-xl">
+                          <p className="font-serif italic text-sm sm:text-base text-[#2B1D14] leading-relaxed">
+                            &ldquo;{item.powerQuote}&rdquo;
+                          </p>
+                          <footer className="text-[9.5px] font-mono uppercase tracking-[0.2em] text-[#6B1F2A] mt-0.5">
+                            — Vivienne Wolski · Frase del Episodio {item.ep}
+                          </footer>
+                        </blockquote>
+
+                        <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
+                          {item.summary}
+                        </p>
+
+                        <div className="pt-1 flex flex-wrap items-center gap-1.5">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-[#6B1F2A] font-semibold mr-1">
+                            Temas del capítulo:
+                          </span>
+                          {item.topics.map((topic, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[10.5px] font-mono px-2.5 py-0.5 rounded-full bg-[#FAF5EC] border border-[#D8CBB8] text-[#2B1D14]"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="sm:shrink-0 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-[#8A7665] group-hover:text-[#6B1F2A] self-end sm:self-center">
-                    <Lock className="w-3 h-3" />
-                    <span>Reservar audio</span>
+                    {/* Action Button on the Right */}
+                    <div className="md:shrink-0 self-start md:self-center">
+                      {unlocked ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openAudioPopup(item);
+                          }}
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#6B1F2A] group-hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-[11px] uppercase tracking-[0.18em] transition shadow-sm cursor-pointer"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          <span>Escuchar Audio</span>
+                        </button>
+                      ) : (
+                        <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8] text-[#8A7665] font-mono text-[10px] uppercase tracking-[0.18em]">
+                          <Lock className="w-3.5 h-3.5" />
+                          <span>Disponible {item.unlockDateText}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Bottom Repeat CTA */}
@@ -744,7 +913,7 @@ export default function AudiosWaitlistPage() {
                 onClick={() => scrollToForm()}
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#2B1D14] hover:bg-[#6B1F2A] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.22em] transition shadow-md cursor-pointer"
               >
-                <span>Anotarme en la Lista de Espera</span>
+                <span>Recibir Avisos de Nuevos Episodios</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -776,6 +945,221 @@ export default function AudiosWaitlistPage() {
           <span>© {new Date().getFullYear()} Vivienne Wolski</span>
         </div>
       </footer>
+
+      {/* POP-UP REPRODUCTOR DE AUDIO OFICIAL */}
+      {activeEpisode && (
+        <div
+          onClick={closeAudioPopup}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E140E]/75 backdrop-blur-sm p-4 overflow-y-auto"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-xl rounded-3xl bg-[#FAF5EC] border-2 border-[#B08D57] shadow-[0_30px_90px_rgba(0,0,0,0.45)] overflow-hidden text-[#2B1D14]"
+          >
+            {/* Top Banner inside Pop-up */}
+            <div className="bg-[#2B1D14] text-[#F7F1E6] px-6 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-[#B08D57] relative shrink-0">
+                  <Image
+                    src="/images/vivianne-wolski-hero.jpg"
+                    alt="Vivienne Wolski"
+                    fill
+                    sizes="40px"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div>
+                  <span className="block text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#E6D5B8]">
+                    Audios de Vivienne · Día {activeEpisode.dayNumber} de 10
+                  </span>
+                  <h3 className="font-headline text-xl text-[#F7F1E6]">
+                    Ep{activeEpisode.ep} · {activeEpisode.title}
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={closeAudioPopup}
+                className="w-9 h-9 rounded-full bg-[#F7F1E6]/10 hover:bg-[#6B1F2A] text-[#F7F1E6] flex items-center justify-center transition cursor-pointer"
+                aria-label="Cerrar reproductor"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body of the Pop-up Player */}
+            <div className="p-6 sm:p-8 space-y-6">
+              {/* Word-for-word Powerful Quote Highlight */}
+              <div className="p-5 rounded-2xl bg-[#F7F1E6] border border-[#B08D57]/60 space-y-2 relative">
+                <Quote className="w-5 h-5 text-[#6B1F2A]/40" />
+                <p className="font-serif italic text-lg sm:text-xl text-[#2B1D14] leading-relaxed">
+                  &ldquo;{activeEpisode.powerQuote}&rdquo;
+                </p>
+                <p className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#6B1F2A]">
+                  — Vivienne Wolski · Palabra por palabra en este episodio
+                </p>
+              </div>
+
+              {/* Hidden/Synced HTML5 Audio Element */}
+              <audio
+                ref={audioRef}
+                src={activeEpisode.audioUrl}
+                autoPlay
+                preload="auto"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
+                onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                onLoadedMetadata={(e) => setDurationSec(e.currentTarget.duration)}
+                className="hidden"
+              />
+
+              {/* Custom Luxury Audio Controls */}
+              <div className="p-5 rounded-2xl bg-[#2B1D14] text-[#F7F1E6] space-y-4 shadow-inner">
+                {/* Progress Slider */}
+                <div className="space-y-1.5">
+                  <input
+                    type="range"
+                    min={0}
+                    max={durationSec || 100}
+                    step={0.1}
+                    value={currentTime}
+                    onChange={handleSeek}
+                    className="w-full accent-[#B08D57] h-1.5 bg-[#5C4A3E] rounded-lg cursor-pointer"
+                  />
+                  <div className="flex items-center justify-between text-[11px] font-mono text-[#E6D5B8]">
+                    <span>{formatSeconds(currentTime)}</span>
+                    <span>
+                      {durationSec ? formatSeconds(durationSec) : activeEpisode.duration}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Main Transport Buttons */}
+                <div className="flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => handleSkipSeconds(-10)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#F7F1E6]/10 hover:bg-[#F7F1E6]/20 text-[11px] font-mono text-[#E6D5B8] transition cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>-10s</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={togglePlayPause}
+                    className="w-14 h-14 rounded-full bg-[#6B1F2A] hover:bg-[#8B2938] text-[#F7F1E6] flex items-center justify-center shadow-lg transition transform hover:scale-105 cursor-pointer"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-6 h-6 fill-current" />
+                    ) : (
+                      <Play className="w-6 h-6 fill-current ml-0.5" />
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={cyclePlaybackRate}
+                    className="px-3 py-1.5 rounded-lg bg-[#F7F1E6]/10 hover:bg-[#F7F1E6]/20 text-[11px] font-mono text-[#E6D5B8] transition cursor-pointer"
+                    title="Velocidad de reproducción"
+                  >
+                    {playbackRate}x
+                  </button>
+                </div>
+              </div>
+
+              {/* Episode Summary & Topics inside Pop-up */}
+              <div className="space-y-2.5">
+                <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
+                  {activeEpisode.summary}
+                </p>
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  {activeEpisode.topics.map((t, i) => (
+                    <span
+                      key={i}
+                      className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#F7F1E6] border border-[#D8CBB8] text-[#2B1D14]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POP-UP DE AVISO PARA EPISODIOS QUE SE DESBLOQUEAN EN LOS PRÓXIMOS DÍAS */}
+      {lockedPreviewEpisode && (
+        <div
+          onClick={() => setLockedPreviewEpisode(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E140E]/70 backdrop-blur-xs p-4"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-lg w-full rounded-3xl bg-[#FAF5EC] border border-[#B08D57] p-6 sm:p-8 shadow-2xl space-y-5 text-[#2B1D14]"
+          >
+            <div className="flex items-center justify-between">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6B1F2A]/10 text-[#6B1F2A] text-[10px] font-mono uppercase tracking-[0.2em]">
+                <Lock className="w-3.5 h-3.5" />
+                <span>
+                  Día {lockedPreviewEpisode.dayNumber} · Se desbloquea el{' '}
+                  {lockedPreviewEpisode.unlockDateText}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLockedPreviewEpisode(null)}
+                className="p-1.5 rounded-full hover:bg-[#EFE6D5] text-[#8A7665] cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
+                Ep{lockedPreviewEpisode.ep} · {lockedPreviewEpisode.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
+                Este episodio se desbloqueará automáticamente el{' '}
+                <strong>{lockedPreviewEpisode.unlockDateText}</strong> siguiendo el orden diario de la serie de Vivienne.
+              </p>
+            </div>
+
+            <blockquote className="p-4 rounded-2xl bg-[#F7F1E6] border-l-3 border-[#6B1F2A] space-y-1">
+              <p className="font-serif italic text-base sm:text-lg text-[#2B1D14]">
+                &ldquo;{lockedPreviewEpisode.powerQuote}&rdquo;
+              </p>
+              <footer className="text-[9.5px] font-mono uppercase tracking-[0.2em] text-[#6B1F2A]">
+                — Adelanto de la frase de Vivienne en el Ep. {lockedPreviewEpisode.ep}
+              </footer>
+            </blockquote>
+
+            <div className="pt-1 flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  const epLabel = `Ep. ${lockedPreviewEpisode.ep} · ${lockedPreviewEpisode.title}`;
+                  setLockedPreviewEpisode(null);
+                  scrollToForm(epLabel);
+                }}
+                className="flex-1 py-3.5 px-5 rounded-xl bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.18em] transition cursor-pointer"
+              >
+                Avisarme cuando se desbloquee
+              </button>
+              <button
+                type="button"
+                onClick={() => setLockedPreviewEpisode(null)}
+                className="py-3.5 px-4 rounded-xl border border-[#D8CBB8] hover:border-[#2B1D14] text-xs font-mono uppercase tracking-wider text-[#5C4A3E] cursor-pointer"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal de Confirmación de Consentimiento de Datos */}
       {showConsentModal && (
