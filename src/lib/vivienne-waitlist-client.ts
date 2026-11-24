@@ -9,6 +9,7 @@ export interface VivienneWaitlistLead {
   source: string;
   consentAccepted: boolean;
   createdAtIso: string;
+  lastEmailSentDay?: number;
 }
 
 export async function registerInMesayaFirebaseClient(params: {
@@ -17,35 +18,63 @@ export async function registerInMesayaFirebaseClient(params: {
   favoriteEp: string;
   source: string;
   consentAccepted?: boolean;
-}) {
+}): Promise<{ createdAtIso: string; lastEmailSentDay: number }> {
   const cleanName = params.name.trim();
   const cleanEmail = params.email.trim().toLowerCase();
   const favoriteEp = params.favoriteEp || 'Todos los episodios';
   const docId = cleanEmail.replace(/[^a-z0-9@._-]/g, '_');
-  const createdAtIso = new Date().toISOString();
+  const nowIso = new Date().toISOString();
+  const docUrl = `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${MESAYA_API_KEY}`;
 
-  // Guardar únicamente en Firestore Database (sin crear usuario en Authentication)
+  let existingFields: Record<string, any> = {};
+  let existingCreatedAtIso = '';
+  let existingLastEmailSentDay = 0;
+
+  // 1. Consultar si el correo ya existía en Firestore para NO reiniciar su Día ni borrar lastEmailSentDay
   try {
-    await fetch(
-      `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${MESAYA_API_KEY}`,
-      {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fields: {
-            name: { stringValue: cleanName },
-            email: { stringValue: cleanEmail },
-            favoriteEp: { stringValue: favoriteEp },
-            source: { stringValue: params.source },
-            consentAccepted: { booleanValue: params.consentAccepted !== false },
-            createdAtIso: { stringValue: createdAtIso },
-          },
-        }),
+    const getRes = await fetch(docUrl, { cache: 'no-store' });
+    if (getRes.ok) {
+      const existingDoc = await getRes.json();
+      if (existingDoc?.fields) {
+        existingFields = existingDoc.fields;
+        existingCreatedAtIso =
+          existingFields.createdAtIso?.stringValue || existingDoc.createTime || '';
+        existingLastEmailSentDay = Number(
+          existingFields.lastEmailSentDay?.integerValue || 0
+        );
       }
-    );
+    }
+  } catch {
+    // ignore
+  }
+
+  const finalCreatedAtIso = existingCreatedAtIso || nowIso;
+
+  // 2. Guardar en Firestore conservando createdAtIso y lastEmailSentDay si ya existían
+  try {
+    const mergedFields: Record<string, any> = {
+      ...existingFields,
+      name: { stringValue: cleanName },
+      email: { stringValue: cleanEmail },
+      favoriteEp: { stringValue: favoriteEp },
+      source: { stringValue: params.source },
+      consentAccepted: { booleanValue: params.consentAccepted !== false },
+      createdAtIso: { stringValue: finalCreatedAtIso },
+    };
+
+    await fetch(docUrl, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: mergedFields }),
+    });
   } catch {
     // ignore network error
   }
+
+  return {
+    createdAtIso: finalCreatedAtIso,
+    lastEmailSentDay: existingLastEmailSentDay,
+  };
 }
 
 export async function fetchVivienneWaitlistLeads(): Promise<VivienneWaitlistLead[]> {
@@ -82,6 +111,7 @@ export async function fetchVivienneWaitlistLeads(): Promise<VivienneWaitlistLead
             docItem.createTime ||
             ''
         );
+        const lastEmailSentDay = Number(fields.lastEmailSentDay?.integerValue || 0);
 
         leadsMap.set(email, {
           id,
@@ -91,6 +121,7 @@ export async function fetchVivienneWaitlistLeads(): Promise<VivienneWaitlistLead
           source,
           consentAccepted,
           createdAtIso,
+          lastEmailSentDay,
         });
       }
 

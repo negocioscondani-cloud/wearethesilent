@@ -74,31 +74,40 @@ export default function AudiosRegistrationPage() {
     };
 
     try {
-      // 1. Guardar en respaldo local
+      // 1. Guardar o actualizar en Firestore Database (conservando createdAtIso y lastEmailSentDay si ya existía)
+      const { createdAtIso: finalCreatedAtIso, lastEmailSentDay } =
+        await registerInMesayaFirebaseClient({
+          name: cleanName,
+          email: cleanEmail,
+          favoriteEp,
+          source: 'wearethesilent.com/audios',
+          consentAccepted: true,
+        });
+
+      // 2. Guardar en respaldo local con la fecha original y el último día de correo enviado
       try {
         const existingRaw = localStorage.getItem(LOCAL_LEADS_LIST_KEY);
         const existingList: WaitlistEntry[] = existingRaw ? JSON.parse(existingRaw) : [];
         const filtered = Array.isArray(existingList)
           ? existingList.filter((x) => x.email?.toLowerCase() !== cleanEmail)
           : [];
-        filtered.unshift(newEntry);
+        filtered.unshift({
+          ...newEntry,
+          createdAtIso: finalCreatedAtIso,
+        });
         localStorage.setItem(LOCAL_LEADS_LIST_KEY, JSON.stringify(filtered));
         localStorage.setItem(
           LOCAL_STORAGE_KEY,
-          JSON.stringify({ name: cleanName, email: cleanEmail, registeredAtIso: nowIso })
+          JSON.stringify({
+            name: cleanName,
+            email: cleanEmail,
+            registeredAtIso: finalCreatedAtIso,
+            lastEmailSentDay,
+          })
         );
       } catch {
         // ignore
       }
-
-      // 2. Guardar directamente en Firestore Database (mesaya-e9644 / vivienne_waitlist)
-      await registerInMesayaFirebaseClient({
-        name: cleanName,
-        email: cleanEmail,
-        favoriteEp,
-        source: 'wearethesilent.com/audios',
-        consentAccepted: true,
-      });
 
       // 3. Respaldo en servidor (/api/vivienne-waitlist)
       await fetch('/api/vivienne-waitlist', {
@@ -113,30 +122,7 @@ export default function AudiosRegistrationPage() {
         }),
       }).catch(() => {});
 
-      // 4. Respaldo en Firestore SDK cliente
-      try {
-        const { firestore } = getFirebase();
-        if (firestore) {
-          await setDoc(
-            doc(firestore, 'vivienne_waitlist', docId),
-            {
-              name: cleanName,
-              email: cleanEmail,
-              favoriteEp,
-              consentAccepted: true,
-              series: 'Audios de Vivienne: Dominio del Dinero y Libertad Financiera',
-              source: 'wearethesilent.com/audios',
-              createdAtIso: nowIso,
-              updatedAt: serverTimestamp(),
-            },
-            { merge: true }
-          ).catch(() => {});
-        }
-      } catch {
-        // ignore
-      }
-
-      // 5. Redirigir inmediatamente a la página oficial de reproducción de audios
+      // 4. Redirigir inmediatamente a la página oficial de reproducción de audios
       router.push(`/audios/escuchar?email=${encodeURIComponent(cleanEmail)}`);
     } finally {
       setIsSubmitting(false);

@@ -262,9 +262,15 @@ export default function AudiosPlayerPage() {
 
   useEffect(() => {
     let resolvedDay = 1;
-    let savedUserObj: { name: string; email: string; registeredAtIso?: string } | null = null;
+    let savedUserObj: {
+      name: string;
+      email: string;
+      registeredAtIso?: string;
+      lastEmailSentDay?: number;
+    } | null = null;
+    const localEmails = new Set<string>();
 
-    // 1. Leer de localStorage la fecha exacta en que esta persona se registró
+    // 1. Leer de localStorage la fecha y correos registrados en este navegador
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
@@ -272,14 +278,34 @@ export default function AudiosPlayerPage() {
         if (parsed?.name && parsed?.email) {
           savedUserObj = parsed;
           setRegisteredUser(parsed);
-          resolvedDay = calculateUserDayFromRegistration(parsed.registeredAtIso);
+          localEmails.add(String(parsed.email).toLowerCase().trim());
+          const dayByDate = calculateUserDayFromRegistration(parsed.registeredAtIso);
+          const dayByEmail = Math.min(10, Math.max(1, Number(parsed.lastEmailSentDay || 1)));
+          resolvedDay = Math.max(resolvedDay, dayByDate, dayByEmail);
+        }
+      }
+      const allLocalRaw = localStorage.getItem('vivienne_waitlist_all_leads_v1');
+      if (allLocalRaw) {
+        const allLocal = JSON.parse(allLocalRaw);
+        if (Array.isArray(allLocal)) {
+          allLocal.forEach((item) => {
+            if (item?.email) {
+              localEmails.add(String(item.email).toLowerCase().trim());
+            }
+            if (item?.createdAtIso) {
+              resolvedDay = Math.max(
+                resolvedDay,
+                calculateUserDayFromRegistration(item.createdAtIso)
+              );
+            }
+          });
         }
       }
     } catch {
       // ignore
     }
 
-    // 2. Si viene desde un enlace del correo diario (?dia=2&email=...)
+    // 2. Sincronizar directamente con Firestore (lastEmailSentDay + fecha original de creación)
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const diaParam = Number(params.get('dia') || 0);
@@ -288,46 +314,87 @@ export default function AudiosPlayerPage() {
       if (diaParam >= 1 && diaParam <= 10) {
         resolvedDay = Math.max(resolvedDay, diaParam);
       }
+      if (emailParam) {
+        localEmails.add(emailParam);
+      }
 
-      const emailToLookup = emailParam || savedUserObj?.email || '';
-      if (emailToLookup) {
-        const docId = emailToLookup.replace(/[^a-z0-9@._-]/g, '_');
-        fetch(
-          `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${MESAYA_API_KEY}`,
-          { cache: 'no-store' }
-        )
-          .then((r) => (r.ok ? r.json() : null))
-          .then((docData) => {
-            if (docData?.fields) {
-              const fsName = docData.fields.name?.stringValue || savedUserObj?.name || '';
-              const fsCreatedAt =
-                docData.fields.firstRegisteredAtIso?.stringValue ||
-                docData.fields.createdAtIso?.stringValue ||
-                docData.createTime ||
-                '';
-              if (fsCreatedAt) {
-                const dayFromFs = calculateUserDayFromRegistration(fsCreatedAt);
-                const bestDay = Math.max(resolvedDay, dayFromFs);
-                setUserCurrentDay(bestDay);
-                const updatedObj = {
-                  name: fsName,
-                  email: emailToLookup,
+      setUserCurrentDay(resolvedDay);
+
+      // Consultar la colección vivienne_waitlist para sincronizar con el último correo enviado (lastEmailSentDay)
+      fetch(
+        `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist?pageSize=300&key=${MESAYA_API_KEY}`,
+        { cache: 'no-store' }
+      )
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          const docs = Array.isArray(data?.documents) ? data.documents : [];
+          if (!docs.length) return;
+
+          let bestMatchedDay = resolvedDay;
+          let maxGlobalSentDay = 1;
+          let matchedProfile: {
+            name: string;
+            email: string;
+            registeredAtIso: string;
+            lastEmailSentDay: number;
+          } | null = null;
+
+          for (const docItem of docs) {
+            const fields = docItem.fields || {};
+            const docEmail = String(fields.email?.stringValue || '').trim().toLowerCase();
+            if (!docEmail || docEmail === 'prueba@viviennewolski.com') continue;
+
+            // Día según el último correo enviado por el robot en Firestore (1 al 10)
+            const rawSentDay = Number(fields.lastEmailSentDay?.integerValue || 0);
+            const sentAudioDay = rawSentDay >= 10 ? 10 : Math.max(1, rawSentDay);
+
+            // Día según la fecha de registro en Firestore
+            const fsCreatedAt =
+              fields.createdAtIso?.stringValue || docItem.createTime || '';
+            const dayFromFsDate = calculateUserDayFromRegistration(fsCreatedAt);
+
+            const docUnlockedDay = Math.max(sentAudioDay, dayFromFsDate);
+            if (sentAudioDay > maxGlobalSentDay) {
+              maxGlobalSentDay = sentAudioDay;
+            }
+
+            // Si coincide con el correo de la URL o con alguno de los correos registrados en este navegador
+            if (
+              (emailParam && docEmail === emailParam) ||
+              (!emailParam && localEmails.has(docEmail))
+            ) {
+              if (docUnlockedDay >= bestMatchedDay || !matchedProfile) {
+                bestMatchedDay = Math.max(bestMatchedDay, docUnlockedDay);
+                matchedProfile = {
+                  name: fields.name?.stringValue || savedUserObj?.name || '',
+                  email: docEmail,
                   registeredAtIso: fsCreatedAt,
+                  lastEmailSentDay: sentAudioDay,
                 };
-                setRegisteredUser(updatedObj);
-                try {
-                  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedObj));
-                } catch {
-                  // ignore
-                }
               }
             }
-          })
-          .catch(() => {});
-      }
-    }
+          }
 
-    setUserCurrentDay(resolvedDay);
+          // Si viene con ?email= en la URL (recién registrado), usa el día exacto de ese correo.
+          // Si abrió el enlace limpio https://wearethesilent.com/audios/escuchar desde el correo diario,
+          // sincroniza automáticamente con el último día de correo enviado por el robot (maxGlobalSentDay).
+          const finalDay = emailParam
+            ? bestMatchedDay
+            : Math.max(bestMatchedDay, maxGlobalSentDay);
+
+          setUserCurrentDay(finalDay);
+
+          if (matchedProfile) {
+            setRegisteredUser(matchedProfile);
+            try {
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(matchedProfile));
+            } catch {
+              // ignore
+            }
+          }
+        })
+        .catch(() => {});
+    }
   }, []);
 
   const isEpisodeUnlocked = (item: EpisodeIndexItem): boolean => {

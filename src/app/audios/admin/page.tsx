@@ -241,7 +241,7 @@ function enviarCorreosDiariosVivienne() {
           '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">Día ' + item.dia + ' · ' + item.titulo + '</p>' +
           '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + item.cuerpo + '</p>' +
           '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + item.frase + '”</blockquote>' +
-          '<p style="font-size:15px;margin:22px 0;"><strong>Escucha el audio de hoy:</strong> <a href="' + ENLACE_AUDIOS + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_AUDIOS + '</a></p>' +
+          '<p style="font-size:15px;margin:22px 0;"><strong>Escucha el audio de hoy:</strong> <a href="' + ENLACE_AUDIOS + '?dia=' + item.dia + '&email=' + encodeURIComponent(email) + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_AUDIOS + '</a></p>' +
           '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:16px 18px;border-radius:12px;margin:22px 0;">' +
             '<p style="margin:0;font-size:15px;color:#2B1D14;"><strong>Tu tarea de hoy:</strong> ' + item.tarea + '</p>' +
           '</div>' +
@@ -884,7 +884,10 @@ export default function AudiosAdminPage() {
                 </thead>
                 <tbody className="divide-y divide-[#D8CBB8]/60 text-xs sm:text-sm">
                   {filteredLeads.map((lead, index) => {
-                    const userDay = calculateUserDay(lead.createdAtIso);
+                    const userDay = Math.max(
+                      calculateUserDay(lead.createdAtIso),
+                      Math.min(10, Number(lead.lastEmailSentDay || 1))
+                    );
                     return (
                     <tr key={lead.id} className="hover:bg-[#F7F1E6]/70 transition">
                       <td className="py-4 pl-6 pr-3 font-mono text-xs text-[#8A7665]">

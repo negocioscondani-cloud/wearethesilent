@@ -25,25 +25,40 @@ export async function POST(req: Request) {
     const createdAtIso = new Date().toISOString();
     let firestoreSaved = false;
 
-    // 1. Guardar únicamente en Firestore Database (colección vivienne_waitlist) sin tocar Authentication
+    // 1. Guardar únicamente en Firestore Database (colección vivienne_waitlist) conservando createdAtIso y lastEmailSentDay si ya existían
     try {
-      const fsRes = await fetch(
-        `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${FIREBASE_API_KEY}`,
-        {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields: {
-              name: { stringValue: name },
-              email: { stringValue: email },
-              favoriteEp: { stringValue: favoriteEp },
-              source: { stringValue: source },
-              consentAccepted: { booleanValue: true },
-              createdAtIso: { stringValue: createdAtIso },
-            },
-          }),
+      const docUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${FIREBASE_API_KEY}`;
+      let existingFields: Record<string, any> = {};
+      try {
+        const getRes = await fetch(docUrl, { cache: 'no-store' });
+        if (getRes.ok) {
+          const existingDoc = await getRes.json();
+          if (existingDoc?.fields) {
+            existingFields = existingDoc.fields;
+          }
         }
-      );
+      } catch {
+        // ignore
+      }
+
+      const finalCreatedAtIso =
+        existingFields.createdAtIso?.stringValue || createdAtIso;
+
+      const fsRes = await fetch(docUrl, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            ...existingFields,
+            name: { stringValue: name },
+            email: { stringValue: email },
+            favoriteEp: { stringValue: favoriteEp },
+            source: { stringValue: source },
+            consentAccepted: { booleanValue: true },
+            createdAtIso: { stringValue: finalCreatedAtIso },
+          },
+        }),
+      });
       if (fsRes.ok) {
         firestoreSaved = true;
       }
