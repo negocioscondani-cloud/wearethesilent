@@ -218,37 +218,16 @@ const LOCAL_STORAGE_KEY = 'vivienne_audios_waitlist_v1';
 const MESAYA_API_KEY = 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
 const MESAYA_PROJECT_ID = 'mesaya-e9644';
 
-/**
- * Calcula en qué día (1 al 10) va la persona según su propia fecha de registro.
- * - El día que se registra = Día 1 (solo Ep 01 desbloqueado)
- * - Al día siguiente = Día 2 (Ep 01 y Ep 02 desbloqueados)
- * - Y así sucesivamente hasta el Día 10.
- */
-function calculateUserDayFromRegistration(registeredAtIso?: string): number {
-  if (!registeredAtIso) return 1;
-  const regDate = new Date(registeredAtIso);
-  if (isNaN(regDate.getTime())) return 1;
-
-  const now = new Date();
-  // Comparamos por días calendario locales desde la fecha de registro
-  const regMidnight = new Date(regDate.getFullYear(), regDate.getMonth(), regDate.getDate());
-  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const diffDays = Math.floor(
-    (nowMidnight.getTime() - regMidnight.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  return Math.max(1, Math.min(10, diffDays + 1));
-}
-
 export default function AudiosPlayerPage() {
   const router = useRouter();
   const [registeredUser, setRegisteredUser] = useState<{
     name: string;
     email: string;
     registeredAtIso?: string;
+    lastEmailSentDay?: number;
   } | null>(null);
 
-  // Día actual de esta persona (1 al 10)
+  // Día actual de esta persona (1 al 10) sincronizado estrictamente con el correo enviado (lastEmailSentDay)
   const [userCurrentDay, setUserCurrentDay] = useState<number>(1);
 
   // Pop-up Audio Player state
@@ -261,16 +240,15 @@ export default function AudiosPlayerPage() {
   const [playbackRate, setPlaybackRate] = useState<number>(1);
 
   useEffect(() => {
-    let resolvedDay = 1;
     let savedUserObj: {
       name: string;
       email: string;
       registeredAtIso?: string;
       lastEmailSentDay?: number;
     } | null = null;
-    const localEmails = new Set<string>();
+    let activeLocalEmail = '';
 
-    // 1. Leer de localStorage la fecha y correos registrados en este navegador
+    // 1. Leer de localStorage el correo activo registrado en este navegador
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
@@ -278,49 +256,20 @@ export default function AudiosPlayerPage() {
         if (parsed?.name && parsed?.email) {
           savedUserObj = parsed;
           setRegisteredUser(parsed);
-          localEmails.add(String(parsed.email).toLowerCase().trim());
-          const dayByDate = calculateUserDayFromRegistration(parsed.registeredAtIso);
-          const dayByEmail = Math.min(10, Math.max(1, Number(parsed.lastEmailSentDay || 1)));
-          resolvedDay = Math.max(resolvedDay, dayByDate, dayByEmail);
-        }
-      }
-      const allLocalRaw = localStorage.getItem('vivienne_waitlist_all_leads_v1');
-      if (allLocalRaw) {
-        const allLocal = JSON.parse(allLocalRaw);
-        if (Array.isArray(allLocal)) {
-          allLocal.forEach((item) => {
-            if (item?.email) {
-              localEmails.add(String(item.email).toLowerCase().trim());
-            }
-            if (item?.createdAtIso) {
-              resolvedDay = Math.max(
-                resolvedDay,
-                calculateUserDayFromRegistration(item.createdAtIso)
-              );
-            }
-          });
+          activeLocalEmail = String(parsed.email).toLowerCase().trim();
         }
       }
     } catch {
       // ignore
     }
 
-    // 2. Sincronizar directamente con Firestore (lastEmailSentDay + fecha original de creación)
+    // 2. Sincronizar estrictamente con el correo enviado en Firestore (lastEmailSentDay)
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const diaParam = Number(params.get('dia') || 0);
       const emailParam = (params.get('email') || '').trim().toLowerCase();
+      const targetEmail = emailParam || activeLocalEmail;
 
-      if (diaParam >= 1 && diaParam <= 10) {
-        resolvedDay = Math.max(resolvedDay, diaParam);
-      }
-      if (emailParam) {
-        localEmails.add(emailParam);
-      }
-
-      setUserCurrentDay(resolvedDay);
-
-      // Consultar la colección vivienne_waitlist para sincronizar con el último correo enviado (lastEmailSentDay)
       fetch(
         `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist?pageSize=300&key=${MESAYA_API_KEY}`,
         { cache: 'no-store' }
@@ -330,7 +279,7 @@ export default function AudiosPlayerPage() {
           const docs = Array.isArray(data?.documents) ? data.documents : [];
           if (!docs.length) return;
 
-          let bestMatchedDay = resolvedDay;
+          let matchedSentDay = 1;
           let maxGlobalSentDay = 1;
           let matchedProfile: {
             name: string;
@@ -344,43 +293,36 @@ export default function AudiosPlayerPage() {
             const docEmail = String(fields.email?.stringValue || '').trim().toLowerCase();
             if (!docEmail || docEmail === 'prueba@viviennewolski.com') continue;
 
-            // Día según el último correo enviado por el robot en Firestore (1 al 10)
+            // Día exacto del último correo enviado por el robot en Firestore (1 al 10)
             const rawSentDay = Number(fields.lastEmailSentDay?.integerValue || 0);
             const sentAudioDay = rawSentDay >= 10 ? 10 : Math.max(1, rawSentDay);
 
-            // Día según la fecha de registro en Firestore
-            const fsCreatedAt =
-              fields.createdAtIso?.stringValue || docItem.createTime || '';
-            const dayFromFsDate = calculateUserDayFromRegistration(fsCreatedAt);
-
-            const docUnlockedDay = Math.max(sentAudioDay, dayFromFsDate);
             if (sentAudioDay > maxGlobalSentDay) {
               maxGlobalSentDay = sentAudioDay;
             }
 
-            // Si coincide con el correo de la URL o con alguno de los correos registrados en este navegador
-            if (
-              (emailParam && docEmail === emailParam) ||
-              (!emailParam && localEmails.has(docEmail))
-            ) {
-              if (docUnlockedDay >= bestMatchedDay || !matchedProfile) {
-                bestMatchedDay = Math.max(bestMatchedDay, docUnlockedDay);
-                matchedProfile = {
-                  name: fields.name?.stringValue || savedUserObj?.name || '',
-                  email: docEmail,
-                  registeredAtIso: fsCreatedAt,
-                  lastEmailSentDay: sentAudioDay,
-                };
-              }
+            if (targetEmail && docEmail === targetEmail) {
+              matchedSentDay = sentAudioDay;
+              matchedProfile = {
+                name: fields.name?.stringValue || savedUserObj?.name || '',
+                email: docEmail,
+                registeredAtIso:
+                  fields.createdAtIso?.stringValue || docItem.createTime || '',
+                lastEmailSentDay: sentAudioDay,
+              };
             }
           }
 
-          // Si viene con ?email= en la URL (recién registrado), usa el día exacto de ese correo.
-          // Si abrió el enlace limpio https://wearethesilent.com/audios/escuchar desde el correo diario,
-          // sincroniza automáticamente con el último día de correo enviado por el robot (maxGlobalSentDay).
-          const finalDay = emailParam
-            ? bestMatchedDay
-            : Math.max(bestMatchedDay, maxGlobalSentDay);
+          let finalDay = 1;
+          if (diaParam >= 1 && diaParam <= 10) {
+            finalDay = Math.max(matchedSentDay, diaParam);
+          } else if (matchedProfile) {
+            // Si encontramos su correo en Firestore, desbloquea exactamente hasta el último correo enviado (lastEmailSentDay)
+            finalDay = matchedSentDay;
+          } else {
+            // Si abrió el enlace limpio desde el correo sin sesión local, usa el último día enviado por el robot
+            finalDay = maxGlobalSentDay;
+          }
 
           setUserCurrentDay(finalDay);
 
