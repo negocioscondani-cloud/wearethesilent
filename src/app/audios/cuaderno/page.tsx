@@ -152,34 +152,25 @@ export default function CuadernoVivienneSalesPage() {
 
             {/* Right Column: Editorial Workbook Showcase Card */}
             <div className="lg:col-span-5 flex flex-col items-center">
-              <div className="relative w-full max-w-[390px] rounded-3xl overflow-hidden border-2 border-[#B08D57] shadow-[0_28px_70px_rgba(43,29,20,0.16)] bg-[#2B1D14] text-[#F7F1E6]">
-                <div className="relative aspect-[4/4] w-full overflow-hidden">
+              <a
+                href={GUMROAD_WORKBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-full max-w-[380px] rounded-3xl overflow-hidden border-2 border-[#B08D57] shadow-[0_28px_70px_rgba(43,29,20,0.20)] bg-[#2B1D14] text-[#F7F1E6] block"
+              >
+                <div className="relative aspect-[9/15] w-full overflow-hidden bg-[#2B1D14]">
                   <Image
-                    src="/images/vivianne-wolski-hero.jpg"
-                    alt="El Cuaderno de Trabajo de Vivienne Wolski"
+                    src="/images/cuaderno-vivienne-vertical.jpg"
+                    alt="El Cuaderno de Trabajo de Vivienne Wolski · PDF y EPUB"
                     fill
                     priority
-                    sizes="(max-width: 1024px) 85vw, 390px"
-                    className="object-cover object-top"
+                    sizes="(max-width: 1024px) 85vw, 380px"
+                    className="object-cover object-center group-hover:scale-103 transition duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2B1D14] via-[#2B1D14]/25 to-transparent" />
                 </div>
 
-                <div className="p-6 sm:p-7 space-y-4 -mt-8 relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6B1F2A] text-[#F7F1E6] text-[9.5px] font-mono uppercase tracking-[0.22em]">
-                    <PenTool className="w-3 h-3" />
-                    <span>Cuaderno Oficial de Ejercicios</span>
-                  </div>
-
-                  <h2 className="font-headline text-2xl sm:text-3xl text-[#F7F1E6] leading-tight">
-                    El Cuaderno de Trabajo de Vivienne
-                  </h2>
-
-                  <p className="font-serif italic text-base text-[#E6D5B8]">
-                    &ldquo;No te rindas antes de llegar, cariño.&rdquo; — Vivienne
-                  </p>
-
-                  <div className="pt-2 border-t border-[#F7F1E6]/15 grid grid-cols-3 gap-2 text-center text-[10px] font-mono uppercase tracking-wider text-[#E6D5B8]">
+                <div className="p-5 sm:p-6 bg-[#2B1D14] border-t border-[#B08D57]/40 space-y-3">
+                  <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-mono uppercase tracking-wider text-[#E6D5B8]">
                     <div>
                       <span className="block text-base font-bold text-[#F7F1E6]">22</span>
                       <span>Páginas</span>
@@ -194,7 +185,7 @@ export default function CuadernoVivienneSalesPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </section>
@@ -265,7 +256,17 @@ export default function CuadernoVivienneSalesPage() {
             {/* Qué recibes */}
             <div className="lg:col-span-6 p-7 sm:p-9 rounded-3xl bg-[#FAF5EC] border border-[#B08D57]/60 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
-                <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[#6B1F2A] font-semibold">
+                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-[#B08D57]/60 shadow-md bg-[#2B1D14]">
+                  <Image
+                    src="/images/cuaderno-vivienne-horizontal.jpg"
+                    alt="Cuaderno de Trabajo de Vivienne · PDF y EPUB"
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 480px"
+                    className="object-cover object-center"
+                  />
+                </div>
+
+                <span className="block text-[10px] font-mono uppercase tracking-[0.24em] text-[#6B1F2A] font-semibold pt-1">
                   Incluye Dos Formatos Digitales
                 </span>
                 <h3 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
