@@ -31,32 +31,127 @@ const VALID_PASSWORDS = ['Vivienne2026!', 'vivienne2026', 'Wolski2026!'];
 
 const GOOGLE_APPS_SCRIPT_DRIP_CODE = `/**
  * ROBOT PERPETUO DE 10 CORREOS DIARIOS DE VIVIENNE WOLSKI
- * Cómo activarlo en 1 minuto:
- * 1. Abre https://script.google.com y crea un "Nuevo proyecto".
- * 2. Borra lo que haya y pega todo este código.
- * 3. En el menú izquierdo haz clic en el ícono de Reloj ("Activadores" / "Triggers"):
- *    - Haz clic en "+ Añadir activador" (abajo a la derecha).
- *    - Función: enviarCorreosDiariosVivienne
- *    - Fuente del evento: Según tiempo -> Temporizador por días -> 8 a.m. a 9 a.m.
- *    - Guardar (y autorizar con tu cuenta de Google).
+ * Remitente: Vivienne Wolski <vivienne@wearethesilent.com>
+ * Enlace en todos: https://wearethesilent.com/audios/escuchar
  */
 
 const PROJECT_ID = 'mesaya-e9644';
 const API_KEY = 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
 const ALIAS_REMITENTE = 'vivienne@wearethesilent.com';
 const NOMBRE_REMITENTE = 'Vivienne Wolski';
+const ENLACE_AUDIOS = 'https://wearethesilent.com/audios/escuchar';
 
-const EPISODIOS = [
-  { dia: 1, ep: '01', titulo: 'Mentalidad', frase: 'El dinero es una forma de comprar tiempo. Tiempo para dormir tranquila. Tiempo para tu familia. Tiempo para decir que no.' },
-  { dia: 2, ep: '02', titulo: 'Presupuesto 25-15-50-10', frase: 'Un dinero que gastas en lo que te da alegría es parte del plan, no un pecado.' },
-  { dia: 3, ep: '03', titulo: 'Deuda', frase: 'Pagar una deuda cara es el mejor negocio seguro que existe.' },
-  { dia: 4, ep: '04', titulo: 'Los primeros 10 mil', frase: 'Trabajas, ahorras, inviertes y sientes que no pasa nada. Es el momento en que muchos se cansan.' },
-  { dia: 5, ep: '05', titulo: 'Invertir sin ser experta', frase: 'Nadie sabe adivinar los ciclos, ni siquiera los expertos.' },
-  { dia: 6, ep: '06', titulo: 'Lo que no debes comprar', frase: 'Lo que ves en vitrina muchas veces es deuda con buen maquillaje.' },
-  { dia: 7, ep: '07', titulo: 'Segunda entrada de dinero', frase: 'Tu primera venta importa más que tu mejor idea.' },
-  { dia: 8, ep: '08', titulo: 'Inflación', frase: 'No perdiste dinero en la cuenta, pero perdiste lo que ese dinero puede comprar.' },
-  { dia: 9, ep: '09', titulo: 'Cuando el mercado cae', frase: 'El problema no es la matemática, cariño. Es el miedo.' },
-  { dia: 10, ep: '10', titulo: 'Libertad', frase: 'El dinero es tiempo, y el tiempo es lo único que no se recupera.' }
+const CORREOS_VIVIENNE = [
+  {
+    dia: 1,
+    titulo: 'Mentalidad',
+    asunto: 'Lo que nadie te dijo del dinero, cariño',
+    vistaPrevia: 'El dinero no es para presumir. Es otra cosa.',
+    cuerpo: 'Hola, cariño. Hoy empezamos por lo más importante: cómo piensas sobre el dinero. Casi todo el mundo cambia horas por un sueldo. Pero las horas se acaban: solo tienes veinticuatro cada día, y nadie puede fabricar más. En el audio de hoy te cuento cuál es la salida, y por qué un bolso caro no te da libertad, pero un ahorro sí.',
+    frase: 'El dinero es una forma de comprar tiempo. Tiempo para dormir tranquila. Tiempo para tu familia. Tiempo para decir que no.',
+    tarea: 'Escribe tres problemas de otras personas que tú podrías resolver. Solo tres.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 2,
+    titulo: 'Presupuesto 25-15-50-10',
+    asunto: 'Cuatro números para que tu dinero deje de desaparecer',
+    vistaPrevia: '25, 15, 50 y 10. Y el último es para disfrutar.',
+    cuerpo: 'Hola, cariño. Tu dinero no desaparece. Se va porque nadie le dijo a dónde ir. Hoy te doy un sistema de cuatro números: cuánto va a crecer, cuánto a protegerte, cuánto a lo esencial y cuánto a disfrutar. Sí, a disfrutar, y sin culpa. Escúchalo con lápiz en mano.',
+    frase: 'Un dinero que gastas en lo que te da alegría es parte del plan, no un pecado.',
+    tarea: 'Toma tu último ingreso y repártelo con estos cuatro números. Solo en papel.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 3,
+    titulo: 'Deuda',
+    asunto: 'El mejor negocio seguro que existe',
+    vistaPrevia: 'Y no es una inversión, cariño.',
+    cuerpo: 'Hola, cariño. No toda deuda es igual. Hay una que te destruye y otra que trabaja a tu favor. Si debes cinco mil dólares con un interés de veinticuatro por ciento, pagas unos mil doscientos al año solo en intereses. Dinero que no compra nada. En el audio de hoy te enseño a distinguirlas con una sola pregunta.',
+    frase: 'Pagar una deuda cara es el mejor negocio seguro que existe.',
+    tarea: 'Anota todas tus deudas con su interés. Empieza por la que más te cobra y no añadas más.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 4,
+    titulo: 'Los primeros 10 mil',
+    asunto: 'La etapa en la que casi todos se rinden',
+    vistaPrevia: 'Si sientes que no pasa nada, escucha esto.',
+    cuerpo: 'Hola, cariño. El camino al dinero tiene una parte difícil. Es la etapa en la que ahorras, inviertes y sientes que no pasa nada. Hoy te cuento por qué esa etapa vale la pena, qué ocurre cuando la atraviesas y tres cosas para no quemarte en el camino.',
+    frase: 'Trabajas, ahorras, inviertes y sientes que no pasa nada. Es el momento en que muchos se cansan.',
+    tarea: 'Define tu primera meta: una cifra concreta, con fecha.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 5,
+    titulo: 'Invertir sin ser experta',
+    asunto: 'Cómo invertir sin ser experta',
+    vistaPrevia: 'Ni los expertos adivinan. Tú no tienes que hacerlo.',
+    cuerpo: 'Hola, cariño. Una verdad incómoda: en periodos largos, alrededor de nueve de cada diez profesionales no logran ganarle al mercado. Entonces, ¿qué hacemos las demás? Algo muy sencillo. Hoy te explico qué es un fondo indexado y cómo invertir cada mes sin tener que adivinar nada.',
+    frase: 'Nadie sabe adivinar los ciclos, ni siquiera los expertos.',
+    tarea: 'Investiga qué fondos indexados de bajo costo existen donde vives y anota sus comisiones.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: 'Esto es educación, no una recomendación personal. Antes de invertir, revisa tu caso con un profesional de tu país.'
+  },
+  {
+    dia: 6,
+    titulo: 'Lo que no debes comprar',
+    asunto: 'Deuda con buen maquillaje',
+    vistaPrevia: 'Tres compras que una mujer con dinero no hace.',
+    cuerpo: 'Hola, cariño. Hoy te aviso: este audio puede incomodar. Te hablo de tres trampas: el auto nuevo financiado, las suscripciones fantasma y comprar para aparentar. Cuarenta dólares al mes en cosas que no usas son cuatrocientos ochenta al año. Y te doy una regla simple para las compras por impulso.',
+    frase: 'Lo que ves en vitrina muchas veces es deuda con buen maquillaje.',
+    tarea: 'Revisa tus últimos tres meses de movimientos, marca lo que no usas y cancélalo hoy. Hoy, no mañana.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 7,
+    titulo: 'Segunda entrada de dinero',
+    asunto: 'Tu primera venta importa más que tu mejor idea',
+    vistaPrevia: 'Un ingreso extra no es trabajar el doble.',
+    cuerpo: 'Hola, cariño. Un ingreso extra no significa trabajar el doble. Significa elegir bien qué vendes y cómo. Hoy te doy tres caminos accesibles para empezar sin una fortuna, y una regla para no gastar de más antes de saber si alguien te va a pagar.',
+    frase: 'Tu primera venta importa más que tu mejor idea.',
+    tarea: 'Escribe una cosa que sabes hacer y a quién le podría servir.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: ''
+  },
+  {
+    dia: 8,
+    titulo: 'Inflación',
+    asunto: 'El dinero que se encoge sin que lo notes',
+    vistaPrevia: 'No lo pierdes en la cuenta. Lo pierdes en lo que compra.',
+    cuerpo: 'Hola, cariño. Si la inflación es de tres por ciento al año, tus diez mil dólares guardados compran, un año después, lo que costaban nueve mil setecientos. Hoy te explico por qué el dinero parado es un mal plan, y cómo algunos países te dejan ahorrar pagando menos impuestos, legalmente.',
+    frase: 'No perdiste dinero en la cuenta, pero perdiste lo que ese dinero puede comprar.',
+    tarea: 'Averigua qué cuentas con ventajas fiscales existen en tu país y quién puede usarlas.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: 'Esto es educación, no asesoría fiscal personal. Antes de decidir, consulta con un contador o asesor de tu país.'
+  },
+  {
+    dia: 9,
+    titulo: 'Cuando el mercado cae',
+    asunto: 'Cuando todo está en rojo',
+    vistaPrevia: 'El problema no es la matemática.',
+    cuerpo: 'Hola, cariño. Todo en rojo, gente asustada y unas ganas enormes de vender y salir corriendo. Seguro lo has visto. Hoy te cuento por qué las caídas son parte normal del mercado, por qué yo las veo como rebajas y las tres reglas para que el miedo no decida por ti.',
+    frase: 'El problema no es la matemática, cariño. Es el miedo.',
+    tarea: 'Escribe en una hoja qué harás cuando el mercado caiga, y guárdala.',
+    despedida: 'Mañana te espero con el siguiente, cariño.',
+    notaLegal: 'Esto es educación, no una recomendación personal.'
+  },
+  {
+    dia: 10,
+    titulo: 'Libertad',
+    asunto: '¿Cuánto necesitas para ser libre?',
+    vistaPrevia: 'La pregunta más hermosa de todas. Y tiene fórmula.',
+    cuerpo: 'Hola, cariño. Hoy cerramos la serie con la pregunta más hermosa de todas: ¿cuánto dinero necesito para ser libre? Hay una fórmula sencilla, y te la explico con un ejemplo. También te dejo una hoja de ruta de cinco pasos. Ha sido un placer acompañarte estos diez días.',
+    frase: 'El dinero es tiempo, y el tiempo es lo único que no se recupera.',
+    tarea: 'Calcula tus gastos de un año y multiplícalos por 25. Ese es tu número de libertad.',
+    despedida: 'Gracias por acompañarme, cariño.',
+    notaLegal: 'Esto es educación, no una recomendación personal.'
+  }
 ];
 
 function enviarCorreosDiariosVivienne() {
@@ -69,7 +164,6 @@ function enviarCorreosDiariosVivienne() {
   const ahora = new Date();
   const hoyMedianoche = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
 
-  // Verificar si el alias vivienne@wearethesilent.com está configurado en este Gmail
   const aliases = GmailApp.getAliases();
   const usarAlias = aliases.indexOf(ALIAS_REMITENTE) !== -1;
 
@@ -77,8 +171,10 @@ function enviarCorreosDiariosVivienne() {
     const doc = docs[i];
     const fields = doc.fields || {};
     const email = (fields.email && fields.email.stringValue || '').trim().toLowerCase();
-    const nombre = (fields.name && fields.name.stringValue || 'cariño').trim();
     if (!email || email === 'prueba@viviennewolski.com') continue;
+
+    // Si la persona respondió BAJA o fue marcada de baja, no enviar
+    if (fields.unsubscribed && fields.unsubscribed.booleanValue === true) continue;
 
     const createdAtStr = (fields.createdAtIso && fields.createdAtIso.stringValue) || doc.createTime;
     const fechaReg = new Date(createdAtStr);
@@ -86,32 +182,47 @@ function enviarCorreosDiariosVivienne() {
 
     const regMedianoche = new Date(fechaReg.getFullYear(), fechaReg.getMonth(), fechaReg.getDate());
     const diasTranscurridos = Math.floor((hoyMedianoche.getTime() - regMedianoche.getTime()) / (1000 * 60 * 60 * 24));
-    const diaUsuario = diasTranscurridos + 1; // Día 1 el día de registro, Día 2 al día siguiente...
+    const diaUsuario = diasTranscurridos + 1;
 
     if (diaUsuario < 1 || diaUsuario > 10) continue;
 
     const ultimoDiaEnviado = Number((fields.lastEmailSentDay && fields.lastEmailSentDay.integerValue) || 0);
     if (ultimoDiaEnviado >= diaUsuario) continue;
 
-    const infoEp = EPISODIOS[diaUsuario - 1];
-    const linkEscuchar = 'https://wearethesilent.com/audios/escuchar?dia=' + diaUsuario + '&email=' + encodeURIComponent(email);
-    const asunto = 'Día ' + diaUsuario + ' desbloqueado: Ep' + infoEp.ep + ' · ' + infoEp.titulo + ' (Vivienne Wolski)';
+    const item = CORREOS_VIVIENNE[diaUsuario - 1];
 
-    const htmlBody = '<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;">' +
-      '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 12px;">Audios de Vivienne · Día ' + diaUsuario + ' de 10</p>' +
-      '<h1 style="font-size:26px;font-weight:normal;margin:0 0 16px;color:#2B1D14;">Hola, ' + nombre + '. Tu Episodio ' + infoEp.ep + ' ya está listo.</h1>' +
-      '<p style="font-size:15px;line-height:1.6;color:#5C4A3E;">Hoy desbloqueamos para ti el <strong>Episodio ' + infoEp.ep + ': ' + infoEp.titulo + '</strong>.</p>' +
-      '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:20px 0;font-style:italic;font-size:16px;color:#2B1D14;">"' + infoEp.frase + '"</blockquote>' +
-      '<div style="margin:28px 0;"><a href="' + linkEscuchar + '" style="display:inline-block;background:#6B1F2A;color:#F7F1E6;text-decoration:none;padding:14px 26px;border-radius:10px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Escuchar Episodio ' + infoEp.ep + ' Ahora →</a></div>' +
-      '<p style="font-size:13px;color:#8A7665;margin-top:24px;">Con cariño,<br><strong>Vivienne Wolski</strong></p>' +
-    '</div>';
+    const textoPlano =
+      item.cuerpo + '\\n\\n' +
+      '“' + item.frase + '”\\n\\n' +
+      'Escucha el audio de hoy: ' + ENLACE_AUDIOS + '\\n\\n' +
+      'Tu tarea de hoy: ' + item.tarea + '\\n\\n' +
+      item.despedida + '\\n' +
+      'Vivienne' +
+      (item.notaLegal ? '\\n\\n' + item.notaLegal : '') +
+      '\\n\\n— Si ya no quieres recibir estos correos, responde con la palabra BAJA.';
+
+    const htmlBody =
+      '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + item.vistaPrevia + '</div>' +
+      '<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;line-height:1.7;">' +
+        '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">Día ' + item.dia + ' · ' + item.titulo + '</p>' +
+        '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + item.cuerpo + '</p>' +
+        '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + item.frase + '”</blockquote>' +
+        '<p style="font-size:15px;margin:22px 0;"><strong>Escucha el audio de hoy:</strong> <a href="' + ENLACE_AUDIOS + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_AUDIOS + '</a></p>' +
+        '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:16px 18px;border-radius:12px;margin:22px 0;">' +
+          '<p style="margin:0;font-size:15px;color:#2B1D14;"><strong>Tu tarea de hoy:</strong> ' + item.tarea + '</p>' +
+        '</div>' +
+        '<p style="font-size:15px;color:#2B1D14;margin:22px 0 6px;">' + item.despedida + '</p>' +
+        '<p style="font-size:16px;font-weight:bold;color:#6B1F2A;margin:0 0 18px;">Vivienne</p>' +
+        (item.notaLegal ? '<p style="font-size:12px;color:#8A7665;margin:16px 0;">' + item.notaLegal + '</p>' : '') +
+        '<hr style="border:none;border-top:1px solid #D8CBB8;margin:20px 0;" />' +
+        '<p style="font-size:12px;color:#8A7665;margin:0;">— Si ya no quieres recibir estos correos, responde con la palabra BAJA.</p>' +
+      '</div>';
 
     const opciones = { name: NOMBRE_REMITENTE, htmlBody: htmlBody };
     if (usarAlias) opciones.from = ALIAS_REMITENTE;
 
-    GmailApp.sendEmail(email, asunto, 'Escucha tu Episodio ' + infoEp.ep + ' en: ' + linkEscuchar, opciones);
+    GmailApp.sendEmail(email, item.asunto, textoPlano, opciones);
 
-    // Guardar en Firestore que ya se le envió el correo de este día
     fields.lastEmailSentDay = { integerValue: String(diaUsuario) };
     UrlFetchApp.fetch('https://firestore.googleapis.com/v1/' + doc.name + '?key=' + API_KEY, {
       method: 'patch',
