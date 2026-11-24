@@ -290,33 +290,67 @@ function enviarCorreosDiariosVivienne() {
 
     if (ofertaAEnviar) {
       const textoPlanoOferta =
+        '“Un presupuesto no es un castigo, cariño. Es decidir adónde va tu dinero antes de que llegue.”\\n\\n' +
+        'Los audios te explican. Este cuaderno te pone a hacerlo.\\n\\n' +
         ofertaAEnviar.cuerpo + '\\n\\n' +
-        '“' + ofertaAEnviar.frase + '”\\n\\n' +
-        'Conoce El Cuaderno de Trabajo de Vivienne aquí: ' + ENLACE_CUADERNO_WEB + '\\n' +
-        'Descarga directa (PDF 22 páginas + EPUB): ' + ENLACE_GUMROAD + '\\n\\n' +
-        'Con cariño,\\nVivienne\\n\\n' +
+        'El Cuaderno de Trabajo de Vivienne es el compañero de la serie de audios. Cada capítulo corresponde a un episodio: primero escuchas a Vivienne, luego te sientas con papel, lápiz y tus números reales, no los de ella.\\n\\n' +
+        'Lo que vas a hacer, capítulo a capítulo:\\n' +
+        '• Tu tiempo y tu perfil. Descubre si eres gastadora, guardadora o ganadora, y cuántos días aguantarías si dejaras de trabajar hoy.\\n' +
+        '• Auditoría de fugas. Encuentra tus tres fugas de dinero y cuánto dejas de perder al año. Incluye la regla de los siete días y el costo por uso.\\n' +
+        '• El sistema 25-15-50-10. Reparte tu ingreso y arma tu fondo de emergencia.\\n' +
+        '• Deuda que destruye y deuda que construye. Ordena tus deudas y aplica el método avalancha.\\n' +
+        '• Inversión pasiva e interés compuesto. Entiende los fondos indexados y la cartera de tres fondos, sin tecnicismos.\\n' +
+        '• Los primeros cien mil y tu cifra de libertad. Calcula tu número con la regla del 25.\\n' +
+        '• Ingresos extra. La pirámide de negocios paralelos para sumar una segunda entrada.\\n' +
+        '• Lo que destruye patrimonio. El auto financiado y otras trampas que parecen éxito.\\n' +
+        '• Tu plan de 30 días. Casillas para marcar, tarea por tarea, hasta cerrar el mes.\\n\\n' +
+        'Para quién es: para la mujer que siente que el dinero se le va sin saber adónde, que nunca tuvo a alguien que se lo explicara claro y que quiere dejar de cambiar todas sus horas por un sueldo.\\n\\n' +
+        'Qué recibes:\\n' +
+        '• PDF de 22 páginas, listo para imprimir o llenar.\\n' +
+        '• Versión EPUB para leer en el celular o la tablet.\\n' +
+        '• Talleres con espacios para tus cifras, ejemplos resueltos y frases de Vivienne para recordar.\\n\\n' +
+        'Ver en la web: ' + ENLACE_CUADERNO_WEB + '\\n' +
+        'Obtener El Cuaderno de Trabajo aquí: ' + ENLACE_GUMROAD + '\\n\\n' +
+        '“No te rindas antes de llegar, cariño.” — Vivienne\\n\\n' +
         ofertaAEnviar.notaLegal +
         '\\n\\n— Si ya no quieres recibir estos correos, responde con la palabra BAJA.';
 
       const htmlOferta =
         '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + ofertaAEnviar.vistaPrevia + '</div>' +
         '<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;line-height:1.7;">' +
-          '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">' + ofertaAEnviar.etiqueta + '</p>' +
-          '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + ofertaAEnviar.cuerpo + '</p>' +
-          '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + ofertaAEnviar.frase + '”</blockquote>' +
-          '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:18px 20px;border-radius:12px;margin:22px 0;">' +
-            '<p style="margin:0 0 8px;font-size:14px;color:#2B1D14;"><strong>Qué recibes con El Cuaderno de Trabajo:</strong></p>' +
+          '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 14px;">' + ofertaAEnviar.etiqueta + '</p>' +
+          '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:0 0 18px;font-style:italic;font-size:17px;color:#6B1F2A;">“Un presupuesto no es un castigo, cariño. Es decidir adónde va tu dinero antes de que llegue.”</blockquote>' +
+          '<h2 style="font-size:22px;font-weight:normal;color:#2B1D14;margin:0 0 14px;">Los audios te explican. Este cuaderno te pone a hacerlo.</h2>' +
+          '<p style="font-size:15px;color:#2B1D14;margin:0 0 16px;">' + ofertaAEnviar.cuerpo + '</p>' +
+          '<p style="font-size:15px;color:#5C4A3E;margin:0 0 18px;"><strong>El Cuaderno de Trabajo de Vivienne</strong> es el compañero de la serie de audios. Cada capítulo corresponde a un episodio: primero escuchas a Vivienne, luego te sientas con papel, lápiz y tus números reales, no los de ella.</p>' +
+          '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:18px 20px;border-radius:12px;margin:20px 0;">' +
+            '<p style="margin:0 0 10px;font-size:14px;color:#6B1F2A;text-transform:uppercase;letter-spacing:1px;"><strong>Lo que vas a hacer, capítulo a capítulo:</strong></p>' +
+            '<ul style="margin:0;padding-left:18px;font-size:14px;color:#2B1D14;line-height:1.65;">' +
+              '<li><strong>Tu tiempo y tu perfil.</strong> Descubre si eres gastadora, guardadora o ganadora, y cuántos días aguantarías si dejaras de trabajar hoy.</li>' +
+              '<li><strong>Auditoría de fugas.</strong> Encuentra tus tres fugas de dinero y cuánto dejas de perder al año. Incluye la regla de los siete días y el costo por uso.</li>' +
+              '<li><strong>El sistema 25-15-50-10.</strong> Reparte tu ingreso y arma tu fondo de emergencia.</li>' +
+              '<li><strong>Deuda que destruye y deuda que construye.</strong> Ordena tus deudas y aplica el método avalancha.</li>' +
+              '<li><strong>Inversión pasiva e interés compuesto.</strong> Entiende los fondos indexados y la cartera de tres fondos, sin tecnicismos.</li>' +
+              '<li><strong>Los primeros cien mil y tu cifra de libertad.</strong> Calcula tu número con la regla del 25.</li>' +
+              '<li><strong>Ingresos extra.</strong> La pirámide de negocios paralelos para sumar una segunda entrada.</li>' +
+              '<li><strong>Lo que destruye patrimonio.</strong> El auto financiado y otras trampas que parecen éxito.</li>' +
+              '<li><strong>Tu plan de 30 días.</strong> Casillas para marcar, tarea por tarea, hasta cerrar el mes.</li>' +
+            '</ul>' +
+          '</div>' +
+          '<p style="font-size:14px;color:#2B1D14;margin:18px 0;"><strong>Para quién es:</strong> para la mujer que siente que el dinero se le va sin saber adónde, que nunca tuvo a alguien que se lo explicara claro y que quiere dejar de cambiar todas sus horas por un sueldo.</p>' +
+          '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:16px 18px;border-radius:12px;margin:18px 0;">' +
+            '<p style="margin:0 0 8px;font-size:14px;color:#2B1D14;"><strong>Qué recibes:</strong></p>' +
             '<ul style="margin:0;padding-left:18px;font-size:14px;color:#5C4A3E;">' +
               '<li>PDF de 22 páginas, listo para imprimir o llenar.</li>' +
               '<li>Versión EPUB para leer en el celular o la tablet.</li>' +
-              '<li>9 talleres con espacios para tus cifras, ejemplos resueltos y tu plan de 30 días.</li>' +
+              '<li>Talleres con espacios para tus cifras, ejemplos resueltos y frases de Vivienne para recordar.</li>' +
             '</ul>' +
           '</div>' +
           '<div style="margin:26px 0;">' +
-            '<a href="' + ENLACE_CUADERNO_WEB + '" style="display:inline-block;background:#6B1F2A;color:#F7F1E6;text-decoration:none;padding:14px 26px;border-radius:10px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Ver El Cuaderno de Trabajo →</a>' +
+            '<a href="' + ENLACE_GUMROAD + '" style="display:inline-block;background:#6B1F2A;color:#F7F1E6;text-decoration:none;padding:14px 26px;border-radius:10px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Obtener El Cuaderno de Trabajo →</a>' +
           '</div>' +
-          '<p style="font-size:14px;margin:14px 0;">O ve directo a descargarlo aquí: <a href="' + ENLACE_GUMROAD + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_GUMROAD + '</a></p>' +
-          '<p style="font-size:16px;font-weight:bold;color:#6B1F2A;margin:20px 0 14px;">Vivienne</p>' +
+          '<p style="font-size:14px;margin:12px 0;">También puedes ver todos los detalles en: <a href="' + ENLACE_CUADERNO_WEB + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_CUADERNO_WEB + '</a></p>' +
+          '<p style="font-size:16px;font-style:italic;color:#2B1D14;margin:22px 0 14px;">“No te rindas antes de llegar, cariño.” — <strong>Vivienne</strong></p>' +
           '<p style="font-size:12px;color:#8A7665;margin:16px 0;">' + ofertaAEnviar.notaLegal + '</p>' +
           '<hr style="border:none;border-top:1px solid #D8CBB8;margin:20px 0;" />' +
           '<p style="font-size:12px;color:#8A7665;margin:0;">— Si ya no quieres recibir estos correos, responde con la palabra BAJA.</p>' +
