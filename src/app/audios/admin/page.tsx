@@ -154,6 +154,43 @@ const CORREOS_VIVIENNE = [
   }
 ];
 
+const ENLACE_CUADERNO_WEB = 'https://wearethesilent.com/audios/cuaderno';
+const ENLACE_GUMROAD = 'https://viviennewolski.gumroad.com/l/audios-vivienne';
+
+// 3 Correos de Oferta del Cuaderno de Trabajo (1: tras activar el último audio / Día 11, 2: dos días después / Día 12, 3: cinco días después / Día 15)
+const OFERTAS_CUADERNO = [
+  {
+    codigoEnvio: 11,
+    diasDespuesDeEp10: 0, // Se envía apenas activa el último audio (o al día siguiente del Día 10)
+    etiqueta: 'El Cuaderno de Trabajo de Vivienne · Parte I',
+    asunto: 'Los audios te explican. Este cuaderno te pone a hacerlo.',
+    vistaPrevia: 'Un presupuesto no es un castigo, cariño. Es decidir adónde va tu dinero.',
+    cuerpo: 'Hola, cariño. Ya escuchaste los diez episodios. Pero te voy a decir una verdad con todo mi afecto: escuchar inspira, pero solo sentarte con papel, lápiz y tus números reales —no los míos— cambia tu cuenta bancaria. Muchas mujeres me dicen: “Vivienne, ya entendí la teoría en los audios, ¿de verdad necesito escribirlo?”. Sí, cariño. Porque lo que queda solo en la cabeza se olvida con la primera prisa de la semana. Por eso preparé El Cuaderno de Trabajo de Vivienne: el compañero exacto de la serie, capítulo por capítulo, con talleres guiados en PDF (22 páginas listas para imprimir o llenar) y versión EPUB para tu celular o tablet.',
+    frase: 'Un presupuesto no es un castigo, cariño. Es decidir adónde va tu dinero antes de que llegue.',
+    notaLegal: 'Contenido educativo. Las cifras de ejemplo son ilustrativas y no son una promesa de resultados ni una recomendación financiera personal.'
+  },
+  {
+    codigoEnvio: 12,
+    diasDespuesDeEp10: 2, // 2 días después del último audio
+    etiqueta: 'El Cuaderno de Trabajo de Vivienne · Parte II',
+    asunto: '¿Sientes que no eres buena con los números, cariño?',
+    vistaPrevia: 'Sin hojas de cálculo complicadas ni tecnicismos vacíos.',
+    cuerpo: 'Hola, cariño. Sé lo que frena a muchas mujeres inteligentes a la hora de ordenar su patrimonio: pensar que necesitan ser expertas en matemáticas o llenarse de cuadros complicados. En El Cuaderno de Trabajo de Vivienne quité todo el ruido. Cada uno de los 9 talleres viene con ejemplos ya resueltos y espacios limpios para tus propias cifras: desde descubrir tu perfil y hacer tu auditoría de fugas (con la regla de los siete días y el costo por uso), hasta armar tu sistema 25-15-50-10, aplicar el método avalancha a tus deudas y entender la cartera de tres fondos indexados sin un solo tecnicismo.',
+    frase: 'Un presupuesto no es un castigo, cariño. Es decidir adónde va tu dinero antes de que llegue.',
+    notaLegal: 'Contenido educativo. Las cifras de ejemplo son ilustrativas y no son una promesa de resultados ni una recomendación financiera personal.'
+  },
+  {
+    codigoEnvio: 15,
+    diasDespuesDeEp10: 5, // 5 días después del último audio
+    etiqueta: 'El Cuaderno de Trabajo de Vivienne · Último Aviso',
+    asunto: 'No te rindas antes de llegar, cariño',
+    vistaPrevia: 'Tu plan de 30 días, casilla por casilla, hasta cerrar el mes.',
+    cuerpo: 'Hola, cariño. El mayor peligro después de terminar los 10 audios es dejar que pase otra semana diciendo “luego me siento a hacer mis cuentas”. Para que la falta de tiempo nunca sea tu excusa, el capítulo final del Cuaderno de Trabajo incluye Tu Plan de 30 Días: casillas sencillas para marcar, tarea por tarea, hasta cerrar el mes con tu fondo de emergencia en marcha y tu número de libertad calculado con la regla del 25. Si sientes que el dinero se te iba sin saber adónde y quieres dejar de cambiar todas tus horas por un sueldo, este cuaderno es tu mapa.',
+    frase: 'No te rindas antes de llegar, cariño.',
+    notaLegal: 'Contenido educativo. Las cifras de ejemplo son ilustrativas y no son una promesa de resultados ni una recomendación financiera personal.'
+  }
+];
+
 function enviarCorreosDiariosVivienne() {
   const url = 'https://firestore.googleapis.com/v1/projects/' + PROJECT_ID + '/databases/(default)/documents/vivienne_waitlist?pageSize=300&key=' + API_KEY;
   const res = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
@@ -173,7 +210,6 @@ function enviarCorreosDiariosVivienne() {
     const email = (fields.email && fields.email.stringValue || '').trim().toLowerCase();
     if (!email || email === 'prueba@viviennewolski.com') continue;
 
-    // Si la persona respondió BAJA o fue marcada de baja, no enviar
     if (fields.unsubscribed && fields.unsubscribed.booleanValue === true) continue;
 
     const createdAtStr = (fields.createdAtIso && fields.createdAtIso.stringValue) || doc.createTime;
@@ -183,53 +219,122 @@ function enviarCorreosDiariosVivienne() {
     const regMedianoche = new Date(fechaReg.getFullYear(), fechaReg.getMonth(), fechaReg.getDate());
     const diasTranscurridos = Math.floor((hoyMedianoche.getTime() - regMedianoche.getTime()) / (1000 * 60 * 60 * 24));
     const diaUsuario = diasTranscurridos + 1;
-
-    if (diaUsuario < 1 || diaUsuario > 10) continue;
-
     const ultimoDiaEnviado = Number((fields.lastEmailSentDay && fields.lastEmailSentDay.integerValue) || 0);
-    if (ultimoDiaEnviado >= diaUsuario) continue;
 
-    const item = CORREOS_VIVIENNE[diaUsuario - 1];
+    // FASE 1: Días 1 al 10 (Los 10 Audios Diarios)
+    if (diaUsuario >= 1 && diaUsuario <= 10 && ultimoDiaEnviado < diaUsuario) {
+      const item = CORREOS_VIVIENNE[diaUsuario - 1];
 
-    const textoPlano =
-      item.cuerpo + '\\n\\n' +
-      '“' + item.frase + '”\\n\\n' +
-      'Escucha el audio de hoy: ' + ENLACE_AUDIOS + '\\n\\n' +
-      'Tu tarea de hoy: ' + item.tarea + '\\n\\n' +
-      item.despedida + '\\n' +
-      'Vivienne' +
-      (item.notaLegal ? '\\n\\n' + item.notaLegal : '') +
-      '\\n\\n— Si ya no quieres recibir estos correos, responde con la palabra BAJA.';
+      const textoPlano =
+        item.cuerpo + '\\n\\n' +
+        '“' + item.frase + '”\\n\\n' +
+        'Escucha el audio de hoy: ' + ENLACE_AUDIOS + '\\n\\n' +
+        'Tu tarea de hoy: ' + item.tarea + '\\n\\n' +
+        item.despedida + '\\n' +
+        'Vivienne' +
+        (item.notaLegal ? '\\n\\n' + item.notaLegal : '') +
+        '\\n\\n— Si ya no quieres recibir estos correos, responde con la palabra BAJA.';
 
-    const htmlBody =
-      '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + item.vistaPrevia + '</div>' +
-      '<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;line-height:1.7;">' +
-        '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">Día ' + item.dia + ' · ' + item.titulo + '</p>' +
-        '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + item.cuerpo + '</p>' +
-        '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + item.frase + '”</blockquote>' +
-        '<p style="font-size:15px;margin:22px 0;"><strong>Escucha el audio de hoy:</strong> <a href="' + ENLACE_AUDIOS + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_AUDIOS + '</a></p>' +
-        '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:16px 18px;border-radius:12px;margin:22px 0;">' +
-          '<p style="margin:0;font-size:15px;color:#2B1D14;"><strong>Tu tarea de hoy:</strong> ' + item.tarea + '</p>' +
-        '</div>' +
-        '<p style="font-size:15px;color:#2B1D14;margin:22px 0 6px;">' + item.despedida + '</p>' +
-        '<p style="font-size:16px;font-weight:bold;color:#6B1F2A;margin:0 0 18px;">Vivienne</p>' +
-        (item.notaLegal ? '<p style="font-size:12px;color:#8A7665;margin:16px 0;">' + item.notaLegal + '</p>' : '') +
-        '<hr style="border:none;border-top:1px solid #D8CBB8;margin:20px 0;" />' +
-        '<p style="font-size:12px;color:#8A7665;margin:0;">— Si ya no quieres recibir estos correos, responde con la palabra BAJA.</p>' +
-      '</div>';
+      const htmlBody =
+        '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + item.vistaPrevia + '</div>' +
+        '<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;line-height:1.7;">' +
+          '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">Día ' + item.dia + ' · ' + item.titulo + '</p>' +
+          '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + item.cuerpo + '</p>' +
+          '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + item.frase + '”</blockquote>' +
+          '<p style="font-size:15px;margin:22px 0;"><strong>Escucha el audio de hoy:</strong> <a href="' + ENLACE_AUDIOS + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_AUDIOS + '</a></p>' +
+          '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:16px 18px;border-radius:12px;margin:22px 0;">' +
+            '<p style="margin:0;font-size:15px;color:#2B1D14;"><strong>Tu tarea de hoy:</strong> ' + item.tarea + '</p>' +
+          '</div>' +
+          '<p style="font-size:15px;color:#2B1D14;margin:22px 0 6px;">' + item.despedida + '</p>' +
+          '<p style="font-size:16px;font-weight:bold;color:#6B1F2A;margin:0 0 18px;">Vivienne</p>' +
+          (item.notaLegal ? '<p style="font-size:12px;color:#8A7665;margin:16px 0;">' + item.notaLegal + '</p>' : '') +
+          '<hr style="border:none;border-top:1px solid #D8CBB8;margin:20px 0;" />' +
+          '<p style="font-size:12px;color:#8A7665;margin:0;">— Si ya no quieres recibir estos correos, responde con la palabra BAJA.</p>' +
+        '</div>';
 
-    const opciones = { name: NOMBRE_REMITENTE, htmlBody: htmlBody };
-    if (usarAlias) opciones.from = ALIAS_REMITENTE;
+      const opciones = { name: NOMBRE_REMITENTE, htmlBody: htmlBody };
+      if (usarAlias) opciones.from = ALIAS_REMITENTE;
 
-    GmailApp.sendEmail(email, item.asunto, textoPlano, opciones);
+      GmailApp.sendEmail(email, item.asunto, textoPlano, opciones);
 
-    fields.lastEmailSentDay = { integerValue: String(diaUsuario) };
-    UrlFetchApp.fetch('https://firestore.googleapis.com/v1/' + doc.name + '?key=' + API_KEY, {
-      method: 'patch',
-      contentType: 'application/json',
-      payload: JSON.stringify({ fields: fields }),
-      muteHttpExceptions: true
-    });
+      fields.lastEmailSentDay = { integerValue: String(diaUsuario) };
+      UrlFetchApp.fetch('https://firestore.googleapis.com/v1/' + doc.name + '?key=' + API_KEY, {
+        method: 'patch',
+        contentType: 'application/json',
+        payload: JSON.stringify({ fields: fields }),
+        muteHttpExceptions: true
+      });
+      continue;
+    }
+
+    // FASE 2: 3 Correos de Oferta del Cuaderno de Trabajo después del último audio
+    // Se calcula a partir de cuando la persona activó el Episodio 10 (ep10ActivatedAtIso) o a partir de su Día 11
+    const ep10ActStr = fields.ep10ActivatedAtIso && fields.ep10ActivatedAtIso.stringValue;
+    const tieneEp10Activado = Boolean(ep10ActStr);
+    if (!tieneEp10Activado && diaUsuario <= 10) continue;
+
+    const fechaBaseEp10 = tieneEp10Activado
+      ? new Date(ep10ActStr)
+      : new Date(regMedianoche.getTime() + 10 * 24 * 60 * 60 * 1000);
+    const baseEp10Medianoche = new Date(fechaBaseEp10.getFullYear(), fechaBaseEp10.getMonth(), fechaBaseEp10.getDate());
+    const diasDesdeEp10 = Math.floor((hoyMedianoche.getTime() - baseEp10Medianoche.getTime()) / (1000 * 60 * 60 * 24));
+
+    let ofertaAEnviar = null;
+    if (diasDesdeEp10 >= 5 && ultimoDiaEnviado < 15) {
+      ofertaAEnviar = OFERTAS_CUADERNO[2]; // Oferta 3 (5 días después)
+    } else if (diasDesdeEp10 >= 2 && ultimoDiaEnviado < 12) {
+      ofertaAEnviar = OFERTAS_CUADERNO[1]; // Oferta 2 (2 días después)
+    } else if (diasDesdeEp10 >= 0 && ultimoDiaEnviado >= 10 && ultimoDiaEnviado < 11) {
+      ofertaAEnviar = OFERTAS_CUADERNO[0]; // Oferta 1 (tras activar el último audio)
+    }
+
+    if (ofertaAEnviar) {
+      const textoPlanoOferta =
+        ofertaAEnviar.cuerpo + '\\n\\n' +
+        '“' + ofertaAEnviar.frase + '”\\n\\n' +
+        'Conoce El Cuaderno de Trabajo de Vivienne aquí: ' + ENLACE_CUADERNO_WEB + '\\n' +
+        'Descarga directa (PDF 22 páginas + EPUB): ' + ENLACE_GUMROAD + '\\n\\n' +
+        'Con cariño,\\nVivienne\\n\\n' +
+        ofertaAEnviar.notaLegal +
+        '\\n\\n— Si ya no quieres recibir estos correos, responde con la palabra BAJA.';
+
+      const htmlOferta =
+        '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">' + ofertaAEnviar.vistaPrevia + '</div>' +
+        '<div style="font-family:Georgia,serif;max-width:580px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;line-height:1.7;">' +
+          '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 16px;">' + ofertaAEnviar.etiqueta + '</p>' +
+          '<p style="font-size:16px;color:#2B1D14;margin:0 0 18px;">' + ofertaAEnviar.cuerpo + '</p>' +
+          '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:22px 0;font-style:italic;font-size:17px;color:#2B1D14;">“' + ofertaAEnviar.frase + '”</blockquote>' +
+          '<div style="background:#FAF5EC;border:1px solid #D8CBB8;padding:18px 20px;border-radius:12px;margin:22px 0;">' +
+            '<p style="margin:0 0 8px;font-size:14px;color:#2B1D14;"><strong>Qué recibes con El Cuaderno de Trabajo:</strong></p>' +
+            '<ul style="margin:0;padding-left:18px;font-size:14px;color:#5C4A3E;">' +
+              '<li>PDF de 22 páginas, listo para imprimir o llenar.</li>' +
+              '<li>Versión EPUB para leer en el celular o la tablet.</li>' +
+              '<li>9 talleres con espacios para tus cifras, ejemplos resueltos y tu plan de 30 días.</li>' +
+            '</ul>' +
+          '</div>' +
+          '<div style="margin:26px 0;">' +
+            '<a href="' + ENLACE_CUADERNO_WEB + '" style="display:inline-block;background:#6B1F2A;color:#F7F1E6;text-decoration:none;padding:14px 26px;border-radius:10px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Ver El Cuaderno de Trabajo →</a>' +
+          '</div>' +
+          '<p style="font-size:14px;margin:14px 0;">O ve directo a descargarlo aquí: <a href="' + ENLACE_GUMROAD + '" style="color:#6B1F2A;text-decoration:underline;">' + ENLACE_GUMROAD + '</a></p>' +
+          '<p style="font-size:16px;font-weight:bold;color:#6B1F2A;margin:20px 0 14px;">Vivienne</p>' +
+          '<p style="font-size:12px;color:#8A7665;margin:16px 0;">' + ofertaAEnviar.notaLegal + '</p>' +
+          '<hr style="border:none;border-top:1px solid #D8CBB8;margin:20px 0;" />' +
+          '<p style="font-size:12px;color:#8A7665;margin:0;">— Si ya no quieres recibir estos correos, responde con la palabra BAJA.</p>' +
+        '</div>';
+
+      const opciones = { name: NOMBRE_REMITENTE, htmlBody: htmlOferta };
+      if (usarAlias) opciones.from = ALIAS_REMITENTE;
+
+      GmailApp.sendEmail(email, ofertaAEnviar.asunto, textoPlanoOferta, opciones);
+
+      fields.lastEmailSentDay = { integerValue: String(ofertaAEnviar.codigoEnvio) };
+      UrlFetchApp.fetch('https://firestore.googleapis.com/v1/' + doc.name + '?key=' + API_KEY, {
+        method: 'patch',
+        contentType: 'application/json',
+        payload: JSON.stringify({ fields: fields }),
+        muteHttpExceptions: true
+      });
+    }
   }
 }`;
 

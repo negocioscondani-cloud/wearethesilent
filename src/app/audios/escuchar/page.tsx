@@ -3,8 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
+  ArrowRight,
   Headphones,
   BookOpen,
   Lock,
@@ -239,6 +241,7 @@ function calculateUserDayFromRegistration(registeredAtIso?: string): number {
 }
 
 export default function AudiosPlayerPage() {
+  const router = useRouter();
   const [registeredUser, setRegisteredUser] = useState<{
     name: string;
     email: string;
@@ -342,6 +345,29 @@ export default function AudiosPlayerPage() {
   const latestUnlockedEpisode =
     [...EPISODES_INDEX].reverse().find((item) => isEpisodeUnlocked(item)) || EPISODES_INDEX[0];
 
+  const markEp10ActivatedInFirestore = async () => {
+    const userEmail = registeredUser?.email;
+    if (!userEmail) return;
+    const docId = userEmail.toLowerCase().replace(/[^a-z0-9@._-]/g, '_');
+    const url = `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${MESAYA_API_KEY}`;
+    try {
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) return;
+      const docData = await r.json();
+      const fields = docData.fields || {};
+      if (!fields.ep10ActivatedAtIso?.stringValue) {
+        fields.ep10ActivatedAtIso = { stringValue: new Date().toISOString() };
+        await fetch(url, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields }),
+        });
+      }
+    } catch {
+      // ignore
+    }
+  };
+
   const openAudioPopup = (item: EpisodeIndexItem) => {
     if (!isEpisodeUnlocked(item)) {
       setLockedPreviewEpisode(item);
@@ -352,6 +378,9 @@ export default function AudiosPlayerPage() {
     setDurationSec(0);
     setIsPlaying(true);
     setPlaybackRate(1);
+    if (item.dayNumber === 10) {
+      markEp10ActivatedInFirestore();
+    }
   };
 
   const closeAudioPopup = () => {
@@ -712,7 +741,13 @@ export default function AudiosPlayerPage() {
                 preload="auto"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onEnded={() => setIsPlaying(false)}
+                onEnded={() => {
+                  setIsPlaying(false);
+                  if (activeEpisode.dayNumber === 10) {
+                    markEp10ActivatedInFirestore();
+                    router.push('/audios/cuaderno');
+                  }
+                }}
                 onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
                 onLoadedMetadata={(e) => setDurationSec(e.currentTarget.duration)}
                 className="hidden"
@@ -784,6 +819,18 @@ export default function AudiosPlayerPage() {
                     </span>
                   ))}
                 </div>
+
+                {activeEpisode.dayNumber === 10 && (
+                  <div className="pt-4 border-t border-[#D8CBB8]">
+                    <Link
+                      href="/audios/cuaderno"
+                      className="w-full py-3.5 px-5 rounded-xl bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] transition flex items-center justify-center gap-2 shadow-md"
+                    >
+                      <span>Siguiente Paso: El Cuaderno de Trabajo de Vivienne</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
