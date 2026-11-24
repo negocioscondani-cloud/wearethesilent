@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   Headphones,
   BookOpen,
-  Sparkles,
   Lock,
   Play,
   Pause,
@@ -21,9 +20,7 @@ import {
 
 export interface EpisodeIndexItem {
   ep: string;
-  dayNumber: number;
-  unlockDateIso: string;
-  unlockDateText: string;
+  dayNumber: number; // 1 to 10 (Día 1 = día en que la persona se registra)
   title: string;
   duration: string;
   audioUrl: string;
@@ -36,8 +33,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '01',
     dayNumber: 1,
-    unlockDateIso: '2026-11-23',
-    unlockDateText: '23 de noviembre',
     title: 'Mentalidad',
     duration: '1:35',
     audioUrl:
@@ -56,8 +51,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '02',
     dayNumber: 2,
-    unlockDateIso: '2026-11-24',
-    unlockDateText: '24 de noviembre',
     title: 'Presupuesto 25-15-50-10',
     duration: '1:31',
     audioUrl:
@@ -76,8 +69,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '03',
     dayNumber: 3,
-    unlockDateIso: '2026-11-25',
-    unlockDateText: '25 de noviembre',
     title: 'Deuda',
     duration: '1:24',
     audioUrl:
@@ -96,8 +87,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '04',
     dayNumber: 4,
-    unlockDateIso: '2026-11-26',
-    unlockDateText: '26 de noviembre',
     title: 'Los primeros 10 mil',
     duration: '1:24',
     audioUrl:
@@ -116,8 +105,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '05',
     dayNumber: 5,
-    unlockDateIso: '2026-11-27',
-    unlockDateText: '27 de noviembre',
     title: 'Invertir sin ser experta',
     duration: '1:30',
     audioUrl:
@@ -136,8 +123,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '06',
     dayNumber: 6,
-    unlockDateIso: '2026-11-28',
-    unlockDateText: '28 de noviembre',
     title: 'Lo que no debes comprar',
     duration: '1:24',
     audioUrl:
@@ -156,8 +141,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '07',
     dayNumber: 7,
-    unlockDateIso: '2026-11-29',
-    unlockDateText: '29 de noviembre',
     title: 'Segunda entrada de dinero',
     duration: '1:28',
     audioUrl:
@@ -176,8 +159,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '08',
     dayNumber: 8,
-    unlockDateIso: '2026-11-30',
-    unlockDateText: '30 de noviembre',
     title: 'Inflación',
     duration: '1:17',
     audioUrl:
@@ -196,8 +177,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '09',
     dayNumber: 9,
-    unlockDateIso: '2026-12-01',
-    unlockDateText: '1 de diciembre',
     title: 'Cuando el mercado cae',
     duration: '1:28',
     audioUrl:
@@ -216,8 +195,6 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
   {
     ep: '10',
     dayNumber: 10,
-    unlockDateIso: '2026-12-02',
-    unlockDateText: '2 de diciembre',
     title: 'Libertad',
     duration: '1:33',
     audioUrl:
@@ -236,20 +213,40 @@ export const EPISODES_INDEX: EpisodeIndexItem[] = [
 ];
 
 const LOCAL_STORAGE_KEY = 'vivienne_audios_waitlist_v1';
+const MESAYA_API_KEY = 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
+const MESAYA_PROJECT_ID = 'mesaya-e9644';
 
-function getLocalTodayIso(): string {
+/**
+ * Calcula en qué día (1 al 10) va la persona según su propia fecha de registro.
+ * - El día que se registra = Día 1 (solo Ep 01 desbloqueado)
+ * - Al día siguiente = Día 2 (Ep 01 y Ep 02 desbloqueados)
+ * - Y así sucesivamente hasta el Día 10.
+ */
+function calculateUserDayFromRegistration(registeredAtIso?: string): number {
+  if (!registeredAtIso) return 1;
+  const regDate = new Date(registeredAtIso);
+  if (isNaN(regDate.getTime())) return 1;
+
   const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  // Comparamos por días calendario locales desde la fecha de registro
+  const regMidnight = new Date(regDate.getFullYear(), regDate.getMonth(), regDate.getDate());
+  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffDays = Math.floor(
+    (nowMidnight.getTime() - regMidnight.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  return Math.max(1, Math.min(10, diffDays + 1));
 }
 
 export default function AudiosPlayerPage() {
-  const [registeredUser, setRegisteredUser] = useState<{ name: string; email: string } | null>(
-    null
-  );
-  const [todayIso, setTodayIso] = useState<string>('2026-11-23');
+  const [registeredUser, setRegisteredUser] = useState<{
+    name: string;
+    email: string;
+    registeredAtIso?: string;
+  } | null>(null);
+
+  // Día actual de esta persona (1 al 10)
+  const [userCurrentDay, setUserCurrentDay] = useState<number>(1);
 
   // Pop-up Audio Player state
   const [activeEpisode, setActiveEpisode] = useState<EpisodeIndexItem | null>(null);
@@ -261,23 +258,84 @@ export default function AudiosPlayerPage() {
   const [playbackRate, setPlaybackRate] = useState<number>(1);
 
   useEffect(() => {
-    setTodayIso(getLocalTodayIso());
+    let resolvedDay = 1;
+    let savedUserObj: { name: string; email: string; registeredAtIso?: string } | null = null;
+
+    // 1. Leer de localStorage la fecha exacta en que esta persona se registró
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed?.name && parsed?.email) {
+          savedUserObj = parsed;
           setRegisteredUser(parsed);
+          resolvedDay = calculateUserDayFromRegistration(parsed.registeredAtIso);
         }
       }
     } catch {
       // ignore
     }
+
+    // 2. Si viene desde un enlace del correo diario (?dia=2&email=...)
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const diaParam = Number(params.get('dia') || 0);
+      const emailParam = (params.get('email') || '').trim().toLowerCase();
+
+      if (diaParam >= 1 && diaParam <= 10) {
+        resolvedDay = Math.max(resolvedDay, diaParam);
+      }
+
+      const emailToLookup = emailParam || savedUserObj?.email || '';
+      if (emailToLookup) {
+        const docId = emailToLookup.replace(/[^a-z0-9@._-]/g, '_');
+        fetch(
+          `https://firestore.googleapis.com/v1/projects/${MESAYA_PROJECT_ID}/databases/(default)/documents/vivienne_waitlist/${encodeURIComponent(docId)}?key=${MESAYA_API_KEY}`,
+          { cache: 'no-store' }
+        )
+          .then((r) => (r.ok ? r.json() : null))
+          .then((docData) => {
+            if (docData?.fields) {
+              const fsName = docData.fields.name?.stringValue || savedUserObj?.name || '';
+              const fsCreatedAt =
+                docData.fields.firstRegisteredAtIso?.stringValue ||
+                docData.fields.createdAtIso?.stringValue ||
+                docData.createTime ||
+                '';
+              if (fsCreatedAt) {
+                const dayFromFs = calculateUserDayFromRegistration(fsCreatedAt);
+                const bestDay = Math.max(resolvedDay, dayFromFs);
+                setUserCurrentDay(bestDay);
+                const updatedObj = {
+                  name: fsName,
+                  email: emailToLookup,
+                  registeredAtIso: fsCreatedAt,
+                };
+                setRegisteredUser(updatedObj);
+                try {
+                  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedObj));
+                } catch {
+                  // ignore
+                }
+              }
+            }
+          })
+          .catch(() => {});
+      }
+    }
+
+    setUserCurrentDay(resolvedDay);
   }, []);
 
   const isEpisodeUnlocked = (item: EpisodeIndexItem): boolean => {
-    if (item.dayNumber === 1) return true;
-    return todayIso >= item.unlockDateIso;
+    return item.dayNumber <= userCurrentDay;
+  };
+
+  const getUnlockCountdownLabel = (item: EpisodeIndexItem): string => {
+    const daysLeft = item.dayNumber - userCurrentDay;
+    if (daysLeft <= 0) return `Desbloqueado · Día ${item.dayNumber}`;
+    if (daysLeft === 1) return `Día ${item.dayNumber} · Se desbloquea mañana`;
+    return `Día ${item.dayNumber} · Se desbloquea en ${daysLeft} días`;
   };
 
   const unlockedCount = EPISODES_INDEX.filter((item) => isEpisodeUnlocked(item)).length;
@@ -362,7 +420,7 @@ export default function AudiosPlayerPage() {
 
         <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-[#6B1F2A]">
           <Headphones className="w-3.5 h-3.5" />
-          <span>Sala de Reproducción · {unlockedCount}/10 Desbloqueados</span>
+          <span>Tu Día {userCurrentDay} de 10 · {unlockedCount}/10 Desbloqueados</span>
         </div>
 
         <Link
@@ -374,21 +432,21 @@ export default function AudiosPlayerPage() {
       </header>
 
       <main className="flex-1 w-full">
-        {/* Welcome & Today's Featured Episode Banner */}
+        {/* Welcome & User's Current Day Featured Episode Banner */}
         <section className="max-w-5xl mx-auto px-5 sm:px-8 pt-10 pb-12">
           <div className="p-6 sm:p-9 rounded-3xl bg-[#2B1D14] text-[#F7F1E6] border border-[#B08D57]/60 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
               {registeredUser && (
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F1E6]/10 text-[#E6D5B8] text-[10px] font-mono uppercase tracking-[0.22em]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#B08D57]" />
-                  <span>Hola, {registeredUser.name} · Acceso activado</span>
+                  <span>Hola, {registeredUser.name} ·Estás en tu Día {userCurrentDay} de 10</span>
                 </div>
               )}
 
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6B1F2A] text-[#F7F1E6] text-[10px] font-mono uppercase tracking-[0.22em]">
                   <Volume2 className="w-3 h-3" />
-                  <span>Audio Desbloqueado Hoy · Día {latestUnlockedEpisode.dayNumber}</span>
+                  <span>Tu Audio de Hoy · Día {latestUnlockedEpisode.dayNumber}</span>
                 </span>
                 <span className="text-xs font-mono text-[#E6D5B8]">
                   Ep{latestUnlockedEpisode.ep} · ~{latestUnlockedEpisode.duration} min
@@ -446,19 +504,20 @@ export default function AudiosPlayerPage() {
             <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
               <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.26em] text-[#6B1F2A]">
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>1 Episodio Nuevo Cada Día · {unlockedCount} de 10 Desbloqueados</span>
+                <span>Tu Progreso Personal · Día {userCurrentDay} de 10</span>
               </div>
               <h2 className="font-headline text-3xl sm:text-4xl text-[#2B1D14]">
                 Los 10 Audios de Vivienne
               </h2>
               <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                Toca cualquier episodio desbloqueado para abrir su ventana reproductora y escucharlo. Mañana se desbloqueará el siguiente capítulo automáticamente.
+                Desde el momento en que te registras comienza tu Día 1. Cada nuevo día se desbloquea el siguiente episodio y recibes el aviso en tu correo.
               </p>
             </div>
 
             <div className="space-y-4">
               {EPISODES_INDEX.map((item) => {
                 const unlocked = isEpisodeUnlocked(item);
+                const countdownText = getUnlockCountdownLabel(item);
                 return (
                   <div
                     key={item.ep}
@@ -502,14 +561,12 @@ export default function AudiosPlayerPage() {
                           {unlocked ? (
                             <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#6B1F2A]/15 text-[#6B1F2A] font-semibold">
                               <Volume2 className="w-3 h-3" />
-                              <span>Desbloqueado · Día {item.dayNumber}</span>
+                              <span>{countdownText}</span>
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#FAF5EC] border border-[#D8CBB8] text-[#8A7665]">
                               <Calendar className="w-3 h-3" />
-                              <span>
-                                Día {item.dayNumber} · Se desbloquea el {item.unlockDateText}
-                              </span>
+                              <span>{countdownText}</span>
                             </span>
                           )}
                         </div>
@@ -559,7 +616,11 @@ export default function AudiosPlayerPage() {
                       ) : (
                         <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FAF5EC] border border-[#D8CBB8] text-[#8A7665] font-mono text-[10px] uppercase tracking-[0.18em]">
                           <Lock className="w-3.5 h-3.5" />
-                          <span>Disponible {item.unlockDateText}</span>
+                          <span>
+                            {item.dayNumber - userCurrentDay === 1
+                              ? 'Mañana (Día 2)'
+                              : `En ${item.dayNumber - userCurrentDay} días`}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -729,7 +790,7 @@ export default function AudiosPlayerPage() {
         </div>
       )}
 
-      {/* POP-UP PARA EPISODIOS QUE SE DESBLOQUEAN EN LOS PRÓXIMOS DÍAS */}
+      {/* POP-UP PARA EPISODIOS QUE SE DESBLOQUEAN EN LOS PRÓXIMOS DÍAS DE ESTA PERSONA */}
       {lockedPreviewEpisode && (
         <div
           onClick={() => setLockedPreviewEpisode(null)}
@@ -742,10 +803,7 @@ export default function AudiosPlayerPage() {
             <div className="flex items-center justify-between">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6B1F2A]/10 text-[#6B1F2A] text-[10px] font-mono uppercase tracking-[0.2em]">
                 <Lock className="w-3.5 h-3.5" />
-                <span>
-                  Día {lockedPreviewEpisode.dayNumber} · Se desbloquea el{' '}
-                  {lockedPreviewEpisode.unlockDateText}
-                </span>
+                <span>{getUnlockCountdownLabel(lockedPreviewEpisode)}</span>
               </div>
               <button
                 type="button"
@@ -761,8 +819,7 @@ export default function AudiosPlayerPage() {
                 Ep{lockedPreviewEpisode.ep} · {lockedPreviewEpisode.title}
               </h3>
               <p className="text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
-                Este episodio se desbloqueará automáticamente el{' '}
-                <strong>{lockedPreviewEpisode.unlockDateText}</strong> siguiendo el orden diario de la serie de Vivienne.
+                Este episodio corresponde a tu <strong>Día {lockedPreviewEpisode.dayNumber}</strong>. Se desbloqueará automáticamente y te enviaremos un correo en cuanto esté disponible para ti.
               </p>
             </div>
 

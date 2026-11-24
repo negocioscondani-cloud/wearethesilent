@@ -85,7 +85,7 @@ export default function AudiosRegistrationPage() {
         localStorage.setItem(LOCAL_LEADS_LIST_KEY, JSON.stringify(filtered));
         localStorage.setItem(
           LOCAL_STORAGE_KEY,
-          JSON.stringify({ name: cleanName, email: cleanEmail })
+          JSON.stringify({ name: cleanName, email: cleanEmail, registeredAtIso: nowIso })
         );
       } catch {
         // ignore
@@ -137,7 +137,7 @@ export default function AudiosRegistrationPage() {
       }
 
       // 5. Redirigir inmediatamente a la página oficial de reproducción de audios
-      router.push('/audios/escuchar');
+      router.push(`/audios/escuchar?email=${encodeURIComponent(cleanEmail)}`);
     } finally {
       setIsSubmitting(false);
     }

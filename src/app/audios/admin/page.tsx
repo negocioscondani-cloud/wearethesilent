@@ -29,6 +29,110 @@ const ADMIN_SESSION_KEY = 'vivienne_audios_admin_unlocked_v1';
 // Contraseñas válidas para acceder al panel
 const VALID_PASSWORDS = ['Vivienne2026!', 'vivienne2026', 'Wolski2026!'];
 
+const GOOGLE_APPS_SCRIPT_DRIP_CODE = `/**
+ * ROBOT PERPETUO DE 10 CORREOS DIARIOS DE VIVIENNE WOLSKI
+ * Cómo activarlo en 1 minuto:
+ * 1. Abre https://script.google.com y crea un "Nuevo proyecto".
+ * 2. Borra lo que haya y pega todo este código.
+ * 3. En el menú izquierdo haz clic en el ícono de Reloj ("Activadores" / "Triggers"):
+ *    - Haz clic en "+ Añadir activador" (abajo a la derecha).
+ *    - Función: enviarCorreosDiariosVivienne
+ *    - Fuente del evento: Según tiempo -> Temporizador por días -> 8 a.m. a 9 a.m.
+ *    - Guardar (y autorizar con tu cuenta de Google).
+ */
+
+const PROJECT_ID = 'mesaya-e9644';
+const API_KEY = 'AIzaSyA7yo4QDODdnfneSDrfVXwHQv5ESCJdm7c';
+const ALIAS_REMITENTE = 'vivienne@wearethesilent.com';
+const NOMBRE_REMITENTE = 'Vivienne Wolski';
+
+const EPISODIOS = [
+  { dia: 1, ep: '01', titulo: 'Mentalidad', frase: 'El dinero es una forma de comprar tiempo. Tiempo para dormir tranquila. Tiempo para tu familia. Tiempo para decir que no.' },
+  { dia: 2, ep: '02', titulo: 'Presupuesto 25-15-50-10', frase: 'Un dinero que gastas en lo que te da alegría es parte del plan, no un pecado.' },
+  { dia: 3, ep: '03', titulo: 'Deuda', frase: 'Pagar una deuda cara es el mejor negocio seguro que existe.' },
+  { dia: 4, ep: '04', titulo: 'Los primeros 10 mil', frase: 'Trabajas, ahorras, inviertes y sientes que no pasa nada. Es el momento en que muchos se cansan.' },
+  { dia: 5, ep: '05', titulo: 'Invertir sin ser experta', frase: 'Nadie sabe adivinar los ciclos, ni siquiera los expertos.' },
+  { dia: 6, ep: '06', titulo: 'Lo que no debes comprar', frase: 'Lo que ves en vitrina muchas veces es deuda con buen maquillaje.' },
+  { dia: 7, ep: '07', titulo: 'Segunda entrada de dinero', frase: 'Tu primera venta importa más que tu mejor idea.' },
+  { dia: 8, ep: '08', titulo: 'Inflación', frase: 'No perdiste dinero en la cuenta, pero perdiste lo que ese dinero puede comprar.' },
+  { dia: 9, ep: '09', titulo: 'Cuando el mercado cae', frase: 'El problema no es la matemática, cariño. Es el miedo.' },
+  { dia: 10, ep: '10', titulo: 'Libertad', frase: 'El dinero es tiempo, y el tiempo es lo único que no se recupera.' }
+];
+
+function enviarCorreosDiariosVivienne() {
+  const url = 'https://firestore.googleapis.com/v1/projects/' + PROJECT_ID + '/databases/(default)/documents/vivienne_waitlist?pageSize=300&key=' + API_KEY;
+  const res = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  if (res.getResponseCode() !== 200) return;
+
+  const data = JSON.parse(res.getContentText());
+  const docs = data.documents || [];
+  const ahora = new Date();
+  const hoyMedianoche = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+
+  // Verificar si el alias vivienne@wearethesilent.com está configurado en este Gmail
+  const aliases = GmailApp.getAliases();
+  const usarAlias = aliases.indexOf(ALIAS_REMITENTE) !== -1;
+
+  for (let i = 0; i < docs.length; i++) {
+    const doc = docs[i];
+    const fields = doc.fields || {};
+    const email = (fields.email && fields.email.stringValue || '').trim().toLowerCase();
+    const nombre = (fields.name && fields.name.stringValue || 'cariño').trim();
+    if (!email || email === 'prueba@viviennewolski.com') continue;
+
+    const createdAtStr = (fields.createdAtIso && fields.createdAtIso.stringValue) || doc.createTime;
+    const fechaReg = new Date(createdAtStr);
+    if (isNaN(fechaReg.getTime())) continue;
+
+    const regMedianoche = new Date(fechaReg.getFullYear(), fechaReg.getMonth(), fechaReg.getDate());
+    const diasTranscurridos = Math.floor((hoyMedianoche.getTime() - regMedianoche.getTime()) / (1000 * 60 * 60 * 24));
+    const diaUsuario = diasTranscurridos + 1; // Día 1 el día de registro, Día 2 al día siguiente...
+
+    if (diaUsuario < 1 || diaUsuario > 10) continue;
+
+    const ultimoDiaEnviado = Number((fields.lastEmailSentDay && fields.lastEmailSentDay.integerValue) || 0);
+    if (ultimoDiaEnviado >= diaUsuario) continue;
+
+    const infoEp = EPISODIOS[diaUsuario - 1];
+    const linkEscuchar = 'https://wearethesilent.com/audios/escuchar?dia=' + diaUsuario + '&email=' + encodeURIComponent(email);
+    const asunto = 'Día ' + diaUsuario + ' desbloqueado: Ep' + infoEp.ep + ' · ' + infoEp.titulo + ' (Vivienne Wolski)';
+
+    const htmlBody = '<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;background:#F7F1E6;color:#2B1D14;padding:36px 28px;border-radius:16px;border:1px solid #D8CBB8;">' +
+      '<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1F2A;margin:0 0 12px;">Audios de Vivienne · Día ' + diaUsuario + ' de 10</p>' +
+      '<h1 style="font-size:26px;font-weight:normal;margin:0 0 16px;color:#2B1D14;">Hola, ' + nombre + '. Tu Episodio ' + infoEp.ep + ' ya está listo.</h1>' +
+      '<p style="font-size:15px;line-height:1.6;color:#5C4A3E;">Hoy desbloqueamos para ti el <strong>Episodio ' + infoEp.ep + ': ' + infoEp.titulo + '</strong>.</p>' +
+      '<blockquote style="border-left:3px solid #6B1F2A;padding-left:14px;margin:20px 0;font-style:italic;font-size:16px;color:#2B1D14;">"' + infoEp.frase + '"</blockquote>' +
+      '<div style="margin:28px 0;"><a href="' + linkEscuchar + '" style="display:inline-block;background:#6B1F2A;color:#F7F1E6;text-decoration:none;padding:14px 26px;border-radius:10px;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Escuchar Episodio ' + infoEp.ep + ' Ahora →</a></div>' +
+      '<p style="font-size:13px;color:#8A7665;margin-top:24px;">Con cariño,<br><strong>Vivienne Wolski</strong></p>' +
+    '</div>';
+
+    const opciones = { name: NOMBRE_REMITENTE, htmlBody: htmlBody };
+    if (usarAlias) opciones.from = ALIAS_REMITENTE;
+
+    GmailApp.sendEmail(email, asunto, 'Escucha tu Episodio ' + infoEp.ep + ' en: ' + linkEscuchar, opciones);
+
+    // Guardar en Firestore que ya se le envió el correo de este día
+    fields.lastEmailSentDay = { integerValue: String(diaUsuario) };
+    UrlFetchApp.fetch('https://firestore.googleapis.com/v1/' + doc.name + '?key=' + API_KEY, {
+      method: 'patch',
+      contentType: 'application/json',
+      payload: JSON.stringify({ fields: fields }),
+      muteHttpExceptions: true
+    });
+  }
+}`;
+
+function calculateUserDay(iso?: string): number {
+  if (!iso) return 1;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return 1;
+  const now = new Date();
+  const regMid = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const nowMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.floor((nowMid.getTime() - regMid.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(1, Math.min(10, diff + 1));
+}
+
 export default function AudiosAdminPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
@@ -44,6 +148,8 @@ export default function AudiosAdminPage() {
   const [copiedPairs, setCopiedPairs] = useState(false);
   const [copiedSingleId, setCopiedSingleId] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [showDripScriptModal, setShowDripScriptModal] = useState(false);
+  const [copiedDripScript, setCopiedDripScript] = useState(false);
 
   useEffect(() => {
     try {
@@ -395,6 +501,15 @@ export default function AudiosAdminPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
+              onClick={() => setShowDripScriptModal(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-[#6B1F2A] bg-[#6B1F2A]/10 hover:bg-[#6B1F2A] text-[#6B1F2A] hover:text-[#F7F1E6] text-xs font-mono uppercase tracking-wider transition cursor-pointer"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>Robot 10 Correos Diarios</span>
+            </button>
+
+            <button
+              type="button"
               onClick={handleCopyAllEmails}
               disabled={!filteredLeads.length}
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-[#D8CBB8] hover:border-[#6B1F2A] bg-[#FAF5EC] text-xs font-mono uppercase tracking-wider text-[#2B1D14] transition cursor-pointer disabled:opacity-50"
@@ -511,13 +626,16 @@ export default function AudiosAdminPage() {
                     <th className="py-3.5 pl-6 pr-3">#</th>
                     <th className="py-3.5 px-4">Nombre</th>
                     <th className="py-3.5 px-4">Correo Electrónico</th>
+                    <th className="py-3.5 px-4">Día de Audios</th>
                     <th className="py-3.5 px-4">Capítulo de Interés</th>
                     <th className="py-3.5 px-4">Consentimiento</th>
                     <th className="py-3.5 pl-4 pr-6">Fecha de Registro</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#D8CBB8]/60 text-xs sm:text-sm">
-                  {filteredLeads.map((lead, index) => (
+                  {filteredLeads.map((lead, index) => {
+                    const userDay = calculateUserDay(lead.createdAtIso);
+                    return (
                     <tr key={lead.id} className="hover:bg-[#F7F1E6]/70 transition">
                       <td className="py-4 pl-6 pr-3 font-mono text-xs text-[#8A7665]">
                         {index + 1}
@@ -547,6 +665,11 @@ export default function AudiosAdminPage() {
                           </button>
                         </div>
                       </td>
+                      <td className="py-4 px-4">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#2B1D14] text-[#F7F1E6] text-[10px] font-mono uppercase tracking-wider">
+                          Día {userDay} de 10
+                        </span>
+                      </td>
                       <td className="py-4 px-4 text-xs text-[#5C4A3E]">
                         {lead.favoriteEp}
                       </td>
@@ -560,7 +683,8 @@ export default function AudiosAdminPage() {
                         {formatDate(lead.createdAtIso)}
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -581,6 +705,86 @@ export default function AudiosAdminPage() {
           </Link>
         </div>
       </footer>
+
+      {/* Modal con el Robot Perpetuo de 10 Correos Diarios */}
+      {showDripScriptModal && (
+        <div
+          onClick={() => setShowDripScriptModal(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#1E140E]/75 backdrop-blur-sm p-4 overflow-y-auto"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-2xl w-full rounded-3xl bg-[#FAF5EC] border-2 border-[#B08D57] p-6 sm:p-8 shadow-2xl space-y-5 text-[#2B1D14]"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#6B1F2A] font-semibold">
+                Automatización Perpetua · Día 1 al Día 10 por Usuario
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowDripScriptModal(false)}
+                className="text-xs font-mono uppercase tracking-wider text-[#8A7665] hover:text-[#2B1D14] cursor-pointer"
+              >
+                Cerrar ✕
+              </button>
+            </div>
+
+            <h3 className="font-headline text-2xl sm:text-3xl text-[#2B1D14]">
+              Robot de Correos Diarios (vivienne@wearethesilent.com)
+            </h3>
+
+            <ol className="list-decimal pl-5 space-y-1.5 text-xs sm:text-sm text-[#5C4A3E] leading-relaxed">
+              <li>
+                Abre{' '}
+                <a
+                  href="https://script.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#6B1F2A] underline font-medium"
+                >
+                  script.google.com
+                </a>{' '}
+                y haz clic en <strong>Nuevo proyecto</strong>.
+              </li>
+              <li>
+                Haz clic en el botón de abajo <strong>&ldquo;Copiar código del Robot&rdquo;</strong> y pégalo ahí.
+              </li>
+              <li>
+                En el menú izquierdo de Google Apps Script entra al ícono de reloj (<strong>Activadores / Triggers</strong>) → <strong>+ Añadir activador</strong> → elige la función <code>enviarCorreosDiariosVivienne</code> → <strong>Según tiempo</strong> → <strong>Temporizador por horas (Cada hora)</strong> o <strong>Por días</strong> y dale a Guardar.
+              </li>
+            </ol>
+
+            <pre className="p-4 rounded-xl bg-[#2B1D14] text-[#F7F1E6] text-[11px] font-mono overflow-x-auto max-h-60 leading-relaxed">
+              {GOOGLE_APPS_SCRIPT_DRIP_CODE}
+            </pre>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(GOOGLE_APPS_SCRIPT_DRIP_CODE);
+                    setCopiedDripScript(true);
+                    setTimeout(() => setCopiedDripScript(false), 2500);
+                  } catch {
+                    // ignore
+                  }
+                }}
+                className="flex-1 py-3.5 px-6 rounded-xl bg-[#6B1F2A] hover:bg-[#2B1D14] text-[#F7F1E6] font-mono text-xs uppercase tracking-[0.2em] transition cursor-pointer"
+              >
+                {copiedDripScript ? '¡Código Copiado al Portapapeles!' : 'Copiar Código del Robot'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowDripScriptModal(false)}
+                className="py-3.5 px-5 rounded-xl border border-[#D8CBB8] hover:border-[#2B1D14] text-xs font-mono uppercase tracking-wider text-[#5C4A3E] cursor-pointer"
+              >
+                Listo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
