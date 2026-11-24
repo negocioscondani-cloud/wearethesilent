@@ -16,7 +16,10 @@ import {
   Lock,
 } from 'lucide-react';
 import { getFirebase } from '@/lib/firebase-client';
-import { registerInMesayaFirebaseClient } from '@/lib/vivienne-waitlist-client';
+import {
+  registerInMesayaFirebaseClient,
+  fetchVivienneWaitlistLeads,
+} from '@/lib/vivienne-waitlist-client';
 import {
   collection,
   doc,
@@ -231,48 +234,20 @@ export default function AudiosWaitlistPage() {
       // ignore
     }
 
-    // 2. Consultar Firebase Firestore (si las reglas permiten lectura)
+    // 2. Consultar directamente desde Firestore REST API (mesaya-e9644 / vivienne_waitlist)
     try {
-      const { firestore } = getFirebase();
-      if (firestore) {
-        try {
-          const snap1 = await getDocs(collection(firestore, 'vivienne_waitlist'));
-          snap1.forEach((d) => {
-            const data = d.data();
-            if (data && data.email) {
-              mapById.set(String(data.email).toLowerCase(), {
-                id: d.id,
-                name: data.name || 'Sin nombre',
-                email: data.email,
-                favoriteEp: data.favoriteEp || 'Todos los episodios',
-                createdAtIso: data.createdAtIso || '',
-              });
-            }
+      const remoteLeads = await fetchVivienneWaitlistLeads();
+      remoteLeads.forEach((lead) => {
+        if (lead.email !== 'prueba@viviennewolski.com') {
+          mapById.set(lead.email.toLowerCase(), {
+            id: lead.id,
+            name: lead.name,
+            email: lead.email,
+            favoriteEp: lead.favoriteEp,
+            createdAtIso: lead.createdAtIso,
           });
-        } catch {
-          // ignore if vivienne_waitlist rules are not open yet
         }
-
-        try {
-          const snap2 = await getDocs(
-            collection(firestore, 'restaurants', 'vivienne-wolski', 'customers')
-          );
-          snap2.forEach((d) => {
-            const data = d.data();
-            if (data && data.email) {
-              mapById.set(String(data.email).toLowerCase(), {
-                id: d.id,
-                name: data.name || 'Sin nombre',
-                email: data.email,
-                favoriteEp: data.favoriteEp || 'Todos los episodios',
-                createdAtIso: data.createdAtIso || '',
-              });
-            }
-          });
-        } catch {
-          // ignore if customers rules are not open yet
-        }
-      }
+      });
     } catch {
       // ignore
     }
@@ -882,13 +857,12 @@ export default function AudiosWaitlistPage() {
         <div className="flex items-center gap-3">
           <span>© {new Date().getFullYear()} Vivienne Wolski</span>
           <span>·</span>
-          <button
-            type="button"
-            onClick={() => setShowAdmin((prev) => !prev)}
+          <Link
+            href="/audios/admin"
             className="hover:text-[#6B1F2A] underline underline-offset-4 cursor-pointer"
           >
-            {showAdmin ? 'Ocultar registros' : 'Ver inscritos (Firebase)'}
-          </button>
+            Panel Admin
+          </Link>
         </div>
       </footer>
 
